@@ -1,0 +1,16 @@
+export const path = {
+  // Auth
+  home: "/",
+  login: "/login",
+  register: "/register",
+  verifyEmail: "/verify-email",
+
+  // Jobs
+  jobDetail: "/jobs/:id",
+  apply: "/jobs/:id/apply",
+
+  // User
+  profile: "/profile",
+  chatbot: "/chatbot",
+
+};
