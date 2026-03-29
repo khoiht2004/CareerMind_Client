@@ -12,5 +12,6 @@ export const path = {
   // User
   profile: "/profile",
   chatbot: "/chatbot",
-
+  applicationDetail: "/applications/:id",
+  savedJobs: "/saved-jobs",
 };

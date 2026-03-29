@@ -9,7 +9,9 @@ export const applicationService = apiSlice.injectEndpoints({
     getMyApplications: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && search.set(k, v));
+        Object.entries(params).forEach(
+          ([k, v]) => v !== undefined && v !== "" && search.set(k, v),
+        );
         return `/application/me?${search.toString()}`;
       },
       providesTags: ["Application"],
@@ -21,7 +23,9 @@ export const applicationService = apiSlice.injectEndpoints({
     getAllApplications: builder.query({
       query: (params = {}) => {
         const search = new URLSearchParams();
-        Object.entries(params).forEach(([k, v]) => v !== undefined && v !== "" && search.set(k, v));
+        Object.entries(params).forEach(
+          ([k, v]) => v !== undefined && v !== "" && search.set(k, v),
+        );
         return `/application?${search.toString()}`;
       },
       providesTags: ["Application"],
@@ -34,6 +38,10 @@ export const applicationService = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Application"],
     }),
+    deleteApplication: builder.mutation({
+      query: (id) => ({ url: `/application/${id}`, method: "DELETE" }),
+      invalidatesTags: ["Application"],
+    }),
   }),
 });
 
@@ -43,4 +51,5 @@ export const {
   useGetApplicationByIdQuery,
   useGetAllApplicationsQuery,
   useUpdateApplicationStatusMutation,
+  useDeleteApplicationMutation,
 } = applicationService;

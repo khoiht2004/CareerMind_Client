@@ -4,8 +4,7 @@ import {
   BriefcaseBusiness,
   BotMessageSquare,
   User,
-  Bot,
-  Settings,
+  BookmarkCheck,
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
@@ -22,6 +21,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { to: path.home, icon: BriefcaseBusiness, label: "Việc làm", end: true },
+  { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
   { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
   { to: path.profile, icon: User, label: "Hồ sơ" },
 ];

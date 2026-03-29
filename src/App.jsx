@@ -17,6 +17,8 @@ import JobDetail from "@/pages/JobDetail";
 import Apply from "@/pages/Apply";
 import Profile from "@/pages/Profile";
 import ChatBot from "@/pages/ChatBot";
+import ApplicationDetail from "@/pages/ApplicationDetail";
+import SavedJobs from "@/pages/SavedJobs";
 
 // Auth initializer — triggers getMe on app start to restore session
 import { useGetMeQuery } from "@/services/auth.service";
@@ -49,6 +51,8 @@ function App() {
           <Route path={path.apply} element={<Apply />} />
           <Route path={path.profile} element={<Profile />} />
           <Route path={path.chatbot} element={<ChatBot />} />
+          <Route path={path.applicationDetail} element={<ApplicationDetail />} />
+          <Route path={path.savedJobs} element={<SavedJobs />} />
         </Route>
       </Routes>
     </Router>

@@ -1,9 +1,16 @@
-import { MapPin, Clock, Flame, DollarSign, Users } from "lucide-react";
+import {
+  MapPin,
+  Clock,
+  Flame,
+  DollarSign,
+  Users,
+  Bookmark,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useNavigate } from "react-router";
 
-function JobCard({ job }) {
+function JobCard({ job, isSaved = false }) {
   const navigate = useNavigate();
   const {
     id,
@@ -24,12 +31,19 @@ function JobCard({ job }) {
       onClick={() => navigate(`/jobs/${id}`)}
       className="group relative flex cursor-pointer flex-col gap-0 overflow-hidden transition-shadow hover:shadow-md"
     >
-      {isHot && (
-        <span className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-600">
-          <Flame className="size-3" />
-          Hot
-        </span>
-      )}
+      <div className="absolute top-3 right-3 flex items-center gap-1.5">
+        {isHot && (
+          <span className="flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-600">
+            <Flame className="size-3" />
+            Hot
+          </span>
+        )}
+      </div>
+      <div className="absolute top-10 right-3 flex items-center gap-1.5">
+        {isSaved && (
+          <Bookmark className="size-4 fill-yellow-400 stroke-yellow-400" />
+        )}
+      </div>
 
       <CardHeader className="pb-2">
         <div className="space-y-0.5 pr-12">
@@ -91,7 +105,7 @@ function JobCard({ job }) {
         </div>
 
         {/* Zone 4: Footer */}
-        <div className="border-border/50 text-muted-foreground flex items-center gap-1.5 border-t pt-3 text-[11px]">
+        <div className="border-border/50 text-muted-foreground flex items-center gap-1.5 border-t pt-3 text-[12px]">
           <Clock className="size-3 shrink-0" />
           {postedAt}
         </div>

@@ -17,38 +17,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import JobCard from "@/features/jobs/components/JobCard";
-import { useGetJobsQuery } from "@/services/job.service";
+import { useSelector } from "react-redux";
+import JobCard from "@/components/shared/JobCard";
+import { useGetJobsQuery, useGetSavedJobsQuery } from "@/services/job.service";
 import { buildPageList, formatRelativeTime, parseTags } from "@/utils/helper";
+import {
+  JOB_TYPE_OPTIONS,
+  LOCATION_OPTIONS,
+  JOB_TYPE_LABELS,
+} from "@/config/constants";
 
 const LIMIT = 10;
 
-const JOB_TYPE_OPTIONS = [
-  { label: "Tất cả loại hình", value: "ALL" },
-  { label: "Toàn thời gian", value: "FULL_TIME" },
-  { label: "Bán thời gian", value: "PART_TIME" },
-  { label: "Remote", value: "REMOTE" },
-  { label: "Thực tập", value: "INTERNSHIP" },
-  { label: "Hợp đồng", value: "CONTRACT" },
-];
-
-const LOCATION_OPTIONS = [
-  { label: "Tất cả địa điểm", value: "ALL" },
-  { label: "TP. Hồ Chí Minh", value: "Hồ Chí Minh" },
-  { label: "Hà Nội", value: "Hà Nội" },
-  { label: "Đà Nẵng", value: "Đà Nẵng" },
-  { label: "Remote", value: "Remote" },
-];
-
-const JOB_TYPE_LABELS = {
-  FULL_TIME: "Toàn thời gian",
-  PART_TIME: "Bán thời gian",
-  REMOTE: "Remote",
-  INTERNSHIP: "Thực tập",
-  CONTRACT: "Hợp đồng",
-};
-
 function Home() {
+  const { user } = useSelector((state) => state.auth);
   const [inputValue, setInputValue] = useState("");
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({
@@ -62,10 +44,12 @@ function Home() {
     page,
     limit: LIMIT,
   });
+  const { data: savedData } = useGetSavedJobsQuery(undefined, { skip: !user });
 
   const jobs = data?.data?.jobs ?? [];
   const total = data?.data?.total ?? 0;
   const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const savedIds = new Set((savedData?.data ?? []).map((j) => j.id));
 
   const handleSearch = () => {
     setPage(1);
@@ -211,6 +195,7 @@ function Home() {
             {jobs.map((job) => (
               <JobCard
                 key={job.id}
+                isSaved={savedIds.has(job.id)}
                 job={{
                   ...job,
                   tags: parseTags(job.tags),

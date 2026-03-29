@@ -17,21 +17,47 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetJobByIdQuery } from "@/services/job.service";
+import {
+  useCheckJobSavedQuery,
+  useSaveJobMutation,
+  useUnsaveJobMutation,
+} from "@/services/job.service";
 import { formatDate, formatRelativeTime } from "@/utils/helper";
-
-const JOB_TYPE_LABELS = {
-  FULL_TIME: "Toàn thời gian",
-  PART_TIME: "Bán thời gian",
-  REMOTE: "Remote",
-  INTERNSHIP: "Thực tập",
-  CONTRACT: "Hợp đồng",
-};
+import { JOB_TYPE_LABELS } from "@/config/constants";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 function JobDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
   const { data: response, isLoading, isError } = useGetJobByIdQuery(id);
   const job = response?.data;
+
+  const { data: savedData } = useCheckJobSavedQuery(id, { skip: !user });
+  const isSaved = savedData?.data?.isSaved ?? false;
+
+  const [saveJob, { isLoading: isSaving }] = useSaveJobMutation();
+  const [unsaveJob, { isLoading: isUnsaving }] = useUnsaveJobMutation();
+
+  const handleBookmark = async () => {
+    if (!user) {
+      toast.error("Vui lòng đăng nhập để lưu việc làm");
+      return;
+    }
+    try {
+      if (isSaved) {
+        await unsaveJob(id).unwrap();
+        toast.success("Đã bỏ lưu việc làm");
+      } else {
+        await saveJob(id).unwrap();
+        toast.success("Đã lưu việc làm");
+      }
+    } catch {
+      toast.error("Có lỗi xảy ra");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -64,7 +90,7 @@ function JobDetail() {
         className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors"
       >
         <ArrowLeft className="size-4" />
-        Quay lại danh sách việc làm
+        Quay lại
       </button>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -129,8 +155,14 @@ function JobDetail() {
                   variant="outline"
                   size="icon"
                   className="h-9.5 w-9.5 cursor-pointer"
+                  onClick={handleBookmark}
+                  disabled={isSaving || isUnsaving}
                 >
-                  <Bookmark className="size-4" />
+                  <Bookmark
+                    className="size-4"
+                    fill={isSaved ? "#eab308" : "none"}
+                    stroke={isSaved ? "#eab308" : "currentColor"}
+                  />
                 </Button>
                 <Button
                   variant="outline"
