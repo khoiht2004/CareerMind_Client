@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetJobByIdQuery } from "@/services/job.service";
+import { formatDate, formatRelativeTime } from "@/utils/helper";
 
 const JOB_TYPE_LABELS = {
   FULL_TIME: "Toàn thời gian",
@@ -25,21 +26,6 @@ const JOB_TYPE_LABELS = {
   INTERNSHIP: "Thực tập",
   CONTRACT: "Hợp đồng",
 };
-
-function formatDate(dateStr) {
-  if (!dateStr) return "Không xác định";
-  const d = new Date(dateStr);
-  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-}
-
-function formatRelativeTime(dateStr) {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins} phút trước`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs} giờ trước`;
-  return `${Math.floor(hrs / 24)} ngày trước`;
-}
 
 function JobDetail() {
   const { id } = useParams();

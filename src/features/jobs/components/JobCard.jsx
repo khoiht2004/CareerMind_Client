@@ -1,9 +1,12 @@
 import { MapPin, Clock, Flame, DollarSign, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useNavigate } from "react-router";
 
 function JobCard({ job }) {
+  const navigate = useNavigate();
   const {
+    id,
     title,
     company,
     location,
@@ -17,7 +20,10 @@ function JobCard({ job }) {
   } = job;
 
   return (
-    <Card className="group relative flex flex-col gap-0 overflow-hidden transition-shadow hover:shadow-md">
+    <Card
+      onClick={() => navigate(`/jobs/${id}`)}
+      className="group relative flex cursor-pointer flex-col gap-0 overflow-hidden transition-shadow hover:shadow-md"
+    >
       {isHot && (
         <span className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-600">
           <Flame className="size-3" />

@@ -5,6 +5,12 @@ const formatTime = (dateString) => {
   return `${hours}:${minutes}`;
 };
 
+function formatDate(dateStr) {
+  if (!dateStr) return "Không xác định";
+  const d = new Date(dateStr);
+  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+}
+
 function parseTags(str) {
   if (!str) return [];
   try {
@@ -49,4 +55,4 @@ function buildPageList(current, total) {
   return result;
 }
 
-export { parseTags, formatRelativeTime, buildPageList, formatTime };
+export { parseTags, formatRelativeTime, buildPageList, formatTime, formatDate };
