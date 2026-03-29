@@ -22,6 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { clearUser } from "@/store/slice/authSlice";
+import { apiSlice } from "@/store/slice/apiSlice";
 import { path } from "@/config/path";
 import { toast } from "sonner";
 
@@ -33,6 +34,7 @@ function UserMenu() {
 
   const handleLogout = () => {
     dispatch(clearUser());
+    dispatch(apiSlice.util.resetApiState());
     toast.success("Đã đăng xuất");
     navigate(path.login);
   };
