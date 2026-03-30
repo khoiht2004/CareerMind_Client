@@ -57,14 +57,16 @@ function JobFormDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[92vh] max-w-3xl overflow-y-auto">
-        <DialogHeader className="pb-2">
+      <DialogContent className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl">
+        {/* ── Fixed Header ── */}
+        <DialogHeader className="shrink-0 border-b px-6 pt-5 pb-4">
           <DialogTitle className="text-lg font-semibold">
             {editJob ? "Chỉnh sửa việc làm" : "Tạo việc làm mới"}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-5 py-1">
+        {/* ── Scrollable Body ── */}
+        <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {/* Section: Thông tin cơ bản */}
           <SectionDivider title="Thông tin cơ bản" />
 
@@ -198,22 +200,26 @@ function JobFormDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <FormField label="Tags">
-              <Input
+              <Textarea
+                rows={3}
                 name="tags"
                 placeholder="ReactJS, NodeJS, TypeScript"
                 value={form.tags}
                 onChange={onChange}
+                className="resize-none"
               />
               <p className="text-muted-foreground text-xs">
                 Cách nhau bằng dấu phẩy
               </p>
             </FormField>
             <FormField label="Phúc lợi">
-              <Input
+              <Textarea
+                rows={3}
                 name="benefits"
                 placeholder="BHXH, Thưởng lễ, Laptop"
                 value={form.benefits}
                 onChange={onChange}
+                className="resize-none"
               />
               <p className="text-muted-foreground text-xs">
                 Cách nhau bằng dấu phẩy
@@ -245,7 +251,8 @@ function JobFormDialog({
           </label>
         </div>
 
-        <DialogFooter className="mt-2 gap-2 border-t pt-4">
+        {/* ── Fixed Footer ── */}
+        <DialogFooter className="mx-0 mb-0 shrink-0 gap-2">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}

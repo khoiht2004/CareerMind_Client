@@ -76,14 +76,16 @@ function ApplicationUpdateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[92vh] max-w-2xl overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl">
+        {/* ── Fixed Header ── */}
+        <DialogHeader className="shrink-0 border-b px-6 pt-5 pb-4">
           <DialogTitle className="text-lg font-semibold">
             Chi tiết đơn ứng tuyển
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-5 py-1">
+        {/* ── Scrollable Body ── */}
+        <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {/* ── Thông tin ứng viên ── */}
           <div className="bg-muted/40 rounded-xl border p-4">
             <div className="flex items-start gap-4">
@@ -151,63 +153,63 @@ function ApplicationUpdateDialog({
           {app.coverLetter && (
             <div className="space-y-2">
               <Label className="text-sm font-medium">Thư giới thiệu</Label>
-              <div className="bg-muted/40 max-h-40 overflow-y-auto rounded-lg border p-3.5 text-sm leading-relaxed whitespace-pre-wrap">
+              <div className="bg-muted/40 max-h-60 overflow-y-auto rounded-lg border p-3.5 text-sm leading-relaxed whitespace-pre-wrap">
                 {app.coverLetter}
               </div>
             </div>
           )}
 
-          {/* ── Divider ── */}
-          <div className="flex items-center gap-3">
-            <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+          {/* ── Cập nhật trạng thái ── */}
+          <div className="bg-muted/40 space-y-4 rounded-xl border p-4">
+            <p className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
               Cập nhật trạng thái
-            </span>
-            <div className="bg-border h-px flex-1" />
-          </div>
+            </p>
 
-          {/* ── Trạng thái ── */}
-          <div className="space-y-1.5">
-            <Label className="text-sm font-medium">Trạng thái</Label>
-            <Select value={status} onValueChange={onStatusChange}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {VALID_APP_STATUSES.map((s) => (
-                  <SelectItem key={s} value={s}>
-                    <div className="flex items-center gap-2">
-                      <span>{APPLICATION_STATUS_LABELS[s]}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+            <div className="flex items-start gap-4">
+              {/* Trạng thái */}
+              <div className="space-y-1.5">
+                <Label className="text-sm font-medium">Trạng thái</Label>
+                <Select value={status} onValueChange={onStatusChange}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {VALID_APP_STATUSES.map((s) => (
+                      <SelectItem key={s} value={s}>
+                        {APPLICATION_STATUS_LABELS[s]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {/* ── Phản hồi ── */}
-          <div className="space-y-1.5">
-            <Label className="text-sm font-medium">
-              Phản hồi cho ứng viên
-              <span className="text-muted-foreground ml-1 font-normal">
-                (tùy chọn)
-              </span>
-            </Label>
-            <Textarea
-              rows={4}
-              placeholder="Nhập phản hồi, ghi chú nội bộ hoặc lý do quyết định..."
-              value={note}
-              onChange={(e) => onNoteChange(e.target.value)}
-              className="resize-none"
-            />
-            {app.note && app.note !== note && (
-              <p className="text-muted-foreground text-xs">
-                Phản hồi hiện tại: <span className="italic">{app.note}</span>
-              </p>
-            )}
+              {/* Phản hồi */}
+              <div className="flex-1 space-y-1.5">
+                <Label className="text-sm font-medium">
+                  Phản hồi cho ứng viên
+                  <span className="text-muted-foreground ml-1 font-normal">
+                    (tùy chọn)
+                  </span>
+                </Label>
+                <Textarea
+                  rows={3}
+                  placeholder="Ghi chú nội bộ hoặc lý do quyết định..."
+                  value={note}
+                  onChange={(e) => onNoteChange(e.target.value)}
+                  className="resize-none"
+                />
+                {app.note && app.note !== note && (
+                  <p className="text-muted-foreground text-xs">
+                    Hiện tại: <span className="italic">{app.note}</span>
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        <DialogFooter className="gap-2 border-t pt-4">
+        {/* ── Fixed Footer ── */}
+        <DialogFooter className="mx-0 mb-0 shrink-0 gap-2">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
