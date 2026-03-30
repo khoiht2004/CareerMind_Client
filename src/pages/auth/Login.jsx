@@ -18,8 +18,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useDispatch } from "react-redux";
 import { path } from "@/config/path";
-import { TOKEN_KEY, REFRESH_TOKEN_KEY } from "@/config/constants";
 import { useLoginMutation, authService } from "@/services/auth.service";
+import { REFRESH_TOKEN_KEY, TOKEN_KEY } from "@/config/constants/constants";
 
 const schema = z.object({
   email: z.string().email("Email không hợp lệ"),

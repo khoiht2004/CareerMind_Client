@@ -44,6 +44,20 @@ export const jobService = apiSlice.injectEndpoints({
       query: (jobId) => `/saved-job/${jobId}/check`,
       providesTags: (result, error, jobId) => [{ type: "SavedJob", id: jobId }],
     }),
+    getMyJobs: builder.query({
+      query: (params = {}) => {
+        const search = new URLSearchParams();
+        Object.entries(params).forEach(
+          ([k, v]) => v !== undefined && v !== "" && search.set(k, v),
+        );
+        return `/job/my/jobs?${search.toString()}`;
+      },
+      providesTags: ["Job"],
+    }),
+    getMyStats: builder.query({
+      query: () => "/job/my/stats",
+      providesTags: ["Job"],
+    }),
   }),
 });
 
@@ -57,4 +71,6 @@ export const {
   useUnsaveJobMutation,
   useGetSavedJobsQuery,
   useCheckJobSavedQuery,
+  useGetMyJobsQuery,
+  useGetMyStatsQuery,
 } = jobService;

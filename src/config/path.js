@@ -14,4 +14,11 @@ export const path = {
   chatbot: "/chatbot",
   applicationDetail: "/applications/:id",
   savedJobs: "/saved-jobs",
+
+  // Recruiter
+  recruiter: {
+    jobs: "/recruiter/jobs",
+    applications: "/recruiter/applications",
+    stats: "/recruiter/stats",
+  },
 };

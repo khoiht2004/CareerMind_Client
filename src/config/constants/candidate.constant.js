@@ -1,11 +1,5 @@
 import { CheckCircle2, Clock, XCircle } from "lucide-react";
 
-export const APP_NAME = "Smart Recruit Assistant";
-export const APP_SHORT_NAME = "SRA";
-
-export const TOKEN_KEY = "access_token";
-export const REFRESH_TOKEN_KEY = "refresh_token";
-
 export const PROFILE_TABS = [
   { key: "profile", label: "Hồ sơ của tôi" },
   { key: "applications", label: "Đơn ứng tuyển" },

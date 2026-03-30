@@ -23,7 +23,7 @@ import {
   useUnsaveJobMutation,
 } from "@/services/job.service";
 import { formatDate, formatRelativeTime } from "@/utils/helper";
-import { JOB_TYPE_LABELS } from "@/config/constants";
+import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 
@@ -71,7 +71,11 @@ function JobDetail() {
     return (
       <div className="text-muted-foreground p-6 text-center">
         <p className="font-medium">Không tìm thấy công việc này</p>
-        <Button variant="link" onClick={() => navigate(-1)}>
+        <Button
+          variant="link"
+          className="cursor-pointer"
+          onClick={() => navigate(-1)}
+        >
           Quay lại
         </Button>
       </div>
@@ -87,7 +91,7 @@ function JobDetail() {
       {/* Back */}
       <button
         onClick={() => navigate(-1)}
-        className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors"
+        className="text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-2 text-sm transition-colors"
       >
         <ArrowLeft className="size-4" />
         Quay lại

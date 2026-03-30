@@ -5,6 +5,8 @@ import {
   BotMessageSquare,
   User,
   BookmarkCheck,
+  BarChart3,
+  FileText,
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
@@ -19,9 +21,17 @@ import NavItem from "./NavItem";
 import SectionHeader from "./SectionHeader";
 import ThemeToggle from "./ThemeToggle";
 
-const navItems = [
+const candidateNavItems = [
   { to: path.home, icon: BriefcaseBusiness, label: "Việc làm", end: true },
   { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
+  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
+  { to: path.profile, icon: User, label: "Hồ sơ" },
+];
+
+const recruiterNavItems = [
+  { to: path.recruiter.stats, icon: BarChart3, label: "Thống kê" },
+  { to: path.recruiter.jobs, icon: BriefcaseBusiness, label: "Quản lý việc làm" },
+  { to: path.recruiter.applications, icon: FileText, label: "Đơn ứng tuyển" },
   { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
   { to: path.profile, icon: User, label: "Hồ sơ" },
 ];
@@ -30,7 +40,11 @@ function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
   const { isCollapsed } = useSidebar();
 
-  const [userSectionOpen, setUserSectionOpen] = useState(true);
+  const [sectionOpen, setSectionOpen] = useState(true);
+
+  const isRecruiter = user?.role === "RECRUITER";
+  const navItems = isRecruiter ? recruiterNavItems : candidateNavItems;
+  const sectionLabel = isRecruiter ? "Nhà tuyển dụng" : "Người dùng";
 
   return (
     <div className="flex h-full flex-col py-4">
@@ -65,14 +79,13 @@ function AppSidebar() {
           isCollapsed ? "px-1" : "px-2",
         )}
       >
-        {/* Section: Người dùng */}
         <SectionHeader
-          label="Người dùng"
+          label={sectionLabel}
           isCollapsed={isCollapsed}
-          open={userSectionOpen}
-          onToggle={() => setUserSectionOpen((v) => !v)}
+          open={sectionOpen}
+          onToggle={() => setSectionOpen((v) => !v)}
         />
-        {(isCollapsed || userSectionOpen) && (
+        {(isCollapsed || sectionOpen) && (
           <div className="space-y-0.5">
             {navItems.map((item) => (
               <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />

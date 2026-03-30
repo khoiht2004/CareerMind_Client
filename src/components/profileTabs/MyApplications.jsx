@@ -32,42 +32,16 @@ import {
   useGetMyApplicationsQuery,
   useDeleteApplicationMutation,
 } from "@/services/application.service";
-
-const APPLICATION_STATUS_LABELS = {
-  PENDING: "Chờ xét duyệt",
-  REVIEWING: "Đang xem xét",
-  INTERVIEW: "Phỏng vấn",
-  ACCEPTED: "Đã nhận",
-  REJECTED: "Từ chối",
-};
-
-const STATUS_CONFIG = {
-  PENDING: {
-    icon: Clock,
-    className: "bg-gray-100 text-gray-600 border-gray-200",
-  },
-  REVIEWING: {
-    icon: Clock,
-    className: "bg-yellow-100 text-yellow-700 border-yellow-200",
-  },
-  INTERVIEW: {
-    icon: CheckCircle2,
-    className: "bg-green-100 text-green-700 border-green-200",
-  },
-  ACCEPTED: {
-    icon: CheckCircle2,
-    className: "bg-blue-100 text-blue-700 border-blue-200",
-  },
-  REJECTED: {
-    icon: XCircle,
-    className: "bg-red-100 text-red-700 border-red-200",
-  },
-};
+import {
+  APPLICATION_STATUS_LABELS,
+  STATUS_CONFIG,
+} from "@/config/constants/candidate.constant";
 
 function MyApplications() {
   const navigate = useNavigate();
   const { data, isLoading } = useGetMyApplicationsQuery({});
-  const [deleteApplication, { isLoading: isDeleting }] = useDeleteApplicationMutation();
+  const [deleteApplication, { isLoading: isDeleting }] =
+    useDeleteApplicationMutation();
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const applications = data?.data?.applications ?? [];
@@ -185,11 +159,11 @@ function MyApplications() {
             <DialogTitle>Xóa đơn ứng tuyển</DialogTitle>
             <DialogDescription>
               Bạn có chắc muốn xóa đơn ứng tuyển vị trí{" "}
-              <span className="font-medium text-foreground">
+              <span className="text-foreground font-medium">
                 {deleteTarget?.job?.title}
               </span>{" "}
               tại{" "}
-              <span className="font-medium text-foreground">
+              <span className="text-foreground font-medium">
                 {deleteTarget?.job?.company}
               </span>
               ? Hành động này không thể hoàn tác.

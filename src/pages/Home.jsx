@@ -25,7 +25,7 @@ import {
   JOB_TYPE_OPTIONS,
   LOCATION_OPTIONS,
   JOB_TYPE_LABELS,
-} from "@/config/constants";
+} from "@/config/constants/candidate.constant";
 
 const LIMIT = 10;
 

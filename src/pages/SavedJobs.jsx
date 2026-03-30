@@ -2,8 +2,8 @@ import { Loader2, Bookmark } from "lucide-react";
 import { useNavigate } from "react-router";
 import JobCard from "@/components/shared/JobCard";
 import { useGetSavedJobsQuery } from "@/services/job.service";
-import { JOB_TYPE_LABELS } from "@/config/constants";
 import { formatRelativeTime, parseTags } from "@/utils/helper";
+import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 
 function SavedJobs() {
   const navigate = useNavigate();

@@ -1,20 +1,16 @@
 import { useSearchParams } from "react-router";
-import {
-  User,
-  FileText,
-  Mail,
-  Lock,
-  BotMessageSquare,
-  Settings,
-} from "lucide-react";
+import { User, FileText, Mail, BotMessageSquare, Settings } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PROFILE_TABS } from "@/config/constants";
 import MyProfile from "@/components/profileTabs/MyProfile";
 import MyApplications from "@/components/profileTabs/MyApplications";
 import MyCv from "@/components/profileTabs/MyCv";
 import MyCoverLetter from "@/components/profileTabs/MyCoverLetter";
 import MyChatbot from "@/components/profileTabs/MyChatbot";
 import MySettings from "@/components/profileTabs/MySettings";
+import { PROFILE_TABS } from "@/config/constants/candidate.constant";
+
+const RECRUITER_HIDDEN_TABS = new Set(["applications", "cv", "cover-letter"]);
 
 const TAB_ICONS = {
   profile: User,
@@ -36,7 +32,13 @@ const TAB_CONTENT = {
 
 function Profile() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useSelector((state) => state.auth);
   const activeTab = searchParams.get("tab") ?? "profile";
+
+  const visibleTabs =
+    user?.role === "RECRUITER"
+      ? PROFILE_TABS.filter((t) => !RECRUITER_HIDDEN_TABS.has(t.key))
+      : PROFILE_TABS;
 
   return (
     <div className="mx-auto max-w-5xl p-6">
@@ -52,7 +54,7 @@ function Profile() {
         onValueChange={(val) => setSearchParams({ tab: val })}
       >
         <TabsList className="mb-6 h-auto flex-wrap gap-1">
-          {PROFILE_TABS.map(({ key, label }) => {
+          {visibleTabs.map(({ key, label }) => {
             const Icon = TAB_ICONS[key];
             return (
               <TabsTrigger
@@ -67,7 +69,7 @@ function Profile() {
           })}
         </TabsList>
 
-        {PROFILE_TABS.map(({ key }) => (
+        {visibleTabs.map(({ key }) => (
           <TabsContent key={key} value={key}>
             {TAB_CONTENT[key]}
           </TabsContent>

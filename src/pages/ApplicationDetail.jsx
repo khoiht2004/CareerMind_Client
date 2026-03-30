@@ -22,7 +22,7 @@ import {
   APPLICATION_STATUS_LABELS,
   JOB_TYPE_LABELS,
   STATUS_CONFIG,
-} from "@/config/constants";
+} from "@/config/constants/candidate.constant";
 
 function ApplicationDetail() {
   const { id } = useParams();
