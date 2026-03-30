@@ -52,8 +52,10 @@ function MyApplications() {
       await deleteApplication(deleteTarget.id).unwrap();
       toast.success("Đã xóa đơn ứng tuyển");
       setDeleteTarget(null);
-    } catch {
-      toast.error("Có lỗi xảy ra khi xóa đơn ứng tuyển");
+    } catch (error) {
+      toast.error(
+        error?.data?.message || "Có lỗi xảy ra khi xóa đơn ứng tuyển",
+      );
     }
   };
 

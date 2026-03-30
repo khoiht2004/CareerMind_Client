@@ -11,21 +11,18 @@ function formatDate(dateStr) {
   return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 }
 
-function parseTags(str) {
-  if (!str) return [];
-  try {
-    const parsed = JSON.parse(str);
-    if (Array.isArray(parsed)) return parsed;
-    return String(parsed)
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-  } catch {
-    return str
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
+function parseTags(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [parsed];
+    } catch {
+      return value.split(",").map((t) => t.trim()).filter(Boolean);
+    }
   }
+  return [];
 }
 
 function formatRelativeTime(dateStr) {
