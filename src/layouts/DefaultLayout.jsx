@@ -17,13 +17,10 @@ function LayoutContent() {
   }, [location.pathname, closeMobile]);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
       {/* Mobile backdrop */}
       {isMobile && mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/60"
-          onClick={closeMobile}
-        />
+        <div className="fixed inset-0 z-40 bg-black/60" onClick={closeMobile} />
       )}
 
       {/* Sidebar */}
@@ -41,7 +38,7 @@ function LayoutContent() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <AppHeader />
-        <main ref={mainRef} className="flex-1 overflow-y-auto">
+        <main ref={mainRef} className="min-h-0 flex-1 overflow-y-auto">
           <Outlet />
         </main>
       </div>
