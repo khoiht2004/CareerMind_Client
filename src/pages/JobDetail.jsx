@@ -16,12 +16,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
-import { useGetJobByIdQuery } from "@/services/job.service";
 import {
+  useGetJobByIdQuery,
   useCheckJobSavedQuery,
   useSaveJobMutation,
   useUnsaveJobMutation,
 } from "@/services/job.service";
+import { useCheckAppliedQuery } from "@/services/application.service";
 import { formatDate, formatRelativeTime } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { toast } from "sonner";
@@ -37,6 +38,9 @@ function JobDetail() {
 
   const { data: savedData } = useCheckJobSavedQuery(id, { skip: !user });
   const isSaved = savedData?.data?.isSaved ?? false;
+
+  const { data: appliedData } = useCheckAppliedQuery(id, { skip: !user });
+  const hasApplied = appliedData?.data?.applied ?? false;
 
   const [saveJob, { isLoading: isSaving }] = useSaveJobMutation();
   const [unsaveJob, { isLoading: isUnsaving }] = useUnsaveJobMutation();
@@ -152,8 +156,17 @@ function JobDetail() {
               )}
 
               <div className="flex gap-2 pt-1">
-                <Button size="lg" asChild className="flex-1 cursor-pointer">
-                  <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
+                <Button
+                  size="lg"
+                  asChild={!hasApplied}
+                  disabled={hasApplied}
+                  className="flex-1 cursor-pointer"
+                >
+                  {hasApplied ? (
+                    "Bạn đã ứng tuyển vị trí này rồi"
+                  ) : (
+                    <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
+                  )}
                 </Button>
                 <Button
                   variant="outline"
@@ -263,10 +276,22 @@ function JobDetail() {
             </CardContent>
           </Card>
 
-          <Button size="lg" asChild className="w-full cursor-pointer">
-            <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
+          <Button
+            size="lg"
+            asChild={!hasApplied}
+            disabled={hasApplied}
+            className="w-full cursor-pointer"
+          >
+            {hasApplied ? (
+              "Bạn đã ứng tuyển vị trí này rồi"
+            ) : (
+              <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
+            )}
           </Button>
-        </div>
+          <Button size="lg" variant="outline" className="w-full cursor-pointer">
+            <Link to={`/chatbot?job=${id}`}>Chat với AI</Link>
+          </Button>
+        </div>  
       </div>
     </div>
   );

@@ -42,6 +42,10 @@ export const applicationService = apiSlice.injectEndpoints({
       query: (id) => ({ url: `/application/${id}`, method: "DELETE" }),
       invalidatesTags: ["Application"],
     }),
+    checkApplied: builder.query({
+      query: (jobId) => `/application/check?jobId=${jobId}`,
+      providesTags: (result, error, jobId) => [{ type: "Application", id: `check-${jobId}` }],
+    }),
   }),
 });
 
@@ -52,4 +56,5 @@ export const {
   useGetAllApplicationsQuery,
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
+  useCheckAppliedQuery,
 } = applicationService;
