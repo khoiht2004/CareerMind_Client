@@ -59,7 +59,7 @@ function ChatArea({
 
       {/* Messages */}
       <ScrollArea className="flex-1 p-5">
-        <div className="mx-auto max-w-2xl space-y-4">
+        <div className="mx-auto max-w-full space-y-4">
           {isLoading ? (
             <div className="flex justify-center py-4">
               <Loader2 className="text-muted-foreground size-5 animate-spin" />

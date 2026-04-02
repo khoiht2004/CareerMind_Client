@@ -29,7 +29,11 @@ export const jobService = apiSlice.injectEndpoints({
       invalidatesTags: ["Job"],
     }),
     saveJob: builder.mutation({
-      query: (jobId) => ({ url: "/saved-job", method: "POST", body: { jobId } }),
+      query: (jobId) => ({
+        url: "/saved-job",
+        method: "POST",
+        body: { jobId },
+      }),
       invalidatesTags: ["SavedJob"],
     }),
     unsaveJob: builder.mutation({

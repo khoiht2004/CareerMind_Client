@@ -4,10 +4,9 @@ import {
   MapPin,
   Briefcase,
   Loader2,
-  ChevronLeft,
-  ChevronRight,
   X,
 } from "lucide-react";
+import Pagination from "@/components/shared/Pagination";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +19,7 @@ import {
 import { useSelector } from "react-redux";
 import JobCard from "@/components/shared/JobCard";
 import { useGetJobsQuery, useGetSavedJobsQuery } from "@/services/job.service";
-import { buildPageList, formatRelativeTime, parseTags } from "@/utils/helper";
+import { formatDate, parseTags } from "@/utils/helper";
 import {
   JOB_TYPE_OPTIONS,
   LOCATION_OPTIONS,
@@ -200,60 +199,20 @@ function Home() {
                   ...job,
                   tags: parseTags(job.tags),
                   type: JOB_TYPE_LABELS[job.type] ?? job.type,
-                  postedAt: formatRelativeTime(job.createdAt),
+                  postedAt: formatDate(job.createdAt),
                 }}
               />
             ))}
           </div>
 
           {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 pt-4 pb-2">
-              <Button
-                variant="outline"
-                disabled={page === 1 || isFetching}
-                onClick={() => setPage((p) => p - 1)}
-                className="cursor-pointer gap-1"
-              >
-                <ChevronLeft className="size-4" />
-                Trước
-              </Button>
-
-              <div className="flex items-center gap-1">
-                {buildPageList(page, totalPages).map((item, idx) =>
-                  item === "..." ? (
-                    <span
-                      key={`e${idx}`}
-                      className="text-muted-foreground px-2 text-sm select-none"
-                    >
-                      ...
-                    </span>
-                  ) : (
-                    <Button
-                      key={item}
-                      variant={item === page ? "default" : "outline"}
-                      size="sm"
-                      disabled={isFetching}
-                      onClick={() => setPage(item)}
-                      className="h-9 w-9 cursor-pointer"
-                    >
-                      {item}
-                    </Button>
-                  ),
-                )}
-              </div>
-
-              <Button
-                variant="outline"
-                disabled={page >= totalPages || isFetching}
-                onClick={() => setPage((p) => p + 1)}
-                className="cursor-pointer gap-1"
-              >
-                Tiếp
-                <ChevronRight className="size-4" />
-              </Button>
-            </div>
-          )}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            isLoading={isFetching}
+            showPageNumbers
+          />
         </>
       )}
     </div>

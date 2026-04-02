@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Loader2, ExternalLink } from "lucide-react";
+import Pagination from "@/components/shared/Pagination";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -218,29 +219,11 @@ function RecruiterApplications() {
           </div>
 
           {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={filters.page <= 1}
-                onClick={() => setFilters((f) => ({ ...f, page: f.page - 1 }))}
-              >
-                Trước
-              </Button>
-              <span className="flex items-center px-3 text-sm">
-                {filters.page} / {totalPages}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={filters.page >= totalPages}
-                onClick={() => setFilters((f) => ({ ...f, page: f.page + 1 }))}
-              >
-                Sau
-              </Button>
-            </div>
-          )}
+          <Pagination
+            page={filters.page}
+            totalPages={totalPages}
+            onPageChange={(p) => setFilters((f) => ({ ...f, page: p }))}
+          />
         </>
       )}
 

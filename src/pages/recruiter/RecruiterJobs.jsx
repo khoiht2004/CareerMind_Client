@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Loader2, Plus, Pencil, Trash2, Eye } from "lucide-react";
+import Pagination from "@/components/shared/Pagination";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 
 function RecruiterJobs() {
   const navigate = useNavigate();
@@ -67,6 +69,8 @@ function RecruiterJobs() {
   };
 
   const openEdit = (job) => {
+    console.log(job);
+
     setEditJob(job);
     setForm({
       title: job.title,
@@ -77,10 +81,8 @@ function RecruiterJobs() {
       type: job.type,
       level: job.level ?? "",
       slots: job.slots,
-      tags: Array.isArray(job.tags) ? job.tags.join(", ") : (job.tags ?? ""),
-      benefits: Array.isArray(job.benefits)
-        ? job.benefits.join(", ")
-        : (job.benefits ?? ""),
+      tags: JSON.parse(job.tags),
+      benefits: JSON.parse(job.benefits),
       status: job.status,
       isHot: job.isHot,
       deadline: job.deadline ? job.deadline.slice(0, 10) : "",
@@ -100,13 +102,14 @@ function RecruiterJobs() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const tagsToArray = (str) =>
-    str
-      ? str
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean)
-      : [];
+  const tagsToArray = (value) => {
+    if (!value) return [];
+    if (Array.isArray(value)) return value;
+    return value
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+  };
 
   const handleSubmit = async () => {
     const payload = {
@@ -213,8 +216,11 @@ function RecruiterJobs() {
               <TableBody>
                 {jobs.map((job) => (
                   <TableRow key={job.id}>
+                    {/* Tiêu đề */}
                     <TableCell className="font-medium">{job.title}</TableCell>
+                    {/* Công ty */}
                     <TableCell>{job.company}</TableCell>
+                    {/* Trạng thái */}
                     <TableCell>
                       <span
                         className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${JOB_STATUS_BADGE[job.status]}`}
@@ -222,15 +228,19 @@ function RecruiterJobs() {
                         {JOB_STATUS_LABELS[job.status]}
                       </span>
                     </TableCell>
-                    <TableCell>{job.type}</TableCell>
+                    {/* Loại */}
+                    <TableCell>{JOB_TYPE_LABELS[job.type]}</TableCell>
+                    {/* Số lượng ứng tuyển */}
                     <TableCell className="text-center">
                       {job._count?.applications ?? 0}
                     </TableCell>
+                    {/* Hạn nộp */}
                     <TableCell className="text-sm">
                       {job.deadline
                         ? new Date(job.deadline).toLocaleDateString("vi-VN")
                         : "—"}
                     </TableCell>
+                    {/* Thao tác */}
                     <TableCell>
                       <div className="flex justify-end gap-1">
                         <Button
@@ -269,29 +279,11 @@ function RecruiterJobs() {
           </div>
 
           {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={filters.page <= 1}
-                onClick={() => setFilters((f) => ({ ...f, page: f.page - 1 }))}
-              >
-                Trước
-              </Button>
-              <span className="flex items-center px-3 text-sm">
-                {filters.page} / {totalPages}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={filters.page >= totalPages}
-                onClick={() => setFilters((f) => ({ ...f, page: f.page + 1 }))}
-              >
-                Sau
-              </Button>
-            </div>
-          )}
+          <Pagination
+            page={filters.page}
+            totalPages={totalPages}
+            onPageChange={(p) => setFilters((f) => ({ ...f, page: p }))}
+          />
         </>
       )}
 

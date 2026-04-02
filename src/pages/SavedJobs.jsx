@@ -2,7 +2,7 @@ import { Loader2, Bookmark } from "lucide-react";
 import { useNavigate } from "react-router";
 import JobCard from "@/components/shared/JobCard";
 import { useGetSavedJobsQuery } from "@/services/job.service";
-import { formatRelativeTime, parseTags } from "@/utils/helper";
+import { formatDate, parseTags } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 
 function SavedJobs() {
@@ -53,7 +53,7 @@ function SavedJobs() {
                 ...job,
                 tags: parseTags(job.tags),
                 type: JOB_TYPE_LABELS[job.type] ?? job.type,
-                postedAt: formatRelativeTime(job.createdAt),
+                postedAt: formatDate(job.createdAt),
               }}
             />
           ))}

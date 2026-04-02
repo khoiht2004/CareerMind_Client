@@ -23,7 +23,7 @@ import {
   useUnsaveJobMutation,
 } from "@/services/job.service";
 import { useCheckAppliedQuery } from "@/services/application.service";
-import { formatDate, formatRelativeTime } from "@/utils/helper";
+import { formatDate } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
@@ -86,8 +86,8 @@ function JobDetail() {
     );
   }
 
-  const tags = job.tags ?? [];
-  const benefits = job.benefits ?? [];
+  const tags = JSON.parse(job.tags) ?? [];
+  const benefits = JSON.parse(job.benefits) ?? [];
   const typeLabel = JOB_TYPE_LABELS[job.type] ?? job.type;
 
   return (
@@ -258,7 +258,7 @@ function JobDetail() {
                 },
                 {
                   label: "Đăng ngày",
-                  value: formatRelativeTime(job.createdAt),
+                  value: formatDate(job.createdAt),
                 },
                 { label: "Hạn nộp hồ sơ", value: formatDate(job.deadline) },
                 { label: "Hình thức", value: typeLabel },
@@ -291,7 +291,7 @@ function JobDetail() {
           <Button size="lg" variant="outline" className="w-full cursor-pointer">
             <Link to={`/chatbot?job=${id}`}>Chat với AI</Link>
           </Button>
-        </div>  
+        </div>
       </div>
     </div>
   );

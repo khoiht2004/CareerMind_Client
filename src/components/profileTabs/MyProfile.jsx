@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, Pencil, Loader2 } from "lucide-react";
+import { Camera, Pencil, Loader2, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,23 +22,40 @@ function MyProfile() {
   const [bio, setBio] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
+  const [addingSkill, setAddingSkill] = useState(false);
 
   useEffect(() => {
     if (profile) {
       setBio(profile.bio ?? "");
       setPhone(profile.phone ?? "");
       setAddress(profile.address ?? "");
+      setSkills(profile.skills ?? []);
     }
   }, [profile]);
 
   const handleSave = async () => {
     try {
-      await updateProfile({ bio, phone, address }).unwrap();
+      await updateProfile({ bio, phone, address, skills }).unwrap();
       setEditing(false);
       toast.success("Đã cập nhật thông tin");
     } catch {
       toast.error("Cập nhật thất bại");
     }
+  };
+
+  const handleAddSkill = () => {
+    const trimmed = newSkill.trim();
+    if (trimmed && !skills.includes(trimmed)) {
+      setSkills((prev) => [...prev, trimmed]);
+    }
+    setNewSkill("");
+    setAddingSkill(false);
+  };
+
+  const handleRemoveSkill = (skill) => {
+    setSkills((prev) => prev.filter((s) => s !== skill));
   };
 
   if (isLoading) {
@@ -62,9 +79,12 @@ function MyProfile() {
                   {profile?.fullName?.[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <button className="bg-primary text-primary-foreground absolute -right-1 -bottom-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full shadow-sm transition-opacity hover:opacity-90">
-                <Camera className="size-3.5" />
-              </button>
+              <Button className="bg-primary text-primary-foreground absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full shadow-sm transition-opacity hover:opacity-90">
+                <label htmlFor="open-file" className="cursor-pointer">
+                  <Camera className="size-3.5" />
+                  <input type="file" name="" id="open-file" hidden />
+                </label>
+              </Button>
             </div>
             <div className="flex-1 space-y-1 text-center sm:text-left">
               <h2 className="text-lg font-bold">{profile?.fullName}</h2>
@@ -79,9 +99,9 @@ function MyProfile() {
         </CardContent>
       </Card>
 
-      {/* Bio */}
+      {/* Bio + Skills */}
       <Card>
-        <CardHeader className="pb-3">
+        <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm">Giới thiệu bản thân</CardTitle>
             <Button
@@ -95,29 +115,81 @@ function MyProfile() {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="pt-0">
+        <CardContent className="space-y-4 pt-0">
+          {/* Bio */}
           {editing ? (
-            <div className="space-y-3">
-              <Textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                rows={4}
-                placeholder="Giới thiệu về bản thân..."
-              />
-              <Button
-                size="sm"
-                onClick={handleSave}
-                disabled={isSaving}
-                className="cursor-pointer"
-              >
-                {isSaving && <Loader2 className="size-3.5 animate-spin" />}
-                Lưu
-              </Button>
-            </div>
+            <Textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              rows={4}
+              placeholder="Giới thiệu về bản thân..."
+            />
           ) : (
             <p className="text-muted-foreground text-sm leading-relaxed">
               {bio || "Chưa có giới thiệu"}
             </p>
+          )}
+
+          {/* Skills */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Kỹ năng</p>
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <Badge
+                  key={skill}
+                  variant="secondary"
+                  size="lg"
+                  className="group flex h-[25px] min-w-[65px] items-center gap-1 pr-1.5 text-[13px]"
+                >
+                  {skill}
+                  {editing && (
+                    <button
+                      onClick={() => handleRemoveSkill(skill)}
+                      className="text-muted-foreground hover:text-foreground ml-0.5 cursor-pointer"
+                    >
+                      <X className="size-3" />
+                    </button>
+                  )}
+                </Badge>
+              ))}
+
+              {editing &&
+                (addingSkill ? (
+                  <input
+                    autoFocus
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleAddSkill();
+                      if (e.key === "Escape") setAddingSkill(false);
+                    }}
+                    onBlur={handleAddSkill}
+                    className="border-input h-6 w-28 rounded-full border bg-transparent px-2.5 text-xs outline-none"
+                    placeholder="Nhập kỹ năng..."
+                  />
+                ) : (
+                  <button
+                    onClick={() => setAddingSkill(true)}
+                    className="border-input text-muted-foreground hover:text-foreground hover:border-foreground flex h-6 cursor-pointer items-center gap-1 rounded-full border border-dashed px-2.5 text-xs transition-colors"
+                  >
+                    <Plus className="size-3" />
+                    Thêm kỹ năng
+                  </button>
+                ))}
+            </div>
+          </div>
+
+          {/* Save button — chỉ hiện khi editing */}
+          {editing && (
+            <Button
+              size="sm"
+              onClick={handleSave}
+              disabled={isSaving}
+              className="cursor-pointer"
+            >
+              {isSaving && <Loader2 className="size-3.5 animate-spin" />}
+              Lưu
+            </Button>
           )}
         </CardContent>
       </Card>
