@@ -31,10 +31,10 @@ export const applicationService = apiSlice.injectEndpoints({
       providesTags: ["Application"],
     }),
     updateApplicationStatus: builder.mutation({
-      query: ({ id, status, note }) => ({
+      query: ({ id, ...body }) => ({
         url: `/application/${id}/status`,
         method: "PATCH",
-        body: { status, note },
+        body,
       }),
       invalidatesTags: ["Application"],
     }),

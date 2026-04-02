@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Loader2,
   ExternalLink,
@@ -10,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -18,19 +18,15 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   APPLICATION_STATUS_LABELS,
   STATUS_CONFIG,
 } from "@/config/constants/candidate.constant";
 import { VALID_APP_STATUSES } from "@/config/constants/recruiter.constant";
+import InterviewFields from "./InterviewFields";
+import AcceptedFields from "./AcceptedFields";
 
-function InfoRow({ icon: Icon, label, value }) {
+function InfoRow({ icon, label, value }) {
+  const Icon = icon;
   if (!value) return null;
   return (
     <div className="flex items-center gap-2 text-sm">
@@ -60,6 +56,12 @@ function ApplicationUpdateDialog({
   onStatusChange,
   note,
   onNoteChange,
+  sendEmail,
+  onSendEmailChange,
+  interviewFields,
+  onInterviewFieldChange,
+  acceptedFields,
+  onAcceptedFieldChange,
   onSubmit,
   isLoading,
 }) {
@@ -108,7 +110,6 @@ function ApplicationUpdateDialog({
                   <h3 className="text-base font-semibold">{name}</h3>
                   <StatusBadge status={app.status} />
                 </div>
-
                 <InfoRow icon={Mail} label="Email" value={app.user?.email} />
                 <InfoRow icon={Phone} label="Điện thoại" value={phone} />
                 <InfoRow
@@ -165,45 +166,86 @@ function ApplicationUpdateDialog({
               Cập nhật trạng thái
             </p>
 
-            <div className="flex items-start gap-4">
-              {/* Trạng thái */}
-              <div className="space-y-1.5">
-                <Label className="text-sm font-medium">Trạng thái</Label>
-                <Select value={status} onValueChange={onStatusChange}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {VALID_APP_STATUSES.map((s) => (
-                      <SelectItem key={s} value={s}>
+            {/* Status */}
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium">Trạng thái</Label>
+              <div className="flex gap-2">
+                {VALID_APP_STATUSES.map((s) => {
+                  const cfg = STATUS_CONFIG[s];
+                  const Icon = cfg?.icon;
+                  const selected = status === s;
+                  return (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => onStatusChange(s)}
+                      className={`flex flex-1 flex-col items-center gap-1 rounded-lg border px-1 py-2.5 text-xs font-medium transition-all ${
+                        selected
+                          ? `${cfg?.className} shadow-sm`
+                          : "border-input bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
+                      }`}
+                    >
+                      {Icon && <Icon className="size-4" />}
+                      <span className="text-center leading-tight">
                         {APPLICATION_STATUS_LABELS[s]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
+            </div>
 
-              {/* Phản hồi */}
-              <div className="flex-1 space-y-1.5">
-                <Label className="text-sm font-medium">
-                  Phản hồi cho ứng viên
-                  <span className="text-muted-foreground ml-1 font-normal">
-                    (tùy chọn)
-                  </span>
-                </Label>
-                <Textarea
-                  rows={3}
-                  placeholder="Ghi chú nội bộ hoặc lý do quyết định..."
-                  value={note}
-                  onChange={(e) => onNoteChange(e.target.value)}
-                  className="resize-none"
-                />
-                {app.note && app.note !== note && (
-                  <p className="text-muted-foreground text-xs">
-                    Hiện tại: <span className="italic">{app.note}</span>
-                  </p>
-                )}
-              </div>
+            {/* Phản hồi ứng viên */}
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium">
+                Phản hồi cho ứng viên
+                <span className="text-muted-foreground ml-1 font-normal">
+                  (tùy chọn)
+                </span>
+              </Label>
+              <Textarea
+                rows={3}
+                placeholder="Ghi chú nội bộ hoặc lý do quyết định..."
+                value={note}
+                onChange={(e) => onNoteChange(e.target.value)}
+                className="resize-none"
+              />
+              {app.note && app.note !== note && (
+                <p className="text-muted-foreground text-xs">
+                  Hiện tại: <span className="italic">{app.note}</span>
+                </p>
+              )}
+            </div>
+
+            {/* Interview fields */}
+            {status === "INTERVIEW" && (
+              <InterviewFields
+                fields={interviewFields}
+                onFieldChange={onInterviewFieldChange}
+              />
+            )}
+
+            {/* Accepted fields */}
+            {status === "ACCEPTED" && (
+              <AcceptedFields
+                fields={acceptedFields}
+                onFieldChange={onAcceptedFieldChange}
+              />
+            )}
+
+            {/* Checkbox gửi email */}
+            <div className="flex items-center gap-2.5 rounded-lg border px-4 py-3">
+              <Checkbox
+                id="send-email"
+                checked={sendEmail}
+                onCheckedChange={onSendEmailChange}
+              />
+              <label
+                htmlFor="send-email"
+                className="cursor-pointer text-sm select-none"
+              >
+                Gửi email thông báo cho ứng viên
+              </label>
             </div>
           </div>
         </div>

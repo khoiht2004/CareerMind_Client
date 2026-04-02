@@ -11,18 +11,35 @@ import {
   User,
   Mail,
   Phone,
+  Calendar,
+  Video,
+  MonitorSmartphone,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useGetApplicationByIdQuery } from "@/services/application.service";
-import { formatDate } from "@/utils/helper";
+import { formatDate, formatVN } from "@/utils/helper";
 import {
   APPLICATION_STATUS_LABELS,
   JOB_TYPE_LABELS,
   STATUS_CONFIG,
 } from "@/config/constants/candidate.constant";
+
+function DetailRow({ icon, label, value }) {
+  const Icon = icon;
+  if (!value) return null;
+  return (
+    <div className="flex items-start gap-2 text-sm">
+      <Icon className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+      <div>
+        <span className="text-muted-foreground text-xs">{label}: </span>
+        <span className="font-medium">{value}</span>
+      </div>
+    </div>
+  );
+}
 
 function ApplicationDetail() {
   const { id } = useParams();
@@ -49,12 +66,35 @@ function ApplicationDetail() {
     );
   }
 
-  const { job, status, createdAt, coverLetter, note, cvUrl, user } =
-    application;
+  const {
+    job,
+    status,
+    createdAt,
+    coverLetter,
+    note,
+    cvUrl,
+    user,
+    interviewDate,
+    interviewTime,
+    interviewFormat,
+    interviewLocation,
+    confirmDeadline,
+    startDate,
+    startTime,
+    officeAddress,
+  } = application;
+
   const cfg = STATUS_CONFIG[status];
   const StatusIcon = cfg?.icon;
   const statusLabel = APPLICATION_STATUS_LABELS[status] ?? status;
   const typeLabel = JOB_TYPE_LABELS[job?.type] ?? job?.type;
+
+  const interviewFormatLabel =
+    interviewFormat === "ONLINE"
+      ? "Online"
+      : interviewFormat === "DIRECT"
+        ? "Trực tiếp"
+        : null;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6">
@@ -99,6 +139,86 @@ function ApplicationDetail() {
                       <span>{user.profile.phone}</span>
                     </div>
                   )}
+                </CardContent>
+              </Card>
+            )}
+
+          {/* Interview info - shown when status is INTERVIEW */}
+          {status === "INTERVIEW" &&
+            (interviewDate ||
+              interviewTime ||
+              interviewFormat ||
+              interviewLocation ||
+              confirmDeadline) && (
+              <Card className="border-blue-200 dark:border-blue-900">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base text-blue-700 dark:text-blue-400">
+                    <Calendar className="size-4" />
+                    Thông tin phỏng vấn
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <DetailRow
+                    icon={Calendar}
+                    label="Ngày phỏng vấn"
+                    value={formatVN(interviewDate)}
+                  />
+                  <DetailRow
+                    icon={Clock}
+                    label="Giờ phỏng vấn"
+                    value={interviewTime}
+                  />
+                  <DetailRow
+                    icon={
+                      interviewFormat === "ONLINE" ? Video : MonitorSmartphone
+                    }
+                    label="Hình thức"
+                    value={interviewFormatLabel}
+                  />
+                  <DetailRow
+                    icon={MapPin}
+                    label={
+                      interviewFormat === "ONLINE"
+                        ? "Link phỏng vấn"
+                        : "Địa điểm"
+                    }
+                    value={interviewLocation}
+                  />
+                  <DetailRow
+                    icon={Clock}
+                    label="Hạn phản hồi"
+                    value={formatVN(confirmDeadline)}
+                  />
+                </CardContent>
+              </Card>
+            )}
+
+          {/* Accepted info - shown when status is ACCEPTED */}
+          {status === "ACCEPTED" &&
+            (startDate || startTime || officeAddress) && (
+              <Card className="border-green-200 dark:border-green-900">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base text-green-700 dark:text-green-400">
+                    <Building2 className="size-4" />
+                    Thông tin nhận việc
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <DetailRow
+                    icon={Calendar}
+                    label="Ngày bắt đầu"
+                    value={formatVN(startDate)}
+                  />
+                  <DetailRow
+                    icon={Clock}
+                    label="Giờ bắt đầu làm việc"
+                    value={startTime}
+                  />
+                  <DetailRow
+                    icon={MapPin}
+                    label="Địa chỉ văn phòng"
+                    value={officeAddress}
+                  />
                 </CardContent>
               </Card>
             )}

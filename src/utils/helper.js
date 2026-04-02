@@ -19,7 +19,10 @@ function parseTags(value) {
       const parsed = JSON.parse(value);
       return Array.isArray(parsed) ? parsed : [parsed];
     } catch {
-      return value.split(",").map((t) => t.trim()).filter(Boolean);
+      return value
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
     }
   }
   return [];
@@ -52,4 +55,20 @@ function buildPageList(current, total) {
   return result;
 }
 
-export { parseTags, formatRelativeTime, buildPageList, formatTime, formatDate };
+const formatVN = (dateStr) =>
+  dateStr
+    ? new Date(dateStr).toLocaleDateString("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+    : null;
+
+export {
+  parseTags,
+  formatRelativeTime,
+  buildPageList,
+  formatTime,
+  formatDate,
+  formatVN,
+};
