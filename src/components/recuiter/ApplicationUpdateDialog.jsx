@@ -70,6 +70,8 @@ function ApplicationUpdateDialog({
   const profile = app.user?.profile;
   const name = profile?.fullName ?? app.user?.email ?? "Ứng viên";
   const phone = app.phone ?? profile?.phone;
+  const bio = profile?.bio;
+  const skills = JSON.parse(profile?.skills) ?? [];
   const initials = name
     .split(" ")
     .slice(-2)
@@ -126,6 +128,39 @@ function ApplicationUpdateDialog({
                     year: "numeric",
                   })}
                 />
+                {bio && (
+                  <>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-xs font-semibold tracking-wider uppercase">
+                        Giới thiệu
+                      </p>
+                    </div>
+                    <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                      {bio}
+                    </p>
+                  </>
+                )}
+                {skills.length > 0 && (
+                  <>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-xs font-semibold tracking-wider uppercase">
+                        Kỹ năng
+                      </p>
+                    </div>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {skills.map((skill, i) => (
+                        <span
+                          key={i}
+                          className="bg-muted rounded-full border border-gray-300 px-2 py-0.5 text-xs font-medium"
+                        >
+                          {typeof skill === "string"
+                            ? skill
+                            : (skill?.name ?? skill)}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -179,7 +214,7 @@ function ApplicationUpdateDialog({
                       key={s}
                       type="button"
                       onClick={() => onStatusChange(s)}
-                      className={`flex flex-1 flex-col items-center gap-1 rounded-lg border px-1 py-2.5 text-xs font-medium transition-all ${
+                      className={`flex flex-1 cursor-pointer flex-col items-center gap-1 rounded-lg border px-1 py-2.5 text-xs font-medium transition-all ${
                         selected
                           ? `${cfg?.className} shadow-sm`
                           : "border-input bg-background text-muted-foreground hover:bg-muted hover:text-foreground"

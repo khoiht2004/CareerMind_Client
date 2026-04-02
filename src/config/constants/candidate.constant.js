@@ -20,7 +20,7 @@ export const APPLICATION_STATUS_LABELS = {
 export const STATUS_CONFIG = {
   PENDING: {
     icon: Clock,
-    className: "bg-gray-100 text-gray-600 border-gray-200",
+    className: "bg-gray-100 text-gray-600 border-gray-300",
   },
   REVIEWING: {
     icon: Clock,
@@ -28,11 +28,11 @@ export const STATUS_CONFIG = {
   },
   INTERVIEW: {
     icon: CheckCircle2,
-    className: "bg-green-100 text-green-700 border-green-200",
+    className: "bg-blue-100 text-blue-700 border-blue-200",
   },
   ACCEPTED: {
     icon: CheckCircle2,
-    className: "bg-blue-100 text-blue-700 border-blue-200",
+    className: "bg-green-100 text-green-700 border-green-200",
   },
   REJECTED: {
     icon: XCircle,

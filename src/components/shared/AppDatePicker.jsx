@@ -13,18 +13,30 @@ import {
 // value: string "YYYY-MM-DD" | ""
 // onChange: (string) => void
 // minDate: Date | undefined — disables dates before this date, shows error if value is before it
-function AppDatePicker({ value, onChange, placeholder = "Chọn ngày", minDate }) {
+function AppDatePicker({
+  value,
+  onChange,
+  placeholder = "Chọn ngày",
+  minDate,
+}) {
   const [open, setOpen] = useState(false);
 
   const date = value ? new Date(value + "T00:00:00") : undefined;
 
   const isInvalid =
     minDate && date
-      ? date.setHours(0, 0, 0, 0) < minDate.setHours(0, 0, 0, 0)
+      ? new Date(date).setHours(0, 0, 0, 0) < new Date(minDate).setHours(0, 0, 0, 0)
       : false;
 
   const handleSelect = (selected) => {
-    onChange(selected ? selected.toISOString().slice(0, 10) : "");
+    if (selected) {
+      const y = selected.getFullYear();
+      const m = String(selected.getMonth() + 1).padStart(2, "0");
+      const d = String(selected.getDate()).padStart(2, "0");
+      onChange(`${y}-${m}-${d}`);
+    } else {
+      onChange("");
+    }
     setOpen(false);
   };
 

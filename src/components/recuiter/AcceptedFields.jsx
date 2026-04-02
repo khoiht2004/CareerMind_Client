@@ -1,7 +1,7 @@
-import { Building2, MapPin } from "lucide-react";
+import { Building2, Clock8, MapPin } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import AppDatePicker from "./AppDatePicker";
+import AppDatePicker from "../shared/AppDatePicker";
 
 function AcceptedFields({ fields, onFieldChange }) {
   const today = new Date();
@@ -25,19 +25,22 @@ function AcceptedFields({ fields, onFieldChange }) {
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="text-sm font-medium">Giờ bắt đầu làm việc</Label>
-          <Input
-            type="time"
-            value={fields.startTime}
-            onChange={(e) => onFieldChange("startTime", e.target.value)}
-            className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-          />
+          <Label className="text-sm font-medium">Giờ bắt đầu</Label>
+          <div className="relative">
+            <Input
+              type="time"
+              value={fields.startTime}
+              onChange={(e) => onFieldChange("startTime", e.target.value)}
+              className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+            />
+            <Clock8 className="text-muted-foreground absolute top-2.5 right-2 size-4" />
+          </div>
         </div>
       </div>
 
       {/* Địa chỉ */}
       <div className="space-y-1.5">
-        <Label className="text-sm font-medium flex items-center gap-1.5">
+        <Label className="flex items-center gap-1.5 text-sm font-medium">
           <MapPin className="size-3.5 text-green-600" />
           Địa chỉ văn phòng
         </Label>

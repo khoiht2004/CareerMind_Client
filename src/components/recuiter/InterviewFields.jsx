@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { Calendar, Video, Users, MapPin } from "lucide-react";
+import { Calendar, Video, Users, MapPin, Clock8 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import AppDatePicker from "./AppDatePicker";
+import AppDatePicker from "../shared/AppDatePicker";
 
 const FORMAT_OPTIONS = [
   { value: "DIRECT", label: "Trực tiếp", icon: Users },
@@ -33,12 +33,15 @@ function InterviewFields({ fields, onFieldChange }) {
         </div>
         <div className="space-y-1.5">
           <Label className="text-sm font-medium">Giờ phỏng vấn</Label>
-          <Input
-            type="time"
-            value={fields.interviewTime}
-            onChange={(e) => onFieldChange("interviewTime", e.target.value)}
-            className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-          />
+          <div className="relative">
+            <Input
+              type="time"
+              value={fields.interviewTime}
+              onChange={(e) => onFieldChange("interviewTime", e.target.value)}
+              className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+            />
+            <Clock8 className="text-muted-foreground absolute top-2.5 right-2 size-4" />
+          </div>
         </div>
       </div>
 

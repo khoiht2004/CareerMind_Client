@@ -240,6 +240,7 @@ function RecruiterApplications() {
                   <TableHead>Vị trí ứng tuyển</TableHead>
                   <TableHead>Trạng thái</TableHead>
                   <TableHead>Ngày nộp</TableHead>
+                  <TableHead>Ngày cập nhật</TableHead>
                   <TableHead>CV</TableHead>
                   <TableHead className="text-right">Thao tác</TableHead>
                 </TableRow>
@@ -268,6 +269,9 @@ function RecruiterApplications() {
                       </TableCell>
                       <TableCell className="text-sm">
                         {new Date(app.createdAt).toLocaleDateString("vi-VN")}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {new Date(app.updatedAt).toLocaleDateString("vi-VN")}
                       </TableCell>
                       <TableCell>
                         {app.cvUrl ? (
