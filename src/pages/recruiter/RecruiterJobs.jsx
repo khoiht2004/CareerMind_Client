@@ -69,8 +69,6 @@ function RecruiterJobs() {
   };
 
   const openEdit = (job) => {
-    console.log(job);
-
     setEditJob(job);
     setForm({
       title: job.title,
