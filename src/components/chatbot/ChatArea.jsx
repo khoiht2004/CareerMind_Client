@@ -1,9 +1,30 @@
-import { useRef, useEffect } from "react";
-import { Bot, Send, Trash2, BotMessageSquare, Loader2 } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
+import {
+  Bot,
+  Send,
+  BotMessageSquare,
+  Loader2,
+  EllipsisVertical,
+  PenLine,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import MessageBubble from "./MessageBubble";
 
 const SUGGESTED_QUESTIONS = [
@@ -16,24 +37,40 @@ const SUGGESTED_QUESTIONS = [
 function ChatArea({
   session,
   messages,
+  pendingMessage,
   input,
   onInputChange,
   onSend,
   onDelete,
+  onRename,
   onKeyDown,
   isSending,
   isLoading,
   hasActiveSession,
 }) {
   const bottomRef = useRef(null);
+  const [renameOpen, setRenameOpen] = useState(false);
+  const [renameValue, setRenameValue] = useState("");
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isSending]);
+  }, [messages, isSending, pendingMessage]);
+
+  const handleOpenRename = () => {
+    setRenameValue(session?.title ?? "");
+    setRenameOpen(true);
+  };
+
+  const handleRenameSubmit = async () => {
+    await onRename(renameValue);
+    setRenameOpen(false);
+  };
+
+  const isEmpty = messages.length === 0 && !pendingMessage;
 
   return (
     <div className="flex min-w-0 flex-1 flex-col">
-      {/* Header - same height as sidebar header */}
+      {/* Header */}
       <div className="flex h-14 shrink-0 items-center justify-between border-b px-5">
         <div className="flex items-center gap-2.5">
           <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
@@ -46,31 +83,64 @@ function ChatArea({
             <p className="text-[11px] text-green-500">Đang hoạt động</p>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground"
-          onClick={onDelete}
-          disabled={!hasActiveSession}
-        >
-          <Trash2 className="size-4" />
-        </Button>
+        {/* Dropdown Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground"
+              disabled={!hasActiveSession}
+            >
+              <EllipsisVertical className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleOpenRename}>
+              <PenLine className="mr-2 size-4" />
+              Đổi tên
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={onDelete}
+              className="text-destructive focus:text-destructive"
+            >
+              <Trash2 className="mr-2 size-4" />
+              Xóa
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-5">
+      <ScrollArea className="flex-1 overflow-y-auto p-3">
         <div className="mx-auto max-w-full space-y-4">
           {isLoading ? (
             <div className="flex justify-center py-4">
               <Loader2 className="text-muted-foreground size-5 animate-spin" />
             </div>
-          ) : messages.length === 0 ? (
+          ) : isEmpty ? (
             <div className="text-muted-foreground py-8 text-center">
               <BotMessageSquare className="mx-auto mb-2 size-10 opacity-30" />
               <p className="text-sm">Bắt đầu cuộc trò chuyện của bạn!</p>
             </div>
           ) : (
-            messages.map((msg) => <MessageBubble key={msg.id} message={msg} />)
+            <>
+              {messages.map((msg) => (
+                <MessageBubble key={msg.id} message={msg} />
+              ))}
+
+              {/* Optimistic user message while waiting for AI */}
+              {pendingMessage && (
+                <MessageBubble
+                  message={{
+                    id: "__pending__",
+                    role: "USER",
+                    content: pendingMessage,
+                    createdAt: new Date().toISOString(),
+                  }}
+                />
+              )}
+            </>
           )}
 
           {isSending && (
@@ -91,7 +161,7 @@ function ChatArea({
       </ScrollArea>
 
       {/* Suggested questions */}
-      {messages.length === 0 && !isLoading && (
+      {isEmpty && !isLoading && (
         <div className="px-5 pb-3">
           <p className="text-muted-foreground mb-2 text-xs">Gợi ý câu hỏi:</p>
           <div className="flex flex-wrap gap-2">
@@ -136,9 +206,33 @@ function ChatArea({
           </Button>
         </div>
         <p className="text-muted-foreground mt-2 text-center text-[10px]">
-          AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng.
+          * AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng. *
         </p>
       </div>
+
+      {/* Rename Dialog */}
+      <Dialog open={renameOpen} onOpenChange={setRenameOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Đổi tên cuộc trò chuyện</DialogTitle>
+          </DialogHeader>
+          <Input
+            value={renameValue}
+            onChange={(e) => setRenameValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleRenameSubmit()}
+            placeholder="Nhập tên mới..."
+            autoFocus
+          />
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRenameOpen(false)}>
+              Hủy
+            </Button>
+            <Button onClick={handleRenameSubmit} disabled={!renameValue.trim()}>
+              Lưu
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

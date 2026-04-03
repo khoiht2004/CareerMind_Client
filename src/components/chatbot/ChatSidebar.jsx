@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 function ChatSidebar({ sessions, activeSessionId, onSelect, onCreate, isLoading }) {
   return (
-    <div className="flex w-64 shrink-0 flex-col border-r">
+    <div className="flex w-64 shrink-0 flex-col overflow-hidden border-r">
       {/* Header - same height as chat area header */}
       <div className="flex h-14 shrink-0 items-center border-b px-3">
         <Button

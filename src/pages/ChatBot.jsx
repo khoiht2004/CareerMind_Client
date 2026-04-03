@@ -6,6 +6,7 @@ import {
   useGetMessagesQuery,
   useSendMessageMutation,
   useDeleteSessionMutation,
+  useUpdateSessionTitleMutation,
 } from "@/services/chat.service";
 import ChatSidebar from "@/components/chatbot/ChatSidebar";
 import ChatArea from "@/components/chatbot/ChatArea";
@@ -14,6 +15,7 @@ function ChatBot() {
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [pendingMessage, setPendingMessage] = useState(null);
 
   const { data: sessionsData, isLoading: sessionsLoading } = useGetSessionsQuery();
   const { data: messageData, isLoading: messagesLoading } = useGetMessagesQuery(
@@ -23,6 +25,7 @@ function ChatBot() {
   const [createSession] = useCreateSessionMutation();
   const [sendMessage] = useSendMessageMutation();
   const [deleteSession] = useDeleteSessionMutation();
+  const [updateSessionTitle] = useUpdateSessionTitleMutation();
 
   const sessions = useMemo(() => sessionsData?.data ?? [], [sessionsData]);
   const messages = useMemo(() => messageData?.data?.messages ?? [], [messageData]);
@@ -36,8 +39,8 @@ function ChatBot() {
 
   const handleCreateSession = async () => {
     try {
-      const session = await createSession({}).unwrap();
-      setActiveSessionId(session.id);
+      const res = await createSession({}).unwrap();
+      setActiveSessionId(res.data.id);
     } catch {
       toast.error("Không thể tạo cuộc trò chuyện mới");
     }
@@ -49,12 +52,14 @@ function ChatBot() {
 
     setInput("");
     setIsSending(true);
+    setPendingMessage(content);
     try {
       await sendMessage({ sessionId: activeSessionId, content }).unwrap();
     } catch {
       toast.error("Gửi tin nhắn thất bại");
     } finally {
       setIsSending(false);
+      setPendingMessage(null);
     }
   };
 
@@ -66,6 +71,16 @@ function ChatBot() {
       toast.success("Đã xóa cuộc trò chuyện");
     } catch {
       toast.error("Xóa thất bại");
+    }
+  };
+
+  const handleRenameSession = async (title) => {
+    if (!activeSessionId || !title?.trim()) return;
+    try {
+      await updateSessionTitle({ sessionId: activeSessionId, title: title.trim() }).unwrap();
+      toast.success("Đã đổi tên cuộc trò chuyện");
+    } catch {
+      toast.error("Đổi tên thất bại");
     }
   };
 
@@ -88,10 +103,12 @@ function ChatBot() {
       <ChatArea
         session={messageData?.data?.session}
         messages={messages}
+        pendingMessage={pendingMessage}
         input={input}
         onInputChange={setInput}
         onSend={handleSend}
         onDelete={handleDeleteSession}
+        onRename={handleRenameSession}
         onKeyDown={handleKeyDown}
         isSending={isSending}
         isLoading={messagesLoading}

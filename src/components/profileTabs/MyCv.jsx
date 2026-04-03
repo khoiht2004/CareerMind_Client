@@ -19,9 +19,16 @@ function MyCv() {
               Hỗ trợ PDF, DOC, DOCX (tối đa 5MB)
             </p>
           </div>
-          <Button variant="outline" size="sm" className="cursor-pointer">
-            Chọn file
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="cursor-pointer"
+          >
+            <label htmlFor="upload-file">Chọn file</label>
           </Button>
+
+          <input id="upload-file" type="file" accept=".pdf,.doc,.docx" hidden />
         </div>
       </CardContent>
     </Card>

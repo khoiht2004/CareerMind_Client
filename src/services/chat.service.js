@@ -4,11 +4,11 @@ export const chatService = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSessions: builder.query({
       query: () => "/chat/sessions",
-      providesTags: ["Chat"],
+      providesTags: [{ type: "Chat", id: "LIST" }],
     }),
     createSession: builder.mutation({
       query: (body = {}) => ({ url: "/chat/sessions", method: "POST", body }),
-      invalidatesTags: ["Chat"],
+      invalidatesTags: [{ type: "Chat", id: "LIST" }],
     }),
     getMessages: builder.query({
       query: (sessionId) => `/chat/sessions/${sessionId}`,
@@ -28,11 +28,14 @@ export const chatService = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { title },
       }),
-      invalidatesTags: ["Chat"],
+      invalidatesTags: (result, error, { sessionId }) => [
+        { type: "Chat", id: "LIST" },
+        { type: "Chat", id: sessionId },
+      ],
     }),
     deleteSession: builder.mutation({
       query: (sessionId) => ({ url: `/chat/sessions/${sessionId}`, method: "DELETE" }),
-      invalidatesTags: ["Chat"],
+      invalidatesTags: [{ type: "Chat", id: "LIST" }],
     }),
   }),
 });
