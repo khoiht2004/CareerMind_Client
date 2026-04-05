@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import MessageBubble from "./MessageBubble";
+import { Textarea } from "../ui/textarea";
 
 const SUGGESTED_QUESTIONS = [
   "Tôi phù hợp với vị trí nào?",
@@ -33,6 +34,9 @@ const SUGGESTED_QUESTIONS = [
   "Mức lương Frontend Developer hiện tại?",
   "Kỹ năng cần có cho Data Scientist?",
 ];
+
+const TEXTAREA_BASE_HEIGHT = 36;
+const TEXTAREA_MAX_HEIGHT = 80;
 
 function ChatArea({
   session,
@@ -49,12 +53,26 @@ function ChatArea({
   hasActiveSession,
 }) {
   const bottomRef = useRef(null);
+  const textareaRef = useRef(null);
   const [renameOpen, setRenameOpen] = useState(false);
   const [renameValue, setRenameValue] = useState("");
 
   useEffect(() => {
+    if (!input && textareaRef.current) {
+      textareaRef.current.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
+    }
+  }, [input]);
+
+  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isSending, pendingMessage]);
+
+  const handleResize = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
+    el.style.height = `${Math.min(el.scrollHeight, TEXTAREA_MAX_HEIGHT)}px`;
+  };
 
   const handleOpenRename = () => {
     setRenameValue(session?.title ?? "");
@@ -183,8 +201,9 @@ function ChatArea({
 
       {/* Input */}
       <div className="p-4">
-        <div className="mx-auto flex max-w-2xl gap-2">
-          <Input
+        <div className="mx-auto flex items-center gap-2">
+          <Textarea
+            ref={textareaRef}
             placeholder={
               hasActiveSession
                 ? "Nhập câu hỏi của bạn..."
@@ -192,9 +211,10 @@ function ChatArea({
             }
             value={input}
             onChange={(e) => onInputChange(e.target.value)}
+            onInput={handleResize}
             onKeyDown={onKeyDown}
             disabled={isSending || !hasActiveSession}
-            className="rounded-full"
+            className="min-h-0 resize-none overflow-y-auto leading-tight [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           />
           <Button
             size="icon"

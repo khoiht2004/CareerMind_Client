@@ -155,42 +155,43 @@ function JobDetail() {
                 </div>
               )}
 
-              {user.role === "CANDIDATE" && (
-                <div className="flex gap-2 pt-1">
-                  <Button
-                    size="lg"
-                    asChild={!hasApplied}
-                    disabled={hasApplied}
-                    className="flex-1 cursor-pointer"
-                  >
-                    {hasApplied ? (
-                      "Bạn đã ứng tuyển vị trí này rồi"
-                    ) : (
-                      <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
-                    )}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-9.5 w-9.5 cursor-pointer"
-                    onClick={handleBookmark}
-                    disabled={isSaving || isUnsaving}
-                  >
-                    <Bookmark
-                      className="size-4"
-                      fill={isSaved ? "#eab308" : "none"}
-                      stroke={isSaved ? "#eab308" : "currentColor"}
-                    />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-9.5 w-9.5 cursor-pointer"
-                  >
-                    <Share2 className="size-4" />
-                  </Button>
-                </div>
-              )}
+              {!user ||
+                (user?.role === "CANDIDATE" && (
+                  <div className="flex gap-2 pt-1">
+                    <Button
+                      size="lg"
+                      asChild={!hasApplied}
+                      disabled={hasApplied}
+                      className="flex-1 cursor-pointer"
+                    >
+                      {hasApplied ? (
+                        "Bạn đã ứng tuyển vị trí này rồi"
+                      ) : (
+                        <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-9.5 w-9.5 cursor-pointer"
+                      onClick={handleBookmark}
+                      disabled={isSaving || isUnsaving}
+                    >
+                      <Bookmark
+                        className="size-4"
+                        fill={isSaved ? "#eab308" : "none"}
+                        stroke={isSaved ? "#eab308" : "currentColor"}
+                      />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-9.5 w-9.5 cursor-pointer"
+                    >
+                      <Share2 className="size-4" />
+                    </Button>
+                  </div>
+                ))}
             </CardContent>
           </Card>
 
@@ -278,20 +279,21 @@ function JobDetail() {
             </CardContent>
           </Card>
 
-          {user.role === "CANDIDATE" && (
-            <Button
-              size="lg"
-              asChild={!hasApplied}
-              disabled={hasApplied}
-              className="w-full cursor-pointer"
-            >
-              {hasApplied ? (
-                "Bạn đã ứng tuyển vị trí này rồi"
-              ) : (
-                <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
-              )}
-            </Button>
-          )}
+          {!user ||
+            (user?.role === "CANDIDATE" && (
+              <Button
+                size="lg"
+                asChild={!hasApplied}
+                disabled={hasApplied}
+                className="w-full cursor-pointer"
+              >
+                {hasApplied ? (
+                  "Bạn đã ứng tuyển vị trí này rồi"
+                ) : (
+                  <Link to={`/jobs/${id}/apply`}>Ứng tuyển ngay</Link>
+                )}
+              </Button>
+            ))}
           <Button size="lg" variant="outline" className="w-full cursor-pointer">
             <Link to={`/chatbot?job=${id}`}>Chat với AI</Link>
           </Button>

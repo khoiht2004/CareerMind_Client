@@ -27,7 +27,7 @@ function MessageBubble({ message }) {
               : "bg-muted rounded-tl-sm",
           )}
         >
-          {message.content}
+          <span className="whitespace-pre-wrap">{message.content}</span>
         </div>
         <span className="text-muted-foreground px-1 text-[10px]">
           {new Date(message.createdAt).toLocaleTimeString("vi-VN", {
