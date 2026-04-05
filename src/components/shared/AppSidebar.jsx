@@ -1,13 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import {
-  BriefcaseBusiness,
-  BotMessageSquare,
-  User,
-  BookmarkCheck,
-  BarChart3,
-  FileText,
-} from "lucide-react";
 import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
 import { path } from "@/config/path";
@@ -20,21 +12,8 @@ import {
 import NavItem from "./NavItem";
 import SectionHeader from "./SectionHeader";
 import ThemeToggle from "./ThemeToggle";
-
-const candidateNavItems = [
-  { to: path.home, icon: BriefcaseBusiness, label: "Việc làm", end: true },
-  { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
-  { to: path.profile, icon: User, label: "Hồ sơ" },
-];
-
-const recruiterNavItems = [
-  { to: path.recruiter.stats, icon: BarChart3, label: "Thống kê" },
-  { to: path.recruiter.jobs, icon: BriefcaseBusiness, label: "Quản lý việc làm" },
-  { to: path.recruiter.applications, icon: FileText, label: "Đơn ứng tuyển" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
-  { to: path.profile, icon: User, label: "Hồ sơ" },
-];
+import { CANDIDATE_NAV_ITEMS } from "@/config/constants/candidate.constant";
+import { RECRUITER_NAV_ITEMS } from "@/config/constants/recruiter.constant";
 
 function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
@@ -43,7 +22,7 @@ function AppSidebar() {
   const [sectionOpen, setSectionOpen] = useState(true);
 
   const isRecruiter = user?.role === "RECRUITER";
-  const navItems = isRecruiter ? recruiterNavItems : candidateNavItems;
+  const navItems = isRecruiter ? RECRUITER_NAV_ITEMS : CANDIDATE_NAV_ITEMS;
   const sectionLabel = isRecruiter ? "Nhà tuyển dụng" : "Người dùng";
 
   return (

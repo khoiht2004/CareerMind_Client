@@ -1,4 +1,20 @@
-import { CheckCircle2, Clock, XCircle } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  XCircle,
+  BriefcaseBusiness,
+  BotMessageSquare,
+  User,
+  BookmarkCheck,
+} from "lucide-react";
+import { path } from "../path";
+
+export const CANDIDATE_NAV_ITEMS = [
+  { to: path.home, icon: BriefcaseBusiness, label: "Việc làm", end: true },
+  { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
+  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
+  { to: path.profile, icon: User, label: "Hồ sơ" },
+];
 
 export const PROFILE_TABS = [
   { key: "profile", label: "Hồ sơ của tôi" },
