@@ -13,14 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
   Table,
   TableBody,
   TableCell,
@@ -28,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
   useGetMyApplicationsQuery,
   useDeleteApplicationMutation,
@@ -151,47 +144,26 @@ function MyApplications() {
         </CardContent>
       </Card>
 
-      {/* Delete confirmation dialog */}
-      <Dialog
+      <ConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Xóa đơn ứng tuyển</DialogTitle>
-            <DialogDescription>
-              Bạn có chắc muốn xóa đơn ứng tuyển vị trí{" "}
-              <span className="text-foreground font-medium">
-                {deleteTarget?.job?.title}
-              </span>{" "}
-              tại{" "}
-              <span className="text-foreground font-medium">
-                {deleteTarget?.job?.company}
-              </span>
-              ? Hành động này không thể hoàn tác.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setDeleteTarget(null)}
-              disabled={isDeleting}
-            >
-              Hủy
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteConfirm}
-              disabled={isDeleting}
-            >
-              {isDeleting ? (
-                <Loader2 className="mr-2 size-4 animate-spin" />
-              ) : null}
-              Xóa
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        onConfirm={handleDeleteConfirm}
+        isLoading={isDeleting}
+        title="Xóa đơn ứng tuyển"
+        description={
+          <>
+            Bạn có chắc muốn xóa đơn ứng tuyển vị trí{" "}
+            <span className="text-foreground font-medium">
+              {deleteTarget?.job?.title}
+            </span>{" "}
+            tại{" "}
+            <span className="text-foreground font-medium">
+              {deleteTarget?.job?.company}
+            </span>
+            ? Hành động này không thể hoàn tác.
+          </>
+        }
+      />
     </>
   );
 }

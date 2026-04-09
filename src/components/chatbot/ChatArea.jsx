@@ -1,32 +1,11 @@
-import { useRef, useEffect, useState } from "react";
-import {
-  Bot,
-  Send,
-  BotMessageSquare,
-  Loader2,
-  EllipsisVertical,
-  PenLine,
-  Trash2,
-} from "lucide-react";
+import { useRef, useEffect } from "react";
+import { Bot, Send, BotMessageSquare, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import MessageBubble from "./MessageBubble";
 import { Textarea } from "../ui/textarea";
+import ChatHeaderActions from "./ChatHeaderActions";
 
 const SUGGESTED_QUESTIONS = [
   "Tôi phù hợp với vị trí nào?",
@@ -36,7 +15,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 const TEXTAREA_BASE_HEIGHT = 36;
-const TEXTAREA_MAX_HEIGHT = 80;
+const TEXTAREA_MAX_HEIGHT = 100;
 
 function ChatArea({
   session,
@@ -54,8 +33,6 @@ function ChatArea({
 }) {
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
-  const [renameOpen, setRenameOpen] = useState(false);
-  const [renameValue, setRenameValue] = useState("");
 
   useEffect(() => {
     if (!input && textareaRef.current) {
@@ -72,16 +49,6 @@ function ChatArea({
     if (!el) return;
     el.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
     el.style.height = `${Math.min(el.scrollHeight, TEXTAREA_MAX_HEIGHT)}px`;
-  };
-
-  const handleOpenRename = () => {
-    setRenameValue(session?.title ?? "");
-    setRenameOpen(true);
-  };
-
-  const handleRenameSubmit = async () => {
-    await onRename(renameValue);
-    setRenameOpen(false);
   };
 
   const isEmpty = messages.length === 0 && !pendingMessage;
@@ -101,32 +68,12 @@ function ChatArea({
             <p className="text-[11px] text-green-500">Đang hoạt động</p>
           </div>
         </div>
-        {/* Dropdown Menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-muted-foreground"
-              disabled={!hasActiveSession}
-            >
-              <EllipsisVertical className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={handleOpenRename}>
-              <PenLine className="mr-2 size-4" />
-              Đổi tên
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={onDelete}
-              className="text-destructive focus:text-destructive"
-            >
-              <Trash2 className="mr-2 size-4" />
-              Xóa
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <ChatHeaderActions
+          session={session}
+          onRename={onRename}
+          onDelete={onDelete}
+          hasActiveSession={hasActiveSession}
+        />
       </div>
 
       {/* Messages */}
@@ -196,12 +143,10 @@ function ChatArea({
           </div>
         </div>
       )}
-
       <Separator />
-
       {/* Input */}
       <div className="p-4">
-        <div className="mx-auto flex items-center gap-2">
+        <div className="mx-auto flex items-end gap-2">
           <Textarea
             ref={textareaRef}
             placeholder={
@@ -229,30 +174,6 @@ function ChatArea({
           * AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng. *
         </p>
       </div>
-
-      {/* Rename Dialog */}
-      <Dialog open={renameOpen} onOpenChange={setRenameOpen}>
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>Đổi tên cuộc trò chuyện</DialogTitle>
-          </DialogHeader>
-          <Input
-            value={renameValue}
-            onChange={(e) => setRenameValue(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleRenameSubmit()}
-            placeholder="Nhập tên mới..."
-            autoFocus
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setRenameOpen(false)}>
-              Hủy
-            </Button>
-            <Button onClick={handleRenameSubmit} disabled={!renameValue.trim()}>
-              Lưu
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
