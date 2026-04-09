@@ -10,7 +10,28 @@ export const profileService = apiSlice.injectEndpoints({
       query: (body) => ({ url: "/profile", method: "PUT", body }),
       invalidatesTags: ["Profile", "User"],
     }),
+    uploadAvatar: builder.mutation({
+      query: (formData) => ({
+        url: "/profile/upload-avatar",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["Profile", "User"],
+    }),
+    deleteAvatar: builder.mutation({
+      query: (body) => ({
+        url: "/profile/delete-avatar",
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Profile", "User"],
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useUpdateProfileMutation } = profileService;
+export const {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+  useUploadAvatarMutation,
+  useDeleteAvatarMutation,
+} = profileService;

@@ -3,23 +3,12 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { changePasswordSchema } from "@/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useChangePasswordMutation } from "@/services/auth.service";
-
-const pwSchema = z
-  .object({
-    oldPassword: z.string().min(1, "Nhập mật khẩu hiện tại"),
-    newPassword: z.string().min(6, "Mật khẩu mới ít nhất 6 ký tự"),
-    confirmPassword: z.string(),
-  })
-  .refine((d) => d.newPassword === d.confirmPassword, {
-    message: "Xác nhận mật khẩu không khớp",
-    path: ["confirmPassword"],
-  });
 
 function MySettings() {
   const [show, setShow] = useState({
@@ -34,7 +23,7 @@ function MySettings() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(pwSchema) });
+  } = useForm({ resolver: zodResolver(changePasswordSchema) });
 
   const onSubmit = async (data) => {
     try {

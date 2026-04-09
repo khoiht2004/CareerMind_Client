@@ -8,17 +8,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
+  useUploadAvatarMutation,
+  useDeleteAvatarMutation,
 } from "@/services/profile.service";
 
 function MyProfile() {
   const { data: response, isLoading } = useGetProfileQuery();
   const [updateProfile, { isLoading: isSaving }] = useUpdateProfileMutation();
+  const [uploadAvatar, { isLoading: isUploading }] = useUploadAvatarMutation();
+  const [deleteAvatar, { isLoading: isDeleting }] = useDeleteAvatarMutation();
   const profile = response?.data;
 
   const [editing, setEditing] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [bio, setBio] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -34,6 +40,30 @@ function MyProfile() {
       setSkills(profile.skills ?? []);
     }
   }, [profile]);
+
+  const handleDeleteAvatar = async () => {
+    try {
+      await deleteAvatar().unwrap();
+      setShowDeleteDialog(false);
+      toast.success("Đã xóa ảnh đại diện");
+    } catch {
+      toast.error("Xóa ảnh đại diện thất bại");
+    }
+  };
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("avatar_url", file);
+    try {
+      await uploadAvatar(formData).unwrap();
+      toast.success("Cập nhật ảnh đại diện thành công");
+    } catch {
+      toast.error("Tải ảnh lên thất bại");
+    }
+    e.target.value = "";
+  };
 
   const handleSave = async () => {
     try {
@@ -79,12 +109,49 @@ function MyProfile() {
                   {profile?.fullName?.[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <Button className="bg-primary text-primary-foreground absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full shadow-sm transition-opacity hover:opacity-90">
+
+              {/* Nút X */}
+              {profile?.avatarUrl && (
+                <Button
+                  size="icon"
+                  variant="outline"
+                  disabled={isDeleting}
+                  onClick={() => setShowDeleteDialog(true)}
+                  className="absolute -top-1 -right-1 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full"
+                >
+                  <X className="size-3" />
+                </Button>
+              )}
+
+              {/* Nút Camera */}
+              <Button
+                disabled={isUploading}
+                className="bg-primary text-primary-foreground absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full shadow-sm transition-opacity hover:opacity-90"
+              >
                 <label htmlFor="open-file" className="cursor-pointer">
-                  <Camera className="size-3.5" />
-                  <input type="file" name="" id="open-file" hidden />
+                  {isUploading ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <Camera className="size-3.5" />
+                  )}
+                  <input
+                    type="file"
+                    id="open-file"
+                    hidden
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handleAvatarChange}
+                  />
                 </label>
               </Button>
+
+              <ConfirmDialog
+                open={showDeleteDialog}
+                onOpenChange={setShowDeleteDialog}
+                onConfirm={handleDeleteAvatar}
+                isLoading={isDeleting}
+                title="Xóa ảnh đại diện"
+                description="Bạn có chắc muốn xóa ảnh đại diện không? Hành động này không thể hoàn tác."
+              />
             </div>
             <div className="flex-1 space-y-1 text-center sm:text-left">
               <h2 className="text-lg font-bold">{profile?.fullName}</h2>
@@ -179,7 +246,7 @@ function MyProfile() {
             </div>
           </div>
 
-          {/* Save button — chỉ hiện khi editing */}
+          {/* Save button */}
           {editing && (
             <Button
               size="sm"

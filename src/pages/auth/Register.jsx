@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { registerSchema } from "@/validations/auth.schema";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,18 +20,6 @@ import { Separator } from "@/components/ui/separator";
 import { path } from "@/config/path";
 import { useRegisterMutation } from "@/services/auth.service";
 
-const schema = z
-  .object({
-    name: z.string().min(2, "Tên ít nhất 2 ký tự"),
-    email: z.string().email("Email không hợp lệ"),
-    password: z.string().min(6, "Mật khẩu ít nhất 6 ký tự"),
-    confirmPassword: z.string(),
-  })
-  .refine((d) => d.password === d.confirmPassword, {
-    message: "Mật khẩu xác nhận không khớp",
-    path: ["confirmPassword"],
-  });
-
 function Register() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +30,7 @@ function Register() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(schema) });
+  } = useForm({ resolver: zodResolver(registerSchema) });
 
   const onSubmit = async ({ confirmPassword: _omit, ...data }) => {
     try {
@@ -103,7 +91,7 @@ function Register() {
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Ít nhất 6 ký tự"
+                placeholder="Ít nhất 8 ký tự, gồm chữ và số"
                 autoComplete="new-password"
                 className="pr-10"
                 {...register("password")}
