@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Search,
-  MapPin,
-  Briefcase,
-  Loader2,
-  X,
-} from "lucide-react";
+import { Search, MapPin, Briefcase, Loader2, X } from "lucide-react";
 import Pagination from "@/components/shared/Pagination";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,7 +13,7 @@ import {
 import { useSelector } from "react-redux";
 import JobCard from "@/components/shared/JobCard";
 import { useGetJobsQuery, useGetSavedJobsQuery } from "@/services/job.service";
-import { formatDate, parseTags } from "@/utils/helper";
+import { formatDate, convertArray } from "@/utils/helper";
 import {
   JOB_TYPE_OPTIONS,
   LOCATION_OPTIONS,
@@ -197,7 +191,7 @@ function Home() {
                 isSaved={savedIds.has(job.id)}
                 job={{
                   ...job,
-                  tags: parseTags(job.tags),
+                  tags: convertArray(job.tags),
                   type: JOB_TYPE_LABELS[job.type] ?? job.type,
                   postedAt: formatDate(job.createdAt),
                 }}

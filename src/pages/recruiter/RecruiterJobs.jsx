@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
+import { convertArray } from "@/utils/helper";
 
 function RecruiterJobs() {
   const navigate = useNavigate();
@@ -79,8 +80,8 @@ function RecruiterJobs() {
       type: job.type,
       level: job.level ?? "",
       slots: job.slots,
-      tags: JSON.parse(job.tags),
-      benefits: JSON.parse(job.benefits),
+      tags: job.tags,
+      benefits: job.benefits,
       status: job.status,
       isHot: job.isHot,
       deadline: job.deadline ? job.deadline.slice(0, 10) : "",
@@ -100,21 +101,12 @@ function RecruiterJobs() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const tagsToArray = (value) => {
-    if (!value) return [];
-    if (Array.isArray(value)) return value;
-    return value
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-  };
-
   const handleSubmit = async () => {
     const payload = {
       ...form,
       slots: +form.slots,
-      tags: tagsToArray(form.tags),
-      benefits: tagsToArray(form.benefits),
+      tags: convertArray(form.tags),
+      benefits: convertArray(form.benefits),
       deadline: form.deadline || undefined,
     };
     try {

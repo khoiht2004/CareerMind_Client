@@ -86,8 +86,8 @@ function JobDetail() {
     );
   }
 
-  const tags = JSON.parse(job.tags) ?? [];
-  const benefits = JSON.parse(job.benefits) ?? [];
+  const tags = job.tags ?? [];
+  const benefits = job.benefits ?? [];
   const typeLabel = JOB_TYPE_LABELS[job.type] ?? job.type;
 
   return (

@@ -11,7 +11,7 @@ function formatDate(dateStr) {
   return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 }
 
-function parseTags(value) {
+function convertArray(value) {
   if (!value) return [];
   if (Array.isArray(value)) return value;
   if (typeof value === "string") {
@@ -71,7 +71,7 @@ function formatFileSize(bytes) {
 }
 
 export {
-  parseTags,
+  convertArray,
   formatRelativeTime,
   buildPageList,
   formatTime,
