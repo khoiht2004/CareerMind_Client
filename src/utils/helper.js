@@ -58,11 +58,17 @@ function buildPageList(current, total) {
 const formatVN = (dateStr) =>
   dateStr
     ? new Date(dateStr).toLocaleDateString("vi-VN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
     : null;
+
+function formatFileSize(bytes) {
+  if (!bytes) return "—";
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
 
 export {
   parseTags,
@@ -71,4 +77,5 @@ export {
   formatTime,
   formatDate,
   formatVN,
+  formatFileSize,
 };

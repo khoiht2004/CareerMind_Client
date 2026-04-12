@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import {
   ArrowLeft,
@@ -14,18 +15,21 @@ import {
   Calendar,
   Video,
   MonitorSmartphone,
+  Eye,
+  Download,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useGetApplicationByIdQuery } from "@/services/application.service";
-import { formatDate, formatVN } from "@/utils/helper";
+import { formatDate, formatFileSize, formatVN } from "@/utils/helper";
 import {
   APPLICATION_STATUS_LABELS,
   JOB_TYPE_LABELS,
   STATUS_CONFIG,
 } from "@/config/constants/candidate.constant";
+import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 
 function DetailRow({ icon, label, value }) {
   const Icon = icon;
@@ -46,6 +50,7 @@ function ApplicationDetail() {
   const navigate = useNavigate();
   const { data: response, isLoading, isError } = useGetApplicationByIdQuery(id);
   const application = response?.data;
+  const [cvPreviewOpen, setCvPreviewOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -73,6 +78,7 @@ function ApplicationDetail() {
     coverLetter,
     note,
     cvUrl,
+    cv, // linked Cv record (has name, fileUrl, fileType, fileSize)
     user,
     interviewDate,
     interviewTime,
@@ -83,6 +89,17 @@ function ApplicationDetail() {
     startTime,
     officeAddress,
   } = application;
+
+  // Use the linked Cv object if available, otherwise fall back to a plain cvUrl
+  const cvFile =
+    cv ??
+    (cvUrl
+      ? {
+          name: "CV đính kèm",
+          fileUrl: cvUrl,
+          fileType: cvUrl.endsWith(".pdf") ? "pdf" : null,
+        }
+      : null);
 
   const cfg = STATUS_CONFIG[status];
   const StatusIcon = cfg?.icon;
@@ -241,24 +258,50 @@ function ApplicationDetail() {
           )}
 
           {/* CV */}
-          {cvUrl && (
+          {cvFile && (
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <FileText className="size-4" />
                   CV đính kèm
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <Button
-                  variant="outline"
-                  className="text-primary w-full sm:w-auto"
-                  asChild
-                >
-                  <a href={cvUrl} target="_blank" rel="noopener noreferrer">
-                    Xem CV đã nộp
-                  </a>
-                </Button>
+              <CardContent className="space-y-3">
+                {/* Metadata row */}
+                <div className="bg-muted flex items-center gap-3 rounded-lg px-4 py-3">
+                  <FileText className="text-primary size-5 shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium">
+                      {cvFile.name}
+                    </p>
+                    {(cvFile.fileType || cvFile.fileSize) && (
+                      <p className="text-muted-foreground mt-0.5 text-xs">
+                        {cvFile.fileType?.toUpperCase()}
+                        {cvFile.fileSize
+                          ? ` · ${formatFileSize(cvFile.fileSize)}`
+                          : ""}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCvPreviewOpen(true)}
+                  >
+                    <Eye className="mr-1.5 size-3.5" />
+                    Xem CV
+                  </Button>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={cvFile.fileUrl} download={cvFile.name}>
+                      <Download className="mr-1.5 size-3.5" />
+                      Tải xuống
+                    </a>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
@@ -356,6 +399,15 @@ function ApplicationDetail() {
           </Card>
         </div>
       </div>
+
+      {/* CV Preview modal */}
+      {cvFile && (
+        <CvPreviewDialog
+          open={cvPreviewOpen}
+          onClose={() => setCvPreviewOpen(false)}
+          cv={cvFile}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
   Card,
@@ -16,31 +16,71 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Paperclip, FileText } from "lucide-react";
+import {
+  Loader2,
+  Paperclip,
+  FileText,
+  Star,
+  Upload,
+  File,
+  CheckCircle2,
+  X,
+} from "lucide-react";
 
 import { useGetJobByIdQuery } from "@/services/job.service";
 import { useApplyJobMutation } from "@/services/application.service";
 import { useGetMyCoverLettersQuery } from "@/services/coverLetter.service";
+import { useGetMyCvsQuery } from "@/services/cv.service";
+
+function formatFileSize(bytes) {
+  if (!bytes) return "";
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+const ALLOWED_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+const MAX_SIZE_BYTES = 2 * 1024 * 1024;
 
 function Apply() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
   const { data: jobData } = useGetJobByIdQuery(id);
   const [applyJob, { isLoading }] = useApplyJobMutation();
   const { data: coverLettersData } = useGetMyCoverLettersQuery();
+  const { data: myCvsData } = useGetMyCvsQuery();
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     coverLetter: "",
-    cvUrl: "",
   });
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
 
+  // CV selection state — one of three modes:
+  // "library" → user picked a CV from their library (cvId is set)
+  // "file"    → user picked a new local file to submit URL as cvUrl (NOT uploaded here — they manage CVs in profile)
+  // "url"     → user typed a manual URL
+  const [cvMode, setCvMode] = useState("library"); // "library" | "url"
+  const [selectedCvId, setSelectedCvId] = useState(null);
+  const [manualCvUrl, setManualCvUrl] = useState("");
+
   const job = jobData?.data;
   const coverLetters = coverLettersData?.data ?? [];
+  const myCvs = myCvsData?.data ?? [];
+
+  // Auto-select default CV if user has one
+  const defaultCv = myCvs.find((cv) => cv.isDefault) ?? myCvs[0] ?? null;
+  const effectiveSelectedCvId = selectedCvId ?? defaultCv?.id ?? null;
+  const selectedCv = myCvs.find((cv) => cv.id === effectiveSelectedCvId) ?? null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,8 +94,20 @@ function Apply() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Determine CV to submit
+    let cvUrl = undefined;
+    let cvId = undefined;
+
+    if (cvMode === "library" && selectedCv) {
+      cvId = selectedCv.id;
+      cvUrl = selectedCv.fileUrl;
+    } else if (cvMode === "url" && manualCvUrl.trim()) {
+      cvUrl = manualCvUrl.trim();
+    }
+
     try {
-      await applyJob({ jobId: id, ...formData }).unwrap();
+      await applyJob({ jobId: id, ...formData, cvUrl, cvId }).unwrap();
       toast.success("Ứng tuyển thành công! Chúng tôi sẽ liên hệ bạn sớm.");
       navigate("/");
     } catch (error) {
@@ -86,6 +138,7 @@ function Apply() {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* ── Personal info ── */}
         <Card>
           <CardHeader>
             <CardTitle>Thông tin cá nhân</CardTitle>
@@ -132,32 +185,128 @@ function Apply() {
           </CardContent>
         </Card>
 
+        {/* ── CV section ── */}
         <Card>
           <CardHeader>
-            <CardTitle>CV và Hồ sơ</CardTitle>
+            <CardTitle>CV & Hồ sơ</CardTitle>
             <CardDescription>
-              Vui lòng tải lên CV của bạn. Chúng tôi khuyến khích sử dụng định
-              dạng PDF.
+              Chọn CV từ thư viện cá nhân hoặc nhập link CV từ Google Drive,
+              Dropbox…
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="cvUrl">
-                Link CV (Google Drive, Dropbox, etc.)
-              </Label>
-              <Input
-                id="cvUrl"
-                name="cvUrl"
-                value={formData.cvUrl}
-                onChange={handleChange}
-              />
+            {/* Mode toggle */}
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                size="sm"
+                variant={cvMode === "library" ? "default" : "outline"}
+                onClick={() => setCvMode("library")}
+              >
+                <FileText className="mr-1.5 size-3.5" />
+                CV của tôi
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant={cvMode === "url" ? "default" : "outline"}
+                onClick={() => setCvMode("url")}
+              >
+                <Paperclip className="mr-1.5 size-3.5" />
+                Nhập link
+              </Button>
             </div>
 
+            {/* Library mode */}
+            {cvMode === "library" && (
+              <>
+                {myCvs.length === 0 ? (
+                  <div className="text-muted-foreground rounded-lg border border-dashed p-5 text-center text-sm">
+                    Bạn chưa có CV nào.{" "}
+                    <a
+                      href="/profile?tab=cv"
+                      className="text-primary underline underline-offset-2"
+                    >
+                      Tải lên CV
+                    </a>{" "}
+                    trong trang hồ sơ trước.
+                  </div>
+                ) : (
+                  <ul className="space-y-2">
+                    {myCvs.map((cv) => {
+                      const isSelected = cv.id === effectiveSelectedCvId;
+                      return (
+                        <li key={cv.id}>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedCvId(cv.id)}
+                            className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors
+                              ${isSelected
+                                ? "border-primary bg-primary/5"
+                                : "hover:bg-muted/50"
+                              }`}
+                          >
+                            <FileText
+                              className={`size-5 shrink-0 ${isSelected ? "text-primary" : "text-muted-foreground"}`}
+                            />
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="truncate text-sm font-medium">
+                                  {cv.name}
+                                </span>
+                                {cv.isDefault && (
+                                  <Badge
+                                    variant="secondary"
+                                    className="shrink-0 text-xs"
+                                  >
+                                    <Star className="mr-1 size-2.5 fill-current" />
+                                    Mặc định
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-muted-foreground mt-0.5 text-xs">
+                                {cv.fileType?.toUpperCase()} ·{" "}
+                                {formatFileSize(cv.fileSize)} ·{" "}
+                                {new Date(cv.createdAt).toLocaleDateString(
+                                  "vi-VN",
+                                )}
+                              </p>
+                            </div>
+                            {isSelected && (
+                              <CheckCircle2 className="text-primary size-5 shrink-0" />
+                            )}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </>
+            )}
+
+            {/* URL mode */}
+            {cvMode === "url" && (
+              <div className="space-y-2">
+                <Label htmlFor="cvUrl">Link CV</Label>
+                <Input
+                  id="cvUrl"
+                  name="cvUrl"
+                  placeholder="https://drive.google.com/file/d/..."
+                  value={manualCvUrl}
+                  onChange={(e) => setManualCvUrl(e.target.value)}
+                />
+              </div>
+            )}
+
+            {/* Cover letter */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="coverLetter">Thư giới thiệu (Tùy chọn)</Label>
                 {coverLetters.length > 0 && (
-                  <Popover open={coverLetterOpen} onOpenChange={setCoverLetterOpen}>
+                  <Popover
+                    open={coverLetterOpen}
+                    onOpenChange={setCoverLetterOpen}
+                  >
                     <PopoverTrigger asChild>
                       <Button
                         type="button"
