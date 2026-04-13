@@ -22,6 +22,7 @@ import {
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import { ALLOWED_TYPES } from "@/config/constants/constants";
 import { formatFileSize } from "@/utils/helper";
+import ConfirmDialog from "../shared/ConfirmDialog";
 
 const MAX_SIZE_MB = 2;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
@@ -31,6 +32,7 @@ function MyCv() {
   const [dragging, setDragging] = useState(false);
   const [pendingFile, setPendingFile] = useState(null);
   const [previewCv, setPreviewCv] = useState(null);
+  const [cvToDelete, setCvToDelete] = useState(null); // cv object pending deletion
 
   const { data, isLoading: isLoadingList } = useGetMyCvsQuery();
   const [uploadCv, { isLoading: isUploading }] = useUploadCvMutation();
@@ -80,10 +82,12 @@ function MyCv() {
     }
   }
 
-  async function handleDelete(id) {
+  async function handleDelete() {
+    if (!cvToDelete) return;
     try {
-      await deleteCv(id).unwrap();
+      await deleteCv(cvToDelete.id).unwrap();
       toast.success("Đã xóa CV");
+      setCvToDelete(null);
     } catch (err) {
       toast.error(err?.data?.message || "Xóa thất bại");
     }
@@ -259,17 +263,18 @@ function MyCv() {
                       </Button>
 
                       {/* Set default */}
-                      {!cv.isDefault && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="size-9"
-                          title="Đặt làm mặc định"
-                          onClick={() => handleSetDefault(cv.id)}
-                        >
-                          <Star className="size-4.5" />
-                        </Button>
-                      )}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-9"
+                        title="Đặt làm mặc định"
+                        onClick={() => handleSetDefault(cv.id)}
+                      >
+                        <Star
+                          className="size-4.5"
+                          color={cv.isDefault ? "#fcba03" : "#000"}
+                        />
+                      </Button>
 
                       {/* Delete */}
                       <Button
@@ -277,8 +282,7 @@ function MyCv() {
                         size="icon"
                         className="text-destructive hover:text-destructive size-8"
                         title="Xóa CV"
-                        onClick={() => handleDelete(cv.id)}
-                        disabled={isDeleting}
+                        onClick={() => setCvToDelete(cv)}
                       >
                         <Trash2 className="size-4.5" />
                       </Button>
@@ -296,6 +300,23 @@ function MyCv() {
         open={!!previewCv}
         onClose={() => setPreviewCv(null)}
         cv={previewCv}
+      />
+
+      {/* Delete confirmation */}
+      <ConfirmDialog
+        open={!!cvToDelete}
+        onOpenChange={(open) => !open && setCvToDelete(null)}
+        title="Xóa CV"
+        description={
+          <span>
+            Bạn có chắc muốn xóa{" "}
+            <strong>&ldquo;{cvToDelete?.name}&rdquo;</strong> không? Hành động
+            này không thể hoàn tác.
+          </span>
+        }
+        confirmText="Xóa"
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
       />
     </>
   );

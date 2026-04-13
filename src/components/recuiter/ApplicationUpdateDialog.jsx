@@ -71,7 +71,7 @@ function ApplicationUpdateDialog({
   const name = profile?.fullName ?? app.user?.email ?? "Ứng viên";
   const phone = app.phone ?? profile?.phone;
   const bio = profile?.bio;
-  const skills = JSON.parse(profile?.skills) ?? [];
+  const skills = profile?.skills ?? [];
   const initials = name
     .split(" ")
     .slice(-2)

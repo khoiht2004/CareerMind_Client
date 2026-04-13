@@ -22,7 +22,7 @@ function CoverLetterFormDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[480px] md:max-w-[750px]">
         <DialogHeader>
           <DialogTitle>
             {isEditing ? "Sửa thư xin việc" : "Tạo thư xin việc"}
