@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Loader2,
   BriefcaseBusiness,
@@ -12,30 +11,8 @@ import {
   APP_STATUS_DISPLAY_CONFIG,
   JOB_STATUS_DISPLAY_CONFIG,
 } from "@/config/constants/recruiter.constant";
-
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  color = "text-primary",
-  bg = "bg-primary/10",
-}) {
-  return (
-    <Card>
-      <CardContent className="flex items-center gap-4 p-5">
-        <div
-          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${bg}`}
-        >
-          <Icon className={`size-5 ${color}`} />
-        </div>
-        <div>
-          <p className="text-muted-foreground text-sm">{label}</p>
-          <p className="text-2xl font-bold">{value ?? 0}</p>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+import StatCard from "@/components/recuiter/StatCard";
+import StatChart from "@/components/recuiter/StatChart";
 
 function RecruiterStats() {
   const { data, isLoading } = useGetMyStatsQuery();
@@ -59,35 +36,48 @@ function RecruiterStats() {
       </div>
 
       {/* Tổng quan */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <StatCard
-          icon={BriefcaseBusiness}
-          label="Tổng việc làm"
-          value={stats?.totalJobs}
-          color="text-blue-600"
-          bg="bg-blue-50"
-        />
-        <StatCard
-          icon={FileText}
-          label="Tổng đơn ứng tuyển"
-          value={stats?.totalApplications}
-          color="text-purple-600"
-          bg="bg-purple-50"
-        />
-        <StatCard
-          icon={CheckCircle2}
-          label="Đã chấp nhận"
-          value={stats?.appsByStatus?.ACCEPTED}
-          color="text-green-600"
-          bg="bg-green-50"
-        />
-        <StatCard
-          icon={Users}
-          label="Đang phỏng vấn"
-          value={stats?.appsByStatus?.INTERVIEW}
-          color="text-orange-500"
-          bg="bg-orange-50"
-        />
+      <div className="grid gap-6 md:grid-cols-3">
+        {/* Thẻ thống kê */}
+        <div className="flex flex-col justify-around gap-4">
+          <StatCard
+            icon={BriefcaseBusiness}
+            label="Tổng việc làm"
+            value={stats?.totalJobs}
+            color="text-blue-600"
+            bg="bg-blue-50"
+          />
+          <StatCard
+            icon={FileText}
+            label="Tổng đơn ứng tuyển"
+            value={stats?.totalApplications}
+            color="text-purple-600"
+            bg="bg-purple-50"
+          />
+          <StatCard
+            icon={CheckCircle2}
+            label="Đã chấp nhận"
+            value={stats?.appsByStatus?.ACCEPTED}
+            color="text-green-600"
+            bg="bg-green-50"
+          />
+          <StatCard
+            icon={Users}
+            label="Đang phỏng vấn"
+            value={stats?.appsByStatus?.INTERVIEW}
+            color="text-orange-500"
+            bg="bg-orange-50"
+          />
+        </div>
+
+        {/* Biểu đồ */}
+        <Card className="hidden sm:block md:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-base">Biểu đồ tổng quan</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <StatChart stats={stats} />
+          </CardContent>
+        </Card>
       </div>
 
       {/* Đơn ứng tuyển theo trạng thái */}

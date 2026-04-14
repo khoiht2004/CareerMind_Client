@@ -80,7 +80,7 @@ function ApplicationUpdateDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl">
+      <DialogContent className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-xl md:max-w-2xl lg:max-w-3xl">
         {/* ── Fixed Header ── */}
         <DialogHeader className="shrink-0 border-b px-6 pt-5 pb-4">
           <DialogTitle className="text-lg font-semibold">
