@@ -13,7 +13,9 @@ export function SidebarProvider({ children }) {
   const [isMobile, setIsMobile] = useState(
     () => window.innerWidth < MOBILE_BREAKPOINT,
   );
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(
+    () => localStorage.getItem("sra-sidebar-collapsed") === "true",
+  );
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -26,6 +28,10 @@ export function SidebarProvider({ children }) {
     mql.addEventListener("change", onChange);
     return () => mql.removeEventListener("change", onChange);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sra-sidebar-collapsed", isCollapsed);
+  }, [isCollapsed]);
 
   const toggle = () => {
     if (isMobile) {

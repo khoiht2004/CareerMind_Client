@@ -236,16 +236,23 @@ function JobDetail() {
                 <h3 className="text-sm font-semibold">Về công ty</h3>
               </div>
               <Separator />
-              <div className="space-y-3">
+              <div className="flex items-center gap-3">
                 <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-xl text-base font-bold">
                   {job.company[0]}
                 </div>
-                <p className="text-sm font-medium">{job.company}</p>
-                {job.postedBy?.profile?.fullName && (
-                  <p className="text-muted-foreground text-xs">
-                    Đăng bởi: {job.postedBy.profile.fullName}
+                <div>
+                  <p className="cursor-pointer text-sm font-medium hover:underline">
+                    {job.company}
                   </p>
-                )}
+                  {job.postedBy?.profile?.fullName && (
+                    <p className="text-muted-foreground text-xs">
+                      Đăng bởi:{" "}
+                      <span className="cursor-pointer hover:underline">
+                        {job.postedBy.profile.fullName}
+                      </span>
+                    </p>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
