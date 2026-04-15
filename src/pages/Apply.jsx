@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
   Card,
@@ -23,34 +23,18 @@ import {
   Paperclip,
   FileText,
   Star,
-  Upload,
-  File,
   CheckCircle2,
-  X,
 } from "lucide-react";
 
 import { useGetJobByIdQuery } from "@/services/job.service";
 import { useApplyJobMutation } from "@/services/application.service";
 import { useGetMyCoverLettersQuery } from "@/services/coverLetter.service";
 import { useGetMyCvsQuery } from "@/services/cv.service";
-
-function formatFileSize(bytes) {
-  if (!bytes) return "";
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-}
-
-const ALLOWED_TYPES = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
-const MAX_SIZE_BYTES = 2 * 1024 * 1024;
+import { formatFileSize } from "@/utils/helper";
 
 function Apply() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
 
   const { data: jobData } = useGetJobByIdQuery(id);
   const [applyJob, { isLoading }] = useApplyJobMutation();
@@ -65,11 +49,7 @@ function Apply() {
   });
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
 
-  // CV selection state — one of three modes:
-  // "library" → user picked a CV from their library (cvId is set)
-  // "file"    → user picked a new local file to submit URL as cvUrl (NOT uploaded here — they manage CVs in profile)
-  // "url"     → user typed a manual URL
-  const [cvMode, setCvMode] = useState("library"); // "library" | "url"
+  const [cvMode, setCvMode] = useState("library");
   const [selectedCvId, setSelectedCvId] = useState(null);
   const [manualCvUrl, setManualCvUrl] = useState("");
 
@@ -94,8 +74,6 @@ function Apply() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Determine CV to submit
     let cvUrl = undefined;
     let cvId = undefined;
 
@@ -160,24 +138,23 @@ function Apply() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="phone">Số điện thoại *</Label>
                 <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
                   required
                 />
               </div>
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="phone">Số điện thoại *</Label>
+              <Label htmlFor="email">Email *</Label>
               <Input
-                id="phone"
-                name="phone"
-                value={formData.phone}
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
                 onChange={handleChange}
                 required
               />
@@ -240,11 +217,11 @@ function Apply() {
                           <button
                             type="button"
                             onClick={() => setSelectedCvId(cv.id)}
-                            className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors
-                              ${isSelected
+                            className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-colors ${
+                              isSelected
                                 ? "border-primary bg-primary/5"
                                 : "hover:bg-muted/50"
-                              }`}
+                            }`}
                           >
                             <FileText
                               className={`size-5 shrink-0 ${isSelected ? "text-primary" : "text-muted-foreground"}`}
