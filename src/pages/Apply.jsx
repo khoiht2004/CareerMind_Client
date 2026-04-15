@@ -131,7 +131,7 @@ function Apply() {
         <div className="flex items-center gap-4">
           <div>
             <h2 className="text-xl font-semibold">{job.title}</h2>
-            <p className="text-muted-foreground">{job.company}</p>
+            <p className="text-muted-foreground">{job.company?.name}</p>
           </div>
         </div>
       </div>

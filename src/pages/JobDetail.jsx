@@ -1,11 +1,10 @@
-import { useParams, useNavigate, Link } from "react-router";
+import { useParams, Link } from "react-router";
 import {
   MapPin,
   DollarSign,
   Briefcase,
   Clock,
   Building2,
-  ArrowLeft,
   Bookmark,
   Share2,
   CheckCircle2,
@@ -27,10 +26,10 @@ import { formatDate } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import { BackButton, NotFound } from "@/components/shared/NotFound";
 
 function JobDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
 
   const { data: response, isLoading, isError } = useGetJobByIdQuery(id);
@@ -72,18 +71,7 @@ function JobDetail() {
   }
 
   if (isError || !job) {
-    return (
-      <div className="text-muted-foreground p-6 text-center">
-        <p className="font-medium">Không tìm thấy công việc này</p>
-        <Button
-          variant="link"
-          className="cursor-pointer"
-          onClick={() => navigate(-1)}
-        >
-          Quay lại
-        </Button>
-      </div>
-    );
+    return <NotFound message="Không tìm thấy công việc này" />;
   }
 
   const tags = job.tags ?? [];
@@ -93,13 +81,7 @@ function JobDetail() {
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-6">
       {/* Back */}
-      <button
-        onClick={() => navigate(-1)}
-        className="text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-2 text-sm transition-colors"
-      >
-        <ArrowLeft className="size-4" />
-        Quay lại
-      </button>
+      <BackButton />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Left - main content */}
@@ -108,8 +90,16 @@ function JobDetail() {
           <Card>
             <CardContent className="space-y-4 p-6">
               <div className="flex items-start gap-4">
-                <div className="bg-muted flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-lg font-bold">
-                  {job.company[0]}
+                <div className="bg-muted flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl text-lg font-bold">
+                  {job.company?.logoUrl ? (
+                    <img
+                      src={job.company.logoUrl}
+                      alt={job.company.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    job.company?.name?.[0]
+                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
@@ -121,7 +111,12 @@ function JobDetail() {
                       </Badge>
                     )}
                   </div>
-                  <p className="text-muted-foreground mt-0.5">{job.company}</p>
+                  <Link
+                    to={`/companies/${job.company?.id}`}
+                    className="text-muted-foreground hover:text-primary mt-0.5 text-sm hover:underline"
+                  >
+                    {job.company?.name}
+                  </Link>
                 </div>
               </div>
 
@@ -237,13 +232,24 @@ function JobDetail() {
               </div>
               <Separator />
               <div className="flex items-center gap-3">
-                <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-xl text-base font-bold">
-                  {job.company[0]}
+                <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl text-base font-bold">
+                  {job.company?.logoUrl ? (
+                    <img
+                      src={job.company.logoUrl}
+                      alt={job.company.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    job.company?.name?.[0]
+                  )}
                 </div>
                 <div>
-                  <p className="cursor-pointer text-sm font-medium hover:underline">
-                    {job.company}
-                  </p>
+                  <Link
+                    to={`/companies/${job.company?.id}`}
+                    className="hover:text-primary text-sm font-medium hover:underline"
+                  >
+                    {job.company?.name}
+                  </Link>
                   {job.postedBy?.profile?.fullName && (
                     <p className="text-muted-foreground text-xs">
                       Đăng bởi:{" "}

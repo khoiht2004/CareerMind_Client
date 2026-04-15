@@ -14,6 +14,7 @@ import VerifyEmail from "@/pages/auth/VerifyEmail";
 // Pages - Main
 import Home from "@/pages/Home";
 import JobDetail from "@/pages/JobDetail";
+import CompanyDetail from "@/pages/CompanyDetail";
 import Apply from "@/pages/Apply";
 import Profile from "@/pages/Profile";
 import ChatBot from "@/pages/ChatBot";
@@ -49,6 +50,7 @@ function App() {
         <Route element={<DefaultLayout />}>
           <Route path={path.home} element={<Home />} />
           <Route path={path.jobDetail} element={<JobDetail />} />
+          <Route path={path.companyDetail} element={<CompanyDetail />} />
         </Route>
 
         {/* Private routes */}

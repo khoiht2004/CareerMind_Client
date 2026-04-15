@@ -45,7 +45,6 @@ export const JOB_STATUS_BADGE = {
 
 export const EMPTY_JOB_FORM = {
   title: "",
-  company: "",
   location: "",
   description: "",
   salary: "",

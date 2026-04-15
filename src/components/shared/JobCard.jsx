@@ -25,6 +25,7 @@ function JobCard({ job, isSaved = false }) {
     isHot,
     postedAt,
   } = job;
+  const companyName = company?.name ?? company ?? "";
 
   return (
     <Card
@@ -50,7 +51,7 @@ function JobCard({ job, isSaved = false }) {
           <h3 className="group-hover:text-primary line-clamp-2 text-base leading-snug font-semibold">
             {title}
           </h3>
-          <p className="text-muted-foreground text-sm font-medium">{company}</p>
+          <p className="text-muted-foreground text-sm font-medium">{companyName}</p>
         </div>
       </CardHeader>
 

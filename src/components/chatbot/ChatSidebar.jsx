@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 function ChatSidebar({ sessions, activeSessionId, onSelect, onCreate, isLoading }) {
   return (
-    <div className="flex w-64 shrink-0 flex-col overflow-hidden border-r">
+    <div className="flex h-full min-h-0 w-64 shrink-0 flex-col overflow-hidden border-r">
       {/* Header - same height as chat area header */}
       <div className="flex h-14 shrink-0 items-center border-b px-3">
         <Button
@@ -19,7 +19,7 @@ function ChatSidebar({ sessions, activeSessionId, onSelect, onCreate, isLoading 
       </div>
 
       {/* Session list */}
-      <ScrollArea className="flex-1 p-2">
+      <ScrollArea className="min-h-0 flex-1 p-2">
         {isLoading ? (
           <div className="flex justify-center py-4">
             <Loader2 className="text-muted-foreground size-4 animate-spin" />

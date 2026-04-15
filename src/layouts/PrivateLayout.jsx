@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router";
 import { Loader2 } from "lucide-react";
@@ -7,20 +7,25 @@ import AppHeader from "@/components/shared/AppHeader";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
+import AppFooter from "@/components/shared/AppFooter";
 
 function LayoutContent() {
   const { isCollapsed, isMobile, mobileOpen, closeMobile } = useSidebar();
-  const mainRef = useRef(null);
   const location = useLocation();
+
+  const hideFooter =
+    location.pathname === path.profile || location.pathname === path.chatbot;
+
+  const isChatbotPage = location.pathname === path.chatbot;
 
   // Scroll to top on every route change + close mobile sidebar
   useEffect(() => {
-    mainRef.current?.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: "auto" });
     closeMobile();
   }, [location.pathname, closeMobile]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen items-start">
       {/* Mobile backdrop */}
       {isMobile && mobileOpen && (
         <div className="fixed inset-0 z-40 bg-black/60" onClick={closeMobile} />
@@ -39,11 +44,21 @@ function LayoutContent() {
         <AppSidebar />
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      {/* Main content */}
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col self-stretch">
         <AppHeader />
-        <main ref={mainRef} className="min-h-0 flex-1 overflow-y-auto">
+        <main
+          className={cn(
+            "flex min-h-0 flex-1 flex-col",
+            isChatbotPage
+              ? "h-[calc(100vh-3.5rem)]"
+              : "min-h-[calc(100vh-3.5rem)]",
+            !hideFooter && "pb-25",
+          )}
+        >
           <Outlet />
         </main>
+        {!hideFooter && <AppFooter />}
       </div>
     </div>
   );

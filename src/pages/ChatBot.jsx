@@ -92,7 +92,7 @@ function ChatBot() {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full min-h-0 w-full items-stretch overflow-hidden">
       <ChatSidebar
         sessions={sessions}
         activeSessionId={activeSessionId}

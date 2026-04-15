@@ -103,7 +103,7 @@ function MyApplications() {
                         className="text-muted-foreground cursor-pointer text-sm"
                         onClick={() => navigate(`/applications/${app.id}`)}
                       >
-                        {app.job?.company}
+                        {app.job?.company?.name}
                       </TableCell>
                       <TableCell
                         className="text-muted-foreground cursor-pointer text-sm"
@@ -158,7 +158,7 @@ function MyApplications() {
             </span>{" "}
             tại{" "}
             <span className="text-foreground font-medium">
-              {deleteTarget?.job?.company}
+              {deleteTarget?.job?.company?.name}
             </span>
             ? Hành động này không thể hoàn tác.
           </>

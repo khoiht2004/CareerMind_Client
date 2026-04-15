@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router";
+import { useParams, Link } from "react-router";
 import {
-  ArrowLeft,
   Loader2,
   MapPin,
   DollarSign,
@@ -29,10 +28,10 @@ import {
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import { ReplyInterviewInfo } from "@/components/shared/ReplyInterviewInfo";
 import { ReplyAcceptedInfo } from "@/components/shared/ReplyAcceptedInfo";
+import { BackButton, NotFound } from "@/components/shared/NotFound";
 
 function ApplicationDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { data: response, isLoading, isError } = useGetApplicationByIdQuery(id);
   const application = response?.data;
   const [cvPreviewOpen, setCvPreviewOpen] = useState(false);
@@ -46,14 +45,7 @@ function ApplicationDetail() {
   }
 
   if (isError || !application) {
-    return (
-      <div className="text-muted-foreground p-6 text-center">
-        <p className="font-medium">Không tìm thấy đơn ứng tuyển này</p>
-        <Button variant="link" onClick={() => navigate(-1)}>
-          Quay lại
-        </Button>
-      </div>
-    );
+    return <NotFound message="Không tìm thấy đơn ứng tuyển này" />;
   }
 
   const {
@@ -93,13 +85,7 @@ function ApplicationDetail() {
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-6">
       {/* Back */}
-      <button
-        onClick={() => navigate(-1)}
-        className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors"
-      >
-        <ArrowLeft className="size-4" />
-        Quay lại
-      </button>
+      <BackButton />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Left - applicant content */}
@@ -232,13 +218,21 @@ function ApplicationDetail() {
               <Separator />
 
               <div className="space-y-3">
-                <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-xl text-base font-bold">
-                  {job?.company?.[0]}
+                <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl text-base font-bold">
+                  {job?.company?.logoUrl ? (
+                    <img
+                      src={job.company.logoUrl}
+                      alt={job.company.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    job?.company?.name?.[0]
+                  )}
                 </div>
                 <div>
                   <p className="text-sm font-semibold">{job?.title}</p>
                   <p className="text-muted-foreground text-xs">
-                    {job?.company}
+                    {job?.company?.name}
                   </p>
                 </div>
               </div>

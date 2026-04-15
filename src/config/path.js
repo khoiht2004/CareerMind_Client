@@ -9,6 +9,9 @@ export const path = {
   jobDetail: "/jobs/:id",
   apply: "/jobs/:id/apply",
 
+  // Companies
+  companyDetail: "/companies/:id",
+
   // User
   profile: "/profile",
   chatbot: "/chatbot",

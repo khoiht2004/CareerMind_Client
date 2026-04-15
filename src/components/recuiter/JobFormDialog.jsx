@@ -79,14 +79,6 @@ function JobFormDialog({
                 placeholder="VD: Senior Frontend Engineer"
               />
             </FormField>
-            <FormField label="Công ty" required>
-              <Input
-                name="company"
-                value={form.company}
-                onChange={onChange}
-                placeholder="VD: TechCorp Vietnam"
-              />
-            </FormField>
           </div>
 
           <div className="grid grid-cols-3 gap-4">

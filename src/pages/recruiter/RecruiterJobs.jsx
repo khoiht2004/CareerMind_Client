@@ -73,7 +73,6 @@ function RecruiterJobs() {
     setEditJob(job);
     setForm({
       title: job.title,
-      company: job.company,
       location: job.location,
       description: job.description,
       salary: job.salary ?? "",
@@ -209,7 +208,7 @@ function RecruiterJobs() {
                     {/* Tiêu đề */}
                     <TableCell className="font-medium">{job.title}</TableCell>
                     {/* Công ty */}
-                    <TableCell>{job.company}</TableCell>
+                    <TableCell>{job.company?.name}</TableCell>
                     {/* Trạng thái */}
                     <TableCell>
                       <span

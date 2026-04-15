@@ -54,7 +54,7 @@ function ChatArea({
   const isEmpty = messages.length === 0 && !pendingMessage;
 
   return (
-    <div className="flex min-w-0 flex-1 flex-col">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
       {/* Header */}
       <div className="flex h-14 shrink-0 items-center justify-between border-b px-5">
         <div className="flex items-center gap-2.5">
@@ -77,7 +77,7 @@ function ChatArea({
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 overflow-y-auto p-3">
+      <ScrollArea className="min-h-0 flex-1 p-3">
         <div className="mx-auto max-w-full space-y-4">
           {isLoading ? (
             <div className="flex justify-center py-4">

@@ -1,23 +1,22 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 import AppSidebar from "@/components/shared/AppSidebar";
 import AppHeader from "@/components/shared/AppHeader";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import { cn } from "@/lib/utils";
+import AppFooter from "@/components/shared/AppFooter";
 
 function LayoutContent() {
   const { isCollapsed, isMobile, mobileOpen, closeMobile } = useSidebar();
-  const mainRef = useRef(null);
   const location = useLocation();
 
-  // Scroll to top on every route change + close mobile sidebar
   useEffect(() => {
-    mainRef.current?.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: "auto" });
     closeMobile();
   }, [location.pathname, closeMobile]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen items-start">
       {/* Mobile backdrop */}
       {isMobile && mobileOpen && (
         <div className="fixed inset-0 z-40 bg-black/60" onClick={closeMobile} />
@@ -36,11 +35,13 @@ function LayoutContent() {
         <AppSidebar />
       </aside>
 
+      {/* Main content */}
       <div className="flex min-w-0 flex-1 flex-col">
         <AppHeader />
-        <main ref={mainRef} className="min-h-0 flex-1 overflow-y-auto">
+        <main className="flex-1 min-h-[calc(100vh-3.5rem)] pb-25">
           <Outlet />
         </main>
+        <AppFooter />
       </div>
     </div>
   );
