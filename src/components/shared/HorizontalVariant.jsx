@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   MapPin,
   Clock,
@@ -129,4 +130,4 @@ function HorizontalVariant({ job, isSaved }) {
   );
 }
 
-export default HorizontalVariant;
+export default memo(HorizontalVariant);

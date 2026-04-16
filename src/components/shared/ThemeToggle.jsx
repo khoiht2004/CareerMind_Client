@@ -30,7 +30,7 @@ function ThemeToggle({ isCollapsed }) {
             <PopoverTrigger asChild>
               <button
                 className={cn(
-                  "text-sidebar-foreground hover:bg-sidebar-border hover:text-sidebar-foreground flex w-full cursor-pointer items-center rounded-lg py-2 text-sm font-medium transition-colors",
+                  "text-sidebar-foreground hover:bg-sidebar-border hover:text-sidebar-foreground flex w-full cursor-pointer items-center rounded-lg py-2 text-sm font-medium transition-all duration-500",
                   isCollapsed ? "justify-center px-0" : "gap-3 px-3",
                 )}
               >

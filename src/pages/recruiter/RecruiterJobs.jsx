@@ -135,7 +135,7 @@ function RecruiterJobs() {
   const isSaving = creating || updating;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
+    <div className="mx-auto max-w-full space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Quản lý việc làm</h1>
@@ -152,20 +152,24 @@ function RecruiterJobs() {
       {/* Filters */}
       <div className="flex flex-wrap gap-3">
         <Input
-          placeholder="Tìm kiếm theo tiêu đề, công ty..."
-          className="w-72"
+          placeholder="Tìm kiếm theo tiêu đề..."
+          className="border-border w-72 border"
           value={filters.search}
           onChange={(e) =>
-            setFilters((f) => ({ ...f, search: e.target.value, page: 1 }))
+            setFilters((filter) => ({
+              ...filter,
+              search: e.target.value,
+              page: 1,
+            }))
           }
         />
         <Select
           value={filters.status}
-          onValueChange={(v) =>
-            setFilters((f) => ({ ...f, status: v, page: 1 }))
+          onValueChange={(value) =>
+            setFilters((filter) => ({ ...filter, status: value, page: 1 }))
           }
         >
-          <SelectTrigger className="w-40">
+          <SelectTrigger className="border-border w-40 border">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -189,7 +193,7 @@ function RecruiterJobs() {
         </p>
       ) : (
         <>
-          <div className="rounded-lg border">
+          <div className="overflow-x-auto rounded-lg border">
             <Table>
               <TableHeader>
                 <TableRow>

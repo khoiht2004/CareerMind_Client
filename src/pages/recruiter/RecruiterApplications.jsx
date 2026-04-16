@@ -172,7 +172,7 @@ function RecruiterApplications() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
+    <div className="mx-auto max-w-full space-y-6 p-6">
       <div>
         <h1 className="text-2xl font-bold">Đơn ứng tuyển</h1>
         <p className="text-muted-foreground mt-1 text-sm">
@@ -188,7 +188,7 @@ function RecruiterApplications() {
             setFilters((f) => ({ ...f, jobId: v, page: 1 }))
           }
         >
-          <SelectTrigger className="w-56">
+          <SelectTrigger className="border-border w-56 border">
             <SelectValue placeholder="Lọc theo việc làm" />
           </SelectTrigger>
           <SelectContent>
@@ -207,7 +207,7 @@ function RecruiterApplications() {
             setFilters((f) => ({ ...f, status: v, page: 1 }))
           }
         >
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="border-border w-48 border">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Search, Loader2, MapPin } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -89,4 +90,4 @@ function HeroBanner({
   );
 }
 
-export default HeroBanner;
+export default memo(HeroBanner);

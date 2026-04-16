@@ -3,10 +3,16 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
-function ChatSidebar({ sessions, activeSessionId, onSelect, onCreate, isLoading }) {
+function ChatSidebar({
+  sessions,
+  activeSessionId,
+  onSelect,
+  onCreate,
+  isLoading,
+}) {
   return (
-    <div className="flex h-full min-h-0 w-64 shrink-0 flex-col overflow-hidden border-r">
-      {/* Header - same height as chat area header */}
+    <div className="flex h-full min-h-0 w-60 shrink-0 flex-col overflow-hidden border-r">
+      {/* Header */}
       <div className="flex h-14 shrink-0 items-center border-b px-3">
         <Button
           size="sm"
@@ -35,10 +41,10 @@ function ChatSidebar({ sessions, activeSessionId, onSelect, onCreate, isLoading 
                 key={session.id}
                 onClick={() => onSelect(session.id)}
                 className={cn(
-                  "w-full rounded-lg px-3 py-2.5 text-left transition-colors",
+                  "w-full cursor-pointer rounded-lg px-3 py-2.5 text-left transition-colors",
                   activeSessionId === session.id
-                    ? "bg-muted"
-                    : "hover:bg-muted/60",
+                    ? "bg-muted-foreground/15"
+                    : "hover:bg-muted-foreground/7",
                 )}
               >
                 <p className="truncate text-sm font-medium">{session.title}</p>

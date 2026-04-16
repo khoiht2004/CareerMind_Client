@@ -19,7 +19,7 @@ function Logo({ isCollapsed }) {
       </Link>
 
       {!isCollapsed && (
-        <div className="min-w-0">
+        <div className="min-w-0 transition-all duration-500">
           <p className="text-sidebar-foreground truncate text-sm leading-tight font-bold">
             Smart Recruit
           </p>

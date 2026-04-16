@@ -34,9 +34,9 @@ function LayoutContent() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "border-sidebar-border/30 bg-sidebar text-sidebar-foreground border-r transition-all duration-200",
+          "border-sidebar-border/30 bg-sidebar text-sidebar-foreground border-r transition-all duration-500",
           !isMobile && "sticky top-0 h-screen shrink-0 overflow-y-auto",
-          !isMobile && (isCollapsed ? "w-14" : "w-5"),
+          !isMobile && (isCollapsed ? "w-14" : "w-55"),
           isMobile && "fixed inset-y-0 left-0 z-50 h-full w-64 overflow-y-auto",
           isMobile && (mobileOpen ? "translate-x-0" : "-translate-x-full"),
         )}

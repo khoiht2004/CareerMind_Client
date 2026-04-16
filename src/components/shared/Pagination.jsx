@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { buildPageList } from "@/utils/helper";
@@ -82,4 +83,4 @@ function Pagination({
   );
 }
 
-export default Pagination;
+export default memo(Pagination);

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   MapPin,
   Clock,
@@ -115,4 +116,4 @@ function CardVariant({ job, isSaved }) {
   );
 }
 
-export default CardVariant;
+export default memo(CardVariant);

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   Select,
   SelectContent,
@@ -10,18 +11,18 @@ import { JOB_SORT_OPTIONS } from "@/config/constants/candidate.constant";
 function JobListHeader({ total, sort, onSortChange }) {
   return (
     <div className="flex items-center justify-between">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         Đang hiển thị{" "}
-        <span className="font-semibold text-foreground">
+        <span className="text-foreground font-semibold">
           {total.toLocaleString()}
         </span>{" "}
         vị trí đang tuyển
       </p>
 
       <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">Sắp xếp theo:</span>
+        <span className="text-muted-foreground text-sm">Sắp xếp theo:</span>
         <Select value={sort} onValueChange={onSortChange}>
-          <SelectTrigger className="h-8 w-36 cursor-pointer border-border">
+          <SelectTrigger className="border-border h-8 w-36 cursor-pointer">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -41,4 +42,4 @@ function JobListHeader({ total, sort, onSortChange }) {
   );
 }
 
-export default JobListHeader;
+export default memo(JobListHeader);

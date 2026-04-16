@@ -1,9 +1,6 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
-import { cn } from "@/lib/utils";
 import { useSidebar } from "@/contexts/SidebarContext";
 import NavItem from "./NavItem";
-import SectionHeader from "./SectionHeader";
 import ThemeToggle from "./ThemeToggle";
 import { CANDIDATE_NAV_ITEMS } from "@/config/constants/candidate.constant";
 import { RECRUITER_NAV_ITEMS } from "@/config/constants/recruiter.constant";
@@ -13,11 +10,8 @@ function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
   const { isCollapsed } = useSidebar();
 
-  const [sectionOpen, setSectionOpen] = useState(true);
-
   const isRecruiter = user?.role === "RECRUITER";
   const navItems = isRecruiter ? RECRUITER_NAV_ITEMS : CANDIDATE_NAV_ITEMS;
-  const sectionLabel = isRecruiter ? "Nhà tuyển dụng" : "Người dùng";
 
   return (
     <div className="flex h-full flex-col pt-4 pb-2">
@@ -25,25 +19,12 @@ function AppSidebar() {
       <Logo isCollapsed={isCollapsed} />
 
       {/* Nav */}
-      <nav
-        className={cn(
-          "flex-1 overflow-y-auto pt-2",
-          isCollapsed ? "px-1" : "px-2",
-        )}
-      >
-        <SectionHeader
-          label={sectionLabel}
-          isCollapsed={isCollapsed}
-          open={sectionOpen}
-          onToggle={() => setSectionOpen((v) => !v)}
-        />
-        {(isCollapsed || sectionOpen) && (
-          <div className="space-y-0.5">
-            {navItems.map((item) => (
-              <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />
-            ))}
-          </div>
-        )}
+      <nav className={`flex-1 pt-2 ${isCollapsed ? "px-1" : "px-2"}`}>
+        <div className="space-y-0.5">
+          {navItems.map((item) => (
+            <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />
+          ))}
+        </div>
       </nav>
 
       {/* Theme toggle */}

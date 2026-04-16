@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Search, Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
 
@@ -11,11 +11,13 @@ import JobListHeader from "@/components/home-page/JobListHeader";
 import { useGetJobsQuery, useGetSavedJobsQuery } from "@/services/job.service";
 import { formatDate, convertArray } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const LIMIT = 10;
 
 function Home() {
   const { user } = useSelector((state) => state.auth);
+
   const [inputValue, setInputValue] = useState("");
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({
@@ -25,6 +27,17 @@ function Home() {
     level: "ALL",
     sort: "newest",
   });
+
+  // Debounce 500ms — tự động trigger search sau khi user ngừng gõ
+  const debouncedInput = useDebounce(inputValue, 500);
+
+  useEffect(() => {
+    setPage(1);
+    setFilters((f) => {
+      if (f.search === debouncedInput) return f; // bail out nếu không đổi
+      return { ...f, search: debouncedInput };
+    });
+  }, [debouncedInput]);
 
   const { data, isLoading, isFetching } = useGetJobsQuery({
     ...filters,
@@ -42,33 +55,34 @@ function Home() {
   const totalPages = Math.max(1, Math.ceil(total / LIMIT));
   const savedIds = new Set((savedData?.data ?? []).map((j) => j.id));
 
-  const handleSearch = () => {
+  // Immediate search (button click) — bỏ qua debounce delay
+  const handleSearch = useCallback(() => {
     setPage(1);
     setFilters((f) => ({ ...f, search: inputValue }));
-  };
+  }, [inputValue]);
 
   // Toggle: click lại item đang chọn → về ALL
-  const handleTypeChange = (v) => {
+  const handleTypeChange = useCallback((v) => {
     setPage(1);
     setFilters((f) => ({ ...f, type: f.type === v ? "ALL" : v }));
-  };
+  }, []);
 
-  const handleLevelChange = (v) => {
+  const handleLevelChange = useCallback((v) => {
     setPage(1);
     setFilters((f) => ({ ...f, level: f.level === v ? "ALL" : v }));
-  };
+  }, []);
 
-  const handleLocationChange = (v) => {
+  const handleLocationChange = useCallback((v) => {
     setPage(1);
     setFilters((f) => ({ ...f, location: v }));
-  };
+  }, []);
 
-  const handleSortChange = (v) => {
+  const handleSortChange = useCallback((v) => {
     setPage(1);
     setFilters((f) => ({ ...f, sort: v }));
-  };
+  }, []);
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     setPage(1);
     setInputValue("");
     setFilters({
@@ -78,7 +92,7 @@ function Home() {
       level: "ALL",
       sort: "newest",
     });
-  };
+  }, []);
 
   const hasFilters =
     filters.search ||
@@ -100,6 +114,7 @@ function Home() {
 
       {/* Main content: filter + job list */}
       <div className="flex min-h-0 flex-1 items-start gap-0">
+        {/* Filter Panel — sticky */}
         <aside className="sticky top-14 w-[25%] self-start p-5 pt-6">
           <FilterPanel
             typeFilter={filters.type}

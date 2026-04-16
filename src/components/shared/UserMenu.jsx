@@ -1,12 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import {
-  Bell,
-  Settings,
-  User,
-  KeyRound,
-  LogOut,
-} from "lucide-react";
+import { Bell, Settings, User, KeyRound, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,6 +25,9 @@ function UserMenu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   if (!user) return null;
+
+  const isRecruiter = user?.role === "RECRUITER";
+  const sectionLabel = isRecruiter ? "Nhà tuyển dụng" : "Người dùng";
 
   const handleLogout = () => {
     dispatch(clearUser());
@@ -78,11 +75,16 @@ function UserMenu() {
       </Tooltip>
 
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button className="hover:ring-primary ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-sm font-bold text-white transition-all duration-150 hover:ring-2">
-            {avatarContent}
-          </button>
-        </DropdownMenuTrigger>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenuTrigger asChild>
+              <button className="hover:ring-primary ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-sm font-bold text-white transition-all duration-150 hover:ring-2">
+                {avatarContent}
+              </button>
+            </DropdownMenuTrigger>
+          </TooltipTrigger>
+          <TooltipContent>{sectionLabel}</TooltipContent>
+        </Tooltip>
 
         <DropdownMenuContent align="end" className="w-64">
           {/* User info */}

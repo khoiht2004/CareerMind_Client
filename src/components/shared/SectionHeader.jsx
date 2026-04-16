@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,4 +23,4 @@ function SectionHeader({ label, isCollapsed, open, onToggle }) {
   );
 }
 
-export default SectionHeader;
+export default memo(SectionHeader);

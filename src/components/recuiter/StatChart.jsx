@@ -71,7 +71,7 @@ export default function StatChart({ stats }) {
           cursor={false}
           content={<ChartTooltipContent hideLabel />}
         />
-        <Bar dataKey="value" radius={4}>
+        <Bar dataKey="value" radius={[8, 8, 0, 0]}>
           <LabelList
             dataKey="value"
             position="top"

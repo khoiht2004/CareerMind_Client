@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -79,4 +80,4 @@ function FilterPanel({
   );
 }
 
-export default FilterPanel;
+export default memo(FilterPanel);
