@@ -49,9 +49,9 @@ function SocialButton({ label }) {
 
 export default function AppFooter() {
   return (
-    <footer className="border-t bg-(--footer-app)">
+    <footer className="border-border/30 border-t bg-(--footer-app)">
       <div className="w-full py-6">
-        <div className="grid gap-10 grid-cols-1 px-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-10 px-6 lg:grid-cols-3">
           {/* Column 1 */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export default function AppFooter() {
             {footerLinks.map((col) => (
               <div key={col.title} className="space-y-3">
                 <div className="text-md font-semibold">{col.title}</div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 text-xs">
                   {col.links.map((l) => (
                     <FooterLink key={l.label} href={l.href}>
                       {l.label}
@@ -128,7 +128,7 @@ export default function AppFooter() {
         </div>
 
         {/* Footer bottom */}
-        <div className="mt-10 flex flex-col gap-3 border-t px-6 pt-6 md:flex-row md:items-center md:justify-between">
+        <div className="border-border/30 mt-10 flex flex-col gap-3 border-t px-6 pt-5 md:flex-row md:items-center md:justify-between">
           <div className="text-muted-foreground text-xs">
             © {new Date().getFullYear()} Smart Recruit. All rights reserved.
           </div>
