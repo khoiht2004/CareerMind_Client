@@ -80,3 +80,15 @@ export const LOCATION_OPTIONS = [
   { label: "Đà Nẵng", value: "Đà Nẵng" },
   { label: "Remote", value: "Remote" },
 ];
+
+export const EXP_LEVEL_OPTIONS = [
+  { label: "Mới đi làm", value: "ENTRY" },
+  { label: "Trung cấp / Cao cấp", value: "MID_SENIOR" },
+  { label: "Giám đốc", value: "DIRECTOR" },
+];
+
+export const JOB_SORT_OPTIONS = [
+  { label: "Mới nhất", value: "newest" },
+  { label: "Cũ nhất", value: "oldest" },
+  { label: "Lương cao nhất", value: "salary_desc" },
+];

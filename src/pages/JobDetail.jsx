@@ -104,6 +104,14 @@ function JobDetail() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <h1 className="text-xl font-bold">{job.title}</h1>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Link
+                      to={`/companies/${job.company?.id}`}
+                      className="text-muted-foreground hover:text-primary mt-0.5 text-sm hover:underline"
+                    >
+                      {job.company?.name}
+                    </Link>
                     {job.isHot && (
                       <Badge className="gap-1 border-orange-200 bg-orange-100 text-orange-600">
                         <Flame className="size-3" />
@@ -111,12 +119,6 @@ function JobDetail() {
                       </Badge>
                     )}
                   </div>
-                  <Link
-                    to={`/companies/${job.company?.id}`}
-                    className="text-muted-foreground hover:text-primary mt-0.5 text-sm hover:underline"
-                  >
-                    {job.company?.name}
-                  </Link>
                 </div>
               </div>
 
@@ -175,7 +177,11 @@ function JobDetail() {
                       <Bookmark
                         className="size-4"
                         fill={isSaved ? "var(--secondary-container)" : "none"}
-                        stroke={isSaved ? "var(--secondary-container)" : "currentColor"}
+                        stroke={
+                          isSaved
+                            ? "var(--secondary-container)"
+                            : "currentColor"
+                        }
                       />
                     </Button>
                     <Button
