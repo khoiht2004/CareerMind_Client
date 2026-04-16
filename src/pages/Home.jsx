@@ -89,7 +89,7 @@ function Home() {
           <Search className="text-muted-foreground absolute top-1/2 left-4 size-5 -translate-y-1/2" />
           <Input
             placeholder="Tìm tên công việc, kỹ năng hoặc công ty..."
-            className="h-10 pl-11 text-base"
+            className="border-border h-10 border pl-11 text-base"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -115,7 +115,7 @@ function Home() {
         <div className="flex items-center gap-2">
           <Briefcase className="text-muted-foreground size-4" />
           <Select value={filters.type} onValueChange={handleTypeChange}>
-            <SelectTrigger className="h-10 w-48 cursor-pointer">
+            <SelectTrigger className="border-border h-10 w-48 cursor-pointer border">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -135,7 +135,7 @@ function Home() {
         <div className="flex items-center gap-2">
           <MapPin className="text-muted-foreground size-4" />
           <Select value={filters.location} onValueChange={handleLocationChange}>
-            <SelectTrigger className="h-10 w-52 cursor-pointer">
+            <SelectTrigger className="border-border h-10 w-52 cursor-pointer border">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

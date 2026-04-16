@@ -272,7 +272,7 @@ function MyCv() {
                       >
                         <Star
                           className="size-4.5"
-                          color={cv.isDefault ? "#fcba03" : "#000"}
+                          color={cv.isDefault ? "var(--secondary-container)" : "currentColor"}
                         />
                       </Button>
 

@@ -159,7 +159,7 @@ function ChatArea({
             onInput={handleResize}
             onKeyDown={onKeyDown}
             disabled={isSending || !hasActiveSession}
-            className="min-h-0 resize-none overflow-y-auto leading-tight [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="border-border min-h-0 resize-none overflow-y-auto border leading-tight [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           />
           <Button
             size="icon"

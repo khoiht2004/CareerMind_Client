@@ -24,7 +24,7 @@ function ThemeToggle({ isCollapsed }) {
   return (
     <div
       className={cn(
-        "mt-1 border-t border-zinc-800 pt-2 pb-1",
+        "border-sidebar-border mt-1 border-t pt-2 pb-1",
         isCollapsed ? "px-1" : "px-2",
       )}
     >
@@ -34,7 +34,7 @@ function ThemeToggle({ isCollapsed }) {
             <PopoverTrigger asChild>
               <button
                 className={cn(
-                  "flex w-full cursor-pointer items-center rounded-lg py-2 text-sm font-medium text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100",
+                  "flex w-full cursor-pointer items-center rounded-lg py-2 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-border hover:text-sidebar-foreground",
                   isCollapsed ? "justify-center px-0" : "gap-3 px-3",
                 )}
               >

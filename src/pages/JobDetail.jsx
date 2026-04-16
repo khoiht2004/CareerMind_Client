@@ -174,8 +174,8 @@ function JobDetail() {
                     >
                       <Bookmark
                         className="size-4"
-                        fill={isSaved ? "#eab308" : "none"}
-                        stroke={isSaved ? "#eab308" : "currentColor"}
+                        fill={isSaved ? "var(--secondary-container)" : "none"}
+                        stroke={isSaved ? "var(--secondary-container)" : "currentColor"}
                       />
                     </Button>
                     <Button

@@ -206,13 +206,13 @@ function MyProfile() {
                   key={skill}
                   variant="secondary"
                   size="lg"
-                  className="group flex h-[25px] min-w-[65px] items-center gap-1 pr-1.5 text-[13px]"
+                  className="group bg-foreground flex h-[25px] min-w-[65px] items-center gap-1 pr-1.5 text-[13px]"
                 >
                   {skill}
                   {editing && (
                     <button
                       onClick={() => handleRemoveSkill(skill)}
-                      className="text-muted-foreground hover:text-foreground ml-0.5 cursor-pointer"
+                      className="text-muted ml-0.5 cursor-pointer hover:scale-105"
                     >
                       <X className="size-3" />
                     </button>

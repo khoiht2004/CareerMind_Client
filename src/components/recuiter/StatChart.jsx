@@ -39,19 +39,19 @@ export default function StatChart({ stats }) {
   const chartConfig = {
     jobs: {
       label: "Tổng việc làm",
-      color: "#2563eb",
+      color: "var(--chart-1)",
     },
     apps: {
       label: "Đơn ứng tuyển",
-      color: "#9333ea",
+      color: "var(--chart-2)",
     },
     interview: {
       label: "Đang phỏng vấn",
-      color: "#f97316",
+      color: "var(--chart-3)",
     },
     accepted: {
       label: "Đã chấp nhận",
-      color: "#16a34a",
+      color: "var(--chart-4)",
     },
   };
 
