@@ -100,7 +100,7 @@ function Home() {
 
       {/* Main content: filter + job list */}
       <div className="flex min-h-0 flex-1 items-start gap-0">
-        <aside className="sticky top-14 w-[28%] self-start p-5 pt-6">
+        <aside className="sticky top-14 w-[25%] self-start p-5 pt-6">
           <FilterPanel
             typeFilter={filters.type}
             onTypeChange={handleTypeChange}
