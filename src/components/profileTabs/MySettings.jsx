@@ -40,7 +40,7 @@ function MySettings() {
   };
 
   const toggleShow = (field) =>
-    setShow((s) => ({ ...s, [field]: !s[field] }));
+    setShow((show) => ({ ...show, [field]: !show[field] }));
 
   return (
     <Card>
@@ -48,10 +48,7 @@ function MySettings() {
         <CardTitle className="text-sm">Đổi mật khẩu</CardTitle>
       </CardHeader>
       <CardContent>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="max-w-sm space-y-4"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm space-y-4">
           {[
             { id: "oldPassword", label: "Mật khẩu hiện tại" },
             { id: "newPassword", label: "Mật khẩu mới" },
@@ -80,9 +77,7 @@ function MySettings() {
                 </button>
               </div>
               {errors[id] && (
-                <p className="text-destructive text-xs">
-                  {errors[id].message}
-                </p>
+                <p className="text-destructive text-xs">{errors[id].message}</p>
               )}
             </div>
           ))}

@@ -22,7 +22,7 @@ function CoverLetterFormDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] md:max-w-[750px]">
+      <DialogContent className="max-w-[368px] sm:max-w-[480px] md:max-w-[750px]">
         <DialogHeader>
           <DialogTitle>
             {isEditing ? "Sửa thư xin việc" : "Tạo thư xin việc"}
@@ -44,6 +44,7 @@ function CoverLetterFormDialog({
               onChange={(e) =>
                 onFormChange({ ...formData, title: e.target.value })
               }
+              className={"border-border border"}
               required
             />
           </div>
@@ -52,7 +53,7 @@ function CoverLetterFormDialog({
             <label className="text-sm font-medium">Nội dung thư</label>
             <Textarea
               placeholder="Kính gửi nhà tuyển dụng..."
-              className="max-h-[350px] min-h-[200px] resize-none"
+              className="border-border max-h-[350px] min-h-[200px] resize-none border"
               value={formData.content}
               onChange={(e) =>
                 onFormChange({ ...formData, content: e.target.value })

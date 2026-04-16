@@ -17,7 +17,13 @@ function ChatBot() {
   const [isSending, setIsSending] = useState(false);
   const [pendingMessage, setPendingMessage] = useState(null);
 
-  const { data: sessionsData, isLoading: sessionsLoading } = useGetSessionsQuery();
+  // Sidebar mở mặc định trên desktop, đóng trên mobile
+  const [sidebarOpen, setSidebarOpen] = useState(
+    () => typeof window !== "undefined" && window.innerWidth >= 768,
+  );
+
+  const { data: sessionsData, isLoading: sessionsLoading } =
+    useGetSessionsQuery();
   const { data: messageData, isLoading: messagesLoading } = useGetMessagesQuery(
     activeSessionId,
     { skip: !activeSessionId },
@@ -28,7 +34,10 @@ function ChatBot() {
   const [updateSessionTitle] = useUpdateSessionTitleMutation();
 
   const sessions = useMemo(() => sessionsData?.data ?? [], [sessionsData]);
-  const messages = useMemo(() => messageData?.data?.messages ?? [], [messageData]);
+  const messages = useMemo(
+    () => messageData?.data?.messages ?? [],
+    [messageData],
+  );
 
   // Auto-select first session
   useEffect(() => {
@@ -77,7 +86,10 @@ function ChatBot() {
   const handleRenameSession = async (title) => {
     if (!activeSessionId || !title?.trim()) return;
     try {
-      await updateSessionTitle({ sessionId: activeSessionId, title: title.trim() }).unwrap();
+      await updateSessionTitle({
+        sessionId: activeSessionId,
+        title: title.trim(),
+      }).unwrap();
       toast.success("Đã đổi tên cuộc trò chuyện");
     } catch {
       toast.error("Đổi tên thất bại");
@@ -94,13 +106,21 @@ function ChatBot() {
   return (
     <div className="flex h-full min-h-0 w-full items-stretch overflow-hidden">
       <ChatSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
         sessions={sessions}
         activeSessionId={activeSessionId}
-        onSelect={setActiveSessionId}
+        onSelect={(id) => {
+          setActiveSessionId(id);
+          // Đóng sidebar sau khi chọn session trên mobile
+          if (window.innerWidth < 768) setSidebarOpen(false);
+        }}
         onCreate={handleCreateSession}
         isLoading={sessionsLoading}
       />
       <ChatArea
+        sidebarOpen={sidebarOpen}
+        onToggleSidebar={() => setSidebarOpen(true)}
         session={messageData?.data?.session}
         messages={messages}
         pendingMessage={pendingMessage}

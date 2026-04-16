@@ -1,5 +1,11 @@
 import { useRef, useEffect } from "react";
-import { Bot, Send, BotMessageSquare, Loader2 } from "lucide-react";
+import {
+  Bot,
+  Send,
+  BotMessageSquare,
+  Loader2,
+  ChevronLeft,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -18,6 +24,8 @@ const TEXTAREA_BASE_HEIGHT = 36;
 const TEXTAREA_MAX_HEIGHT = 100;
 
 function ChatArea({
+  sidebarOpen,
+  onToggleSidebar,
   session,
   messages,
   pendingMessage,
@@ -56,24 +64,43 @@ function ChatArea({
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
       {/* Header */}
-      <div className="flex h-14 shrink-0 items-center justify-between border-b px-5">
+      <div className="flex h-14 shrink-0 items-center border-b pr-5 pl-1">
+        {/* Nút mở sidebar — chỉ hiện khi sidebar đang ẩn */}
         <div className="flex items-center gap-2.5">
-          <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
-            <BotMessageSquare className="text-primary size-4" />
-          </div>
           <div>
-            <p className="text-sm font-semibold">
-              {session?.title ?? "Trợ lý AI SRA"}
-            </p>
-            <p className="text-[11px] text-green-500">Đang hoạt động</p>
+            {!sidebarOpen && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onToggleSidebar}
+                className="mr-1 size-8.5 shrink-0 cursor-pointer"
+                title="Mở danh sách hội thoại"
+              >
+                <ChevronLeft className="size-5" />
+              </Button>
+            )}
           </div>
         </div>
-        <ChatHeaderActions
-          session={session}
-          onRename={onRename}
-          onDelete={onDelete}
-          hasActiveSession={hasActiveSession}
-        />
+        {/* Session info */}
+        <div className="flex flex-1 items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+              <BotMessageSquare className="text-primary size-4" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">
+                {session?.title ?? "Trợ lý AI SRA"}
+              </p>
+              <p className="text-[11px] text-green-500">Đang hoạt động</p>
+            </div>
+          </div>
+          <ChatHeaderActions
+            session={session}
+            onRename={onRename}
+            onDelete={onDelete}
+            hasActiveSession={hasActiveSession}
+          />
+        </div>
       </div>
 
       {/* Messages */}
@@ -143,7 +170,9 @@ function ChatArea({
           </div>
         </div>
       )}
+
       <Separator />
+
       {/* Input */}
       <div className="p-4">
         <div className="mx-auto flex items-end gap-2">

@@ -19,15 +19,24 @@ function MyChatbot() {
         <div className="space-y-3">
           <div className="space-y-1.5">
             <Label className="text-sm">Lĩnh vực quan tâm</Label>
-            <Input placeholder="VD: Frontend, Backend, Data Science..." />
+            <Input
+              placeholder="VD: Frontend, Backend, Data Science..."
+              className="border-border border"
+            />
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm">Mức lương mong muốn</Label>
-            <Input placeholder="VD: 15 - 25 triệu" />
+            <Input
+              placeholder="VD: 15 - 25 triệu"
+              className="border-border border"
+            />
           </div>
           <div className="space-y-1.5">
             <Label className="text-sm">Địa điểm làm việc</Label>
-            <Input placeholder="VD: TP. Hồ Chí Minh, Remote..." />
+            <Input
+              placeholder="VD: TP. Hồ Chí Minh, Remote..."
+              className="border-border border"
+            />
           </div>
           <Button
             size="sm"

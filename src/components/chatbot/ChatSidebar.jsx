@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 function ChatSidebar({
+  isOpen,
   sessions,
   activeSessionId,
   onSelect,
@@ -11,7 +12,12 @@ function ChatSidebar({
   isLoading,
 }) {
   return (
-    <div className="flex h-full min-h-0 w-60 shrink-0 flex-col overflow-hidden border-r">
+    <div
+      className={cn(
+        "flex h-full min-h-0 shrink-0 flex-col overflow-hidden border-r transition-all duration-200",
+        isOpen ? "w-64" : "w-0 border-0",
+      )}
+    >
       {/* Header */}
       <div className="flex h-14 shrink-0 items-center border-b px-3">
         <Button

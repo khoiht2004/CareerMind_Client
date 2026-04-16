@@ -32,7 +32,7 @@ function MyCv() {
   const [dragging, setDragging] = useState(false);
   const [pendingFile, setPendingFile] = useState(null);
   const [previewCv, setPreviewCv] = useState(null);
-  const [cvToDelete, setCvToDelete] = useState(null); // cv object pending deletion
+  const [cvToDelete, setCvToDelete] = useState(null);
 
   const { data, isLoading: isLoadingList } = useGetMyCvsQuery();
   const [uploadCv, { isLoading: isUploading }] = useUploadCvMutation();
@@ -216,7 +216,6 @@ function MyCv() {
             </div>
           ) : cvs.length > 0 ? (
             <div className="space-y-3">
-              <Separator />
               <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
                 Danh sách CV ({cvs.length})
               </p>
@@ -230,13 +229,13 @@ function MyCv() {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="truncate text-sm font-medium">
+                        <span className="truncate text-xs font-medium sm:text-sm">
                           {cv.name}
                         </span>
                         {cv.isDefault && (
                           <Badge
                             variant="secondary"
-                            className="shrink-0 text-xs"
+                            className="hidden shrink-0 text-xs sm:flex"
                           >
                             <Star className="mr-1 size-2.5 fill-current" />
                             Mặc định
@@ -272,7 +271,11 @@ function MyCv() {
                       >
                         <Star
                           className="size-4.5"
-                          color={cv.isDefault ? "var(--secondary-container)" : "currentColor"}
+                          color={
+                            cv.isDefault
+                              ? "var(--secondary-container)"
+                              : "currentColor"
+                          }
                         />
                       </Button>
 

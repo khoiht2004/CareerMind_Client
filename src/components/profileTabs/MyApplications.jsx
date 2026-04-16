@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Loader2,
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  XCircle,
-  Trash2,
-} from "lucide-react";
+import { Loader2, AlertCircle, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";

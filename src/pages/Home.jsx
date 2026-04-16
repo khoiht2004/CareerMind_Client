@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, SlidersHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import Pagination from "@/components/shared/Pagination";
@@ -7,6 +7,13 @@ import JobCard from "@/components/shared/JobCard";
 import HeroBanner from "@/components/home-page/HeroBanner";
 import FilterPanel from "@/components/home-page/FilterPanel";
 import JobListHeader from "@/components/home-page/JobListHeader";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 import { useGetJobsQuery, useGetSavedJobsQuery } from "@/services/job.service";
 import { formatDate, convertArray } from "@/utils/helper";
@@ -20,6 +27,7 @@ function Home() {
 
   const [inputValue, setInputValue] = useState("");
   const [page, setPage] = useState(1);
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
     type: "ALL",
@@ -34,14 +42,13 @@ function Home() {
   useEffect(() => {
     setPage(1);
     setFilters((f) => {
-      if (f.search === debouncedInput) return f; // bail out nếu không đổi
+      if (f.search === debouncedInput) return f;
       return { ...f, search: debouncedInput };
     });
   }, [debouncedInput]);
 
   const { data, isLoading, isFetching } = useGetJobsQuery({
     ...filters,
-    // Không gửi "ALL" lên server — server sẽ hiểu là không lọc
     type: filters.type === "ALL" ? undefined : filters.type,
     location: filters.location === "ALL" ? undefined : filters.location,
     level: filters.level === "ALL" ? undefined : filters.level,
@@ -55,13 +62,11 @@ function Home() {
   const totalPages = Math.max(1, Math.ceil(total / LIMIT));
   const savedIds = new Set((savedData?.data ?? []).map((j) => j.id));
 
-  // Immediate search (button click) — bỏ qua debounce delay
   const handleSearch = useCallback(() => {
     setPage(1);
     setFilters((f) => ({ ...f, search: inputValue }));
   }, [inputValue]);
 
-  // Toggle: click lại item đang chọn → về ALL
   const handleTypeChange = useCallback((v) => {
     setPage(1);
     setFilters((f) => ({ ...f, type: f.type === v ? "ALL" : v }));
@@ -100,8 +105,17 @@ function Home() {
     filters.location !== "ALL" ||
     filters.level !== "ALL";
 
+  const filterPanelProps = {
+    typeFilter: filters.type,
+    onTypeChange: handleTypeChange,
+    levelFilter: filters.level,
+    onLevelChange: handleLevelChange,
+    hasFilters,
+    onClearFilters: handleClearFilters,
+  };
+
   return (
-    <div className="flex flex-col px-6 pt-6">
+    <div className="flex flex-col px-4 pt-4 sm:px-6 sm:pt-6">
       {/* Hero Banner */}
       <HeroBanner
         inputValue={inputValue}
@@ -113,21 +127,38 @@ function Home() {
       />
 
       {/* Main content: filter + job list */}
-      <div className="flex min-h-0 flex-1 items-start gap-0">
-        {/* Filter Panel — sticky */}
-        <aside className="sticky top-14 w-[25%] self-start p-5 pt-6">
-          <FilterPanel
-            typeFilter={filters.type}
-            onTypeChange={handleTypeChange}
-            levelFilter={filters.level}
-            onLevelChange={handleLevelChange}
-            hasFilters={hasFilters}
-            onClearFilters={handleClearFilters}
-          />
+      <div className="flex min-h-0 flex-1 items-start">
+        {/* Filter Panel — chỉ hiện trên md+ */}
+        <aside className="sticky top-14 hidden w-[25%] self-start p-5 pt-6 md:block">
+          <FilterPanel {...filterPanelProps} />
         </aside>
 
         {/* Job list */}
-        <div className="min-w-0 flex-1 space-y-4 p-6">
+        <div className="min-w-0 flex-1 space-y-4 py-6 md:px-6">
+          {/* Mobile: nút mở filter sheet */}
+          <div className="flex items-center justify-between md:hidden">
+            <p className="text-muted-foreground text-sm">
+              <span className="text-foreground font-semibold">
+                {total.toLocaleString()}
+              </span>{" "}
+              vị trí
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 cursor-pointer gap-1.5"
+              onClick={() => setFilterSheetOpen(true)}
+            >
+              <SlidersHorizontal className="size-3.5" />
+              Bộ lọc
+              {hasFilters && (
+                <span className="bg-secondary text-secondary-foreground ml-0.5 flex size-4 items-center justify-center rounded-full text-[10px] font-bold">
+                  !
+                </span>
+              )}
+            </Button>
+          </div>
+
           {isLoading ? (
             <div className="flex justify-center py-24">
               <Loader2 className="text-muted-foreground size-10 animate-spin" />
@@ -142,11 +173,24 @@ function Home() {
             </div>
           ) : (
             <>
-              <JobListHeader
-                total={total}
-                sort={filters.sort}
-                onSortChange={handleSortChange}
-              />
+              {/* Desktop header — hidden on mobile (already shown above) */}
+              <div className="hidden md:block">
+                <JobListHeader
+                  total={total}
+                  sort={filters.sort}
+                  onSortChange={handleSortChange}
+                />
+              </div>
+
+              {/* Mobile sort (compact) */}
+              <div className="flex items-center justify-end md:hidden">
+                <JobListHeader
+                  total={total}
+                  sort={filters.sort}
+                  onSortChange={handleSortChange}
+                  compact
+                />
+              </div>
 
               <div className="space-y-3">
                 {jobs.map((job) => (
@@ -175,6 +219,24 @@ function Home() {
           )}
         </div>
       </div>
+
+      {/* Mobile Filter Sheet */}
+      <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
+        <SheetContent side="left" className="w-72 p-0">
+          <SheetHeader className="border-b px-5 py-4">
+            <SheetTitle>Bộ lọc</SheetTitle>
+          </SheetHeader>
+          <div className="p-5">
+            <FilterPanel
+              {...filterPanelProps}
+              onClearFilters={() => {
+                handleClearFilters();
+                setFilterSheetOpen(false);
+              }}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
