@@ -1,14 +1,10 @@
-import { useState } from "react";
-import { Loader2, AlertCircle, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useState, useCallback } from "react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -18,13 +14,9 @@ import {
   useGetMyApplicationsQuery,
   useDeleteApplicationMutation,
 } from "@/services/application.service";
-import {
-  APPLICATION_STATUS_LABELS,
-  STATUS_CONFIG,
-} from "@/config/constants/candidate.constant";
+import ApplicationRow from "./components/ApplicationRow";
 
 function MyApplications() {
-  const navigate = useNavigate();
   const { data, isLoading } = useGetMyApplicationsQuery({});
   const [deleteApplication, { isLoading: isDeleting }] =
     useDeleteApplicationMutation();
@@ -33,7 +25,11 @@ function MyApplications() {
   const applications = data?.data?.applications ?? [];
   const total = data?.data?.total ?? 0;
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteClick = useCallback((app) => {
+    setDeleteTarget(app);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
     try {
       await deleteApplication(deleteTarget.id).unwrap();
       toast.success("Đã xóa đơn ứng tuyển");
@@ -43,7 +39,11 @@ function MyApplications() {
         error?.data?.message || "Có lỗi xảy ra khi xóa đơn ứng tuyển",
       );
     }
-  };
+  }, [deleteApplication, deleteTarget]);
+
+  const handleDialogChange = useCallback((open) => {
+    if (!open) setDeleteTarget(null);
+  }, []);
 
   if (isLoading) {
     return (
@@ -79,58 +79,13 @@ function MyApplications() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {applications.map((app) => {
-                  const cfg = STATUS_CONFIG[app.status];
-                  const Icon = cfg?.icon;
-                  const label =
-                    APPLICATION_STATUS_LABELS[app.status] ?? app.status;
-                  return (
-                    <TableRow key={app.id}>
-                      <TableCell
-                        className="cursor-pointer text-sm font-medium"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        {app.job?.title}
-                      </TableCell>
-                      <TableCell
-                        className="text-muted-foreground cursor-pointer text-sm"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        {app.job?.company?.name}
-                      </TableCell>
-                      <TableCell
-                        className="text-muted-foreground cursor-pointer text-sm"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        {new Date(app.createdAt).toLocaleDateString("vi-VN")}
-                      </TableCell>
-                      <TableCell
-                        className="cursor-pointer"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        <Badge
-                          className={`gap-1 border text-xs ${cfg?.className}`}
-                        >
-                          {Icon && <Icon className="size-3" />}
-                          {label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-muted-foreground hover:text-destructive h-8 w-8"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDeleteTarget(app);
-                          }}
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {applications.map((app) => (
+                  <ApplicationRow
+                    key={app.id}
+                    app={app}
+                    onDeleteClick={handleDeleteClick}
+                  />
+                ))}
               </TableBody>
             </Table>
           )}
@@ -139,7 +94,7 @@ function MyApplications() {
 
       <ConfirmDialog
         open={!!deleteTarget}
-        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        onOpenChange={handleDialogChange}
         onConfirm={handleDeleteConfirm}
         isLoading={isDeleting}
         title="Xóa đơn ứng tuyển"

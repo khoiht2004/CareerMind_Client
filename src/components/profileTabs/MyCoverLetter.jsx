@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FileText, Pencil, Trash2, Loader2, Plus } from "lucide-react";
+import { useState, useCallback } from "react";
+import { FileText, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -9,9 +9,9 @@ import {
   useUpdateCoverLetterMutation,
   useDeleteCoverLetterMutation,
 } from "@/services/coverLetter.service";
-import { formatDate } from "@/utils/helper";
 import CoverLetterFormDialog from "../shared/CoverLetterFormDialog";
 import CoverLetterDeleteDialog from "../shared/CoverLetterDeleteDialog";
+import CoverLetterCard from "./components/CoverLetterCard";
 
 const EMPTY_FORM = { title: "", content: "" };
 
@@ -32,44 +32,46 @@ function MyCoverLetter() {
   const [deletingId, setDeletingId] = useState(null);
   const [formData, setFormData] = useState(EMPTY_FORM);
 
-  const handleOpenCreate = () => {
+  const handleOpenCreate = useCallback(() => {
     setEditingItem(null);
     setFormData(EMPTY_FORM);
     setIsFormOpen(true);
-  };
+  }, []);
 
-  const handleOpenEdit = (item) => {
+  const handleOpenEdit = useCallback((item) => {
     setEditingItem(item);
     setFormData({ title: item.title, content: item.content });
     setIsFormOpen(true);
-  };
+  }, []);
 
-  const handleOpenDelete = (id) => {
+  const handleOpenDelete = useCallback((id) => {
     setDeletingId(id);
     setIsDeleteOpen(true);
-  };
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.title.trim() || !formData.content.trim()) {
-      return toast.error("Vui lòng nhập đầy đủ tiêu đề và nội dung");
-    }
-
-    try {
-      if (editingItem) {
-        await updateCoverLetter({ id: editingItem.id, ...formData }).unwrap();
-        toast.success("Cập nhật thư xin việc thành công");
-      } else {
-        await createCoverLetter(formData).unwrap();
-        toast.success("Tạo thư xin việc thành công");
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!formData.title.trim() || !formData.content.trim()) {
+        return toast.error("Vui lòng nhập đầy đủ tiêu đề và nội dung");
       }
-      setIsFormOpen(false);
-    } catch (error) {
-      toast.error(error?.data?.message || "Có lỗi xảy ra");
-    }
-  };
+      try {
+        if (editingItem) {
+          await updateCoverLetter({ id: editingItem.id, ...formData }).unwrap();
+          toast.success("Cập nhật thư xin việc thành công");
+        } else {
+          await createCoverLetter(formData).unwrap();
+          toast.success("Tạo thư xin việc thành công");
+        }
+        setIsFormOpen(false);
+      } catch (error) {
+        toast.error(error?.data?.message || "Có lỗi xảy ra");
+      }
+    },
+    [formData, editingItem, updateCoverLetter, createCoverLetter],
+  );
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     try {
       await deleteCoverLetter(deletingId).unwrap();
       toast.success("Đã xóa thư xin việc");
@@ -77,7 +79,7 @@ function MyCoverLetter() {
     } catch (error) {
       toast.error(error?.data?.message || "Có lỗi xảy ra");
     }
-  };
+  }, [deleteCoverLetter, deletingId]);
 
   return (
     <Card>
@@ -110,42 +112,12 @@ function MyCoverLetter() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {coverLetters.map((cl) => (
-              <div
+              <CoverLetterCard
                 key={cl.id}
-                className="group bg-card hover:border-primary/50 relative rounded-xl border p-4 transition-all hover:shadow-md"
-              >
-                <div className="mb-2 flex items-start justify-between">
-                  <div className="space-y-1">
-                    <h4 className="line-clamp-1 leading-none font-semibold tracking-tight">
-                      {cl.title}
-                    </h4>
-                    <p className="text-muted-foreground text-xs">
-                      Cập nhật: {formatDate(cl.updatedAt)}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="size-8"
-                      onClick={() => handleOpenEdit(cl)}
-                    >
-                      <Pencil className="size-4 text-blue-500" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="size-8 hover:bg-red-50"
-                      onClick={() => handleOpenDelete(cl.id)}
-                    >
-                      <Trash2 className="size-4 text-red-500" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="text-muted-foreground mt-3 line-clamp-4 overflow-hidden text-sm leading-relaxed">
-                  {cl.content}
-                </div>
-              </div>
+                cl={cl}
+                onEdit={handleOpenEdit}
+                onDelete={handleOpenDelete}
+              />
             ))}
           </div>
         )}

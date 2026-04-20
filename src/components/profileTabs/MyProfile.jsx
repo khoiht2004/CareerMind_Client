@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
-import { Camera, Pencil, Loader2, X, Plus } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
   useUploadAvatarMutation,
   useDeleteAvatarMutation,
 } from "@/services/profile.service";
+import AvatarCard from "./components/AvatarCard";
+import BioSkillsCard from "./components/BioSkillsCard";
+import ContactCard from "./components/ContactCard";
 
 function MyProfile() {
   const { data: response, isLoading } = useGetProfileQuery();
@@ -41,7 +36,7 @@ function MyProfile() {
     }
   }, [profile]);
 
-  const handleDeleteAvatar = async () => {
+  const handleDeleteAvatar = useCallback(async () => {
     try {
       await deleteAvatar().unwrap();
       setShowDeleteDialog(false);
@@ -49,23 +44,26 @@ function MyProfile() {
     } catch {
       toast.error("Xóa ảnh đại diện thất bại");
     }
-  };
+  }, [deleteAvatar]);
 
-  const handleAvatarChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("avatar_url", file);
-    try {
-      await uploadAvatar(formData).unwrap();
-      toast.success("Cập nhật ảnh đại diện thành công");
-    } catch {
-      toast.error("Tải ảnh lên thất bại");
-    }
-    e.target.value = "";
-  };
+  const handleAvatarChange = useCallback(
+    async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append("avatar_url", file);
+      try {
+        await uploadAvatar(formData).unwrap();
+        toast.success("Cập nhật ảnh đại diện thành công");
+      } catch {
+        toast.error("Tải ảnh lên thất bại");
+      }
+      e.target.value = "";
+    },
+    [uploadAvatar],
+  );
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     try {
       await updateProfile({ bio, phone, address, skills }).unwrap();
       setEditing(false);
@@ -73,20 +71,30 @@ function MyProfile() {
     } catch {
       toast.error("Cập nhật thất bại");
     }
-  };
+  }, [updateProfile, bio, phone, address, skills]);
 
-  const handleAddSkill = () => {
+  const handleToggleEdit = useCallback(() => setEditing((v) => !v), []);
+
+  const handleAddSkill = useCallback(() => {
     const trimmed = newSkill.trim();
     if (trimmed && !skills.includes(trimmed)) {
       setSkills((prev) => [...prev, trimmed]);
     }
     setNewSkill("");
     setAddingSkill(false);
-  };
+  }, [newSkill, skills]);
 
-  const handleRemoveSkill = (skill) => {
+  const handleRemoveSkill = useCallback((skill) => {
     setSkills((prev) => prev.filter((s) => s !== skill));
-  };
+  }, []);
+
+  const handleDeleteDialogChange = useCallback((open) => {
+    setShowDeleteDialog(open);
+  }, []);
+
+  const handleDeleteDialogOpen = useCallback(() => {
+    setShowDeleteDialog(true);
+  }, []);
 
   if (isLoading) {
     return (
@@ -98,212 +106,42 @@ function MyProfile() {
 
   return (
     <div className="space-y-5">
-      {/* Avatar + basic info */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
-            <div className="relative">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={profile?.avatarUrl} />
-                <AvatarFallback className="text-xl font-bold">
-                  {profile?.fullName?.[0]?.toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+      <AvatarCard
+        profile={profile}
+        isUploading={isUploading}
+        isDeleting={isDeleting}
+        showDeleteDialog={showDeleteDialog}
+        onAvatarChange={handleAvatarChange}
+        onDeleteDialogOpen={handleDeleteDialogOpen}
+        onDeleteDialogChange={handleDeleteDialogChange}
+        onDeleteConfirm={handleDeleteAvatar}
+      />
 
-              {/* Nút X */}
-              {profile?.avatarUrl && (
-                <Button
-                  size="icon"
-                  variant="outline"
-                  disabled={isDeleting}
-                  onClick={() => setShowDeleteDialog(true)}
-                  className="absolute -top-1 -right-1 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full"
-                >
-                  <X className="size-3" />
-                </Button>
-              )}
+      <BioSkillsCard
+        editing={editing}
+        onToggleEdit={handleToggleEdit}
+        bio={bio}
+        onBioChange={setBio}
+        skills={skills}
+        onRemoveSkill={handleRemoveSkill}
+        newSkill={newSkill}
+        onNewSkillChange={setNewSkill}
+        addingSkill={addingSkill}
+        onSetAddingSkill={setAddingSkill}
+        onAddSkill={handleAddSkill}
+        isSaving={isSaving}
+        onSave={handleSave}
+      />
 
-              {/* Nút Camera */}
-              <Button
-                disabled={isUploading}
-                className="bg-primary text-primary-foreground absolute -right-1 -bottom-1 flex h-7 w-7 items-center justify-center rounded-full shadow-sm transition-opacity hover:opacity-90"
-              >
-                <label htmlFor="open-file" className="cursor-pointer">
-                  {isUploading ? (
-                    <Loader2 className="size-3.5 animate-spin" />
-                  ) : (
-                    <Camera className="size-3.5" />
-                  )}
-                  <input
-                    type="file"
-                    id="open-file"
-                    hidden
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={handleAvatarChange}
-                  />
-                </label>
-              </Button>
-
-              <ConfirmDialog
-                open={showDeleteDialog}
-                onOpenChange={setShowDeleteDialog}
-                onConfirm={handleDeleteAvatar}
-                isLoading={isDeleting}
-                title="Xóa ảnh đại diện"
-                description="Bạn có chắc muốn xóa ảnh đại diện không? Hành động này không thể hoàn tác."
-              />
-            </div>
-            <div className="flex-1 space-y-1 text-center sm:text-left">
-              <h2 className="text-lg font-bold">{profile?.fullName}</h2>
-              <p className="text-muted-foreground text-sm">
-                {profile?.user?.email}
-              </p>
-              <Badge variant="secondary" className="text-xs">
-                {profile?.user?.role}
-              </Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Bio + Skills */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-sm">Giới thiệu bản thân</CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="cursor-pointer"
-              onClick={() => setEditing(!editing)}
-            >
-              <Pencil className="mr-1 size-3.5" />
-              {editing ? "Hủy" : "Chỉnh sửa"}
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4 pt-0">
-          {/* Bio */}
-          {editing ? (
-            <Textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              rows={4}
-              placeholder="Giới thiệu về bản thân..."
-            />
-          ) : (
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {bio || "Chưa có giới thiệu"}
-            </p>
-          )}
-
-          {/* Skills */}
-          <div className="space-y-2">
-            <p className="text-sm font-medium">Kỹ năng</p>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill) => (
-                <Badge
-                  key={skill}
-                  variant="secondary"
-                  size="lg"
-                  className="group bg-foreground flex h-[25px] min-w-[65px] items-center gap-1 pr-1.5 text-[13px]"
-                >
-                  {skill}
-                  {editing && (
-                    <button
-                      onClick={() => handleRemoveSkill(skill)}
-                      className="text-muted ml-0.5 cursor-pointer hover:scale-105"
-                    >
-                      <X className="size-3" />
-                    </button>
-                  )}
-                </Badge>
-              ))}
-
-              {editing &&
-                (addingSkill ? (
-                  <input
-                    autoFocus
-                    value={newSkill}
-                    onChange={(e) => setNewSkill(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") handleAddSkill();
-                      if (e.key === "Escape") setAddingSkill(false);
-                    }}
-                    onBlur={handleAddSkill}
-                    className="border-input h-6 w-28 rounded-full border bg-transparent px-2.5 text-xs outline-none"
-                    placeholder="Nhập kỹ năng..."
-                  />
-                ) : (
-                  <button
-                    onClick={() => setAddingSkill(true)}
-                    className="border-input text-muted-foreground hover:text-foreground hover:border-foreground flex h-6 cursor-pointer items-center gap-1 rounded-full border border-dashed px-2.5 text-xs transition-colors"
-                  >
-                    <Plus className="size-3" />
-                    Thêm kỹ năng
-                  </button>
-                ))}
-            </div>
-          </div>
-
-          {/* Save button */}
-          {editing && (
-            <Button
-              size="sm"
-              onClick={handleSave}
-              disabled={isSaving}
-              className="cursor-pointer"
-            >
-              {isSaving && <Loader2 className="size-3.5 animate-spin" />}
-              Lưu
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Contact info */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm">Thông tin liên hệ</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 pt-0">
-          <div className="space-y-1.5">
-            <Label className="text-muted-foreground text-xs">Email</Label>
-            <Input
-              defaultValue={profile?.user?.email}
-              readOnly
-              className="bg-muted/40"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label className="text-muted-foreground text-xs">
-              Số điện thoại
-            </Label>
-            <Input
-              placeholder="Chưa cập nhật"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label className="text-muted-foreground text-xs">Địa chỉ</Label>
-            <Input
-              placeholder="Chưa cập nhật"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
-          <Button
-            onClick={handleSave}
-            disabled={isSaving}
-            size="sm"
-            className="h-8 cursor-pointer px-4 py-2.5 text-[14px] font-medium"
-          >
-            {isSaving && <Loader2 className="size-3.5 animate-spin" />}
-            Lưu thay đổi
-          </Button>
-        </CardContent>
-      </Card>
+      <ContactCard
+        email={profile?.user?.email}
+        phone={phone}
+        onPhoneChange={setPhone}
+        address={address}
+        onAddressChange={setAddress}
+        isSaving={isSaving}
+        onSave={handleSave}
+      />
     </div>
   );
 }
