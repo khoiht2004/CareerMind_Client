@@ -43,7 +43,7 @@ function HorizontalVariant({ job, isSaved }) {
       {/* Badges */}
       <div className="absolute top-3 right-3 flex items-center gap-1.5">
         {isHot && (
-          <span className="flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-600">
+          <span className="bg-hot text-hot-foreground flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold">
             <Flame className="size-3" />
             Hot
           </span>

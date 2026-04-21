@@ -44,6 +44,10 @@
   --color-on-secondary-container: var(--on-secondary-container);
   --color-primary-fixed-dim: var(--primary-fixed-dim);
 
+  /* Hot badge */
+  --color-hot: var(--hot);
+  --color-hot-foreground: var(--hot-foreground);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -113,6 +117,16 @@
   --sidebar-ring: #006591;
 
   --footer-app: #f7f9fb;
+
+  /* ── Hot badge ── */
+  --hot: #ffedd5;            /* orange-100 */
+  --hot-foreground: #ea580c; /* orange-600 */
+  --hot-border: #fed7aa;     /* orange-200 */
+
+  /* ── Job status indicators ── */
+  --status-published: #16a34a; /* green-600 */
+  --status-draft: #6b7280;     /* gray-500  */
+  --status-closed: #dc2626;    /* red-600   */
 }
 
 .dark {
@@ -163,6 +177,11 @@
   --sidebar-ring: #39b8fd;
 
   --footer-app: #191c1e;
+
+  /* ── Hot badge ── */
+  --hot: #431407;            /* dark orange background */
+  --hot-foreground: #fed7aa; /* orange-200 */
+  --hot-border: #7c2d12;    /* orange-900 */
 }
 
 @layer base {

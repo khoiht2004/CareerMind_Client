@@ -45,6 +45,7 @@ export const EMPTY_JOB_FORM = {
   title: "",
   location: "",
   description: "",
+  requirements: "",
   salary: "",
   type: "FULL_TIME",
   level: "",
@@ -54,6 +55,12 @@ export const EMPTY_JOB_FORM = {
   status: "PUBLISHED",
   isHot: false,
   deadline: "",
+};
+
+export const JOB_STATUS_DOT = {
+  PUBLISHED: "var(--status-published)",
+  DRAFT: "var(--status-draft)",
+  CLOSED: "var(--status-closed)",
 };
 
 // ─── Application Management ────────────────────────────────────────────────────

@@ -1,118 +1,91 @@
 import { memo } from "react";
-import {
-  MapPin,
-  Clock,
-  Flame,
-  DollarSign,
-  Users,
-  Bookmark,
-} from "lucide-react";
+import { MapPin, DollarSign, Bookmark, Building2, Flame, SendHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 
-// ── Variant: card (mặc định) ─────────────────────────────────────
 function CardVariant({ job, isSaved }) {
   const navigate = useNavigate();
-  const {
-    id,
-    title,
-    company,
-    location,
-    salary,
-    type,
-    level,
-    tags = [],
-    slots,
-    isHot,
-    postedAt,
-  } = job;
+  const { id, title, company, location, salary, isHot } = job;
   const companyName = company?.name ?? company ?? "";
+  const logoUrl = company?.logoUrl;
+
+  const handleApply = (e) => {
+    e.stopPropagation();
+    navigate(`/jobs/${id}/apply`);
+  };
 
   return (
-    <Card
+    <div
       onClick={() => navigate(`/jobs/${id}`)}
-      className="group relative flex cursor-pointer flex-col gap-0 overflow-hidden transition-shadow hover:shadow-md"
+      className="bg-card border-border group relative flex cursor-pointer flex-col gap-3 rounded-xl border p-5 transition-shadow hover:shadow-md"
     >
-      <div className="absolute top-3 right-3 flex items-center gap-1.5">
-        {isHot && (
-          <span className="flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-600">
-            <Flame className="size-3" />
-            Hot
-          </span>
-        )}
-      </div>
-      <div className="absolute top-10 right-3 flex items-center gap-1.5">
-        {isSaved && (
-          <Bookmark className="fill-secondary stroke-secondary size-4" />
-        )}
-      </div>
-
-      <CardHeader className="pb-2">
-        <div className="space-y-0.5 pr-12">
-          <h3 className="group-hover:text-primary line-clamp-2 text-base leading-snug font-semibold">
-            {title}
-          </h3>
-          <p className="text-muted-foreground text-sm font-medium">
-            {companyName}
-          </p>
+      {/* Top row: logo + badges */}
+      <div className="flex items-start justify-between">
+        <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl text-base font-bold">
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt={companyName}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-foreground text-sm">
+              {companyName?.[0]?.toUpperCase()}
+            </span>
+          )}
         </div>
-      </CardHeader>
 
-      <CardContent className="flex flex-col gap-3 px-5 pt-3 pb-5">
-        <div className="text-muted-foreground flex flex-wrap items-center gap-4 text-xs font-medium">
-          <span className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
+          {isHot && (
+            <span className="bg-hot text-hot-foreground flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium">
+              <Flame className="size-3" />
+              Hot
+            </span>
+          )}
+          {isSaved && (
+            <Bookmark className="fill-secondary stroke-secondary size-5" />
+          )}
+        </div>
+      </div>
+
+      {/* Title + company */}
+      <div className="space-y-0.5">
+        <h3 className="group-hover:text-secondary line-clamp-2 text-sm leading-snug font-bold transition-colors">
+          {title}
+        </h3>
+        <p className="text-muted-foreground flex items-center gap-1 text-xs">
+          <Building2 className="size-3 shrink-0" />
+          <span className="line-clamp-1">{companyName}</span>
+        </p>
+      </div>
+
+      {/* Location + Salary */}
+      <div className="text-muted-foreground space-y-1 text-xs">
+        {location && (
+          <div className="flex items-center gap-1">
             <MapPin className="size-3 shrink-0" />
-            {location}
-          </span>
-          {salary && (
-            <span className="flex items-center">
-              <DollarSign className="size-3 shrink-0" />
-              {salary}
-            </span>
-          )}
-          {slots > 1 && (
-            <span className="flex items-center gap-1">
-              <Users className="size-3 shrink-0" />
-              {slots} vị trí
-            </span>
-          )}
-        </div>
+            <span className="line-clamp-1">{location}</span>
+          </div>
+        )}
+        {salary && (
+          <div className="flex items-center gap-1">
+            <DollarSign className="size-3 shrink-0" />
+            {salary}
+          </div>
+        )}
+      </div>
 
-        <div className="flex flex-wrap gap-1.5">
-          <Badge variant="secondary" className="px-2 py-0.5 text-[11px]">
-            {type}
-          </Badge>
-          {level && (
-            <Badge variant="outline" className="px-2 py-0.5 text-[11px]">
-              {level}
-            </Badge>
-          )}
-          {tags.slice(0, 4).map((tag) => (
-            <Badge
-              key={tag}
-              variant="outline"
-              className="text-muted-foreground px-2 py-0.5 text-[11px]"
-            >
-              {tag}
-            </Badge>
-          ))}
-          {tags.length > 4 && (
-            <Badge
-              variant="outline"
-              className="text-muted-foreground px-2 py-0.5 text-[11px]"
-            >
-              +{tags.length - 4}
-            </Badge>
-          )}
-        </div>
-
-        <div className="border-border/50 text-muted-foreground flex items-center gap-1.5 border-t pt-3 text-[12px]">
-          <Clock className="size-3 shrink-0" />
-          {postedAt}
-        </div>
-      </CardContent>
-    </Card>
+      {/* Apply button */}
+      <Button
+        size="sm"
+        variant="secondary"
+        onClick={handleApply}
+        className="w-full cursor-pointer"
+      >
+        Ứng tuyển nhanh <SendHorizontal />
+      </Button>
+    </div>
   );
 }
 
