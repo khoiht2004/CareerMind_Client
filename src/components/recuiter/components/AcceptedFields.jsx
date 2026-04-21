@@ -1,7 +1,7 @@
 import { Building2, Clock8, MapPin } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import AppDatePicker from "../shared/AppDatePicker";
+import AppDatePicker from "../../shared/AppDatePicker";
 
 function AcceptedFields({ fields, onFieldChange }) {
   const today = new Date();

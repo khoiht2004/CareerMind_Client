@@ -20,7 +20,7 @@ import {
 import { VALID_APP_STATUSES } from "@/config/constants/recruiter.constant";
 import useApplicationProfile from "@/hooks/useApplicationProfile";
 import InterviewFields from "./InterviewFields";
-import AcceptedFields from "./AcceptedFields";
+import AcceptedFields from "./components/AcceptedFields";
 import { Separator } from "../ui/separator";
 
 function SectionLabel({ children }) {

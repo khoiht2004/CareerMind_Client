@@ -4,8 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import JobFormField from "./JobFormField";
 import JobFormSectionHeader from "./JobFormSectionHeader";
-import RequirementsList from "./RequirementsList";
-import BenefitsList from "./BenefitsList";
+import RequirementsList from "./components/RequirementsList";
+import BenefitsList from "./components/BenefitsList";
 
 const TOOLBAR_ACTIONS = [
   { Icon: Bold, title: "Bold" },

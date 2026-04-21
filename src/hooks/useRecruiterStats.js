@@ -1,9 +1,9 @@
 import { useState } from "react";
 import {
   BriefcaseBusiness,
-  FileText,
   CheckCircle2,
   MessagesSquare,
+  Users,
 } from "lucide-react";
 import { useGetMyStatsQuery, useGetMyJobsQuery } from "@/services/job.service";
 
@@ -19,7 +19,7 @@ export const STAT_CARD_CONFIG = [
   },
   {
     id: "totalApplications",
-    icon: FileText,
+    icon: Users,
     label: "Tổng đơn ứng tuyển",
     bgColor: "bg-secondary/20",
     borderColor: "border-secondary",

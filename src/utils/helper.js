@@ -8,7 +8,7 @@ const formatTime = (dateString) => {
 function formatDate(dateStr) {
   if (!dateStr) return "Không xác định";
   const d = new Date(dateStr);
-  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+  return `${d.getDate()}/${d.getMonth().toString().padStart(2, "0")}/${d.getFullYear()}`;
 }
 
 function convertArray(value) {
