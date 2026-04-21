@@ -85,10 +85,16 @@ function JobDetail() {
                       {requirements.map((requirement, index) => (
                         <article
                           key={index}
-                          className="bg-primary/10 flex items-start gap-2.5 rounded-lg p-2 text-sm"
+                          className="bg-primary/10 flex items-start gap-2.5 rounded-lg px-4 py-2 text-sm"
                         >
-                          <Puzzle className="text-secondary mt-0.5 size-4 shrink-0" />
-                          {requirement}
+                          <div>
+                            <p className="text-primary text-md font-bold tracking-wider whitespace-pre-line">
+                              {requirement.label.toUpperCase()}
+                            </p>
+                            <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
+                              {requirement.content}
+                            </p>
+                          </div>
                         </article>
                       ))}
                     </div>
@@ -100,15 +106,25 @@ function JobDetail() {
                   <div>
                     <SectionHeading icon={PartyPopper} label="Quyền lợi" />
                     <div className="grid grid-cols-2 gap-2.5">
-                      {benefits.map((benefit, index) => (
-                        <article
-                          key={index}
-                          className="bg-primary/10 flex items-start gap-2.5 rounded-lg p-2 text-sm"
-                        >
-                          <Handshake className="text-secondary mt-0.5 size-4 shrink-0" />
-                          {benefit}
-                        </article>
-                      ))}
+                      {benefits.map((benefit, index) => {
+                        const Icon = benefit.icon;
+                        return (
+                          <article
+                            key={index}
+                            className="bg-primary/10 flex items-start gap-2.5 rounded-lg p-2 text-sm"
+                          >
+                            <Icon className="text-secondary-container mt-0.5 size-4 shrink-0" />
+                            <div>
+                              <p className="text-primary text-md font-bold tracking-wider whitespace-pre-line">
+                                {benefit.label.toUpperCase()}
+                              </p>
+                              <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
+                                {benefit.content}
+                              </p>
+                            </div>
+                          </article>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

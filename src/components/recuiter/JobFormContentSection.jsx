@@ -4,6 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import JobFormField from "./JobFormField";
 import JobFormSectionHeader from "./JobFormSectionHeader";
+import RequirementsList from "./RequirementsList";
+import BenefitsList from "./BenefitsList";
 
 const TOOLBAR_ACTIONS = [
   { Icon: Bold, title: "Bold" },
@@ -15,7 +17,6 @@ const TOOLBAR_ACTIONS = [
 function RichTextarea({ name, value, onChange, rows = 6, placeholder }) {
   return (
     <div className="border-input bg-primary/10 overflow-hidden rounded-lg border">
-      {/* Toolbar */}
       <div className="border-input bg-primary/20 flex items-center gap-0.5 border-b px-2 py-1.5">
         {TOOLBAR_ACTIONS.map((action) => {
           const ActionIcon = action.Icon;
@@ -59,44 +60,40 @@ function JobFormContentSection({ form, onChange }) {
         />
       </JobFormField>
 
-      {/* Requirements */}
-      <JobFormField
-        label="Yêu cầu ứng viên"
-        hint="Cách nhau bằng dấu phẩy. VD: Tốt nghiệp ĐH, 2 năm kinh nghiệm, tiếng Anh B2"
-      >
+      {/* Tags */}
+      <JobFormField label="Tags kỹ năng" hint="Cách nhau bằng dấu phẩy">
         <Textarea
-          name="requirements"
-          value={form.requirements}
+          name="tags"
+          placeholder="ReactJS, NodeJS, TypeScript"
+          value={form.tags}
           onChange={onChange}
-          rows={3}
-          placeholder="VD: Tốt nghiệp QTKD; kỹ năng Sales; chịu được áp lực..."
           className="bg-primary/10 resize-none"
         />
       </JobFormField>
 
-      {/* Tags + Benefits */}
-      <div className="grid grid-cols-2 gap-4">
-        <JobFormField label="Tags kỹ năng" hint="Cách nhau bằng dấu phẩy">
-          <Textarea
-            rows={3}
-            name="tags"
-            placeholder="ReactJS, NodeJS, TypeScript"
-            value={form.tags}
-            onChange={onChange}
-            className="bg-primary/10 resize-none"
-          />
-        </JobFormField>
-        <JobFormField label="Phúc lợi" hint="Cách nhau bằng dấu phẩy">
-          <Textarea
-            rows={3}
-            name="benefits"
-            placeholder="BHXH, Thưởng lễ, Laptop, Teambuilding"
-            value={form.benefits}
-            onChange={onChange}
-            className="bg-primary/10 resize-none"
-          />
-        </JobFormField>
-      </div>
+      {/* Requirements */}
+      <JobFormField label="Yêu cầu ứng viên">
+        <RequirementsList
+          items={
+            Array.isArray(form.requirements)
+              ? form.requirements
+              : [{ label: "", content: "" }]
+          }
+          onChange={onChange}
+        />
+      </JobFormField>
+
+      {/* Benefits */}
+      <JobFormField label="Phúc lợi">
+        <BenefitsList
+          items={
+            Array.isArray(form.benefits)
+              ? form.benefits
+              : [{ icon: "", label: "", content: "" }]
+          }
+          onChange={onChange}
+        />
+      </JobFormField>
 
       {/* Hot toggle */}
       <label

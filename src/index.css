@@ -127,6 +127,27 @@
   --status-published: #16a34a; /* green-600 */
   --status-draft: #6b7280;     /* gray-500  */
   --status-closed: #dc2626;    /* red-600   */
+
+  /* ── Application status ── */
+  --status-pending-bg: #f3f4f6;
+  --status-pending-text: #4b5563;
+  --status-pending-border: #d1d5db;
+
+  --status-reviewing-bg: #fef9c3;
+  --status-reviewing-text: #a16207;
+  --status-reviewing-border: #fde68a;
+
+  --status-interview-bg: #dbeafe;
+  --status-interview-text: #1d4ed8;
+  --status-interview-border: #bfdbfe;
+
+  --status-accepted-bg: #dcfce7;
+  --status-accepted-text: #15803d;
+  --status-accepted-border: #bbf7d0;
+
+  --status-rejected-bg: #fee2e2;
+  --status-rejected-text: #b91c1c;
+  --status-rejected-border: #fecaca;
 }
 
 .dark {
@@ -182,6 +203,27 @@
   --hot: #431407;            /* dark orange background */
   --hot-foreground: #fed7aa; /* orange-200 */
   --hot-border: #7c2d12;    /* orange-900 */
+
+  /* ── Application status (dark) ── */
+  --status-pending-bg: #1f2937;
+  --status-pending-text: #9ca3af;
+  --status-pending-border: #374151;
+
+  --status-reviewing-bg: #422006;
+  --status-reviewing-text: #fde68a;
+  --status-reviewing-border: #78350f;
+
+  --status-interview-bg: #1e3a5f;
+  --status-interview-text: #93c5fd;
+  --status-interview-border: #1d4ed8;
+
+  --status-accepted-bg: #052e16;
+  --status-accepted-text: #86efac;
+  --status-accepted-border: #166534;
+
+  --status-rejected-bg: #450a0a;
+  --status-rejected-text: #fca5a5;
+  --status-rejected-border: #991b1b;
 }
 
 @layer base {

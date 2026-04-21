@@ -1,11 +1,13 @@
 import {
-  CheckCircle2,
   Clock,
   XCircle,
   Compass,
   BotMessageSquare,
   User,
   BookmarkCheck,
+  Eye,
+  MessagesSquare,
+  CircleCheck,
 } from "lucide-react";
 import { path } from "../path";
 
@@ -36,23 +38,28 @@ export const APPLICATION_STATUS_LABELS = {
 export const STATUS_CONFIG = {
   PENDING: {
     icon: Clock,
-    className: "bg-gray-100 text-gray-600 border-gray-300",
+    className:
+      "bg-[var(--status-pending-bg)] text-[var(--status-pending-text)] border-[var(--status-pending-border)]",
   },
   REVIEWING: {
-    icon: Clock,
-    className: "bg-yellow-100 text-yellow-700 border-yellow-200",
+    icon: Eye,
+    className:
+      "bg-[var(--status-reviewing-bg)] text-[var(--status-reviewing-text)] border-[var(--status-reviewing-border)]",
   },
   INTERVIEW: {
-    icon: CheckCircle2,
-    className: "bg-blue-100 text-blue-700 border-blue-200",
+    icon: MessagesSquare,
+    className:
+      "bg-[var(--status-interview-bg)] text-[var(--status-interview-text)] border-[var(--status-interview-border)]",
   },
   ACCEPTED: {
-    icon: CheckCircle2,
-    className: "bg-green-100 text-green-700 border-green-200",
+    icon: CircleCheck,
+    className:
+      "bg-[var(--status-accepted-bg)] text-[var(--status-accepted-text)] border-[var(--status-accepted-border)]",
   },
   REJECTED: {
     icon: XCircle,
-    className: "bg-red-100 text-red-700 border-red-200",
+    className:
+      "bg-[var(--status-rejected-bg)] text-[var(--status-rejected-text)] border-[var(--status-rejected-border)]",
   },
 };
 

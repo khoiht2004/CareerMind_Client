@@ -23,7 +23,7 @@ function JobFormDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl">
+      <DialogContent className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl md:max-w-4xl">
         {/* ── Fixed Header ── */}
         <DialogHeader className="border-border shrink-0 border-b px-6 py-3">
           <div className="flex items-center gap-3">

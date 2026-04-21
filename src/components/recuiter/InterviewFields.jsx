@@ -38,7 +38,7 @@ function InterviewFields({ fields, onFieldChange }) {
               type="time"
               value={fields.interviewTime}
               onChange={(e) => onFieldChange("interviewTime", e.target.value)}
-              className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+              className="bg-primary/10 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
             <Clock8 className="text-muted-foreground absolute top-2.5 right-2 size-4" />
           </div>
@@ -56,7 +56,7 @@ function InterviewFields({ fields, onFieldChange }) {
                 key={value}
                 type="button"
                 onClick={() => onFieldChange("interviewFormat", value)}
-                className={`flex cursor-pointer items-center justify-center gap-2 rounded-lg border px-2 py-1.5 text-sm font-medium transition-all ${
+                className={`bg-primary/10 flex cursor-pointer items-center justify-center gap-2 rounded-lg border px-2 py-1.5 text-sm font-medium transition-all ${
                   selected
                     ? "border-blue-500 bg-blue-500 text-white shadow-sm"
                     : "border-input bg-background text-foreground hover:bg-muted"
@@ -87,6 +87,7 @@ function InterviewFields({ fields, onFieldChange }) {
               : "Số nhà, đường, quận, thành phố..."
           }
           value={fields.interviewLocation}
+          className="bg-primary/10"
           onChange={(e) => onFieldChange("interviewLocation", e.target.value)}
         />
       </div>

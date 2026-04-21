@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Loader2, ExternalLink } from "lucide-react";
 import Pagination from "@/components/shared/Pagination";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -20,7 +19,6 @@ import {
 } from "@/components/ui/select";
 import {
   useGetAllApplicationsQuery,
-  useUpdateApplicationStatusMutation,
 } from "@/services/application.service";
 import { useGetMyJobsQuery } from "@/services/job.service";
 import {
@@ -29,6 +27,7 @@ import {
 } from "@/config/constants/candidate.constant";
 import { APP_STATUS_FILTER_OPTIONS } from "@/config/constants/recruiter.constant";
 import ApplicationUpdateDialog from "@/components/recuiter/ApplicationUpdateDialog";
+import { useApplicationUpdate } from "@/hooks/useApplicationUpdate";
 
 function StatusBadge({ status }) {
   const statusConfig = STATUS_CONFIG[status];
@@ -47,22 +46,6 @@ function RecruiterApplications() {
     jobId: "ALL",
     page: 1,
   });
-  const [selectedApp, setSelectedApp] = useState(null);
-  const [newStatus, setNewStatus] = useState("");
-  const [note, setNote] = useState("");
-  const [sendEmail, setSendEmail] = useState(true);
-  const [interviewFields, setInterviewFields] = useState({
-    interviewDate: "",
-    interviewTime: "",
-    interviewFormat: "",
-    interviewLocation: "",
-    confirmDeadline: "",
-  });
-  const [acceptedFields, setAcceptedFields] = useState({
-    startDate: "",
-    startTime: "",
-    officeAddress: "",
-  });
 
   const { data: appsData, isLoading } = useGetAllApplicationsQuery({
     status: filters.status !== "ALL" ? filters.status : undefined,
@@ -72,104 +55,28 @@ function RecruiterApplications() {
   });
 
   const { data: jobsData } = useGetMyJobsQuery({ limit: 100 });
-  const [updateStatus, { isLoading: updating }] =
-    useUpdateApplicationStatusMutation();
+
+  const {
+    selectedApp,
+    setSelectedApp,
+    newStatus,
+    setNewStatus,
+    note,
+    setNote,
+    sendEmail,
+    setSendEmail,
+    interviewFields,
+    acceptedFields,
+    openUpdate,
+    handleInterviewFieldChange,
+    handleAcceptedFieldChange,
+    handleUpdate,
+    updating,
+  } = useApplicationUpdate();
 
   const applications = appsData?.data?.applications ?? [];
   const totalPages = appsData?.data?.totalPages ?? 1;
   const myJobs = jobsData?.data?.jobs ?? [];
-
-  const toDateStr = (iso) =>
-    iso ? new Date(iso).toISOString().slice(0, 10) : "";
-
-  const openUpdate = (app) => {
-    setSelectedApp(app);
-    setNewStatus(app.status);
-    setNote(app.note ?? "");
-    setSendEmail(true);
-    setInterviewFields({
-      interviewDate: toDateStr(app.interviewDate),
-      interviewTime: app.interviewTime || "08:00",
-      interviewFormat: app.interviewFormat || "",
-      interviewLocation: app.interviewLocation || "",
-      confirmDeadline:
-        toDateStr(app.confirmDeadline) ||
-        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-          .toISOString()
-          .slice(0, 10),
-    });
-    setAcceptedFields({
-      startDate: toDateStr(app.startDate),
-      startTime: app.startTime || "08:00",
-      officeAddress: app.officeAddress || "",
-    });
-  };
-
-  const handleInterviewFieldChange = (field, value) => {
-    setInterviewFields((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleAcceptedFieldChange = (field, value) => {
-    setAcceptedFields((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleUpdate = async () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const isPast = (dateStr) =>
-      dateStr ? new Date(dateStr + "T00:00:00") < today : false;
-
-    if (newStatus === "INTERVIEW") {
-      if (isPast(interviewFields.interviewDate)) {
-        toast.error("Ngày phỏng vấn không được trước ngày hiện tại");
-        return;
-      }
-      if (isPast(interviewFields.confirmDeadline)) {
-        toast.error("Hạn phản hồi không được trước ngày hiện tại");
-        return;
-      }
-    }
-    if (newStatus === "ACCEPTED" && isPast(acceptedFields.startDate)) {
-      toast.error("Ngày bắt đầu không được trước ngày hiện tại");
-      return;
-    }
-
-    try {
-      const payload = {
-        id: selectedApp.id,
-        status: newStatus,
-        note: note || undefined,
-        sendEmail,
-      };
-
-      if (newStatus === "INTERVIEW") {
-        if (interviewFields.interviewDate)
-          payload.interviewDate = interviewFields.interviewDate;
-        if (interviewFields.interviewTime)
-          payload.interviewTime = interviewFields.interviewTime;
-        if (interviewFields.interviewFormat)
-          payload.interviewFormat = interviewFields.interviewFormat;
-        if (interviewFields.interviewLocation)
-          payload.interviewLocation = interviewFields.interviewLocation;
-        if (interviewFields.confirmDeadline)
-          payload.confirmDeadline = interviewFields.confirmDeadline;
-      } else if (newStatus === "ACCEPTED") {
-        if (acceptedFields.startDate)
-          payload.startDate = acceptedFields.startDate;
-        if (acceptedFields.startTime)
-          payload.startTime = acceptedFields.startTime;
-        if (acceptedFields.officeAddress)
-          payload.officeAddress = acceptedFields.officeAddress;
-      }
-
-      await updateStatus(payload).unwrap();
-      toast.success("Cập nhật trạng thái thành công");
-      setSelectedApp(null);
-    } catch {
-      toast.error("Không thể cập nhật trạng thái");
-    }
-  };
 
   return (
     <div className="mx-auto max-w-full space-y-6 p-6">
@@ -307,7 +214,6 @@ function RecruiterApplications() {
             </Table>
           </div>
 
-          {/* Pagination */}
           <Pagination
             page={filters.page}
             totalPages={totalPages}

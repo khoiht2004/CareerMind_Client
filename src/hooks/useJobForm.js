@@ -27,13 +27,19 @@ export function useJobForm() {
       title: job.title,
       location: job.location,
       description: job.description,
-      requirements: job.requirements ?? "",
       salary: job.salary ?? "",
       type: job.type,
       level: job.level ?? "",
       slots: job.slots,
       tags: job.tags,
-      benefits: job.benefits,
+      benefits:
+        Array.isArray(job.benefits) && job.benefits.length > 0
+          ? job.benefits
+          : [{ icon: "", label: "", content: "" }],
+      requirements:
+        Array.isArray(job.requirements) && job.requirements.length > 0
+          ? job.requirements
+          : [{ label: "", content: "" }],
       status: job.status,
       isHot: job.isHot,
       deadline: job.deadline ? job.deadline.slice(0, 10) : "",
@@ -58,8 +64,8 @@ export function useJobForm() {
       ...form,
       slots: +form.slots,
       tags: convertArray(form.tags),
-      benefits: convertArray(form.benefits),
-      requirements: convertArray(form.requirements),
+      benefits: form.benefits.filter((benefit) => benefit.label || benefit.content || benefit.icon),
+      requirements: form.requirements.filter((requirement) => requirement.label || requirement.content),
       deadline: form.deadline || undefined,
     };
     try {
