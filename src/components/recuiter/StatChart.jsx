@@ -1,85 +1,47 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export default function StatChart({ stats }) {
-  const chartData = [
-    {
-      name: "Tổng việc làm",
-      value: stats?.totalJobs || 0,
-      fill: "var(--color-jobs)",
-    },
-    {
-      name: "Đơn ứng tuyển",
-      value: stats?.totalApplications || 0,
-      fill: "var(--color-apps)",
-    },
-    {
-      name: "Đang phỏng vấn",
-      value: stats?.appsByStatus?.INTERVIEW || 0,
-      fill: "var(--color-interview)",
-    },
-    {
-      name: "Đã chấp nhận",
-      value: stats?.appsByStatus?.ACCEPTED || 0,
-      fill: "var(--color-accepted)",
-    },
-  ];
+const chartConfig = {
+  count: {
+    label: "Đơn ứng tuyển",
+    color: "var(--chart-1)",
+  },
+};
 
-  const chartConfig = {
-    jobs: {
-      label: "Tổng việc làm",
-      color: "var(--chart-1)",
-    },
-    apps: {
-      label: "Đơn ứng tuyển",
-      color: "var(--chart-2)",
-    },
-    interview: {
-      label: "Đang phỏng vấn",
-      color: "var(--chart-3)",
-    },
-    accepted: {
-      label: "Đã chấp nhận",
-      color: "var(--chart-4)",
-    },
-  };
-
+export default function StatChart({ monthlyData = [] }) {
   return (
-    <ChartContainer config={chartConfig} className="size-full min-h-[300px]">
-      <BarChart accessibilityLayer data={chartData} margin={{ top: 20 }}>
-        <CartesianGrid vertical={false} />
+    <ChartContainer config={chartConfig} className="h-[240px] w-full">
+      <BarChart data={monthlyData} margin={{ top: 8, right: 8, left: -16 }}>
+        <CartesianGrid vertical={false} stroke="var(--border)" />
         <XAxis
-          dataKey="name"
+          dataKey="label"
           tickLine={false}
-          tickMargin={10}
           axisLine={false}
+          tickMargin={8}
           className="text-xs"
+          tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
         />
-        <YAxis tickLine={false} axisLine={false} tickMargin={10} />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+          allowDecimals={false}
+        />
         <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
+          cursor={{ fill: "var(--muted)" }}
+          content={<ChartTooltipContent />}
         />
-        <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-          <LabelList
-            dataKey="value"
-            position="top"
-            offset={12}
-            className="fill-foreground"
-            fontSize={12}
-          />
-        </Bar>
+        <Bar
+          dataKey="count"
+          fill="var(--chart-1)"
+          radius={[4, 4, 0, 0]}
+          maxBarSize={40}
+        />
       </BarChart>
     </ChartContainer>
   );

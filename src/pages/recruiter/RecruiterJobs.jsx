@@ -18,7 +18,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetMyJobsQuery, useDeleteJobMutation } from "@/services/job.service";
+import {
+  useGetMyJobsQuery,
+  useDeleteJobMutation,
+} from "@/services/job.service";
 import { useNavigate } from "react-router";
 import Pagination from "@/components/shared/Pagination";
 import JobFormDialog from "@/components/recuiter/JobFormDialog";
@@ -33,7 +36,11 @@ import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 
 function RecruiterJobs() {
   const navigate = useNavigate();
-  const [filters, setFilters] = useState({ search: "", status: "ALL", page: 1 });
+  const [filters, setFilters] = useState({
+    search: "",
+    status: "ALL",
+    page: 1,
+  });
   const [deleteId, setDeleteId] = useState(null);
 
   const { data, isLoading } = useGetMyJobsQuery({
@@ -72,15 +79,15 @@ function RecruiterJobs() {
   };
 
   return (
-    <div className="mx-auto max-w-full space-y-6 p-6">
+    <div className="max-w-full space-y-6 px-10 pt-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Quản lý việc làm</h1>
+          <h1 className="text-primary text-4xl font-black">Quản lý việc làm</h1>
           <p className="text-muted-foreground mt-1 text-sm">
             {data?.data?.total ?? 0} việc làm đã đăng
           </p>
         </div>
-        <Button onClick={openCreate} className="gap-2 cursor-pointer">
+        <Button onClick={openCreate} className="cursor-pointer gap-2">
           <Plus className="size-4" />
           Tạo mới
         </Button>

@@ -17,9 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  useGetAllApplicationsQuery,
-} from "@/services/application.service";
+import { useGetAllApplicationsQuery } from "@/services/application.service";
 import { useGetMyJobsQuery } from "@/services/job.service";
 import {
   APPLICATION_STATUS_LABELS,
@@ -79,9 +77,9 @@ function RecruiterApplications() {
   const myJobs = jobsData?.data?.jobs ?? [];
 
   return (
-    <div className="mx-auto max-w-full space-y-6 p-6">
+    <div className="max-w-full space-y-6 px-10 pt-6">
       <div>
-        <h1 className="text-2xl font-bold">Đơn ứng tuyển</h1>
+        <h1 className="text-primary text-4xl font-black">Đơn ứng tuyển</h1>
         <p className="text-muted-foreground mt-1 text-sm">
           {appsData?.data?.total ?? 0} đơn ứng tuyển
         </p>

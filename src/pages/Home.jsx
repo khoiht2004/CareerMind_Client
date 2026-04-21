@@ -115,7 +115,7 @@ function Home() {
   };
 
   return (
-    <div className="flex flex-col px-4 pt-4 sm:px-6 sm:pt-6">
+    <div className="flex flex-col px-4 pt-4 sm:px-6 sm:pt-6 md:px-10">
       {/* Hero Banner */}
       <HeroBanner
         inputValue={inputValue}
