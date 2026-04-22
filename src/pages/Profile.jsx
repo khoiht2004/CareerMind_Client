@@ -79,7 +79,7 @@ function Profile() {
 
         {/* Tab content */}
         {visibleTabs.map(({ key }) => (
-          <TabsContent key={key} value={key} className="max-w-full">
+          <TabsContent key={key} value={key} className="max-w-full lg:w-6xl">
             {TAB_CONTENT[key]}
           </TabsContent>
         ))}

@@ -1,126 +1,77 @@
-import { useState, useCallback } from "react";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  useGetMyCvsQuery,
-  useUploadCvMutation,
-  useDeleteCvMutation,
-  useSetDefaultCvMutation,
-} from "@/services/cv.service";
-import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
-import { ALLOWED_TYPES } from "@/config/constants/constants";
-import ConfirmDialog from "../shared/ConfirmDialog";
+import { useRef } from "react";
+import { FileText, Lightbulb, Loader2, Plus } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import CvDropZone from "./components/CvDropZone";
+import CvFeaturedCard from "./components/CvFeaturedCard";
 import CvListItem from "./components/CvListItem";
+import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
+import ConfirmDialog from "../shared/ConfirmDialog";
+import { useMyCv, MAX_CV_SIZE_MB, MAX_CV_COUNT } from "@/hooks/useMyCv";
 
-const MAX_SIZE_MB = 2;
-const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+const CV_TIPS = [
+  "Sử dụng định dạng PDF để giữ nguyên bố cục chuyên nghiệp.",
+  "Đặt tên CV theo cấu trúc: HoTen_ViTri_CongTy.",
+];
 
 function MyCv() {
-  const [dragging, setDragging] = useState(false);
-  const [pendingFile, setPendingFile] = useState(null);
-  const [previewCv, setPreviewCv] = useState(null);
-  const [cvToDelete, setCvToDelete] = useState(null);
+  const addMoreRef = useRef(null);
+  const {
+    cvs,
+    defaultCv,
+    otherCvs,
+    isLoading,
+    isUploading,
+    isDeleting,
+    dragging,
+    pendingFile,
+    previewCv,
+    cvToDelete,
+    handleFileSelect,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    handleUpload,
+    handleCancelPending,
+    handleDelete,
+    handleSetDefault,
+    handlePreview,
+    handleClosePreview,
+    handleDeleteClick,
+    handleDeleteDialogChange,
+  } = useMyCv();
 
-  const { data, isLoading: isLoadingList } = useGetMyCvsQuery();
-  const [uploadCv, { isLoading: isUploading }] = useUploadCvMutation();
-  const [deleteCv, { isLoading: isDeleting }] = useDeleteCvMutation();
-  const [setDefaultCv] = useSetDefaultCvMutation();
-
-  const cvs = data?.data ?? [];
-
-  const validateFile = useCallback((file) => {
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error("Chỉ chấp nhận file PDF, DOC, DOCX");
-      return false;
-    }
-    if (file.size > MAX_SIZE_BYTES) {
-      toast.error(`File phải nhỏ hơn ${MAX_SIZE_MB}MB`);
-      return false;
-    }
-    return true;
-  }, []);
-
-  const handleFileSelect = useCallback(
-    (e) => {
-      const file = e.target.files?.[0];
-      if (file && validateFile(file)) setPendingFile(file);
-      e.target.value = "";
-    },
-    [validateFile],
-  );
-
-  const handleDrop = useCallback(
-    (e) => {
-      e.preventDefault();
-      setDragging(false);
-      const file = e.dataTransfer.files?.[0];
-      if (file && validateFile(file)) setPendingFile(file);
-    },
-    [validateFile],
-  );
-
-  const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    setDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback(() => setDragging(false), []);
-
-  const handleUpload = useCallback(async () => {
-    if (!pendingFile) return;
-    const formData = new FormData();
-    formData.append("cv", pendingFile);
-    formData.append("name", pendingFile.name.replace(/\.[^.]+$/, ""));
-    try {
-      await uploadCv(formData).unwrap();
-      toast.success("Tải lên CV thành công!");
-      setPendingFile(null);
-    } catch (err) {
-      toast.error(err?.data?.message || "Tải lên thất bại, vui lòng thử lại");
-    }
-  }, [pendingFile, uploadCv]);
-
-  const handleCancelPending = useCallback(() => setPendingFile(null), []);
-
-  const handleDelete = useCallback(async () => {
-    if (!cvToDelete) return;
-    try {
-      await deleteCv(cvToDelete.id).unwrap();
-      toast.success("Đã xóa CV");
-      setCvToDelete(null);
-    } catch (err) {
-      toast.error(err?.data?.message || "Xóa thất bại");
-    }
-  }, [cvToDelete, deleteCv]);
-
-  const handleSetDefault = useCallback(
-    async (id) => {
-      try {
-        await setDefaultCv(id).unwrap();
-        toast.success("Đã đặt làm CV mặc định");
-      } catch (err) {
-        toast.error(err?.data?.message || "Cập nhật thất bại");
-      }
-    },
-    [setDefaultCv],
-  );
-
-  const handlePreview = useCallback((cv) => setPreviewCv(cv), []);
-  const handleClosePreview = useCallback(() => setPreviewCv(null), []);
-  const handleDeleteClick = useCallback((cv) => setCvToDelete(cv), []);
-  const handleDeleteDialogChange = useCallback((open) => {
-    if (!open) setCvToDelete(null);
-  }, []);
+  const canAddMore = cvs.length < MAX_CV_COUNT;
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm">CV của tôi</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-5">
+      {/* Header */}
+      <div className="mb-6">
+        <p className="text-secondary mb-2 text-xs font-semibold tracking-widest uppercase">
+          Hồ sơ nghề nghiệp
+        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-primary text-3xl font-black">CV của tôi</h1>
+            <p className="text-muted-foreground mt-1 max-w-sm text-sm">
+              Quản lý và tối ưu các phiên bản CV để sẵn sàng cho những cơ hội
+              nghề nghiệp hàng đầu.
+            </p>
+          </div>
+          {/* Stat card */}
+          <div className="bg-primary/10 shrink-0 rounded-xl p-4 text-center">
+            <FileText className="text-primary mx-auto mb-1 size-6" />
+            <p className="text-muted-foreground text-xs">Tổng số CV</p>
+            <p className="text-foreground text-2xl font-black">
+              {String(cvs.length).padStart(2, "0")}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Two-column layout */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+        {/* Left: Upload zone + Tips */}
+        <div className="space-y-4">
           <CvDropZone
             pendingFile={pendingFile}
             isDragging={dragging}
@@ -131,32 +82,98 @@ function MyCv() {
             onUpload={handleUpload}
             onCancel={handleCancelPending}
             onFileSelect={handleFileSelect}
+            maxSizeMb={MAX_CV_SIZE_MB}
           />
 
-          {isLoadingList ? (
-            <div className="flex justify-center py-4">
-              <Loader2 className="text-muted-foreground size-5 animate-spin" />
-            </div>
-          ) : cvs.length > 0 ? (
-            <div className="space-y-3">
-              <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-                Danh sách CV ({cvs.length})
-              </p>
+          {/* Tips */}
+          <Card>
+            <CardContent className="p-4">
+              <h4 className="text-foreground mb-3 flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">
+                <Lightbulb className="size-3.5" />
+                Mẹo nhỏ cho bạn
+              </h4>
               <ul className="space-y-2">
-                {cvs.map((cv) => (
-                  <CvListItem
-                    key={cv.id}
-                    cv={cv}
-                    onPreview={handlePreview}
-                    onSetDefault={handleSetDefault}
-                    onDelete={handleDeleteClick}
-                  />
+                {CV_TIPS.map((tip, i) => (
+                  <li
+                    key={i}
+                    className="text-muted-foreground flex items-start gap-2 text-sm"
+                  >
+                    <span className="text-secondary mt-0.5 shrink-0">•</span>
+                    {tip}
+                  </li>
                 ))}
               </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right: CV list */}
+        <div>
+          {isLoading ? (
+            <div className="flex h-40 items-center justify-center">
+              <Loader2 className="text-muted-foreground size-6 animate-spin" />
             </div>
-          ) : null}
-        </CardContent>
-      </Card>
+          ) : (
+            <div className="space-y-3">
+              {/* Default CV featured */}
+              {defaultCv && (
+                <CvFeaturedCard
+                  cv={defaultCv}
+                  onPreview={handlePreview}
+                  onDelete={handleDeleteClick}
+                />
+              )}
+
+              {/* Other CVs grid + Add slot */}
+              {(otherCvs.length > 0 || canAddMore) && (
+                <div className="grid grid-cols-2 gap-3">
+                  {otherCvs.map((cv) => (
+                    <CvListItem
+                      key={cv.id}
+                      cv={cv}
+                      onPreview={handlePreview}
+                      onSetDefault={handleSetDefault}
+                      onDelete={handleDeleteClick}
+                    />
+                  ))}
+                  {canAddMore && (
+                    <button
+                      onClick={() => addMoreRef.current?.click()}
+                      className="border-border hover:border-primary/50 hover:bg-accent flex min-h-[120px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed transition-colors"
+                    >
+                      <div className="bg-muted flex size-10 items-center justify-center rounded-full">
+                        <Plus className="text-muted-foreground size-5" />
+                      </div>
+                      <p className="text-muted-foreground text-xs">
+                        Sử dụng tối đa {MAX_CV_COUNT} CV
+                      </p>
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Empty state */}
+              {cvs.length === 0 && (
+                <div className="border-border text-muted-foreground rounded-xl border-2 border-dashed py-16 text-center">
+                  <FileText className="mx-auto mb-3 size-10 opacity-30" />
+                  <p className="text-sm">
+                    Chưa có CV nào. Hãy tải lên CV đầu tiên!
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Hidden input for grid "add more" slot */}
+      <input
+        ref={addMoreRef}
+        type="file"
+        accept=".pdf,.doc,.docx"
+        className="hidden"
+        onChange={handleFileSelect}
+      />
 
       <CvPreviewDialog
         open={!!previewCv}

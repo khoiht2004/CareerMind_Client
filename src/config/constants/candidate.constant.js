@@ -8,6 +8,11 @@ import {
   Eye,
   MessagesSquare,
   CircleCheck,
+  Bell,
+  Lock,
+  Shield,
+  LogOut,
+  Headset,
 } from "lucide-react";
 import { path } from "../path";
 
@@ -98,4 +103,42 @@ export const JOB_SORT_OPTIONS = [
   { label: "Mới nhất", value: "newest" },
   { label: "Cũ nhất", value: "oldest" },
   { label: "Lương cao nhất", value: "salary_desc" },
+];
+
+export const APPLICATION_STATUS_FILTER_OPTIONS = [
+  { label: "Tất cả trạng thái", value: "ALL" },
+  ...Object.entries(APPLICATION_STATUS_LABELS).map(([value, label]) => ({
+    value,
+    label,
+  })),
+];
+
+export const APPLICATION_DATE_RANGE_OPTIONS = [
+  { label: "7 ngày qua", value: "7" },
+  { label: "30 ngày qua", value: "30" },
+  { label: "90 ngày qua", value: "90" },
+  { label: "Tất cả thời gian", value: "0" },
+];
+
+export const SETTINGS_SIDEBAR_ITEMS = [
+  { id: "personal", label: "Thông tin cá nhân", icon: User },
+  { id: "notifications", label: "Thông báo", icon: Bell },
+  { id: "security", label: "Đổi mật khẩu", icon: Lock },
+  { id: "privacy", label: "Quyền riêng tư", icon: Shield },
+];
+
+export const AI_INTEREST_OPTIONS = [
+  "Phát triển Phần mềm",
+  "Thiết kế UI/UX",
+  "Marketing Dược",
+  "Quản trị Dự án",
+  "Data Science",
+  "Sales & Business",
+];
+
+export const AI_LOCATION_OPTIONS = [
+  "TP. Hồ Chí Minh",
+  "Hà Nội",
+  "Đà Nẵng",
+  "Từ xa",
 ];

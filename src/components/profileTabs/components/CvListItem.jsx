@@ -1,11 +1,8 @@
 import { memo, useCallback } from "react";
-import { FileText, Trash2, Star, Eye } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { formatFileSize } from "@/utils/helper";
+import { Eye, FileText, Pencil, Trash2 } from "lucide-react";
+import { formatRelativeTime } from "@/utils/helper";
 
 function CvListItem({ cv, onPreview, onSetDefault, onDelete }) {
-  const handlePreview = useCallback(() => onPreview(cv), [cv, onPreview]);
   const handleSetDefault = useCallback(
     () => onSetDefault(cv.id),
     [cv.id, onSetDefault],
@@ -13,65 +10,44 @@ function CvListItem({ cv, onPreview, onSetDefault, onDelete }) {
   const handleDelete = useCallback(() => onDelete(cv), [cv, onDelete]);
 
   return (
-    <li className="bg-muted/40 flex items-center gap-3 rounded-lg border px-4 py-3">
-      <FileText className="text-primary size-5 shrink-0" />
-
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <span className="truncate text-xs font-medium sm:text-sm">
-            {cv.name}
-          </span>
-          {cv.isDefault && (
-            <Badge
-              variant="secondary"
-              className="hidden shrink-0 text-xs sm:flex"
-            >
-              <Star className="mr-1 size-2.5 fill-current" />
-              Mặc định
-            </Badge>
-          )}
+    <div className="bg-card border-border flex min-h-[120px] flex-col gap-2 rounded-xl border p-4">
+      <div className="flex items-start gap-3">
+        <div className="bg-primary/10 flex size-10 shrink-0 items-center justify-center rounded-lg">
+          <FileText className="text-primary size-5" />
         </div>
-        <p className="text-muted-foreground mt-0.5 text-xs">
-          {cv.fileType?.toUpperCase()} · {formatFileSize(cv.fileSize)} ·{" "}
-          {new Date(cv.createdAt).toLocaleDateString("vi-VN")}
-        </p>
+        <div className="min-w-0 flex-1">
+          <p className="text-foreground line-clamp-1 text-sm font-semibold">
+            {cv.name}
+          </p>
+          <p className="text-muted-foreground mt-0.5 text-xs">
+            Cập nhật {formatRelativeTime(cv.updatedAt ?? cv.createdAt)}
+          </p>
+        </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-1">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-9"
-          title="Xem CV"
-          onClick={handlePreview}
-        >
-          <Eye className="size-4.5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="size-9"
-          title="Đặt làm mặc định"
+      <div className="mt-auto flex items-center justify-between">
+        <button
           onClick={handleSetDefault}
+          className="text-secondary hover:text-secondary/80 cursor-pointer text-xs font-semibold tracking-wide uppercase transition-colors"
         >
-          <Star
-            className="size-4.5"
-            color={
-              cv.isDefault ? "var(--secondary-container)" : "currentColor"
-            }
-          />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-destructive hover:text-destructive size-8"
-          title="Xóa CV"
-          onClick={handleDelete}
-        >
-          <Trash2 className="size-4.5" />
-        </Button>
+          Đặt mặc định
+        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => onPreview(cv)}
+            className="text-muted-foreground hover:text-foreground cursor-pointer rounded p-1 transition-colors"
+          >
+            <Eye className="size-4" />
+          </button>
+          <button
+            onClick={handleDelete}
+            className="text-muted-foreground hover:text-destructive cursor-pointer rounded p-1 transition-colors"
+          >
+            <Trash2 className="size-4" />
+          </button>
+        </div>
       </div>
-    </li>
+    </div>
   );
 }
 

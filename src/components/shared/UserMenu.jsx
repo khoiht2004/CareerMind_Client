@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { Bell, Settings, User, KeyRound, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,10 +15,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { clearUser } from "@/store/slice/authSlice";
-import { apiSlice } from "@/store/slice/apiSlice";
 import { path } from "@/config/path";
-import { toast } from "sonner";
+import handleLogout from "@/hooks/useLogout";
 
 function UserMenu() {
   const { user } = useSelector((state) => state.auth);
@@ -29,18 +27,11 @@ function UserMenu() {
   const isRecruiter = user?.role === "RECRUITER";
   const sectionLabel = isRecruiter ? "Nhà tuyển dụng" : "Người dùng";
 
-  const handleLogout = () => {
-    dispatch(clearUser());
-    dispatch(apiSlice.util.resetApiState());
-    toast.success("Đã đăng xuất");
-    navigate(path.login);
-  };
-
   const avatarContent = user.avatarUrl ? (
     <img
       src={user.avatarUrl}
       alt={user.name}
-      className="h-full w-full object-cover"
+      className="h-full w-full object-cover object-top"
     />
   ) : (
     <span>{user.name?.[0]?.toUpperCase() ?? "U"}</span>
@@ -126,7 +117,7 @@ function UserMenu() {
 
           <DropdownMenuItem
             className="cursor-pointer gap-2.5 py-2.5 text-red-500 focus:bg-red-50 focus:text-red-500 dark:focus:bg-red-950/30"
-            onClick={handleLogout}
+            onClick={() => handleLogout(dispatch, navigate)}
           >
             <LogOut className="size-4" />
             Đăng xuất
