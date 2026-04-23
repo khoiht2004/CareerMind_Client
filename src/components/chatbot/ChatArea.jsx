@@ -2,38 +2,49 @@ import { useRef, useEffect } from "react";
 import {
   Bot,
   Send,
-  BotMessageSquare,
   Loader2,
-  ChevronLeft,
+  UserSearch,
+  FileText,
+  TrendingUp,
+  GraduationCap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import MessageBubble from "./MessageBubble";
-import { Textarea } from "../ui/textarea";
-import ChatHeaderActions from "./ChatHeaderActions";
 
 const SUGGESTED_QUESTIONS = [
-  "Tôi phù hợp với vị trí nào?",
-  "Cách viết CV hiệu quả?",
-  "Mức lương Frontend Developer hiện tại?",
-  "Kỹ năng cần có cho Data Scientist?",
+  {
+    q: "Tôi phù hợp với vị trí nào?",
+    icon: UserSearch,
+    cls: "bg-[var(--status-reviewing-bg)] text-[var(--status-reviewing-text)]",
+  },
+  {
+    q: "Cách viết CV hiệu quả?",
+    icon: FileText,
+    cls: "bg-[var(--status-interview-bg)] text-[var(--status-interview-text)]",
+  },
+  {
+    q: "Xu hướng tuyển dụng 2024?",
+    icon: TrendingUp,
+    cls: "bg-[var(--status-accepted-bg)] text-[var(--status-accepted-text)]",
+  },
+  {
+    q: "Cần học kỹ năng gì mới?",
+    icon: GraduationCap,
+    cls: "bg-[var(--status-rejected-bg)] text-[var(--status-rejected-text)]",
+  },
 ];
 
 const TEXTAREA_BASE_HEIGHT = 36;
 const TEXTAREA_MAX_HEIGHT = 100;
 
 function ChatArea({
-  sidebarOpen,
-  onToggleSidebar,
-  session,
   messages,
   pendingMessage,
   input,
   onInputChange,
   onSend,
-  onDelete,
-  onRename,
   onKeyDown,
   isSending,
   isLoading,
@@ -62,58 +73,52 @@ function ChatArea({
   const isEmpty = messages.length === 0 && !pendingMessage;
 
   return (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-      {/* Header */}
-      <div className="flex h-14 shrink-0 items-center border-b pr-5 pl-1">
-        {/* Nút mở sidebar — chỉ hiện khi sidebar đang ẩn */}
-        <div className="flex items-center gap-2.5">
-          <div>
-            {!sidebarOpen && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onToggleSidebar}
-                className="mr-1 size-8.5 shrink-0 cursor-pointer"
-                title="Mở danh sách hội thoại"
-              >
-                <ChevronLeft className="size-5" />
-              </Button>
-            )}
-          </div>
-        </div>
-        {/* Session info */}
-        <div className="flex flex-1 items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
-              <BotMessageSquare className="text-primary size-4" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold">
-                {session?.title ?? "Trợ lý AI SRA"}
-              </p>
-              <p className="text-[11px] text-green-500">Đang hoạt động</p>
-            </div>
-          </div>
-          <ChatHeaderActions
-            session={session}
-            onRename={onRename}
-            onDelete={onDelete}
-            hasActiveSession={hasActiveSession}
-          />
-        </div>
-      </div>
-
+    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl py-4 ">
       {/* Messages */}
-      <ScrollArea className="min-h-0 flex-1 p-3">
-        <div className="mx-auto max-w-full space-y-4">
+      <ScrollArea className="min-h-0 flex-1 px-4">
+        <div className="mx-auto max-w-2xl space-y-4">
           {isLoading ? (
-            <div className="flex justify-center py-4">
+            <div className="flex justify-center py-8">
               <Loader2 className="text-muted-foreground size-5 animate-spin" />
             </div>
           ) : isEmpty ? (
-            <div className="text-muted-foreground py-8 text-center">
-              <BotMessageSquare className="mx-auto mb-2 size-10 opacity-30" />
-              <p className="text-sm">Bắt đầu cuộc trò chuyện của bạn!</p>
+            /* Welcome state */
+            <div className="flex flex-col items-center justify-center gap-6 py-12 text-center">
+              <div className="bg-foreground text-background flex size-24 items-center justify-center rounded-3xl shadow-lg">
+                <Bot className="size-12" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold">
+                  Xin chào, tôi là AI Scout
+                </h2>
+                <p className="text-muted-foreground mx-auto max-w-sm text-sm leading-relaxed">
+                  Tôi là trợ lý sự nghiệp thông minh của bạn. Hãy bắt đầu cuộc
+                  trò chuyện để tối ưu hóa tương lai của bạn.
+                </p>
+              </div>
+
+              {/* Suggestion cards */}
+              <div className="grid w-full max-w-lg grid-cols-2 gap-3">
+                {SUGGESTED_QUESTIONS.map(({ q, icon, cls }) => {
+                  const Icon = icon;
+                  return (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => onSend(q)}
+                      disabled={!hasActiveSession}
+                      className="hover:bg-muted/60 bg-card flex items-center gap-3 rounded-2xl border p-4 text-left transition-colors disabled:opacity-40"
+                    >
+                      <div
+                        className={`flex size-9 shrink-0 items-center justify-center rounded-xl ${cls}`}
+                      >
+                        <Icon className="size-4" />
+                      </div>
+                      <p className="text-sm leading-snug font-medium">{q}</p>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           ) : (
             <>
@@ -121,7 +126,6 @@ function ChatArea({
                 <MessageBubble key={msg.id} message={msg} />
               ))}
 
-              {/* Optimistic user message while waiting for AI */}
               {pendingMessage && (
                 <MessageBubble
                   message={{
@@ -137,10 +141,10 @@ function ChatArea({
 
           {isSending && (
             <div className="flex gap-3">
-              <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+              <div className="bg-muted flex size-8 shrink-0 items-center justify-center rounded-full">
                 <Bot className="size-4" />
               </div>
-              <div className="bg-muted flex items-center gap-1 rounded-2xl rounded-tl-sm px-4 py-3">
+              <div className="bg-muted flex items-center gap-1.5 rounded-2xl rounded-tl-sm px-4 py-3">
                 <Loader2 className="text-muted-foreground size-3.5 animate-spin" />
                 <span className="text-muted-foreground text-xs">
                   Đang trả lời...
@@ -152,35 +156,14 @@ function ChatArea({
         </div>
       </ScrollArea>
 
-      {/* Suggested questions */}
-      {isEmpty && !isLoading && (
-        <div className="px-5 pb-3">
-          <p className="text-muted-foreground mb-2 text-xs">Gợi ý câu hỏi:</p>
-          <div className="flex flex-wrap gap-2">
-            {SUGGESTED_QUESTIONS.map((q) => (
-              <button
-                key={q}
-                onClick={() => onSend(q)}
-                disabled={!hasActiveSession}
-                className="hover:bg-muted rounded-full border px-3 py-1.5 text-xs transition-colors disabled:opacity-40"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <Separator />
-
-      {/* Input */}
-      <div className="p-4">
-        <div className="mx-auto flex items-end gap-2">
+      {/* Input area */}
+      <div className="border-t px-4 py-4">
+        <div className="mx-auto flex max-w-2xl items-end gap-3">
           <Textarea
             ref={textareaRef}
             placeholder={
               hasActiveSession
-                ? "Nhập câu hỏi của bạn..."
+                ? "Nhập câu hỏi của bạn tại đây..."
                 : "Tạo cuộc trò chuyện mới để bắt đầu"
             }
             value={input}
@@ -188,19 +171,20 @@ function ChatArea({
             onInput={handleResize}
             onKeyDown={onKeyDown}
             disabled={isSending || !hasActiveSession}
-            className="border-border min-h-0 resize-none overflow-y-auto border leading-tight [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="min-h-0 resize-none overflow-y-auto rounded-2xl leading-tight [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           />
           <Button
             size="icon"
-            className="shrink-0 rounded-full"
+            className="size-10 shrink-0 rounded-full"
             onClick={() => onSend()}
             disabled={!input.trim() || isSending || !hasActiveSession}
           >
             <Send className="size-4" />
           </Button>
         </div>
-        <p className="text-muted-foreground mt-2 text-center text-[10px]">
-          * AI có thể mắc lỗi. Hãy kiểm tra thông tin quan trọng. *
+        <p className="text-muted-foreground mt-2 text-center text-[10px] tracking-wide uppercase">
+          AI Scout có thể đưa ra thông tin không chính xác. Hãy kiểm tra các
+          thông tin quan trọng.
         </p>
       </div>
     </div>

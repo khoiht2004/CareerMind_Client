@@ -72,24 +72,21 @@ function ChatBot() {
     }
   };
 
-  const handleDeleteSession = async () => {
-    if (!activeSessionId) return;
+  const handleDeleteSession = async (sessionId = activeSessionId) => {
+    if (!sessionId) return;
     try {
-      await deleteSession(activeSessionId).unwrap();
-      setActiveSessionId(null);
+      await deleteSession(sessionId).unwrap();
+      if (sessionId === activeSessionId) setActiveSessionId(null);
       toast.success("Đã xóa cuộc trò chuyện");
     } catch {
       toast.error("Xóa thất bại");
     }
   };
 
-  const handleRenameSession = async (title) => {
-    if (!activeSessionId || !title?.trim()) return;
+  const handleRenameSession = async (title, sessionId = activeSessionId) => {
+    if (!sessionId || !title?.trim()) return;
     try {
-      await updateSessionTitle({
-        sessionId: activeSessionId,
-        title: title.trim(),
-      }).unwrap();
+      await updateSessionTitle({ sessionId, title: title.trim() }).unwrap();
       toast.success("Đã đổi tên cuộc trò chuyện");
     } catch {
       toast.error("Đổi tên thất bại");
@@ -104,31 +101,26 @@ function ChatBot() {
   };
 
   return (
-    <div className="flex h-full min-h-0 w-full items-stretch overflow-hidden">
+    <div className="-mb-25 flex h-[calc(100svh-3.5rem)] w-full gap-3 overflow-hidden md:p-6">
       <ChatSidebar
         isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
         sessions={sessions}
         activeSessionId={activeSessionId}
         onSelect={(id) => {
           setActiveSessionId(id);
-          // Đóng sidebar sau khi chọn session trên mobile
           if (window.innerWidth < 768) setSidebarOpen(false);
         }}
         onCreate={handleCreateSession}
+        onRename={handleRenameSession}
+        onDelete={handleDeleteSession}
         isLoading={sessionsLoading}
       />
       <ChatArea
-        sidebarOpen={sidebarOpen}
-        onToggleSidebar={() => setSidebarOpen(true)}
-        session={messageData?.data?.session}
         messages={messages}
         pendingMessage={pendingMessage}
         input={input}
         onInputChange={setInput}
         onSend={handleSend}
-        onDelete={handleDeleteSession}
-        onRename={handleRenameSession}
         onKeyDown={handleKeyDown}
         isSending={isSending}
         isLoading={messagesLoading}

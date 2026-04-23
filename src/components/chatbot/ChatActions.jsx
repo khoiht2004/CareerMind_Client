@@ -17,7 +17,7 @@ import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-function ChatHeaderActions({ session, onRename, onDelete, hasActiveSession }) {
+function ChatActions({ session, onRename, onDelete, hasActiveSession }) {
   const [renameOpen, setRenameOpen] = useState(false);
   const [renameValue, setRenameValue] = useState("");
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -98,4 +98,4 @@ function ChatHeaderActions({ session, onRename, onDelete, hasActiveSession }) {
   );
 }
 
-export default ChatHeaderActions;
+export default ChatActions;
