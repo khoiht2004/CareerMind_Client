@@ -24,7 +24,9 @@ function CvDropZone({
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         className={`rounded-2xl p-6 transition-colors ${
-          isDragging ? "bg-primary/5" : "bg-muted-foreground/10"
+          isDragging
+            ? "bg-primary/5 outline-2 outline-dashed"
+            : "bg-muted-foreground/10"
         }`}
       >
         {pendingFile ? (
