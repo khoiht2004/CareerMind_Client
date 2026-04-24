@@ -20,10 +20,10 @@ function AuthButtons() {
         className="h-9 cursor-pointer"
         asChild
       >
-        <Link to={path.login}>Đăng nhập</Link>
+        <Link to={`${path.auth}?tab=login`}>Đăng nhập</Link>
       </Button>
       <Button size="sm" className="h-9 cursor-pointer" asChild>
-        <Link to={path.register}>Đăng ký</Link>
+        <Link to={`${path.auth}?tab=register`}>Đăng ký</Link>
       </Button>
     </div>
   );

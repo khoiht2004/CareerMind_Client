@@ -76,7 +76,7 @@ function PrivateLayout() {
   }
 
   if (!user) {
-    return <Navigate to={path.login} replace />;
+    return <Navigate to={path.auth + "?tab=login"} replace />;
   }
 
   return (

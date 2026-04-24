@@ -1,6 +1,7 @@
 export const path = {
   // Auth
   home: "/",
+  auth: "/auth",
   login: "/login",
   register: "/register",
   verifyEmail: "/verify-email",
