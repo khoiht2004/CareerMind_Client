@@ -16,6 +16,7 @@ import VerifyEmail from "@/pages/auth/VerifyEmail";
 
 // Public pages
 import Home from "@/pages/Home";
+import AIPricing from "./pages/AIPricing";
 const JobDetail = lazy(() => import("@/pages/JobDetail"));
 const CompanyDetail = lazy(() => import("@/pages/CompanyDetail"));
 
@@ -72,6 +73,7 @@ function App() {
               element={<ApplicationDetail />}
             />
             <Route path={path.savedJobs} element={<SavedJobs />} />
+            <Route path={path.aipricing} element={<AIPricing />} />
 
             {/* Recruiter routes */}
             <Route path={path.recruiter.jobs} element={<RecruiterJobs />} />

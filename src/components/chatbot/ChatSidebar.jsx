@@ -5,6 +5,7 @@ import { formatRelativeTime } from "@/utils/helper";
 import ChatActions from "./ChatActions";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
+import { path } from "@/config/path";
 
 function ChatSidebar({
   isOpen,
@@ -106,7 +107,7 @@ function ChatSidebar({
             Mở khóa phân tích chuyên sâu từ AI Scout.
           </p>
           <Button className="mt-3" variant="secondary" asChild>
-            <Link to="/dashboard/pricing">Nâng cấp Pro</Link>
+            <Link to={path.aipricing}>Nâng cấp Pro</Link>
           </Button>
         </div>
       </div>

@@ -18,6 +18,9 @@ export const path = {
   applicationDetail: "/applications/:id",
   savedJobs: "/saved-jobs",
 
+  // AI
+  aipricing: "/dashboard/pricing",
+
   // Recruiter
   recruiter: {
     jobs: "/recruiter/jobs",

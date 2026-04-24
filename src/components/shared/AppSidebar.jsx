@@ -5,6 +5,10 @@ import ThemeToggle from "./ThemeToggle";
 import { CANDIDATE_NAV_ITEMS } from "@/config/constants/candidate.constant";
 import { RECRUITER_NAV_ITEMS } from "@/config/constants/recruiter.constant";
 import Logo from "./Logo";
+import { path } from "@/config/path";
+import { Button } from "../ui/button";
+import { Link } from "react-router";
+import { Bot } from "lucide-react";
 
 function AppSidebar() {
   const { user } = useSelector((state) => state.auth);
@@ -26,6 +30,19 @@ function AppSidebar() {
           ))}
         </div>
       </nav>
+
+      <div className="mb-2 px-4">
+        <Button
+          size="icon"
+          className="bg-secondary hover:bg-secondary/80 h-10 w-full rounded-xl text-white"
+          asChild
+        >
+          <Link to={path.aipricing}>
+            <Bot className="h-5 w-5" />
+            {!isCollapsed && <span className="ml-2">Upgrade to Pro</span>}
+          </Link>
+        </Button>
+      </div>
 
       {/* Theme toggle */}
       <ThemeToggle isCollapsed={isCollapsed} />
