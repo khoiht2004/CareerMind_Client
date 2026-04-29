@@ -1,104 +1,26 @@
-import { useState, useMemo, useEffect } from "react";
-import { toast } from "sonner";
-import {
-  useGetSessionsQuery,
-  useCreateSessionMutation,
-  useGetMessagesQuery,
-  useSendMessageMutation,
-  useDeleteSessionMutation,
-  useUpdateSessionTitleMutation,
-} from "@/services/chat.service";
+import { useChatBot } from "@/hooks/useChatBot";
 import ChatSidebar from "@/components/chatbot/ChatSidebar";
 import ChatArea from "@/components/chatbot/ChatArea";
 
 function ChatBot() {
-  const [activeSessionId, setActiveSessionId] = useState(null);
-  const [input, setInput] = useState("");
-  const [isSending, setIsSending] = useState(false);
-  const [pendingMessage, setPendingMessage] = useState(null);
-
-  // Sidebar mở mặc định trên desktop, đóng trên mobile
-  const [sidebarOpen, setSidebarOpen] = useState(
-    () => typeof window !== "undefined" && window.innerWidth >= 768,
-  );
-
-  const { data: sessionsData, isLoading: sessionsLoading } =
-    useGetSessionsQuery();
-  const { data: messageData, isLoading: messagesLoading } = useGetMessagesQuery(
+  const {
     activeSessionId,
-    { skip: !activeSessionId },
-  );
-  const [createSession] = useCreateSessionMutation();
-  const [sendMessage] = useSendMessageMutation();
-  const [deleteSession] = useDeleteSessionMutation();
-  const [updateSessionTitle] = useUpdateSessionTitleMutation();
-
-  const sessions = useMemo(() => sessionsData?.data ?? [], [sessionsData]);
-  const messages = useMemo(
-    () => messageData?.data?.messages ?? [],
-    [messageData],
-  );
-
-  // Auto-select first session
-  useEffect(() => {
-    if (!activeSessionId && sessions.length > 0) {
-      setActiveSessionId(sessions[0].id);
-    }
-  }, [sessions, activeSessionId]);
-
-  const handleCreateSession = async () => {
-    try {
-      const res = await createSession({}).unwrap();
-      setActiveSessionId(res.data.id);
-    } catch {
-      toast.error("Không thể tạo cuộc trò chuyện mới");
-    }
-  };
-
-  const handleSend = async (text) => {
-    const content = (text ?? input).trim();
-    if (!content || isSending || !activeSessionId) return;
-
-    setInput("");
-    setIsSending(true);
-    setPendingMessage(content);
-    try {
-      await sendMessage({ sessionId: activeSessionId, content }).unwrap();
-    } catch {
-      toast.error("Gửi tin nhắn thất bại");
-    } finally {
-      setIsSending(false);
-      setPendingMessage(null);
-    }
-  };
-
-  const handleDeleteSession = async (sessionId = activeSessionId) => {
-    if (!sessionId) return;
-    try {
-      await deleteSession(sessionId).unwrap();
-      if (sessionId === activeSessionId) setActiveSessionId(null);
-      toast.success("Đã xóa cuộc trò chuyện");
-    } catch {
-      toast.error("Xóa thất bại");
-    }
-  };
-
-  const handleRenameSession = async (title, sessionId = activeSessionId) => {
-    if (!sessionId || !title?.trim()) return;
-    try {
-      await updateSessionTitle({ sessionId, title: title.trim() }).unwrap();
-      toast.success("Đã đổi tên cuộc trò chuyện");
-    } catch {
-      toast.error("Đổi tên thất bại");
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
+    input,
+    setInput,
+    isSending,
+    pendingMessage,
+    sidebarOpen,
+    sessions,
+    messages,
+    sessionsLoading,
+    messagesLoading,
+    handleCreateSession,
+    handleSend,
+    handleDeleteSession,
+    handleRenameSession,
+    handleSelectSession,
+    handleKeyDown,
+  } = useChatBot();
 
   return (
     <div className="-mb-25 flex h-[calc(100svh-3.5rem)] w-full gap-3 overflow-hidden md:p-6">
@@ -106,10 +28,7 @@ function ChatBot() {
         isOpen={sidebarOpen}
         sessions={sessions}
         activeSessionId={activeSessionId}
-        onSelect={(id) => {
-          setActiveSessionId(id);
-          if (window.innerWidth < 768) setSidebarOpen(false);
-        }}
+        onSelect={handleSelectSession}
         onCreate={handleCreateSession}
         onRename={handleRenameSession}
         onDelete={handleDeleteSession}

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Input } from "@/components/ui/input";
 import { EllipsisVertical, PenLine, Trash2 } from "lucide-react";
 import {
@@ -14,23 +15,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { useState } from "react";
 import { Button } from "../ui/button";
+import { useChatActions } from "@/hooks/useChatActions";
 
 function ChatActions({ session, onRename, onDelete, hasActiveSession }) {
-  const [renameOpen, setRenameOpen] = useState(false);
-  const [renameValue, setRenameValue] = useState("");
-  const [deleteOpen, setDeleteOpen] = useState(false);
-
-  const handleOpenRename = () => {
-    setRenameValue(session?.title ?? "");
-    setRenameOpen(true);
-  };
-
-  const handleRenameSubmit = async () => {
-    await onRename(renameValue);
-    setRenameOpen(false);
-  };
+  const { rename, delete: del } = useChatActions({
+    sessionTitle: session?.title,
+    onRename,
+    onDelete,
+  });
 
   return (
     <>
@@ -46,12 +39,12 @@ function ChatActions({ session, onRename, onDelete, hasActiveSession }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleOpenRename}>
+          <DropdownMenuItem onClick={rename.handleOpen}>
             <PenLine className="mr-2 size-4" />
             Đổi tên
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => setDeleteOpen(true)}
+            onClick={del.handleOpen}
             className="text-destructive focus:text-destructive"
           >
             <Trash2 className="mr-2 size-4" />
@@ -60,35 +53,33 @@ function ChatActions({ session, onRename, onDelete, hasActiveSession }) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* Delete Confirm Dialog */}
       <ConfirmDialog
-        open={deleteOpen}
-        onOpenChange={setDeleteOpen}
-        onConfirm={async () => {
-          await onDelete();
-          setDeleteOpen(false);
-        }}
+        open={del.open}
+        onOpenChange={del.setOpen}
+        onConfirm={del.handleConfirm}
         description="Bạn có chắc muốn xóa cuộc trò chuyện này? Hành động này không thể hoàn tác."
       />
 
-      {/* Rename Dialog */}
-      <Dialog open={renameOpen} onOpenChange={setRenameOpen}>
+      <Dialog open={rename.open} onOpenChange={rename.setOpen}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>Đổi tên cuộc trò chuyện</DialogTitle>
           </DialogHeader>
           <Input
-            value={renameValue}
-            onChange={(e) => setRenameValue(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleRenameSubmit()}
+            value={rename.value}
+            onChange={(e) => rename.setValue(e.target.value)}
+            onKeyDown={rename.handleKeyDown}
             placeholder="Nhập tên mới..."
             autoFocus
           />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setRenameOpen(false)}>
+            <Button variant="outline" onClick={rename.handleClose}>
               Hủy
             </Button>
-            <Button onClick={handleRenameSubmit} disabled={!renameValue.trim()}>
+            <Button
+              onClick={rename.handleSubmit}
+              disabled={!rename.value.trim()}
+            >
               Lưu
             </Button>
           </DialogFooter>
@@ -98,4 +89,4 @@ function ChatActions({ session, onRename, onDelete, hasActiveSession }) {
   );
 }
 
-export default ChatActions;
+export default memo(ChatActions);

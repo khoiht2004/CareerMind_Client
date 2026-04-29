@@ -72,63 +72,64 @@ function JobDetailSidebar({
         <CardContent className="space-y-3 p-5">
           {/* Action buttons */}
           {isCandidate && (
-            <div className="space-y-2">
-              <Button
-                size="lg"
-                asChild={!hasApplied}
-                disabled={hasApplied}
-                className="w-full cursor-pointer"
-              >
-                {hasApplied ? (
-                  "Bạn đã ứng tuyển vị trí này rồi"
-                ) : (
-                  <Link to={`/jobs/${id}/apply`}>
-                    <SendHorizontal /> Ứng tuyển ngay
+            <>
+              <div className="space-y-2">
+                <Button
+                  size="lg"
+                  asChild={!hasApplied}
+                  disabled={hasApplied}
+                  className="w-full cursor-pointer"
+                >
+                  {hasApplied ? (
+                    "Bạn đã ứng tuyển vị trí này rồi"
+                  ) : (
+                    <Link to={`/jobs/${id}/apply`}>
+                      <SendHorizontal /> Ứng tuyển ngay
+                    </Link>
+                  )}
+                </Button>
+
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full cursor-pointer"
+                  asChild
+                >
+                  <Link to={`/chatbot?job=${id}`}>
+                    <BotMessageSquare /> Tư vấn AI về vị trí này
                   </Link>
-                )}
-              </Button>
-
-              <Button
-                size="lg"
-                variant="secondary"
-                className="w-full cursor-pointer"
-                asChild
-              >
-                <Link to={`/chatbot?job=${id}`}>
-                  <BotMessageSquare /> Tư vấn AI về vị trí này
-                </Link>
-              </Button>
-
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 cursor-pointer gap-1.5"
-                  onClick={handleBookmark}
-                  disabled={isSaving || isUnsaving}
-                >
-                  <Bookmark
-                    className="size-4"
-                    fill={isSaved ? "var(--secondary-container)" : "none"}
-                    stroke={
-                      isSaved ? "var(--secondary-container)" : "currentColor"
-                    }
-                  />
-                  {isSaved ? "Đã lưu" : "Lưu tin"}
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 cursor-pointer gap-1.5"
-                >
-                  <Share2 className="size-4" />
-                  Chia sẻ
-                </Button>
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 cursor-pointer gap-1.5"
+                    onClick={handleBookmark}
+                    disabled={isSaving || isUnsaving}
+                  >
+                    <Bookmark
+                      className="size-4"
+                      fill={isSaved ? "var(--secondary-container)" : "none"}
+                      stroke={
+                        isSaved ? "var(--secondary-container)" : "currentColor"
+                      }
+                    />
+                    {isSaved ? "Đã lưu" : "Lưu tin"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 cursor-pointer gap-1.5"
+                  >
+                    <Share2 className="size-4" />
+                    Chia sẻ
+                  </Button>
+                </div>
               </div>
-            </div>
+              <Separator />
+            </>
           )}
-
-          <Separator />
 
           {/* Thông tin chung */}
           <h3 className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
@@ -187,7 +188,7 @@ function JobDetailSidebar({
         </CardContent>
       </Card>
 
-      {/* Career Partner AI */}
+      {/* AI Scout */}
       <Card className="from-chart-1 to-chart-2 text-primary-foreground overflow-hidden bg-linear-to-r">
         <CardContent className="space-y-3 p-5">
           <div className="flex items-center gap-3">
@@ -195,7 +196,7 @@ function JobDetailSidebar({
               <Bot className="text-primary-foreground size-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold">Career Partner AI</p>
+              <p className="text-sm font-semibold">AI Scout</p>
               <p className="text-primary-foreground/70 text-xs">
                 Trợ lý tuyển dụng thông minh
               </p>

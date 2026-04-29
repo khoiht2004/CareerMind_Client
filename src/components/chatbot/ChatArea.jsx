@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { memo, useCallback, useRef, useEffect } from "react";
 import {
   Bot,
   Send,
@@ -40,6 +40,11 @@ const SUGGESTED_QUESTIONS = [
 const TEXTAREA_BASE_HEIGHT = 40;
 const TEXTAREA_MAX_HEIGHT = 100;
 
+const PENDING_MESSAGE_TEMPLATE = {
+  id: "__pending__",
+  role: "USER",
+};
+
 function ChatArea({
   messages,
   pendingMessage,
@@ -64,26 +69,24 @@ function ChatArea({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isSending, pendingMessage]);
 
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
     el.style.height = `${Math.min(el.scrollHeight, TEXTAREA_MAX_HEIGHT)}px`;
-  };
+  }, []);
 
   const isEmpty = messages.length === 0 && !pendingMessage;
 
   return (
     <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl pt-4">
-      {/* Messages */}
-      <ScrollArea className="min-h-0 flex-1 px-4">
-        <div className="mx-auto max-w-2xl space-y-4">
+      <ScrollArea className="min-h-0 flex-1 px-6">
+        <div className="max-w-full space-y-4">
           {isLoading ? (
             <div className="flex justify-center py-8">
               <Loader2 className="text-muted-foreground size-5 animate-spin" />
             </div>
           ) : isEmpty ? (
-            /* Welcome state */
             <div className="flex flex-col items-center justify-center gap-6 py-12 text-center">
               <div className="bg-foreground text-background flex size-24 items-center justify-center rounded-3xl shadow-lg">
                 <Bot className="size-12" />
@@ -97,8 +100,6 @@ function ChatArea({
                   trò chuyện để tối ưu hóa tương lai của bạn.
                 </p>
               </div>
-
-              {/* Suggestion cards */}
               <div className="grid w-full max-w-lg grid-cols-2 gap-3">
                 {SUGGESTED_QUESTIONS.map(({ q, icon, cls }) => {
                   const Icon = icon;
@@ -126,12 +127,10 @@ function ChatArea({
               {messages.map((msg) => (
                 <MessageBubble key={msg.id} message={msg} />
               ))}
-
               {pendingMessage && (
                 <MessageBubble
                   message={{
-                    id: "__pending__",
-                    role: "USER",
+                    ...PENDING_MESSAGE_TEMPLATE,
                     content: pendingMessage,
                     createdAt: new Date().toISOString(),
                   }}
@@ -157,7 +156,6 @@ function ChatArea({
         </div>
       </ScrollArea>
 
-      {/* Input area */}
       <div className="bg-primary/10 px-4 py-4">
         <div className="relative mx-auto flex max-w-2xl items-end gap-3">
           <Textarea
@@ -195,4 +193,4 @@ function ChatArea({
   );
 }
 
-export default ChatArea;
+export default memo(ChatArea);
