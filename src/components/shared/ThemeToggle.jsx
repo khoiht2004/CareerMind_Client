@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Sun, Moon, Monitor, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -22,19 +23,14 @@ function ThemeToggle({ isCollapsed }) {
   const { mode, setMode } = useTheme();
 
   return (
-    <div
-      className={cn(
-        "mt-1 border-t border-zinc-800 pt-2 pb-1",
-        isCollapsed ? "px-1" : "px-2",
-      )}
-    >
+    <div className={cn("mt-1 pb-1", isCollapsed ? "px-1" : "px-2")}>
       <Popover>
         <Tooltip>
           <TooltipTrigger asChild>
             <PopoverTrigger asChild>
               <button
                 className={cn(
-                  "flex w-full cursor-pointer items-center rounded-lg py-2 text-sm font-medium text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-zinc-100",
+                  "text-sidebar-foreground hover:bg-sidebar-border hover:text-sidebar-foreground flex w-full cursor-pointer items-center rounded-lg py-2 text-sm font-medium transition-all duration-500",
                   isCollapsed ? "justify-center px-0" : "gap-3 px-3",
                 )}
               >
@@ -52,33 +48,30 @@ function ThemeToggle({ isCollapsed }) {
           side="top"
           align="start"
           sideOffset={8}
-          className="w-52 border-zinc-800 bg-zinc-950 p-2"
+          className="bg-background border-border w-52 p-2"
         >
-          <p className="mb-2 px-2 text-[11px] font-semibold tracking-widest text-zinc-500 uppercase">
+          <p className="text-foreground mb-2 px-2 text-[11px] font-semibold tracking-widest uppercase">
             Giao diện
           </p>
           <div className="space-y-0.5">
-            {
-              // eslint-disable-next-line no-unused-vars
-              THEME_OPTIONS.map(({ value, Icon, label }) => (
-                <button
-                  key={value}
-                  onClick={() => setMode(value)}
-                  className={cn(
-                    "flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-                    mode === value
-                      ? "bg-zinc-800 text-white"
-                      : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100",
-                  )}
-                >
-                  <Icon className="size-4 shrink-0" />
-                  {label}
-                  {mode === value && (
-                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-white" />
-                  )}
-                </button>
-              ))
-            }
+            {THEME_OPTIONS.map(({ value, Icon, label }) => (
+              <button
+                key={value}
+                onClick={() => setMode(value)}
+                className={cn(
+                  "flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
+                  mode === value
+                    ? "bg-background text-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                <Icon className="size-4 shrink-0" />
+                {label}
+                {mode === value && (
+                  <span className="bg-foreground ml-auto h-1.5 w-1.5 rounded-full" />
+                )}
+              </button>
+            ))}
           </div>
         </PopoverContent>
       </Popover>

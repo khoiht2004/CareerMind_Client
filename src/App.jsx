@@ -1,70 +1,92 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { Loader2 } from "lucide-react";
 import { path } from "@/config/path";
+import AuthInitializer from "@/features/auth";
 
 // Layouts
 import DefaultLayout from "@/layouts/DefaultLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import PrivateLayout from "@/layouts/PrivateLayout";
 
-// Pages - Auth
+//Auth pages
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import VerifyEmail from "@/pages/auth/VerifyEmail";
 
-// Pages - Main
+// Public pages
 import Home from "@/pages/Home";
-import JobDetail from "@/pages/JobDetail";
-import Apply from "@/pages/Apply";
-import Profile from "@/pages/Profile";
-import ChatBot from "@/pages/ChatBot";
-import ApplicationDetail from "@/pages/ApplicationDetail";
-import SavedJobs from "@/pages/SavedJobs";
+import AIPricing from "./pages/AIPricing";
+import Auth from "./pages/auth/Auth";
+const JobDetail = lazy(() => import("@/pages/JobDetail"));
+const CompanyDetail = lazy(() => import("@/pages/CompanyDetail"));
 
-// Pages - Recruiter
-import RecruiterJobs from "@/pages/recruiter/RecruiterJobs";
-import RecruiterApplications from "@/pages/recruiter/RecruiterApplications";
-import RecruiterStats from "@/pages/recruiter/RecruiterStats";
+// Private pages
+const Apply = lazy(() => import("@/pages/Apply"));
+const Profile = lazy(() => import("@/pages/Profile"));
+const ChatBot = lazy(() => import("@/pages/ChatBot"));
+const ApplicationDetail = lazy(() => import("@/pages/ApplicationDetail"));
+const SavedJobs = lazy(() => import("@/pages/SavedJobs"));
 
-// Auth initializer — triggers getMe on app start to restore session
-import { useGetMeQuery } from "@/services/auth.service";
+// Recruiter pages ── (chỉ load khi cần)
+const RecruiterJobs = lazy(() => import("@/pages/recruiter/RecruiterJobs"));
+const RecruiterApplications = lazy(
+  () => import("@/pages/recruiter/RecruiterApplications"),
+);
+const RecruiterStats = lazy(() => import("@/pages/recruiter/RecruiterStats"));
 
-function AuthInitializer() {
-  useGetMeQuery();
-  return null;
+// Fallback hiển thị trong khi đang tải
+function PageLoader() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <Loader2 className="text-muted-foreground size-8 animate-spin" />
+    </div>
+  );
 }
 
 function App() {
   return (
     <Router>
       <AuthInitializer />
-      <Routes>
-        {/* Auth routes */}
-        <Route element={<AuthLayout />}>
-          <Route path={path.login} element={<Login />} />
-          <Route path={path.register} element={<Register />} />
-          <Route path={path.verifyEmail} element={<VerifyEmail />} />
-        </Route>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {/* Auth routes */}
+          <Route element={<AuthLayout />}>
+            <Route path={path.login} element={<Login />} />
+            <Route path={path.register} element={<Register />} />
+            <Route path={path.auth} element={<Auth />} />
+            <Route path={path.verifyEmail} element={<VerifyEmail />} />
+          </Route>
 
-        {/* Public routes */}
-        <Route element={<DefaultLayout />}>
-          <Route path={path.home} element={<Home />} />
-          <Route path={path.jobDetail} element={<JobDetail />} />
-        </Route>
+          {/* Public routes */}
+          <Route element={<DefaultLayout />}>
+            <Route path={path.home} element={<Home />} />
+            <Route path={path.jobDetail} element={<JobDetail />} />
+            <Route path={path.companyDetail} element={<CompanyDetail />} />
+          </Route>
 
-        {/* Private routes */}
-        <Route element={<PrivateLayout />}>
-          <Route path={path.apply} element={<Apply />} />
-          <Route path={path.profile} element={<Profile />} />
-          <Route path={path.chatbot} element={<ChatBot />} />
-          <Route path={path.applicationDetail} element={<ApplicationDetail />} />
-          <Route path={path.savedJobs} element={<SavedJobs />} />
+          {/* Private routes */}
+          <Route element={<PrivateLayout />}>
+            <Route path={path.apply} element={<Apply />} />
+            <Route path={path.profile} element={<Profile />} />
+            <Route path={path.chatbot} element={<ChatBot />} />
+            <Route
+              path={path.applicationDetail}
+              element={<ApplicationDetail />}
+            />
+            <Route path={path.savedJobs} element={<SavedJobs />} />
+            <Route path={path.aiPricing} element={<AIPricing />} />
 
-          {/* Recruiter routes */}
-          <Route path={path.recruiter.jobs} element={<RecruiterJobs />} />
-          <Route path={path.recruiter.applications} element={<RecruiterApplications />} />
-          <Route path={path.recruiter.stats} element={<RecruiterStats />} />
-        </Route>
-      </Routes>
+            {/* Recruiter routes */}
+            <Route path={path.recruiter.jobs} element={<RecruiterJobs />} />
+            <Route
+              path={path.recruiter.applications}
+              element={<RecruiterApplications />}
+            />
+            <Route path={path.recruiter.stats} element={<RecruiterStats />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

@@ -25,7 +25,8 @@ function AppDatePicker({
 
   const isInvalid =
     minDate && date
-      ? new Date(date).setHours(0, 0, 0, 0) < new Date(minDate).setHours(0, 0, 0, 0)
+      ? new Date(date).setHours(0, 0, 0, 0) <
+        new Date(minDate).setHours(0, 0, 0, 0)
       : false;
 
   const handleSelect = (selected) => {
@@ -46,7 +47,7 @@ function AppDatePicker({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className={`w-full justify-between font-normal ${isInvalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
+            className={`bg-primary/10 w-full justify-between font-normal ${isInvalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
           >
             {date ? (
               format(new Date(value + "T00:00:00"), "dd/MM/yyyy", {

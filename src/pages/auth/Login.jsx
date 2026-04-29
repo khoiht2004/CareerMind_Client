@@ -58,7 +58,7 @@ function Login() {
   };
 
   return (
-    <Card className="w-full max-w-md shadow-lg">
+    <Card className="w-full max-w-xs shadow-lg md:max-w-md">
       <CardHeader className="space-y-2 pb-4 text-center">
         <div className="flex justify-center">
           <div className="bg-primary text-primary-foreground flex h-11 w-11 items-center justify-center rounded-xl text-sm font-bold">

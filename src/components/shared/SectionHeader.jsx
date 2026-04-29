@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -7,14 +8,14 @@ function SectionHeader({ label, isCollapsed, open, onToggle }) {
   return (
     <button
       onClick={onToggle}
-      className="mt-3 mb-1 flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-0.5 transition-colors hover:bg-zinc-800/50"
+      className="hover:bg-sidebar-accent/50 mt-3 mb-1 flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-1 transition-colors"
     >
-      <span className="text-[11px] font-semibold tracking-widest text-zinc-500 uppercase">
+      <span className="text-sidebar-foreground/50 text-[11px] font-semibold tracking-widest uppercase">
         {label}
       </span>
       <ChevronDown
         className={cn(
-          "size-3 text-zinc-600 transition-transform duration-200",
+          "text-sidebar-foreground/40 size-3 transition-transform duration-200",
           !open && "-rotate-90",
         )}
       />
@@ -22,4 +23,4 @@ function SectionHeader({ label, isCollapsed, open, onToggle }) {
   );
 }
 
-export default SectionHeader;
+export default memo(SectionHeader);

@@ -1,7 +1,13 @@
-import { useState } from "react";
-import { Loader2, ExternalLink } from "lucide-react";
+import {
+  Loader2,
+  ExternalLink,
+  Users,
+  Clock,
+  Sparkles,
+  BarChart2,
+  ListFilter,
+} from "lucide-react";
 import Pagination from "@/components/shared/Pagination";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -18,206 +24,141 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  useGetAllApplicationsQuery,
-  useUpdateApplicationStatusMutation,
-} from "@/services/application.service";
-import { useGetMyJobsQuery } from "@/services/job.service";
-import {
-  APPLICATION_STATUS_LABELS,
-  STATUS_CONFIG,
-} from "@/config/constants/candidate.constant";
 import { APP_STATUS_FILTER_OPTIONS } from "@/config/constants/recruiter.constant";
 import ApplicationUpdateDialog from "@/components/recuiter/ApplicationUpdateDialog";
-
-function StatusBadge({ status }) {
-  const statusConfig = STATUS_CONFIG[status];
-  return (
-    <span
-      className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${statusConfig?.className ?? ""}`}
-    >
-      {APPLICATION_STATUS_LABELS[status] ?? status}
-    </span>
-  );
-}
+import { useRecruiterApplications } from "@/hooks/useRecruiterApplications";
+import {
+  StatusBadge,
+  ApplicantAvatar,
+} from "@/components/recuiter/components/ApplicationComponent";
 
 function RecruiterApplications() {
-  const [filters, setFilters] = useState({
-    status: "ALL",
-    jobId: "ALL",
-    page: 1,
-  });
-  const [selectedApp, setSelectedApp] = useState(null);
-  const [newStatus, setNewStatus] = useState("");
-  const [note, setNote] = useState("");
-  const [sendEmail, setSendEmail] = useState(true);
-  const [interviewFields, setInterviewFields] = useState({
-    interviewDate: "",
-    interviewTime: "",
-    interviewFormat: "",
-    interviewLocation: "",
-    confirmDeadline: "",
-  });
-  const [acceptedFields, setAcceptedFields] = useState({
-    startDate: "",
-    startTime: "",
-    officeAddress: "",
-  });
-
-  const { data: appsData, isLoading } = useGetAllApplicationsQuery({
-    status: filters.status !== "ALL" ? filters.status : undefined,
-    jobId: filters.jobId !== "ALL" ? filters.jobId : undefined,
-    page: filters.page,
-    limit: 10,
-  });
-
-  const { data: jobsData } = useGetMyJobsQuery({ limit: 100 });
-  const [updateStatus, { isLoading: updating }] =
-    useUpdateApplicationStatusMutation();
-
-  const applications = appsData?.data?.applications ?? [];
-  const totalPages = appsData?.data?.totalPages ?? 1;
-  const myJobs = jobsData?.data?.jobs ?? [];
-
-  const toDateStr = (iso) =>
-    iso ? new Date(iso).toISOString().slice(0, 10) : "";
-
-  const openUpdate = (app) => {
-    setSelectedApp(app);
-    setNewStatus(app.status);
-    setNote(app.note ?? "");
-    setSendEmail(true);
-    setInterviewFields({
-      interviewDate: toDateStr(app.interviewDate),
-      interviewTime: app.interviewTime || "08:00",
-      interviewFormat: app.interviewFormat || "",
-      interviewLocation: app.interviewLocation || "",
-      confirmDeadline:
-        toDateStr(app.confirmDeadline) ||
-        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-          .toISOString()
-          .slice(0, 10),
-    });
-    setAcceptedFields({
-      startDate: toDateStr(app.startDate),
-      startTime: app.startTime || "08:00",
-      officeAddress: app.officeAddress || "",
-    });
-  };
-
-  const handleInterviewFieldChange = (field, value) => {
-    setInterviewFields((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleAcceptedFieldChange = (field, value) => {
-    setAcceptedFields((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleUpdate = async () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const isPast = (dateStr) =>
-      dateStr ? new Date(dateStr + "T00:00:00") < today : false;
-
-    if (newStatus === "INTERVIEW") {
-      if (isPast(interviewFields.interviewDate)) {
-        toast.error("Ngày phỏng vấn không được trước ngày hiện tại");
-        return;
-      }
-      if (isPast(interviewFields.confirmDeadline)) {
-        toast.error("Hạn phản hồi không được trước ngày hiện tại");
-        return;
-      }
-    }
-    if (newStatus === "ACCEPTED" && isPast(acceptedFields.startDate)) {
-      toast.error("Ngày bắt đầu không được trước ngày hiện tại");
-      return;
-    }
-
-    try {
-      const payload = {
-        id: selectedApp.id,
-        status: newStatus,
-        note: note || undefined,
-        sendEmail,
-      };
-
-      if (newStatus === "INTERVIEW") {
-        if (interviewFields.interviewDate)
-          payload.interviewDate = interviewFields.interviewDate;
-        if (interviewFields.interviewTime)
-          payload.interviewTime = interviewFields.interviewTime;
-        if (interviewFields.interviewFormat)
-          payload.interviewFormat = interviewFields.interviewFormat;
-        if (interviewFields.interviewLocation)
-          payload.interviewLocation = interviewFields.interviewLocation;
-        if (interviewFields.confirmDeadline)
-          payload.confirmDeadline = interviewFields.confirmDeadline;
-      } else if (newStatus === "ACCEPTED") {
-        if (acceptedFields.startDate)
-          payload.startDate = acceptedFields.startDate;
-        if (acceptedFields.startTime)
-          payload.startTime = acceptedFields.startTime;
-        if (acceptedFields.officeAddress)
-          payload.officeAddress = acceptedFields.officeAddress;
-      }
-
-      await updateStatus(payload).unwrap();
-      toast.success("Cập nhật trạng thái thành công");
-      setSelectedApp(null);
-    } catch {
-      toast.error("Không thể cập nhật trạng thái");
-    }
-  };
+  const {
+    staged,
+    setStagedField,
+    handleApply,
+    handleClear,
+    filters,
+    setPage,
+    applications,
+    totalPages,
+    total,
+    myJobs,
+    pendingCount,
+    from,
+    to,
+    isLoading,
+    selectedApp,
+    setSelectedApp,
+    newStatus,
+    setNewStatus,
+    note,
+    setNote,
+    sendEmail,
+    setSendEmail,
+    interviewFields,
+    acceptedFields,
+    openUpdate,
+    handleInterviewFieldChange,
+    handleAcceptedFieldChange,
+    handleUpdate,
+    updating,
+  } = useRecruiterApplications();
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-bold">Đơn ứng tuyển</h1>
-        <p className="text-muted-foreground mt-1 text-sm">
-          {appsData?.data?.total ?? 0} đơn ứng tuyển
-        </p>
+    <div className="max-w-full space-y-6 px-10 pt-6">
+      {/* Header */}
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-primary text-4xl font-black">Đơn ứng tuyển</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Quản lý và sàng lọc hồ sơ ứng viên một cách chuyên nghiệp.
+          </p>
+        </div>
+        <div className="flex shrink-0 gap-3">
+          {/* Tổng ứng viên */}
+          <div className="bg-card border-secondary flex items-center gap-3 rounded-xl border-l-4 px-4 py-3">
+            <div className="bg-secondary/10 flex size-9 items-center justify-center rounded-lg">
+              <Users className="text-secondary size-5" />
+            </div>
+            <div>
+              <p className="text-muted-foreground text-xs">Tổng ứng viên</p>
+              <p className="text-foreground text-xl font-bold">
+                {total.toLocaleString("vi-VN")}
+              </p>
+            </div>
+          </div>
+          {/* Chờ xét duyệt */}
+          <div className="bg-card border-status-pending-border flex items-center gap-3 rounded-xl border-l-4 px-4 py-3">
+            <div className="bg-status-pending-bg flex size-9 items-center justify-center rounded-lg">
+              <Clock className="text-status-pending-text size-5" />
+            </div>
+            <div>
+              <p className="text-muted-foreground text-xs">Chờ xét duyệt</p>
+              <p className="text-foreground text-xl font-bold">
+                {pendingCount.toLocaleString("vi-VN")}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
-        <Select
-          value={filters.jobId}
-          onValueChange={(v) =>
-            setFilters((f) => ({ ...f, jobId: v, page: 1 }))
-          }
-        >
-          <SelectTrigger className="w-56">
-            <SelectValue placeholder="Lọc theo việc làm" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ALL">Tất cả việc làm</SelectItem>
-            {myJobs.map((j) => (
-              <SelectItem key={j.id} value={j.id}>
-                {j.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select
-          value={filters.status}
-          onValueChange={(v) =>
-            setFilters((f) => ({ ...f, status: v, page: 1 }))
-          }
-        >
-          <SelectTrigger className="w-48">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {APP_STATUS_FILTER_OPTIONS.map((o) => (
-              <SelectItem key={o.value} value={o.value}>
-                {o.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="bg-card flex flex-wrap items-end gap-4 rounded-xl p-4">
+        <div className="min-w-48 flex-1">
+          <p className="text-muted-foreground mb-1.5 text-xs font-medium tracking-wider uppercase">
+            Lọc theo công việc
+          </p>
+          <Select
+            value={staged.jobId}
+            onValueChange={(v) => setStagedField("jobId", v)}
+          >
+            <SelectTrigger className="bg-primary/10 w-full">
+              <SelectValue placeholder="Tất cả công việc" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ALL">Tất cả công việc</SelectItem>
+              {myJobs.map((j) => (
+                <SelectItem key={j.id} value={j.id}>
+                  {j.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="min-w-44 flex-1">
+          <p className="text-muted-foreground mb-1.5 text-xs font-medium tracking-wider uppercase">
+            Trạng thái
+          </p>
+          <Select
+            value={staged.status}
+            onValueChange={(v) => setStagedField("status", v)}
+          >
+            <SelectTrigger className="bg-primary/10 w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {APP_STATUS_FILTER_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={o.value}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex gap-2">
+          <Button onClick={handleApply} className="cursor-pointer px-6 py-4">
+            <ListFilter className="size-4" />
+            Áp dụng
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleClear}
+            className="text-muted-foreground cursor-pointer px-6 py-4"
+          >
+            Xóa bộ lọc
+          </Button>
+        </div>
       </div>
 
       {/* Table */}
@@ -253,11 +194,14 @@ function RecruiterApplications() {
                   return (
                     <TableRow key={app.id}>
                       <TableCell>
-                        <div>
-                          <p className="font-medium">{name}</p>
-                          <p className="text-muted-foreground text-xs">
-                            {app.user?.email}
-                          </p>
+                        <div className="flex items-center gap-3">
+                          <ApplicantAvatar name={name} />
+                          <div>
+                            <p className="font-medium">{name}</p>
+                            <p className="text-muted-foreground text-xs">
+                              {app.user?.email}
+                            </p>
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell className="text-sm">{phone}</TableCell>
@@ -294,6 +238,7 @@ function RecruiterApplications() {
                           <Button
                             size="sm"
                             variant="outline"
+                            className="cursor-pointer"
                             onClick={() => openUpdate(app)}
                           >
                             Chi tiết
@@ -307,14 +252,52 @@ function RecruiterApplications() {
             </Table>
           </div>
 
-          {/* Pagination */}
-          <Pagination
-            page={filters.page}
-            totalPages={totalPages}
-            onPageChange={(p) => setFilters((f) => ({ ...f, page: p }))}
-          />
+          <div className="flex items-center justify-between">
+            <p className="text-muted-foreground text-sm">
+              Hiển thị {from} - {to} của {total} đơn ứng tuyển
+            </p>
+            <Pagination
+              page={filters.page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              showPageNumbers
+            />
+          </div>
         </>
       )}
+
+      {/* Promo cards */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="bg-primary text-primary-foreground rounded-xl p-6">
+          <div className="bg-primary-foreground/10 mb-3 inline-flex size-10 items-center justify-center rounded-lg">
+            <BarChart2 className="size-5" />
+          </div>
+          <h3 className="text-lg font-bold">Phân tích tuyển dụng</h3>
+          <p className="mt-1 text-sm opacity-75">
+            Tỷ lệ chuyển đổi ứng viên trong tháng này đã tăng 12%. Xem các vị
+            trí thu hút nhiều sự quan tâm nhất.
+          </p>
+          <Button variant="secondary" size="sm" className="mt-4 cursor-pointer">
+            Chi tiết báo cáo
+          </Button>
+        </div>
+        <div className="bg-primary-container text-primary-foreground rounded-xl p-6">
+          <div className="bg-primary-foreground/10 mb-3 inline-flex size-10 items-center justify-center rounded-lg">
+            <Sparkles className="size-5" />
+          </div>
+          <h3 className="text-lg font-bold">Đề xuất AI</h3>
+          <p className="mt-1 text-sm opacity-75">
+            Dựa trên tiêu chí, 5 ứng viên mới có kỹ năng phù hợp hoàn hảo với vị
+            trí đang tuyển của bạn.
+          </p>
+          <Button
+            size="sm"
+            className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 mt-4 cursor-pointer"
+          >
+            Xem đề xuất
+          </Button>
+        </div>
+      </div>
 
       <ApplicationUpdateDialog
         open={!!selectedApp}

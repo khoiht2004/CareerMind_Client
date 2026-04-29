@@ -1,152 +1,146 @@
-import { useState } from "react";
+import { AlertCircle, CalendarDays, Filter, Loader2 } from "lucide-react";
 import {
-  Loader2,
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  XCircle,
-  Trash2,
-} from "lucide-react";
-import { useNavigate } from "react-router";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import Pagination from "@/components/shared/Pagination";
 import {
-  useGetMyApplicationsQuery,
-  useDeleteApplicationMutation,
-} from "@/services/application.service";
-import {
-  APPLICATION_STATUS_LABELS,
-  STATUS_CONFIG,
+  APPLICATION_STATUS_FILTER_OPTIONS,
+  APPLICATION_DATE_RANGE_OPTIONS,
 } from "@/config/constants/candidate.constant";
+import { useMyApplications } from "@/hooks/useMyApplications";
+import ApplicationCard from "./components/ApplicationRow";
 
 function MyApplications() {
-  const navigate = useNavigate();
-  const { data, isLoading } = useGetMyApplicationsQuery({});
-  const [deleteApplication, { isLoading: isDeleting }] =
-    useDeleteApplicationMutation();
-  const [deleteTarget, setDeleteTarget] = useState(null);
-
-  const applications = data?.data?.applications ?? [];
-  const total = data?.data?.total ?? 0;
-
-  const handleDeleteConfirm = async () => {
-    try {
-      await deleteApplication(deleteTarget.id).unwrap();
-      toast.success("Đã xóa đơn ứng tuyển");
-      setDeleteTarget(null);
-    } catch (error) {
-      toast.error(
-        error?.data?.message || "Có lỗi xảy ra khi xóa đơn ứng tuyển",
-      );
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-10">
-        <Loader2 className="text-muted-foreground size-6 animate-spin" />
-      </div>
-    );
-  }
+  const {
+    applications,
+    total,
+    totalPages,
+    interviewCount,
+    isLoading,
+    isDeleting,
+    filters,
+    setStatusFilter,
+    setDaysFilter,
+    setPage,
+    deleteTarget,
+    handleDeleteClick,
+    handleDeleteConfirm,
+    handleDialogChange,
+  } = useMyApplications();
 
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm">
-            Đơn ứng tuyển của tôi ({total})
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0">
-          {applications.length === 0 ? (
-            <div className="text-muted-foreground py-10 text-center">
-              <AlertCircle className="mx-auto mb-2 size-8 opacity-30" />
-              <p className="text-sm">Chưa có đơn ứng tuyển nào</p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Vị trí</TableHead>
-                  <TableHead>Công ty</TableHead>
-                  <TableHead>Ngày nộp</TableHead>
-                  <TableHead>Trạng thái</TableHead>
-                  <TableHead className="w-10"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {applications.map((app) => {
-                  const cfg = STATUS_CONFIG[app.status];
-                  const Icon = cfg?.icon;
-                  const label =
-                    APPLICATION_STATUS_LABELS[app.status] ?? app.status;
-                  return (
-                    <TableRow key={app.id}>
-                      <TableCell
-                        className="cursor-pointer text-sm font-medium"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        {app.job?.title}
-                      </TableCell>
-                      <TableCell
-                        className="text-muted-foreground cursor-pointer text-sm"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        {app.job?.company}
-                      </TableCell>
-                      <TableCell
-                        className="text-muted-foreground cursor-pointer text-sm"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        {new Date(app.createdAt).toLocaleDateString("vi-VN")}
-                      </TableCell>
-                      <TableCell
-                        className="cursor-pointer"
-                        onClick={() => navigate(`/applications/${app.id}`)}
-                      >
-                        <Badge
-                          className={`gap-1 border text-xs ${cfg?.className}`}
-                        >
-                          {Icon && <Icon className="size-3" />}
-                          {label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-muted-foreground hover:text-destructive h-8 w-8"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDeleteTarget(app);
-                          }}
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          )}
-        </CardContent>
-      </Card>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-primary text-3xl font-black">
+          Đơn ứng tuyển của tôi
+        </h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Theo dõi trạng thái và tiến trình các cơ hội nghề nghiệp của bạn tại
+          một nơi duy nhất.
+        </p>
+      </div>
+
+      {/* Filter row */}
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Status filter */}
+        <div className="bg-primary/5 flex items-center gap-2 rounded-lg px-3 py-1.5">
+          <Filter className="text-muted-foreground size-4 shrink-0" />
+          <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+            Trạng thái:
+          </span>
+          <Select value={filters.status} onValueChange={setStatusFilter}>
+            <SelectTrigger className="h-auto w-[150px] border-0 p-0 text-sm font-medium shadow-none focus:ring-0">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {APPLICATION_STATUS_FILTER_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Date filter */}
+        <div className="bg-primary/5 flex items-center gap-2 rounded-lg px-3 py-1.5">
+          <CalendarDays className="text-muted-foreground size-4 shrink-0" />
+          <Select value={filters.days} onValueChange={setDaysFilter}>
+            <SelectTrigger className="h-auto w-[130px] border-0 p-0 text-sm font-medium shadow-none focus:ring-0">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {APPLICATION_DATE_RANGE_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex-1" />
+
+        {/* Stat mini-cards */}
+        <div className="bg-primary text-background flex overflow-hidden rounded-xl">
+          <div className="px-5 py-2.5 text-center">
+            <p className="text-background/60 text-xs font-semibold tracking-wider uppercase">
+              Tổng cộng
+            </p>
+            <p className="text-2xl font-black">{total}</p>
+          </div>
+          <div className="bg-background/10 w-px" />
+          <div className="px-5 py-2.5 text-center">
+            <p className="text-secondary-container text-xs font-semibold tracking-wider uppercase opacity-80">
+              Phỏng vấn
+            </p>
+            <p className="text-secondary-container text-2xl font-black">
+              {interviewCount}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* List */}
+      {isLoading ? (
+        <div className="flex h-40 items-center justify-center">
+          <Loader2 className="text-muted-foreground size-6 animate-spin" />
+        </div>
+      ) : applications.length === 0 ? (
+        <div className="text-muted-foreground py-16 text-center">
+          <AlertCircle className="mx-auto mb-3 size-10 opacity-30" />
+          <p className="text-sm">Chưa có đơn ứng tuyển nào</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {applications.map((app) => (
+            <ApplicationCard
+              key={app.id}
+              app={app}
+              onDeleteClick={handleDeleteClick}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      <Pagination
+        page={filters.page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        isLoading={isLoading}
+        showPageNumbers
+      />
 
       <ConfirmDialog
         open={!!deleteTarget}
-        onOpenChange={(open) => !open && setDeleteTarget(null)}
+        onOpenChange={handleDialogChange}
         onConfirm={handleDeleteConfirm}
         isLoading={isDeleting}
         title="Xóa đơn ứng tuyển"
@@ -158,13 +152,13 @@ function MyApplications() {
             </span>{" "}
             tại{" "}
             <span className="text-foreground font-medium">
-              {deleteTarget?.job?.company}
+              {deleteTarget?.job?.company?.name}
             </span>
             ? Hành động này không thể hoàn tác.
           </>
         }
       />
-    </>
+    </div>
   );
 }
 

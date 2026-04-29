@@ -1,99 +1,63 @@
 import { useState } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { changePasswordSchema } from "@/validations/auth.schema";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useChangePasswordMutation } from "@/services/auth.service";
+import { useMySettings } from "@/hooks/useMySettings";
+import SettingsSidebar from "./settings/SettingsSidebar";
+import PasswordSettings from "./settings/PasswordSettings";
+import TwoFactorSettings from "./settings/TwoFactorSettings";
+import DeviceSettings from "./settings/DeviceSettings";
 
 function MySettings() {
-  const [show, setShow] = useState({
-    oldPassword: false,
-    newPassword: false,
-    confirmPassword: false,
-  });
-  const [changePassword, { isLoading }] = useChangePasswordMutation();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: zodResolver(changePasswordSchema) });
-
-  const onSubmit = async (data) => {
-    try {
-      await changePassword({
-        oldPassword: data.oldPassword,
-        newPassword: data.newPassword,
-        confirmPassword: data.confirmPassword,
-      }).unwrap();
-      toast.success("Đã đổi mật khẩu thành công");
-      reset();
-    } catch (err) {
-      toast.error(err?.data?.message ?? "Đổi mật khẩu thất bại");
-    }
-  };
-
-  const toggleShow = (field) =>
-    setShow((s) => ({ ...s, [field]: !s[field] }));
+  const [activeTab, setActiveTab] = useState("security");
+  const { form, show, isLoading, onSubmit, toggleShow } = useMySettings();
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm">Đổi mật khẩu</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="max-w-sm space-y-4"
-        >
-          {[
-            { id: "oldPassword", label: "Mật khẩu hiện tại" },
-            { id: "newPassword", label: "Mật khẩu mới" },
-            { id: "confirmPassword", label: "Xác nhận mật khẩu mới" },
-          ].map(({ id, label }) => (
-            <div key={id} className="space-y-1.5">
-              <Label htmlFor={id}>{label}</Label>
-              <div className="relative">
-                <Input
-                  id={id}
-                  type={show[id] ? "text" : "password"}
-                  className="pr-10"
-                  {...register(id)}
-                />
-                <button
-                  type="button"
-                  onClick={() => toggleShow(id)}
-                  className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
-                  tabIndex={-1}
-                >
-                  {show[id] ? (
-                    <EyeOff className="size-4" />
-                  ) : (
-                    <Eye className="size-4" />
-                  )}
-                </button>
-              </div>
-              {errors[id] && (
-                <p className="text-destructive text-xs">
-                  {errors[id].message}
-                </p>
-              )}
-            </div>
-          ))}
+    <div className="flex flex-col gap-8 lg:flex-row">
+      <SettingsSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
-          <Button type="submit" disabled={isLoading} className="cursor-pointer">
-            {isLoading && <Loader2 className="size-4 animate-spin" />}
-            Cập nhật mật khẩu
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+      <div className="flex-1 space-y-6">
+        {activeTab === "security" && (
+          <>
+            <PasswordSettings
+              form={form}
+              show={show}
+              isLoading={isLoading}
+              onSubmit={onSubmit}
+              toggleShow={toggleShow}
+            />
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <TwoFactorSettings />
+              <DeviceSettings />
+            </div>
+          </>
+        )}
+
+        {/* Mocking other tabs if needed later */}
+        {activeTab === "personal" && (
+          <div className="bg-card border-border rounded-xl border p-6 shadow-sm">
+            <h2 className="text-lg font-semibold">Thông tin cá nhân</h2>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Chức năng đang được phát triển.
+            </p>
+          </div>
+        )}
+        {activeTab === "notifications" && (
+          <div className="bg-card border-border rounded-xl border p-6 shadow-sm">
+            <h2 className="text-lg font-semibold">Thông báo</h2>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Chức năng đang được phát triển.
+            </p>
+          </div>
+        )}
+        {activeTab === "privacy" && (
+          <div className="bg-card border-border rounded-xl border p-6 shadow-sm">
+            <h2 className="text-lg font-semibold">Quyền riêng tư</h2>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Chức năng đang được phát triển.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 

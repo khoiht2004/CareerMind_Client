@@ -1,8 +1,18 @@
+import { memo, useMemo } from "react";
 import { Bot, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import InlineJobCard from "./InlineJobCard";
+import { parseContent } from "@/utils/chatbot.helper";
+import renderText from "./renderText";
 
 function MessageBubble({ message }) {
   const isUser = message.role === "USER";
+
+  const segments = useMemo(() => {
+    const raw = message.content.replace(/\[LOAD_MORE_JOBS\]/g, "");
+    return parseContent(raw);
+  }, [message.content]);
+
   return (
     <div className={cn("flex gap-3", isUser && "flex-row-reverse")}>
       <div
@@ -15,7 +25,7 @@ function MessageBubble({ message }) {
       </div>
       <div
         className={cn(
-          "max-w-[75%] space-y-1",
+          "max-w-[80%] space-y-1",
           isUser && "flex flex-col items-end",
         )}
       >
@@ -27,7 +37,19 @@ function MessageBubble({ message }) {
               : "bg-muted rounded-tl-sm",
           )}
         >
-          <span className="whitespace-pre-wrap">{message.content}</span>
+          {segments.map((seg, i) =>
+            seg.type === "jobs" ? (
+              <div key={i} className="grid grid-cols-3 gap-2">
+                {seg.ids.map((id) => (
+                  <InlineJobCard key={id} id={id} />
+                ))}
+              </div>
+            ) : (
+              <div key={i} className="whitespace-pre-wrap">
+                {renderText(seg.content)}
+              </div>
+            ),
+          )}
         </div>
         <span className="text-muted-foreground px-1 text-[10px]">
           {new Date(message.createdAt).toLocaleTimeString("vi-VN", {
@@ -40,4 +62,10 @@ function MessageBubble({ message }) {
   );
 }
 
-export default MessageBubble;
+// Only re-render when message id or content actually changes
+export default memo(
+  MessageBubble,
+  (prev, next) =>
+    prev.message.id === next.message.id &&
+    prev.message.content === next.message.content,
+);

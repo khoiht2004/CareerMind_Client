@@ -7,20 +7,18 @@ import {
   User,
   BarChart3,
   FileText,
+  Compass,
 } from "lucide-react";
 import { path } from "../path";
 
 // ─── Job Management ────────────────────────────────────────────────────────────
 
 export const RECRUITER_NAV_ITEMS = [
+  { to: path.home, icon: Compass, label: "Khám phá", end: true },
   { to: path.recruiter.stats, icon: BarChart3, label: "Thống kê" },
-  {
-    to: path.recruiter.jobs,
-    icon: BriefcaseBusiness,
-    label: "Quản lý việc làm",
-  },
+  { to: path.recruiter.jobs, icon: BriefcaseBusiness, label: "Quản lý việc làm" },
   { to: path.recruiter.applications, icon: FileText, label: "Đơn ứng tuyển" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
+  { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
   { to: path.profile, icon: User, label: "Hồ sơ" },
 ];
 
@@ -38,25 +36,33 @@ export const JOB_STATUS_LABELS = {
 };
 
 export const JOB_STATUS_BADGE = {
-  PUBLISHED: "bg-green-100 text-green-700 border-green-200",
-  DRAFT: "bg-gray-100 text-gray-600 border-gray-200",
-  CLOSED: "bg-red-100 text-red-600 border-red-200",
+  PUBLISHED:
+    "bg-[var(--job-published-bg)] text-[var(--job-published-text)] border-[var(--job-published-border)]",
+  DRAFT: "bg-[var(--job-draft-bg)] text-[var(--job-draft-text)] border-[var(--job-draft-border)]",
+  CLOSED:
+    "bg-[var(--job-closed-bg)] text-[var(--job-closed-text)] border-[var(--job-closed-border)]",
 };
 
 export const EMPTY_JOB_FORM = {
   title: "",
-  company: "",
   location: "",
   description: "",
+  requirements: [{ label: "", content: "" }],
   salary: "",
   type: "FULL_TIME",
   level: "",
   slots: 1,
   tags: "",
-  benefits: "",
+  benefits: [{ icon: "", label: "", content: "" }],
   status: "PUBLISHED",
   isHot: false,
   deadline: "",
+};
+
+export const JOB_STATUS_DOT = {
+  PUBLISHED: "var(--status-published)",
+  DRAFT: "var(--status-draft)",
+  CLOSED: "var(--status-closed)",
 };
 
 // ─── Application Management ────────────────────────────────────────────────────
@@ -85,36 +91,31 @@ export const APP_STATUS_DISPLAY_CONFIG = [
     key: "PENDING",
     label: "Chờ xét duyệt",
     icon: Clock,
-    color: "text-gray-500",
-    bg: "bg-gray-50",
+    dotVar: "--status-pending-text",
   },
   {
     key: "REVIEWING",
     label: "Đang xem xét",
     icon: Clock,
-    color: "text-yellow-600",
-    bg: "bg-yellow-50",
+    dotVar: "--status-reviewing-text",
   },
   {
     key: "INTERVIEW",
     label: "Phỏng vấn",
     icon: CheckCircle2,
-    color: "text-blue-600",
-    bg: "bg-blue-50",
+    dotVar: "--status-interview-text",
   },
   {
     key: "ACCEPTED",
     label: "Đã nhận",
     icon: CheckCircle2,
-    color: "text-green-600",
-    bg: "bg-green-50",
+    dotVar: "--status-accepted-text",
   },
   {
     key: "REJECTED",
     label: "Từ chối",
     icon: XCircle,
-    color: "text-red-500",
-    bg: "bg-red-50",
+    dotVar: "--status-rejected-text",
   },
 ];
 
@@ -122,10 +123,21 @@ export const JOB_STATUS_DISPLAY_CONFIG = [
   {
     key: "PUBLISHED",
     label: "Đang tuyển",
-    color: "bg-green-100 text-green-700",
+    className:
+      "bg-[var(--job-published-bg)] text-[var(--job-published-text)] border-[var(--job-published-border)]",
   },
-  { key: "DRAFT", label: "Nháp", color: "bg-gray-100 text-gray-600" },
-  { key: "CLOSED", label: "Đã đóng", color: "bg-red-100 text-red-600" },
+  {
+    key: "DRAFT",
+    label: "Nháp",
+    className:
+      "bg-[var(--job-draft-bg)] text-[var(--job-draft-text)] border-[var(--job-draft-border)]",
+  },
+  {
+    key: "CLOSED",
+    label: "Đã đóng",
+    className:
+      "bg-[var(--job-closed-bg)] text-[var(--job-closed-text)] border-[var(--job-closed-border)]",
+  },
 ];
 
 export const JOB_TYPE_LABELS = {

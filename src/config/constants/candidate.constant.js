@@ -1,18 +1,25 @@
 import {
-  CheckCircle2,
   Clock,
   XCircle,
-  BriefcaseBusiness,
+  Compass,
   BotMessageSquare,
   User,
   BookmarkCheck,
+  Eye,
+  MessagesSquare,
+  CircleCheck,
+  Bell,
+  Lock,
+  Shield,
+  LogOut,
+  Headset,
 } from "lucide-react";
 import { path } from "../path";
 
 export const CANDIDATE_NAV_ITEMS = [
-  { to: path.home, icon: BriefcaseBusiness, label: "Việc làm", end: true },
+  { to: path.home, icon: Compass, label: "Khám phá", end: true },
   { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
+  { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
   { to: path.profile, icon: User, label: "Hồ sơ" },
 ];
 
@@ -36,23 +43,28 @@ export const APPLICATION_STATUS_LABELS = {
 export const STATUS_CONFIG = {
   PENDING: {
     icon: Clock,
-    className: "bg-gray-100 text-gray-600 border-gray-300",
+    className:
+      "bg-[var(--status-pending-bg)] text-[var(--status-pending-text)] border-[var(--status-pending-border)]",
   },
   REVIEWING: {
-    icon: Clock,
-    className: "bg-yellow-100 text-yellow-700 border-yellow-200",
+    icon: Eye,
+    className:
+      "bg-[var(--status-reviewing-bg)] text-[var(--status-reviewing-text)] border-[var(--status-reviewing-border)]",
   },
   INTERVIEW: {
-    icon: CheckCircle2,
-    className: "bg-blue-100 text-blue-700 border-blue-200",
+    icon: MessagesSquare,
+    className:
+      "bg-[var(--status-interview-bg)] text-[var(--status-interview-text)] border-[var(--status-interview-border)]",
   },
   ACCEPTED: {
-    icon: CheckCircle2,
-    className: "bg-green-100 text-green-700 border-green-200",
+    icon: CircleCheck,
+    className:
+      "bg-[var(--status-accepted-bg)] text-[var(--status-accepted-text)] border-[var(--status-accepted-border)]",
   },
   REJECTED: {
     icon: XCircle,
-    className: "bg-red-100 text-red-700 border-red-200",
+    className:
+      "bg-[var(--status-rejected-bg)] text-[var(--status-rejected-text)] border-[var(--status-rejected-border)]",
   },
 };
 
@@ -79,4 +91,54 @@ export const LOCATION_OPTIONS = [
   { label: "Hà Nội", value: "Hà Nội" },
   { label: "Đà Nẵng", value: "Đà Nẵng" },
   { label: "Remote", value: "Remote" },
+];
+
+export const EXP_LEVEL_OPTIONS = [
+  { label: "Mới đi làm", value: "ENTRY" },
+  { label: "Trung cấp / Cao cấp", value: "MID_SENIOR" },
+  { label: "Giám đốc", value: "DIRECTOR" },
+];
+
+export const JOB_SORT_OPTIONS = [
+  { label: "Mới nhất", value: "newest" },
+  { label: "Cũ nhất", value: "oldest" },
+  { label: "Lương cao nhất", value: "salary_desc" },
+];
+
+export const APPLICATION_STATUS_FILTER_OPTIONS = [
+  { label: "Tất cả trạng thái", value: "ALL" },
+  ...Object.entries(APPLICATION_STATUS_LABELS).map(([value, label]) => ({
+    value,
+    label,
+  })),
+];
+
+export const APPLICATION_DATE_RANGE_OPTIONS = [
+  { label: "7 ngày qua", value: "7" },
+  { label: "30 ngày qua", value: "30" },
+  { label: "90 ngày qua", value: "90" },
+  { label: "Tất cả thời gian", value: "0" },
+];
+
+export const SETTINGS_SIDEBAR_ITEMS = [
+  { id: "personal", label: "Thông tin cá nhân", icon: User },
+  { id: "notifications", label: "Thông báo", icon: Bell },
+  { id: "security", label: "Đổi mật khẩu", icon: Lock },
+  { id: "privacy", label: "Quyền riêng tư", icon: Shield },
+];
+
+export const AI_INTEREST_OPTIONS = [
+  "Phát triển Phần mềm",
+  "Thiết kế UI/UX",
+  "Marketing Dược",
+  "Quản trị Dự án",
+  "Data Science",
+  "Sales & Business",
+];
+
+export const AI_LOCATION_OPTIONS = [
+  "TP. Hồ Chí Minh",
+  "Hà Nội",
+  "Đà Nẵng",
+  "Từ xa",
 ];

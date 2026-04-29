@@ -17,13 +17,13 @@ function AuthButtons() {
       <Button
         variant="outline"
         size="sm"
-        className="h-9 cursor-pointer"
+        className="h-9 cursor-pointer rounded-4xl"
         asChild
       >
-        <Link to={path.login}>Đăng nhập</Link>
+        <Link to={`${path.auth}?tab=login`}>Đăng nhập</Link>
       </Button>
-      <Button size="sm" className="h-9 cursor-pointer" asChild>
-        <Link to={path.register}>Đăng ký</Link>
+      <Button size="sm" className="h-9 cursor-pointer rounded-4xl" asChild>
+        <Link to={`${path.auth}?tab=register`}>Đăng ký</Link>
       </Button>
     </div>
   );
@@ -34,7 +34,7 @@ function AppHeader() {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between border-b px-3 backdrop-blur">
+    <header className="bg-sidebar-primary-foreground sticky top-2 z-10 mx-auto flex h-14 w-[98%] items-center justify-between rounded-4xl px-3 shadow-sm backdrop-blur">
       {/* Sidebar toggle */}
       <Tooltip>
         <TooltipTrigger asChild>

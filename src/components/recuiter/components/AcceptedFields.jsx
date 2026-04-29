@@ -1,7 +1,7 @@
 import { Building2, Clock8, MapPin } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import AppDatePicker from "../shared/AppDatePicker";
+import AppDatePicker from "../../shared/AppDatePicker";
 
 function AcceptedFields({ fields, onFieldChange }) {
   const today = new Date();
@@ -31,7 +31,7 @@ function AcceptedFields({ fields, onFieldChange }) {
               type="time"
               value={fields.startTime}
               onChange={(e) => onFieldChange("startTime", e.target.value)}
-              className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+              className="bg-primary/10 appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
             <Clock8 className="text-muted-foreground absolute top-2.5 right-2 size-4" />
           </div>
@@ -47,6 +47,7 @@ function AcceptedFields({ fields, onFieldChange }) {
         <Input
           placeholder="Số nhà, đường, quận, thành phố..."
           value={fields.officeAddress}
+          className="bg-primary/10"
           onChange={(e) => onFieldChange("officeAddress", e.target.value)}
         />
       </div>

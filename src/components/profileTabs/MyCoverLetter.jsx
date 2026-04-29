@@ -1,155 +1,157 @@
-import { useState } from "react";
-import { FileText, Pencil, Trash2, Loader2, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
 import {
-  useGetMyCoverLettersQuery,
-  useCreateCoverLetterMutation,
-  useUpdateCoverLetterMutation,
-  useDeleteCoverLetterMutation,
-} from "@/services/coverLetter.service";
-import { formatDate } from "@/utils/helper";
+  FileText,
+  Loader2,
+  Plus,
+  Search,
+  SlidersHorizontal,
+  Sparkles,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { useMyCoverLetter } from "@/hooks/useMyCoverLetter";
 import CoverLetterFormDialog from "../shared/CoverLetterFormDialog";
 import CoverLetterDeleteDialog from "../shared/CoverLetterDeleteDialog";
+import CoverLetterCard from "./components/CoverLetterCard";
 
-const EMPTY_FORM = { title: "", content: "" };
+function StatRow({ label, value }) {
+  return (
+    <div className="flex items-center justify-between py-1.5">
+      <span className="text-muted-foreground text-sm">{label}</span>
+      <span className="text-foreground text-sm font-semibold">{value}</span>
+    </div>
+  );
+}
 
 function MyCoverLetter() {
-  const { data: response, isLoading } = useGetMyCoverLettersQuery();
-  const coverLetters = response?.data || [];
-
-  const [createCoverLetter, { isLoading: isCreating }] =
-    useCreateCoverLetterMutation();
-  const [updateCoverLetter, { isLoading: isUpdating }] =
-    useUpdateCoverLetterMutation();
-  const [deleteCoverLetter, { isLoading: isDeleting }] =
-    useDeleteCoverLetterMutation();
-
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState(null);
-  const [deletingId, setDeletingId] = useState(null);
-  const [formData, setFormData] = useState(EMPTY_FORM);
-
-  const handleOpenCreate = () => {
-    setEditingItem(null);
-    setFormData(EMPTY_FORM);
-    setIsFormOpen(true);
-  };
-
-  const handleOpenEdit = (item) => {
-    setEditingItem(item);
-    setFormData({ title: item.title, content: item.content });
-    setIsFormOpen(true);
-  };
-
-  const handleOpenDelete = (id) => {
-    setDeletingId(id);
-    setIsDeleteOpen(true);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.title.trim() || !formData.content.trim()) {
-      return toast.error("Vui lòng nhập đầy đủ tiêu đề và nội dung");
-    }
-
-    try {
-      if (editingItem) {
-        await updateCoverLetter({ id: editingItem.id, ...formData }).unwrap();
-        toast.success("Cập nhật thư xin việc thành công");
-      } else {
-        await createCoverLetter(formData).unwrap();
-        toast.success("Tạo thư xin việc thành công");
-      }
-      setIsFormOpen(false);
-    } catch (error) {
-      toast.error(error?.data?.message || "Có lỗi xảy ra");
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteCoverLetter(deletingId).unwrap();
-      toast.success("Đã xóa thư xin việc");
-      setIsDeleteOpen(false);
-    } catch (error) {
-      toast.error(error?.data?.message || "Có lỗi xảy ra");
-    }
-  };
+  const {
+    coverLetters,
+    total,
+    recentCount,
+    isLoading,
+    isCreating,
+    isUpdating,
+    isDeleting,
+    search,
+    setSearch,
+    isFormOpen,
+    setIsFormOpen,
+    isDeleteOpen,
+    setIsDeleteOpen,
+    editingItem,
+    formData,
+    setFormData,
+    handleOpenCreate,
+    handleOpenEdit,
+    handleOpenDelete,
+    handleSubmit,
+    handleDelete,
+  } = useMyCoverLetter();
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-sm">Thư xin việc của tôi</CardTitle>
-          <Button
-            size="sm"
-            onClick={handleOpenCreate}
-            className="cursor-pointer gap-1"
-          >
-            <Plus className="size-4" /> Tạo mới
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-primary text-3xl font-black">Thư xin việc</h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Quản lý và tinh chỉnh các lá thư xin việc để tạo ấn tượng với nhà
+          tuyển dụng.
+        </p>
+        <div className="mt-4 flex gap-2">
+          <Button onClick={handleOpenCreate} className="cursor-pointer gap-2">
+            <Plus className="size-4" />
+            Tạo thư mới
+          </Button>
+          <Button variant="outline" className="cursor-pointer">
+            Mẫu thư có sẵn
           </Button>
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent>
-        {isLoading ? (
-          <div className="flex h-32 items-center justify-center">
-            <Loader2 className="text-muted-foreground size-6 animate-spin" />
-          </div>
-        ) : coverLetters.length === 0 ? (
-          <div className="text-muted-foreground py-12 text-center">
-            <FileText className="mx-auto mb-3 size-10 opacity-30" />
-            <p className="text-sm">Chưa có thư xin việc nào</p>
-            <p className="mt-1 text-xs">
-              Tạo thư xin việc để ứng tuyển nhanh hơn
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {coverLetters.map((cl) => (
-              <div
-                key={cl.id}
-                className="group bg-card hover:border-primary/50 relative rounded-xl border p-4 transition-all hover:shadow-md"
-              >
-                <div className="mb-2 flex items-start justify-between">
-                  <div className="space-y-1">
-                    <h4 className="line-clamp-1 leading-none font-semibold tracking-tight">
-                      {cl.title}
-                    </h4>
-                    <p className="text-muted-foreground text-xs">
-                      Cập nhật: {formatDate(cl.updatedAt)}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="size-8"
-                      onClick={() => handleOpenEdit(cl)}
-                    >
-                      <Pencil className="size-4 text-blue-500" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="size-8 hover:bg-red-50"
-                      onClick={() => handleOpenDelete(cl.id)}
-                    >
-                      <Trash2 className="size-4 text-red-500" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="text-muted-foreground mt-3 line-clamp-4 overflow-hidden text-sm leading-relaxed">
-                  {cl.content}
-                </div>
+      {/* Two-column layout */}
+      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+        {/* Left sidebar */}
+        <div className="space-y-4">
+          {/* Stats card */}
+          <Card className="border-secondary border-l-4">
+            <CardContent className="px-5">
+              <h3 className="text-muted-foreground text-md mb-3 font-bold tracking-wider uppercase">
+                Trạng thái hồ sơ
+              </h3>
+              <div>
+                <StatRow label="Tổng số thư" value={total} />
+                <StatRow label="Mới cập nhật" value={recentCount} />
               </div>
-            ))}
+            </CardContent>
+          </Card>
+
+          {/* AI promo card */}
+          <div className="bg-primary-container text-primary-foreground rounded-xl p-5">
+            <div className="bg-primary-foreground/10 mb-3 inline-flex size-9 items-center justify-center rounded-lg">
+              <Sparkles className="size-5" />
+            </div>
+            <h3 className="font-bold">Tư vấn bởi AI</h3>
+            <p className="mt-1 text-sm opacity-75">
+              Tự động điều chỉnh thư xin việc dựa trên mô tả công việc (JD) để
+              tăng 80% tỷ lệ phản hồi.
+            </p>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="mt-4 cursor-pointer"
+            >
+              Thử ngay
+            </Button>
           </div>
-        )}
-      </CardContent>
+        </div>
+
+        {/* Right main */}
+        <div className="space-y-4">
+          {/* Search */}
+          <div className="relative">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+            <Input
+              className="bg-primary/10 px-9 py-6"
+              placeholder="Tìm kiếm thư xin việc..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <SlidersHorizontal className="text-muted-foreground absolute top-1/2 right-3 size-4 -translate-y-1/2" />
+          </div>
+
+          {/* List */}
+          {isLoading ? (
+            <div className="flex h-40 items-center justify-center">
+              <Loader2 className="text-muted-foreground size-6 animate-spin" />
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {coverLetters.map((cl) => (
+                <CoverLetterCard
+                  key={cl.id}
+                  cl={cl}
+                  onEdit={handleOpenEdit}
+                  onDelete={handleOpenDelete}
+                />
+              ))}
+
+              {/* Add new card */}
+              <button
+                onClick={handleOpenCreate}
+                className="border-border hover:border-primary/50 hover:bg-accent w-full cursor-pointer rounded-xl border-2 border-dashed p-8 text-center transition-colors"
+              >
+                <FileText className="text-muted-foreground/40 mx-auto mb-3 size-10" />
+                <p className="text-muted-foreground text-sm">
+                  Bạn có muốn tạo thêm một bản thư mới?
+                </p>
+                <p className="text-foreground mt-1 text-sm font-semibold">
+                  Nhấp để tạo ngay
+                </p>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
 
       <CoverLetterFormDialog
         open={isFormOpen}
@@ -167,7 +169,7 @@ function MyCoverLetter() {
         onConfirm={handleDelete}
         isLoading={isDeleting}
       />
-    </Card>
+    </div>
   );
 }
 

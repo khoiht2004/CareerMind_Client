@@ -1,12 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import {
-  Bell,
-  Settings,
-  User,
-  KeyRound,
-  LogOut,
-} from "lucide-react";
+import { Bell, Settings, User, KeyRound, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -21,10 +15,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { clearUser } from "@/store/slice/authSlice";
-import { apiSlice } from "@/store/slice/apiSlice";
 import { path } from "@/config/path";
-import { toast } from "sonner";
+import handleLogout from "@/hooks/useLogout";
 
 function UserMenu() {
   const { user } = useSelector((state) => state.auth);
@@ -32,18 +24,14 @@ function UserMenu() {
   const navigate = useNavigate();
   if (!user) return null;
 
-  const handleLogout = () => {
-    dispatch(clearUser());
-    dispatch(apiSlice.util.resetApiState());
-    toast.success("Đã đăng xuất");
-    navigate(path.login);
-  };
+  const isRecruiter = user?.role === "RECRUITER";
+  const sectionLabel = isRecruiter ? "Nhà tuyển dụng" : "Người dùng";
 
   const avatarContent = user.avatarUrl ? (
     <img
       src={user.avatarUrl}
       alt={user.name}
-      className="h-full w-full object-cover"
+      className="h-full w-full object-cover object-top"
     />
   ) : (
     <span>{user.name?.[0]?.toUpperCase() ?? "U"}</span>
@@ -78,11 +66,16 @@ function UserMenu() {
       </Tooltip>
 
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button className="hover:ring-primary ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-sm font-bold text-white transition-all duration-150 hover:ring-2">
-            {avatarContent}
-          </button>
-        </DropdownMenuTrigger>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenuTrigger asChild>
+              <button className="hover:ring-primary ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-sm font-bold text-white transition-all duration-150 hover:ring-2">
+                {avatarContent}
+              </button>
+            </DropdownMenuTrigger>
+          </TooltipTrigger>
+          <TooltipContent>{sectionLabel}</TooltipContent>
+        </Tooltip>
 
         <DropdownMenuContent align="end" className="w-64">
           {/* User info */}
@@ -124,7 +117,7 @@ function UserMenu() {
 
           <DropdownMenuItem
             className="cursor-pointer gap-2.5 py-2.5 text-red-500 focus:bg-red-50 focus:text-red-500 dark:focus:bg-red-950/30"
-            onClick={handleLogout}
+            onClick={() => handleLogout(dispatch, navigate)}
           >
             <LogOut className="size-4" />
             Đăng xuất
