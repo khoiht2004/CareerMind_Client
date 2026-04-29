@@ -1,4 +1,4 @@
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,24 +21,31 @@ function ConfirmDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-red-600">
-            <AlertCircle className="size-5" />
-            {title}
-          </DialogTitle>
+      <DialogContent
+        className="flex flex-col items-center gap-0 rounded-3xl p-8 sm:max-w-[400px]"
+        showCloseButton={false}
+      >
+        <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-red-50 text-red-600">
+          <AlertTriangle className="size-6" />
+        </div>
+
+        <DialogHeader className="flex flex-col items-center space-y-3 pb-6">
+          <DialogTitle className="text-xl font-bold">{title}</DialogTitle>
           {description && (
             <DialogDescription asChild>
-              <div>{description}</div>
+              <div className="text-muted-foreground text-center text-sm leading-relaxed whitespace-pre-wrap">
+                {description}
+              </div>
             </DialogDescription>
           )}
         </DialogHeader>
 
-        <DialogFooter>
+        <div className="grid w-full grid-cols-2 gap-3">
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => onOpenChange(false)}
             disabled={isLoading}
+            className="hover:bg-muted h-11 w-full rounded-xl"
           >
             {cancelText}
           </Button>
@@ -46,11 +53,12 @@ function ConfirmDialog({
             variant="destructive"
             onClick={onConfirm}
             disabled={isLoading}
+            className="h-11 w-full rounded-xl"
           >
             {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
             {confirmText}
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

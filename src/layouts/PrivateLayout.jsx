@@ -34,7 +34,7 @@ function LayoutContent() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "border-sidebar-border/30 bg-sidebar text-sidebar-foreground border-r transition-all duration-500",
+          "text-sidebar-foreground transition-all duration-500",
           !isMobile && "sticky top-0 h-screen shrink-0 overflow-y-auto",
           !isMobile && (isCollapsed ? "w-14" : "w-55"),
           isMobile && "fixed inset-y-0 left-0 z-50 h-full w-64 overflow-y-auto",
@@ -49,7 +49,7 @@ function LayoutContent() {
         <AppHeader />
         <main
           className={cn(
-            "flex min-h-0 flex-1 flex-col",
+            "bg-background flex min-h-0 flex-1 flex-col",
             isChatbotPage
               ? "h-[calc(100vh-3.5rem)]"
               : "min-h-[calc(100vh-3.5rem)]",

@@ -4,7 +4,7 @@ import { path } from "@/config/path";
 
 function Logo({ isCollapsed }) {
   return (
-    <div className="border-sidebar-border/30 flex items-center gap-1 border-b px-3 pb-2">
+    <div className="flex items-center gap-1 px-3 pb-2">
       <Link
         to={path.home}
         className={cn(

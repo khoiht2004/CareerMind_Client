@@ -7,6 +7,7 @@ import {
   FileText,
   TrendingUp,
   GraduationCap,
+  AudioLines,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -36,7 +37,7 @@ const SUGGESTED_QUESTIONS = [
   },
 ];
 
-const TEXTAREA_BASE_HEIGHT = 36;
+const TEXTAREA_BASE_HEIGHT = 40;
 const TEXTAREA_MAX_HEIGHT = 100;
 
 function ChatArea({
@@ -73,7 +74,7 @@ function ChatArea({
   const isEmpty = messages.length === 0 && !pendingMessage;
 
   return (
-    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl py-4 ">
+    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl pt-4">
       {/* Messages */}
       <ScrollArea className="min-h-0 flex-1 px-4">
         <div className="mx-auto max-w-2xl space-y-4">
@@ -107,7 +108,7 @@ function ChatArea({
                       type="button"
                       onClick={() => onSend(q)}
                       disabled={!hasActiveSession}
-                      className="hover:bg-muted/60 bg-card flex items-center gap-3 rounded-2xl border p-4 text-left transition-colors disabled:opacity-40"
+                      className="bg-muted/40 hover:bg-muted flex items-center gap-3 rounded-2xl p-4 text-left hover:cursor-pointer disabled:opacity-40"
                     >
                       <div
                         className={`flex size-9 shrink-0 items-center justify-center rounded-xl ${cls}`}
@@ -157,8 +158,8 @@ function ChatArea({
       </ScrollArea>
 
       {/* Input area */}
-      <div className="border-t px-4 py-4">
-        <div className="mx-auto flex max-w-2xl items-end gap-3">
+      <div className="bg-primary/10 px-4 py-4">
+        <div className="relative mx-auto flex max-w-2xl items-end gap-3">
           <Textarea
             ref={textareaRef}
             placeholder={
@@ -171,20 +172,23 @@ function ChatArea({
             onInput={handleResize}
             onKeyDown={onKeyDown}
             disabled={isSending || !hasActiveSession}
-            className="min-h-0 resize-none overflow-y-auto rounded-2xl leading-tight [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="bg-background min-h-0 resize-none overflow-y-auto rounded-3xl border-0 pt-2 pr-9.5 pb-2 pl-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           />
           <Button
             size="icon"
-            className="size-10 shrink-0 rounded-full"
+            className="absolute right-0.5 bottom-1/2 flex size-9 shrink-0 translate-y-1/2 rounded-full"
             onClick={() => onSend()}
             disabled={!input.trim() || isSending || !hasActiveSession}
           >
-            <Send className="size-4" />
+            {isSending || !input.trim() ? (
+              <AudioLines className="size-4" />
+            ) : (
+              <Send className="size-4" />
+            )}
           </Button>
         </div>
-        <p className="text-muted-foreground mt-2 text-center text-[10px] tracking-wide uppercase">
-          AI Scout có thể đưa ra thông tin không chính xác. Hãy kiểm tra các
-          thông tin quan trọng.
+        <p className="text-muted-foreground mt-2 text-center text-xs">
+          AI Scout có thể mắc lỗi. Hãy kiểm tra các thông tin quan trọng.
         </p>
       </div>
     </div>

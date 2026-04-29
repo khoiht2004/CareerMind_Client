@@ -7,7 +7,7 @@ function handleLogout(dispatch, navigate) {
       dispatch(clearUser());
       dispatch(apiSlice.util.resetApiState());
       toast.success("Đã đăng xuất");
-      navigate(path.login);
+      navigate(path.auth + "?tab=login");
 };
 
 export default handleLogout;
