@@ -19,7 +19,7 @@ import { path } from "../path";
 export const CANDIDATE_NAV_ITEMS = [
   { to: path.home, icon: Compass, label: "Khám phá", end: true },
   { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
+  { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
   { to: path.profile, icon: User, label: "Hồ sơ" },
 ];
 

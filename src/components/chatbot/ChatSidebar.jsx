@@ -107,7 +107,7 @@ function ChatSidebar({
             Mở khóa phân tích chuyên sâu từ AI Scout.
           </p>
           <Button className="mt-3" variant="secondary" asChild>
-            <Link to={path.aipricing}>Nâng cấp Pro</Link>
+            <Link to={path.aiPricing}>Nâng cấp Pro</Link>
           </Button>
         </div>
       </div>

@@ -32,6 +32,7 @@ import {
   DeadlineCell,
   JobInitials,
 } from "@/components/recuiter/components/JobsComponent";
+import { path } from "@/config/path";
 
 function RecruiterJobs() {
   const navigate = useNavigate();
@@ -255,7 +256,7 @@ function RecruiterJobs() {
             className="text-md bg-secondary-container text-primary mt-5 cursor-pointer rounded-2xl p-6 font-semibold"
             asChild
           >
-            <Link to="/payment">Khám phá gói Premium</Link>
+            <Link to={path.aiPricing}>Khám phá gói Premium</Link>
           </Button>
         </div>
       </article>

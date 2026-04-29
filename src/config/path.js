@@ -20,7 +20,7 @@ export const path = {
   savedJobs: "/saved-jobs",
 
   // AI
-  aipricing: "/dashboard/pricing",
+  aiPricing: "/pricing",
 
   // Recruiter
   recruiter: {

@@ -18,7 +18,7 @@ export const RECRUITER_NAV_ITEMS = [
   { to: path.recruiter.stats, icon: BarChart3, label: "Thống kê" },
   { to: path.recruiter.jobs, icon: BriefcaseBusiness, label: "Quản lý việc làm" },
   { to: path.recruiter.applications, icon: FileText, label: "Đơn ứng tuyển" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "Trợ lý AI" },
+  { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
   { to: path.profile, icon: User, label: "Hồ sơ" },
 ];
 

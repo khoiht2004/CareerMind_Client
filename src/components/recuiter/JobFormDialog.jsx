@@ -7,9 +7,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import JobFormBasicSection from "./JobFormBasicSection";
-import JobFormDetailSection from "./JobFormDetailSection";
-import JobFormContentSection from "./JobFormContentSection";
+import JobFormDetailSection from "./components/JobFormDetailSection";
+import JobFormContentSection from "./components/JobFormContentSection";
+import JobFormBasicSection from "./components/JobFormBasicSection";
 
 function JobFormDialog({
   open,

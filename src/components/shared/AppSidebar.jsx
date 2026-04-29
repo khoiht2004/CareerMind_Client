@@ -37,7 +37,7 @@ function AppSidebar() {
           className="bg-secondary hover:bg-secondary/80 h-10 w-full rounded-xl text-white"
           asChild
         >
-          <Link to={path.aipricing}>
+          <Link to={path.aiPricing}>
             <Bot className="h-5 w-5" />
             {!isCollapsed && <span className="ml-2">Upgrade to Pro</span>}
           </Link>

@@ -75,7 +75,7 @@ function App() {
               element={<ApplicationDetail />}
             />
             <Route path={path.savedJobs} element={<SavedJobs />} />
-            <Route path={path.aipricing} element={<AIPricing />} />
+            <Route path={path.aiPricing} element={<AIPricing />} />
 
             {/* Recruiter routes */}
             <Route path={path.recruiter.jobs} element={<RecruiterJobs />} />
