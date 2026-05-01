@@ -4,12 +4,31 @@ import { cn } from "@/lib/utils";
 import InlineJobCard from "./InlineJobCard";
 import { parseContent } from "@/utils/chatbot.helper";
 import renderText from "./renderText";
+import AttachmentThumbnail from "@/components/shared/AttachmentThumbnail";
+
+function ImageAttachments({ images }) {
+  if (!images?.length) return null;
+  return (
+    <div className="mb-2 flex flex-wrap gap-1.5">
+      {images.map((img, i) => (
+        <AttachmentThumbnail key={i} attachment={img} />
+      ))}
+    </div>
+  );
+}
 
 function MessageBubble({ message }) {
   const isUser = message.role === "USER";
 
   const segments = useMemo(() => {
-    const raw = message.content.replace(/\[LOAD_MORE_JOBS\]/g, "");
+    const raw = message.content
+      .replace(/\[LOAD_MORE_JOBS\]/g, "")
+      // Strip separator lines: ---, ===, ─── (3+ chars)
+      .replace(/^[ \t]*[-=─—]{3,}[ \t]*$/gm, "")
+      // Strip blank line between a label line (ends with ':') and its content
+      .replace(/(:[^\n]*)\n\n(?=\s*[\d\-•])/g, "$1\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
     return parseContent(raw);
   }, [message.content]);
 
@@ -37,6 +56,7 @@ function MessageBubble({ message }) {
               : "bg-muted rounded-tl-sm",
           )}
         >
+          <ImageAttachments images={message.images} />
           {segments.map((seg, i) =>
             seg.type === "jobs" ? (
               <div key={i} className="grid grid-cols-3 gap-2">
@@ -62,10 +82,11 @@ function MessageBubble({ message }) {
   );
 }
 
-// Only re-render when message id or content actually changes
+// Re-render only when content or images change
 export default memo(
   MessageBubble,
   (prev, next) =>
     prev.message.id === next.message.id &&
-    prev.message.content === next.message.content,
+    prev.message.content === next.message.content &&
+    prev.message.images === next.message.images,
 );

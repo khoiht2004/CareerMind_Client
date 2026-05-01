@@ -15,10 +15,10 @@ export const chatService = apiSlice.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Chat", id }],
     }),
     sendMessage: builder.mutation({
-      query: ({ sessionId, content }) => ({
+      query: ({ sessionId, content, images }) => ({
         url: `/chat/sessions/${sessionId}/messages`,
         method: "POST",
-        body: { content },
+        body: { content, ...(images?.length && { images }) },
       }),
       invalidatesTags: (result, error, { sessionId }) => [{ type: "Chat", id: sessionId }],
     }),

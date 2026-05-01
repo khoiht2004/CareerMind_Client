@@ -49,15 +49,20 @@ export function useChatBot() {
     }
   }, [createSession]);
 
+  // text: string | undefined (falls back to input state)
+  // attachments: array from useAttachments (contains { data, mediaType, previewUrl, ... })
   const handleSend = useCallback(
-    async (text) => {
-      const content = (text ?? input).trim();
-      if (!content || isSending || !activeSessionId) return;
+    async (text, attachments = []) => {
+      const content = (typeof text === "string" ? text : input).trim();
+      if (!content && !attachments.length) return;
+      if (isSending || !activeSessionId) return;
+
       setInput("");
       setIsSending(true);
-      setPendingMessage(content);
+      setPendingMessage({ content, attachments });
       try {
-        await sendMessage({ sessionId: activeSessionId, content }).unwrap();
+        const images = attachments.map(({ data, mediaType }) => ({ data, mediaType }));
+        await sendMessage({ sessionId: activeSessionId, content, images }).unwrap();
       } catch {
         toast.error("Gửi tin nhắn thất bại");
       } finally {
@@ -102,16 +107,6 @@ export function useChatBot() {
     if (window.innerWidth < 768) setSidebarOpen(false);
   }, []);
 
-  const handleKeyDown = useCallback(
-    (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    },
-    [handleSend],
-  );
-
   return {
     activeSessionId,
     input,
@@ -128,6 +123,5 @@ export function useChatBot() {
     handleDeleteSession,
     handleRenameSession,
     handleSelectSession,
-    handleKeyDown,
   };
 }

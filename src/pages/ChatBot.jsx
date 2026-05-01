@@ -19,7 +19,6 @@ function ChatBot() {
     handleDeleteSession,
     handleRenameSession,
     handleSelectSession,
-    handleKeyDown,
   } = useChatBot();
 
   return (
@@ -40,7 +39,6 @@ function ChatBot() {
         input={input}
         onInputChange={setInput}
         onSend={handleSend}
-        onKeyDown={handleKeyDown}
         isSending={isSending}
         isLoading={messagesLoading}
         hasActiveSession={!!activeSessionId}
