@@ -21,7 +21,14 @@ function MessageBubble({ message }) {
   const isUser = message.role === "USER";
 
   const segments = useMemo(() => {
-    const raw = message.content.replace(/\[LOAD_MORE_JOBS\]/g, "");
+    const raw = message.content
+      .replace(/\[LOAD_MORE_JOBS\]/g, "")
+      // Strip separator lines: ---, ===, ─── (3+ chars)
+      .replace(/^[ \t]*[-=─—]{3,}[ \t]*$/gm, "")
+      // Strip blank line between a label line (ends with ':') and its content
+      .replace(/(:[^\n]*)\n\n(?=\s*[\d\-•])/g, "$1\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
     return parseContent(raw);
   }, [message.content]);
 

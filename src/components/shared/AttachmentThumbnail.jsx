@@ -18,7 +18,7 @@ function AttachmentThumbnail({ attachment, onRemove }) {
           src={src}
           alt={attachment.name ?? ""}
           onClick={() => setPreviewOpen(true)}
-          className="size-15 cursor-pointer rounded-lg border border-border object-cover transition-opacity hover:opacity-80"
+          className="border-border size-12 cursor-pointer rounded-lg border object-cover transition-opacity hover:opacity-80"
         />
         {onRemove && (
           <button
@@ -27,7 +27,7 @@ function AttachmentThumbnail({ attachment, onRemove }) {
               e.stopPropagation();
               onRemove(attachment.id);
             }}
-            className="bg-foreground text-background absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100"
+            className="bg-foreground text-background absolute -top-1.5 -right-1.5 flex size-4 cursor-pointer items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100 hover:scale-105"
           >
             <X className="size-2.5" />
           </button>

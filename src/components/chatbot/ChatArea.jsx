@@ -1,30 +1,16 @@
 import { memo, useCallback, useRef, useEffect } from "react";
 import {
   Bot,
-  Send,
   Loader2,
   UserSearch,
   FileText,
   TrendingUp,
   GraduationCap,
-  AudioLines,
-  Plus,
-  ImagePlus,
-  Globe,
-  Sparkles,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import MessageBubble from "./MessageBubble";
+import ChatInput from "./ChatInput";
 import { useAttachments } from "@/hooks/useAttachments";
-import AttachmentThumbnail from "@/components/shared/AttachmentThumbnail";
 
 const SUGGESTED_QUESTIONS = [
   {
@@ -49,9 +35,6 @@ const SUGGESTED_QUESTIONS = [
   },
 ];
 
-const TEXTAREA_BASE_HEIGHT = 32;
-const TEXTAREA_MAX_HEIGHT = 100;
-
 const PENDING_MESSAGE_TEMPLATE = { id: "__pending__", role: "USER" };
 
 function ChatArea({
@@ -65,7 +48,6 @@ function ChatArea({
   hasActiveSession,
 }) {
   const bottomRef = useRef(null);
-  const textareaRef = useRef(null);
 
   const {
     attachments,
@@ -78,21 +60,8 @@ function ChatArea({
   } = useAttachments();
 
   useEffect(() => {
-    if (!input && textareaRef.current) {
-      textareaRef.current.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
-    }
-  }, [input]);
-
-  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isSending, pendingMessage]);
-
-  const handleResize = useCallback(() => {
-    const el = textareaRef.current;
-    if (!el) return;
-    el.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
-    el.style.height = `${Math.min(el.scrollHeight, TEXTAREA_MAX_HEIGHT)}px`;
-  }, []);
 
   const handleSend = useCallback(
     (text) => {
@@ -102,19 +71,7 @@ function ChatArea({
     [onSend, attachments, clearAttachments],
   );
 
-  const handleKeyDown = useCallback(
-    (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    },
-    [handleSend],
-  );
-
   const isEmpty = messages.length === 0 && !pendingMessage;
-  const canSend =
-    (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
 
   return (
     <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl pt-4">
@@ -196,103 +153,19 @@ function ChatArea({
       </ScrollArea>
 
       {/* Input area */}
-      <div className="bg-primary/10 px-4 py-2">
-        <div className="relative mx-auto flex max-w-3xl items-end gap-2">
-          {/* Hidden file input */}
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/gif,image/webp"
-            multiple
-            className="hidden"
-            onChange={handleFileInputChange}
-          />
-
-          {/* Textarea container*/}
-          <div className="bg-background flex min-w-0 flex-1 flex-col rounded-3xl px-3 pt-3 pb-2">
-            {attachments.length > 0 && (
-              <div className="mb-2 flex flex-wrap gap-2">
-                {attachments.map((att) => (
-                  <AttachmentThumbnail
-                    key={att.id}
-                    attachment={att}
-                    onRemove={removeAttachment}
-                  />
-                ))}
-              </div>
-            )}
-            <Textarea
-              ref={textareaRef}
-              placeholder={
-                hasActiveSession
-                  ? "Nhập câu hỏi của bạn tại đây..."
-                  : "Tạo cuộc trò chuyện mới để bắt đầu"
-              }
-              value={input}
-              onChange={(e) => onInputChange(e.target.value)}
-              onInput={handleResize}
-              onKeyDown={handleKeyDown}
-              onPaste={handlePaste}
-              disabled={isSending || !hasActiveSession}
-              className="placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 shadow-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
-            />
-
-            <article className="flex justify-between">
-              {/* Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    disabled={!hasActiveSession}
-                    className="hover:bg-primary/10 flex size-9 shrink-0 rounded-full"
-                  >
-                    <Plus className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="top"
-                  align="start"
-                  className="mb-1 w-52"
-                >
-                  <DropdownMenuItem
-                    onClick={triggerFileInput}
-                    className="cursor-pointer"
-                  >
-                    <ImagePlus className="mr-2 size-4" />
-                    Thêm ảnh và tệp
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Globe className="mr-2 size-4" />
-                    Nghiên cứu chuyên sâu
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Sparkles className="mr-2 size-4" />
-                    Phân tích và thêm
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              {/* Send button */}
-              <Button
-                size="icon"
-                className="flex size-9 shrink-0 rounded-full"
-                onClick={() => handleSend()}
-                disabled={!canSend}
-              >
-                {isSending || !canSend ? (
-                  <AudioLines className="size-4" />
-                ) : (
-                  <Send className="size-4" />
-                )}
-              </Button>
-            </article>
-          </div>
-        </div>
-        <p className="text-muted-foreground mt-2 text-center text-xs">
-          <b className="font-bold">AI Scout</b> có thể mắc lỗi. Hãy kiểm tra các
-          thông tin quan trọng.
-        </p>
-      </div>
+      <ChatInput
+        input={input}
+        onInputChange={onInputChange}
+        onSend={handleSend}
+        isSending={isSending}
+        hasActiveSession={hasActiveSession}
+        attachments={attachments}
+        fileInputRef={fileInputRef}
+        triggerFileInput={triggerFileInput}
+        handleFileInputChange={handleFileInputChange}
+        handlePaste={handlePaste}
+        removeAttachment={removeAttachment}
+      />
     </div>
   );
 }
