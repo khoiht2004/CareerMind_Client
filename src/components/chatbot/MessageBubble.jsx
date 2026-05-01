@@ -6,12 +6,12 @@ import { parseContent } from "@/utils/chatbot.helper";
 import renderText from "./renderText";
 import AttachmentThumbnail from "@/components/shared/AttachmentThumbnail";
 
-function ImageAttachments({ images }) {
-  if (!images?.length) return null;
+function AttachmentsViewer({ attachments }) {
+  if (!attachments?.length) return null;
   return (
     <div className="mb-2 flex flex-wrap gap-1.5">
-      {images.map((img, i) => (
-        <AttachmentThumbnail key={i} attachment={img} />
+      {attachments.map((att, i) => (
+        <AttachmentThumbnail key={i} attachment={att} />
       ))}
     </div>
   );
@@ -56,7 +56,20 @@ function MessageBubble({ message }) {
               : "bg-muted rounded-tl-sm",
           )}
         >
-          <ImageAttachments images={message.images} />
+          <AttachmentsViewer attachments={message.attachments} />
+          
+          {message.cvAnalysis && (
+            <div className="mb-2 p-3 bg-background/10 rounded-lg border border-border/20">
+              <p className="font-bold text-base mb-1">📊 Phân tích CV (Điểm: {message.cvAnalysis.score}/100)</p>
+              <div className="text-xs space-y-2">
+                <p><b>✨ Điểm mạnh:</b> {message.cvAnalysis.strengths.join(", ")}</p>
+                <p><b>⚠️ Điểm yếu:</b> {message.cvAnalysis.weaknesses.join(", ")}</p>
+                <p><b>📈 Cải thiện:</b> {message.cvAnalysis.improvements.join(", ")}</p>
+                <p className="italic mt-1 text-muted-foreground">{message.cvAnalysis.summary}</p>
+              </div>
+            </div>
+          )}
+
           {segments.map((seg, i) =>
             seg.type === "jobs" ? (
               <div key={i} className="grid grid-cols-3 gap-2">
@@ -82,11 +95,12 @@ function MessageBubble({ message }) {
   );
 }
 
-// Re-render only when content or images change
+// Re-render only when content, attachments, or cvAnalysis change
 export default memo(
   MessageBubble,
   (prev, next) =>
     prev.message.id === next.message.id &&
     prev.message.content === next.message.content &&
-    prev.message.images === next.message.images,
+    prev.message.attachments === next.message.attachments &&
+    prev.message.cvAnalysis === next.message.cvAnalysis,
 );

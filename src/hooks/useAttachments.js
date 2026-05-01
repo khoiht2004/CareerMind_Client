@@ -1,29 +1,34 @@
 import { useState, useCallback, useRef } from "react";
 import { toast } from "sonner";
-
-const MAX_SIZE = 4 * 1024 * 1024; // 4MB
-const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+import {
+  ACCEPTED_ATTACHMENT_TYPES,
+  ATTACHMENT_SIZE_LABELS,
+} from "@/config/constants/attachment.constants";
 
 function fileToAttachment(file) {
   return new Promise((resolve, reject) => {
-    if (!ACCEPTED_TYPES.includes(file.type)) {
-      reject(new Error(`Định dạng "${file.type}" không được hỗ trợ`));
+    const typeConfig = ACCEPTED_ATTACHMENT_TYPES[file.type];
+    if (!typeConfig) {
+      reject(new Error(`Định dạng không được hỗ trợ: "${file.name}"`));
       return;
     }
-    if (file.size > MAX_SIZE) {
-      reject(new Error(`Ảnh "${file.name}" vượt quá 4MB`));
+    if (file.size > typeConfig.maxSize) {
+      reject(
+        new Error(`"${file.name}" vượt quá ${ATTACHMENT_SIZE_LABELS[typeConfig.category]}`),
+      );
       return;
     }
     const reader = new FileReader();
     reader.onload = (e) => {
       const fullDataUrl = e.target.result;
-      const base64 = fullDataUrl.split(",")[1];
       resolve({
         id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-        previewUrl: fullDataUrl,
-        data: base64,
+        previewUrl: typeConfig.category === "image" ? fullDataUrl : null,
+        data: fullDataUrl.split(",")[1],
         mediaType: file.type,
         name: file.name,
+        size: file.size,
+        category: typeConfig.category,
       });
     };
     reader.onerror = () => reject(new Error(`Không thể đọc file "${file.name}"`));
@@ -36,9 +41,7 @@ async function processFiles(files) {
   results
     .filter((r) => r.status === "rejected")
     .forEach((r) => toast.error(r.reason.message));
-  return results
-    .filter((r) => r.status === "fulfilled")
-    .map((r) => r.value);
+  return results.filter((r) => r.status === "fulfilled").map((r) => r.value);
 }
 
 export function useAttachments() {
@@ -50,9 +53,10 @@ export function useAttachments() {
     if (valid.length) setAttachments((prev) => [...prev, ...valid]);
   }, []);
 
-  const removeAttachment = useCallback((id) => {
-    setAttachments((prev) => prev.filter((a) => a.id !== id));
-  }, []);
+  const removeAttachment = useCallback(
+    (id) => setAttachments((prev) => prev.filter((a) => a.id !== id)),
+    [],
+  );
 
   const clearAttachments = useCallback(() => setAttachments([]), []);
 

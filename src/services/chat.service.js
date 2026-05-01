@@ -15,11 +15,23 @@ export const chatService = apiSlice.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Chat", id }],
     }),
     sendMessage: builder.mutation({
-      query: ({ sessionId, content, images }) => ({
-        url: `/chat/sessions/${sessionId}/messages`,
-        method: "POST",
-        body: { content, ...(images?.length && { images }) },
-      }),
+      query: ({ sessionId, content, attachments }) => {
+        const cleanAttachments = (attachments ?? []).map(({ data, mediaType, name, category }) => ({
+          data,
+          mediaType,
+          name,
+          category: category || "file",
+        }));
+
+        return {
+          url: `/chat/sessions/${sessionId}/messages`,
+          method: "POST",
+          body: {
+            content,
+            attachments: cleanAttachments.length ? cleanAttachments : undefined,
+          },
+        };
+      },
       invalidatesTags: (result, error, { sessionId }) => [{ type: "Chat", id: sessionId }],
     }),
     updateSessionTitle: builder.mutation({

@@ -61,8 +61,7 @@ export function useChatBot() {
       setIsSending(true);
       setPendingMessage({ content, attachments });
       try {
-        const images = attachments.map(({ data, mediaType }) => ({ data, mediaType }));
-        await sendMessage({ sessionId: activeSessionId, content, images }).unwrap();
+        await sendMessage({ sessionId: activeSessionId, content, attachments }).unwrap();
       } catch {
         toast.error("Gửi tin nhắn thất bại");
       } finally {

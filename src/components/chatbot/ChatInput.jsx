@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import AttachmentThumbnail from "@/components/shared/AttachmentThumbnail";
 import ChatInputDropdown from "./ChatInputDropdown";
+import { FILE_INPUT_ACCEPT } from "@/config/constants/attachment.constants";
 
-const TEXTAREA_BASE_HEIGHT = 32;
+const TEXTAREA_BASE_HEIGHT = 22;
 const TEXTAREA_MAX_HEIGHT = 100;
 
 function ChatInput({
@@ -48,7 +49,8 @@ function ChatInput({
     [onSend],
   );
 
-  const canSend = (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
+  const canSend =
+    (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
 
   return (
     <div className="bg-primary/10 px-4 py-2">
@@ -57,7 +59,7 @@ function ChatInput({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp"
+          accept={FILE_INPUT_ACCEPT}
           multiple
           className="hidden"
           onChange={handleFileInputChange}
@@ -67,10 +69,10 @@ function ChatInput({
         <div className="bg-background flex min-w-0 flex-1 flex-col rounded-3xl px-3 pt-3 pb-2">
           {attachments.length > 0 && (
             <div className="mb-2 flex flex-wrap gap-2">
-              {attachments.map((att) => (
+              {attachments.map((attachment) => (
                 <AttachmentThumbnail
-                  key={att.id}
-                  attachment={att}
+                  key={attachment.id}
+                  attachment={attachment}
                   onRemove={removeAttachment}
                 />
               ))}
@@ -90,7 +92,7 @@ function ChatInput({
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
             disabled={isSending || !hasActiveSession}
-            className="placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 shadow-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
+            className="placeholder:text-muted-foreground/30 min-h-0 resize-none border-0 bg-transparent p-0 shadow-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
           />
 
           <article className="flex justify-between">

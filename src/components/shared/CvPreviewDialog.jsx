@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { Download, ExternalLink, FileText, Loader2, X } from "lucide-react";
+import { Download, ExternalLink, FileText, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,10 +14,15 @@ import { formatFileSize, formatVN } from "@/utils/helper";
 import useContainerWidth from "@/hooks/useContainerWidth";
 import PdfViewer from "./PdfViewer";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+// Try local worker first, fall back to CDN
+try {
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    "pdfjs-dist/build/pdf.worker.min.mjs",
+    import.meta.url,
+  ).toString();
+} catch {
+  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+}
 
 function getGoogleViewerUrl(fileUrl) {
   return `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
@@ -27,12 +32,30 @@ function CvPreviewDialog({ open, onClose, cv }) {
   const containerRef = useRef(null);
   const containerWidth = useContainerWidth(containerRef);
 
+  // Convert base64 data URL to blob URL for PDF viewer (avoids data URL size limits)
+  const resolvedFileUrl = useMemo(() => {
+    if (!cv?.fileUrl) return null;
+    if (!cv.fileUrl.startsWith("data:")) return cv.fileUrl;
+    try {
+      const [header, base64] = cv.fileUrl.split(",");
+      const mime = header.match(/:(.*?);/)?.[1] ?? "application/octet-stream";
+      const bytes = atob(base64);
+      const arr = new Uint8Array(bytes.length);
+      for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+      return URL.createObjectURL(new Blob([arr], { type: mime }));
+    } catch {
+      return cv.fileUrl;
+    }
+  }, [cv?.fileUrl]);
+
   if (!cv) return null;
 
-  const { name, fileUrl, fileType, fileSize, createdAt } = cv;
+  const { name, fileType, fileSize, createdAt, isLocalBlob } = cv;
   const isPdf = fileType === "pdf";
-  const sizeLabel = formatFileSize(fileSize);
-  const dateLabel = formatVN(createdAt);
+  const sizeLabel = fileSize ? formatFileSize(fileSize) : null;
+  const dateLabel = createdAt ? formatVN(createdAt) : null;
+
+  const canGoogleView = !isLocalBlob && !isPdf;
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -60,24 +83,31 @@ function CvPreviewDialog({ open, onClose, cv }) {
 
           {/* Actions */}
           <div className="flex shrink-0 items-center gap-0.5">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8"
-              title="Mở tab mới"
-              asChild
-            >
-              <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="size-4" />
-              </a>
-            </Button>
+            {resolvedFileUrl && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                title="Mở tab mới"
+                asChild
+              >
+                <a
+                  href={resolvedFileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="size-4" />
+                </a>
+              </Button>
+            )}
 
-            {/* Download */}
-            <Button variant="ghost" size="icon" className="size-8" asChild>
-              <a href={fileUrl} download={name}>
-                <Download className="size-4" />
-              </a>
-            </Button>
+            {resolvedFileUrl && (
+              <Button variant="ghost" size="icon" className="size-8" asChild>
+                <a href={resolvedFileUrl} download={name}>
+                  <Download className="size-4" />
+                </a>
+              </Button>
+            )}
 
             <Button
               variant="ghost"
@@ -93,15 +123,32 @@ function CvPreviewDialog({ open, onClose, cv }) {
 
         {/* ── Body ── */}
         <div ref={containerRef} className="flex-1 overflow-hidden">
-          {isPdf ? (
-            <PdfViewer fileUrl={fileUrl} containerWidth={containerWidth} />
-          ) : (
+          {isPdf && resolvedFileUrl ? (
+            <PdfViewer
+              fileUrl={resolvedFileUrl}
+              containerWidth={containerWidth}
+            />
+          ) : canGoogleView && resolvedFileUrl ? (
             <iframe
-              src={getGoogleViewerUrl(fileUrl)}
+              src={getGoogleViewerUrl(resolvedFileUrl)}
               title={name}
               className="size-full border-0"
               allow="fullscreen"
             />
+          ) : (
+            <div className="text-muted-foreground flex h-full flex-col items-center justify-center gap-2 text-sm">
+              <FileText className="size-10 opacity-40" />
+              <p>Không thể xem trước file này.</p>
+              {resolvedFileUrl && (
+                <a
+                  href={resolvedFileUrl}
+                  download={name}
+                  className="text-primary underline"
+                >
+                  Tải xuống để xem
+                </a>
+              )}
+            </div>
           )}
         </div>
       </DialogContent>
