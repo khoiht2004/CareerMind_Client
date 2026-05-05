@@ -1,6 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
 import { Search, Loader2, SlidersHorizontal } from "lucide-react";
-import { useSelector } from "react-redux";
 
 import Pagination from "@/components/shared/Pagination";
 import JobCard from "@/components/shared/JobCard";
@@ -14,96 +12,31 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-
-import { useGetJobsQuery, useGetSavedJobsQuery } from "@/services/job.service";
-import { formatDate, convertArray } from "@/utils/helper";
-import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
-import { useDebounce } from "@/hooks/useDebounce";
-
-const LIMIT = 10;
+import { useHome } from "@/hooks/useHome";
 
 function Home() {
-  const { user } = useSelector((state) => state.auth);
-
-  const [inputValue, setInputValue] = useState("");
-  const [page, setPage] = useState(1);
-  const [filterSheetOpen, setFilterSheetOpen] = useState(false);
-  const [filters, setFilters] = useState({
-    search: "",
-    type: "ALL",
-    location: "ALL",
-    level: "ALL",
-    sort: "newest",
-  });
-
-  // Debounce 500ms — tự động trigger search sau khi user ngừng gõ
-  const debouncedInput = useDebounce(inputValue, 500);
-
-  useEffect(() => {
-    setPage(1);
-    setFilters((f) => {
-      if (f.search === debouncedInput) return f;
-      return { ...f, search: debouncedInput };
-    });
-  }, [debouncedInput]);
-
-  const { data, isLoading, isFetching } = useGetJobsQuery({
-    ...filters,
-    type: filters.type === "ALL" ? undefined : filters.type,
-    location: filters.location === "ALL" ? undefined : filters.location,
-    level: filters.level === "ALL" ? undefined : filters.level,
+  const {
+    inputValue,
+    setInputValue,
     page,
-    limit: LIMIT,
-  });
-  const { data: savedData } = useGetSavedJobsQuery(undefined, { skip: !user });
-
-  const jobs = data?.data?.jobs ?? [];
-  const total = data?.data?.total ?? 0;
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
-  const savedIds = new Set((savedData?.data ?? []).map((j) => j.id));
-
-  const handleSearch = useCallback(() => {
-    setPage(1);
-    setFilters((f) => ({ ...f, search: inputValue }));
-  }, [inputValue]);
-
-  const handleTypeChange = useCallback((v) => {
-    setPage(1);
-    setFilters((f) => ({ ...f, type: f.type === v ? "ALL" : v }));
-  }, []);
-
-  const handleLevelChange = useCallback((v) => {
-    setPage(1);
-    setFilters((f) => ({ ...f, level: f.level === v ? "ALL" : v }));
-  }, []);
-
-  const handleLocationChange = useCallback((v) => {
-    setPage(1);
-    setFilters((f) => ({ ...f, location: v }));
-  }, []);
-
-  const handleSortChange = useCallback((v) => {
-    setPage(1);
-    setFilters((f) => ({ ...f, sort: v }));
-  }, []);
-
-  const handleClearFilters = useCallback(() => {
-    setPage(1);
-    setInputValue("");
-    setFilters({
-      search: "",
-      type: "ALL",
-      location: "ALL",
-      level: "ALL",
-      sort: "newest",
-    });
-  }, []);
-
-  const hasFilters =
-    filters.search ||
-    filters.type !== "ALL" ||
-    filters.location !== "ALL" ||
-    filters.level !== "ALL";
+    setPage,
+    filterSheetOpen,
+    setFilterSheetOpen,
+    filters,
+    jobs,
+    total,
+    totalPages,
+    savedIds,
+    isLoading,
+    isFetching,
+    hasFilters,
+    handleSearch,
+    handleTypeChange,
+    handleLevelChange,
+    handleLocationChange,
+    handleSortChange,
+    handleClearFilters,
+  } = useHome();
 
   const filterPanelProps = {
     typeFilter: filters.type,
@@ -198,12 +131,7 @@ function Home() {
                     key={job.id}
                     variant="horizontal"
                     isSaved={savedIds.has(job.id)}
-                    job={{
-                      ...job,
-                      tags: convertArray(job.tags),
-                      type: JOB_TYPE_LABELS[job.type] ?? job.type,
-                      postedAt: formatDate(job.createdAt),
-                    }}
+                    job={job}
                   />
                 ))}
               </div>

@@ -3,10 +3,17 @@ import { FileText, Eye, Download, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatFileSize, formatRelativeTime } from "@/utils/helper";
+import {
+  DEFAULT_TYPE_CONFIG,
+  FILE_TYPE_CONFIG,
+} from "@/config/constants/attachment.constants";
 
 function CvFeaturedCard({ cv, onPreview, onDelete }) {
   const handlePreview = useCallback(() => onPreview(cv), [cv, onPreview]);
   const handleDelete = useCallback(() => onDelete(cv), [cv, onDelete]);
+
+  const typeConfig =
+    FILE_TYPE_CONFIG[cv.fileType?.toLowerCase()] ?? DEFAULT_TYPE_CONFIG;
 
   return (
     <div
@@ -16,11 +23,26 @@ function CvFeaturedCard({ cv, onPreview, onDelete }) {
       <div className="flex items-start justify-between gap-4">
         {/* Icon + Info */}
         <div className="flex items-start gap-4">
-          <div className="bg-primary/10 flex size-14 shrink-0 items-center justify-center rounded-xl">
-            <FileText className="text-primary size-7" />
+          <div className="flex items-start gap-3">
+            <div
+              className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${typeConfig.bgClass}`}
+            >
+              <FileText className={`size-5 ${typeConfig.iconClass}`} />
+            </div>
           </div>
           <div>
-            <h4 className="text-foreground font-bold">{cv.name}</h4>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <p className="text-foreground line-clamp-1 text-sm font-semibold">
+                  {cv.name}
+                </p>
+                <span
+                  className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${typeConfig.badgeClass}`}
+                >
+                  {typeConfig.label}
+                </span>
+              </div>
+            </div>
             <p className="text-muted-foreground mt-0.5 text-sm">
               Cập nhật {formatRelativeTime(cv.updatedAt ?? cv.createdAt)}
               {cv.fileSize ? ` • ${formatFileSize(cv.fileSize)}` : ""}

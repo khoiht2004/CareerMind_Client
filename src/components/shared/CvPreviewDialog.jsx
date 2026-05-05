@@ -1,7 +1,4 @@
-import { useRef, useMemo } from "react";
-import { pdfjs } from "react-pdf";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
+import { useMemo } from "react";
 import { Download, ExternalLink, FileText, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,28 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { formatFileSize, formatVN } from "@/utils/helper";
-import useContainerWidth from "@/hooks/useContainerWidth";
-import PdfViewer from "./PdfViewer";
-
-// Try local worker first, fall back to CDN
-try {
-  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url,
-  ).toString();
-} catch {
-  pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-}
 
 function getGoogleViewerUrl(fileUrl) {
   return `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`;
 }
 
 function CvPreviewDialog({ open, onClose, cv }) {
-  const containerRef = useRef(null);
-  const containerWidth = useContainerWidth(containerRef);
-
-  // Convert base64 data URL to blob URL for PDF viewer (avoids data URL size limits)
+  // Convert base64 data URL to blob URL for viewer (avoids data URL size limits)
   const resolvedFileUrl = useMemo(() => {
     if (!cv?.fileUrl) return null;
     if (!cv.fileUrl.startsWith("data:")) return cv.fileUrl;
@@ -122,11 +104,13 @@ function CvPreviewDialog({ open, onClose, cv }) {
         </DialogHeader>
 
         {/* ── Body ── */}
-        <div ref={containerRef} className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden">
           {isPdf && resolvedFileUrl ? (
-            <PdfViewer
-              fileUrl={resolvedFileUrl}
-              containerWidth={containerWidth}
+            // Browser native PDF rendering — no worker needed, no CORS issues
+            <iframe
+              src={resolvedFileUrl}
+              title={name}
+              className="size-full border-0"
             />
           ) : canGoogleView && resolvedFileUrl ? (
             <iframe
