@@ -1,6 +1,7 @@
+import { useState } from "react";
 import {
   Loader2,
-  ExternalLink,
+  Eye,
   Users,
   Clock,
   Sparkles,
@@ -8,6 +9,7 @@ import {
   ListFilter,
 } from "lucide-react";
 import Pagination from "@/components/shared/Pagination";
+import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -31,8 +33,11 @@ import {
   StatusBadge,
   ApplicantAvatar,
 } from "@/components/recuiter/components/ApplicationComponent";
+import { buildCvPreview } from "@/utils/recruiter.helper";
 
 function RecruiterApplications() {
+  const [previewCv, setPreviewCv] = useState(null);
+
   const {
     staged,
     setStagedField,
@@ -218,15 +223,16 @@ function RecruiterApplications() {
                         {new Date(app.updatedAt).toLocaleDateString("vi-VN")}
                       </TableCell>
                       <TableCell>
-                        {app.cvUrl ? (
-                          <a
-                            href={app.cvUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary inline-flex items-center gap-1 text-xs hover:underline"
+                        {(app.cv?.fileUrl ?? app.cvUrl) ? (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="cursor-pointer text-xs"
+                            onClick={() => setPreviewCv(buildCvPreview(app))}
                           >
-                            Xem CV <ExternalLink className="size-3" />
-                          </a>
+                            Xem CV
+                            <Eye className="size-3" />
+                          </Button>
                         ) : (
                           <span className="text-muted-foreground text-xs">
                             Không có
@@ -315,6 +321,12 @@ function RecruiterApplications() {
         onAcceptedFieldChange={handleAcceptedFieldChange}
         onSubmit={handleUpdate}
         isLoading={updating}
+      />
+
+      <CvPreviewDialog
+        open={!!previewCv}
+        onClose={() => setPreviewCv(null)}
+        cv={previewCv}
       />
     </div>
   );
