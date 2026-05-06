@@ -34,6 +34,10 @@ import { formatDate, formatFileSize } from "@/utils/helper";
 import { AssessmentBar, UserInfo } from "@/features/ApplicationDetail";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router";
+import {
+  DEFAULT_TYPE_CONFIG,
+  FILE_TYPE_CONFIG,
+} from "@/config/constants/attachment.constants";
 
 function ApplicationDetail() {
   const {
@@ -72,6 +76,9 @@ function ApplicationDetail() {
     interviewTime,
   } = application;
 
+  const typeConfig =
+    FILE_TYPE_CONFIG[application?.cv?.fileType?.toLowerCase()] ??
+    DEFAULT_TYPE_CONFIG;
   const config = STATUS_CONFIG[status];
   const StatusIcon = config?.icon;
   const statusLabel = APPLICATION_STATUS_LABELS[status] ?? status;
@@ -186,12 +193,19 @@ function ApplicationDetail() {
               </CardHeader>
               <CardContent>
                 <div className="bg-muted/50 flex items-center gap-3 rounded-xl border p-4">
-                  <div className="bg-primary/10 flex size-10 items-center justify-center rounded-lg">
-                    <FileText className="text-primary size-5" />
+                  <div
+                    className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${typeConfig.bgClass}`}
+                  >
+                    <FileText className={`size-5 ${typeConfig.iconClass}`} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold">
+                    <p className="flex items-center gap-2 truncate text-sm font-semibold">
                       {cvFile.name}
+                      <span
+                        className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${typeConfig.badgeClass}`}
+                      >
+                        {typeConfig.label}
+                      </span>
                     </p>
                     {(cvFile.fileType || cvFile.fileSize) && (
                       <p className="text-muted-foreground mt-0.5 text-xs">

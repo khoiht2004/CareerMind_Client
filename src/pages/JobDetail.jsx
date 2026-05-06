@@ -113,7 +113,7 @@ function JobDetail() {
                             key={index}
                             className="bg-primary/10 flex items-start gap-2.5 rounded-lg p-2 text-sm"
                           >
-                            <Icon className="text-secondary-container mt-0.5 size-4 shrink-0" />
+                            {/* <Icon className="text-secondary-container mt-0.5 size-4 shrink-0" /> */}
                             <div>
                               <p className="text-primary text-md font-bold tracking-wider whitespace-pre-line">
                                 {benefit.label.toUpperCase()}

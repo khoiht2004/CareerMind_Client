@@ -34,6 +34,7 @@ import {
   ApplicantAvatar,
 } from "@/components/recuiter/components/ApplicationComponent";
 import { buildCvPreview } from "@/utils/recruiter.helper";
+import { formatDate } from "@/utils/helper";
 
 function RecruiterApplications() {
   const [previewCv, setPreviewCv] = useState(null);
@@ -200,7 +201,7 @@ function RecruiterApplications() {
                     <TableRow key={app.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <ApplicantAvatar name={name} />
+                          <ApplicantAvatar user={app.user} />
                           <div>
                             <p className="font-medium">{name}</p>
                             <p className="text-muted-foreground text-xs">
@@ -217,10 +218,10 @@ function RecruiterApplications() {
                         <StatusBadge status={app.status} />
                       </TableCell>
                       <TableCell className="text-sm">
-                        {new Date(app.createdAt).toLocaleDateString("vi-VN")}
+                        {formatDate(app.createdAt)}
                       </TableCell>
                       <TableCell className="text-sm">
-                        {new Date(app.updatedAt).toLocaleDateString("vi-VN")}
+                        {formatDate(app.updatedAt)}
                       </TableCell>
                       <TableCell>
                         {(app.cv?.fileUrl ?? app.cvUrl) ? (

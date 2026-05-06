@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Loader2, Eye, Phone, Mail, MapPin, FileText } from "lucide-react";
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,11 @@ import InterviewFields from "./InterviewFields";
 import AcceptedFields from "./components/AcceptedFields";
 import { Separator } from "../ui/separator";
 import { buildCvPreview } from "@/utils/recruiter.helper";
+import ImagePreviewModal from "../shared/ImagePreviewModal";
+import {
+  DEFAULT_TYPE_CONFIG,
+  FILE_TYPE_CONFIG,
+} from "@/config/constants/attachment.constants";
 
 function SectionLabel({ children }) {
   return (
@@ -66,11 +71,17 @@ function ApplicationUpdateDialog({
   isLoading,
 }) {
   const [previewCv, setPreviewCv] = useState(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const handleOpen = useCallback(() => setPreviewOpen(true), []);
+  const handleClose = useCallback(() => setPreviewOpen(false), []);
 
   if (!app) return null;
 
   const { profile, name, phone, bio, skills, initials } =
     useApplicationProfile(app);
+
+  const typeConfig =
+    FILE_TYPE_CONFIG[app?.cv.fileType?.toLowerCase()] ?? DEFAULT_TYPE_CONFIG;
 
   return (
     <>
@@ -87,12 +98,21 @@ function ApplicationUpdateDialog({
                 <div className="relative">
                   <div className="bg-muted border-border text-muted-foreground flex size-20 -rotate-3 items-center justify-center overflow-hidden rounded-md border-2 text-base font-bold">
                     {profile?.avatarUrl ? (
-                      <img
-                        src={profile.avatarUrl}
-                        alt={name}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
+                      <>
+                        <img
+                          src={profile.avatarUrl}
+                          alt={name}
+                          loading="lazy"
+                          onClick={handleOpen}
+                          className="h-full w-full cursor-pointer object-cover object-top"
+                        />
+                        <ImagePreviewModal
+                          src={profile.avatarUrl}
+                          alt={name}
+                          open={previewOpen}
+                          onClose={handleClose}
+                        />
+                      </>
                     ) : (
                       initials
                     )}
@@ -149,9 +169,13 @@ function ApplicationUpdateDialog({
                   <button
                     type="button"
                     onClick={() => setPreviewCv(buildCvPreview(app))}
-                    className="bg-card hover:bg-accent flex w-full cursor-pointer items-center gap-2.5 rounded-lg border px-3 py-2.5 transition-colors"
+                    className="bg-card hover:bg-accent flex w-full cursor-pointer items-center gap-2.5 rounded-lg border px-3 py-2 transition-colors"
                   >
-                    <FileText className="text-muted-foreground size-4 shrink-0" />
+                    <div
+                      className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${typeConfig.bgClass}`}
+                    >
+                      <FileText className={`size-5 ${typeConfig.iconClass}`} />
+                    </div>
                     <span className="text-muted-foreground min-w-0 flex-1 truncate text-left text-xs">
                       {app.cv?.name ?? "CV đã tải lên"}
                     </span>
@@ -177,7 +201,7 @@ function ApplicationUpdateDialog({
               {app.coverLetter && (
                 <div>
                   <SectionLabel>Thư giới thiệu</SectionLabel>
-                  <div className="bg-muted/40 border-secondary max-h-40 overflow-y-auto rounded-lg border-l-3 p-3.5 text-sm leading-relaxed whitespace-pre-wrap [scrollbar-width:thin]">
+                  <div className="bg-muted border-secondary max-h-60 overflow-y-auto rounded-lg border-l-3 p-3.5 text-sm leading-relaxed whitespace-pre-wrap [scrollbar-width:thin]">
                     {app.coverLetter}
                   </div>
                 </div>
