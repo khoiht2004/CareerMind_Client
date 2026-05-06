@@ -33,7 +33,7 @@ function MessageBubble({ message }) {
   }, [message.content]);
 
   return (
-    <div className={cn("flex gap-3", isUser && "flex-row-reverse")}>
+    <div className={cn("flex gap-2", isUser && "flex-row-reverse")}>
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
@@ -57,15 +57,26 @@ function MessageBubble({ message }) {
           )}
         >
           <AttachmentsViewer attachments={message.attachments} />
-          
+
           {message.cvAnalysis && (
-            <div className="mb-2 p-3 bg-background/10 rounded-lg border border-border/20">
-              <p className="font-bold text-base mb-1">📊 Phân tích CV (Điểm: {message.cvAnalysis.score}/100)</p>
-              <div className="text-xs space-y-2">
-                <p><b>✨ Điểm mạnh:</b> {message.cvAnalysis.strengths.join(", ")}</p>
-                <p><b>⚠️ Điểm yếu:</b> {message.cvAnalysis.weaknesses.join(", ")}</p>
-                <p><b>📈 Cải thiện:</b> {message.cvAnalysis.improvements.join(", ")}</p>
-                <p className="italic mt-1 text-muted-foreground">{message.cvAnalysis.summary}</p>
+            <div className="bg-background/10 border-border/20 mb-2 rounded-lg border p-3">
+              <p className="mb-1 text-base font-bold">
+                📊 Phân tích CV (Điểm: {message.cvAnalysis.score}/100)
+              </p>
+              <div className="space-y-2 text-xs">
+                <p>
+                  <b>✨ Điểm mạnh:</b> {message.cvAnalysis.strengths.join(", ")}
+                </p>
+                <p>
+                  <b>⚠️ Điểm yếu:</b> {message.cvAnalysis.weaknesses.join(", ")}
+                </p>
+                <p>
+                  <b>📈 Cải thiện:</b>{" "}
+                  {message.cvAnalysis.improvements.join(", ")}
+                </p>
+                <p className="text-muted-foreground mt-1 italic">
+                  {message.cvAnalysis.summary}
+                </p>
               </div>
             </div>
           )}

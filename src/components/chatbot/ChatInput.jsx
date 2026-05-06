@@ -21,6 +21,7 @@ function ChatInput({
   handleFileInputChange,
   handlePaste,
   removeAttachment,
+  footer = true,
 }) {
   const textareaRef = useRef(null);
 
@@ -119,10 +120,12 @@ function ChatInput({
         </div>
       </div>
 
-      <p className="text-muted-foreground mt-2 text-center text-xs">
-        <b className="font-bold">AI Scout</b> có thể mắc lỗi. Hãy kiểm tra các
-        thông tin quan trọng.
-      </p>
+      {footer && (
+        <p className="text-muted-foreground mt-2 text-center text-xs">
+          <b className="font-bold">AI Scout</b> có thể mắc lỗi. Hãy kiểm tra các
+          thông tin quan trọng.
+        </p>
+      )}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import AppHeader from "@/components/shared/AppHeader";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import { cn } from "@/lib/utils";
 import AppFooter from "@/components/shared/AppFooter";
+import ChatBotPopup from "@/components/chatbot/ChatBotPopup";
 
 function LayoutContent() {
   const { isCollapsed, isMobile, mobileOpen, closeMobile } = useSidebar();
@@ -42,6 +43,7 @@ function LayoutContent() {
           <Outlet />
         </main>
         <AppFooter />
+        <ChatBotPopup />
       </div>
     </div>
   );
