@@ -70,6 +70,32 @@ function formatFileSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
+function buildJobConsultMessage(job) {
+  const reqs = Array.isArray(job.requirements)
+    ? job.requirements
+    : (() => {
+        try {
+          return JSON.parse(job.requirements);
+        } catch {
+          return [];
+        }
+      })();
+
+  const lines = [
+    "Hãy đánh giá độ phù hợp của tôi với vị trí dưới đây (chấm điểm thang 10) và gợi ý những kỹ năng tôi cần cải thiện:",
+    "",
+    `**Vị trí:** ${job.title}`,
+    `**Công ty:** ${job.company?.name || "Chưa rõ"}`,
+    job.location ? `**Địa điểm:** ${job.location}` : null,
+    job.salary ? `**Mức lương:** ${job.salary}` : null,
+    job.level ? `**Cấp độ:** ${job.level}` : null,
+    reqs.length ? `**Yêu cầu:** ${reqs.join(", ")}` : null,
+    job.description ? `**Mô tả:** ${job.description.slice(0, 500)}` : null,
+  ];
+
+  return lines.filter((l) => l !== null).join("\n");
+}
+
 export {
   convertArray,
   formatRelativeTime,
@@ -78,4 +104,5 @@ export {
   formatDate,
   formatVN,
   formatFileSize,
+  buildJobConsultMessage,
 };

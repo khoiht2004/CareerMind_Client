@@ -49,6 +49,13 @@ export const chatService = apiSlice.injectEndpoints({
       query: (sessionId) => ({ url: `/chat/sessions/${sessionId}`, method: "DELETE" }),
       invalidatesTags: [{ type: "Chat", id: "LIST" }],
     }),
+    generateCoverLetter: builder.mutation({
+      query: ({ jobId, title } = {}) => ({
+        url: "/chat/generate-cover-letter",
+        method: "POST",
+        body: { jobId, title },
+      }),
+    }),
   }),
 });
 
@@ -59,4 +66,5 @@ export const {
   useSendMessageMutation,
   useUpdateSessionTitleMutation,
   useDeleteSessionMutation,
+  useGenerateCoverLetterMutation,
 } = chatService;

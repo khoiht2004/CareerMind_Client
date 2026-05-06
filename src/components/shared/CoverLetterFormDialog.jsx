@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,6 +19,8 @@ function CoverLetterFormDialog({
   onSubmit,
   isLoading,
   isEditing,
+  onGenerate,
+  isGeneratingCL,
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -35,7 +37,7 @@ function CoverLetterFormDialog({
 
         <form onSubmit={onSubmit} className="space-y-4 pt-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">
+            <label className="text-sm font-semibold">
               Tiêu đề (VD: Cho vị trí Frontend)
             </label>
             <Input
@@ -44,16 +46,29 @@ function CoverLetterFormDialog({
               onChange={(e) =>
                 onFormChange({ ...formData, title: e.target.value })
               }
-              className={"border-border border"}
+              className="bg-primary/10"
               required
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium">Nội dung thư</label>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-semibold">Nội dung thư</label>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="text-primary h-7 gap-1.5 px-2 text-xs font-bold"
+                onClick={onGenerate}
+                disabled={isGeneratingCL}
+              >
+                <Sparkles className="size-3.5" fill="currentColor" />
+                {isGeneratingCL ? "Đang tạo..." : "Tối ưu bằng AI Scout"}
+              </Button>
+            </div>
             <Textarea
               placeholder="Kính gửi nhà tuyển dụng..."
-              className="border-border max-h-[350px] min-h-[200px] resize-none border"
+              className="bg-primary/10 max-h-[350px] min-h-[200px] resize-none"
               value={formData.content}
               onChange={(e) =>
                 onFormChange({ ...formData, content: e.target.value })

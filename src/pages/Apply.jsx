@@ -10,6 +10,8 @@ import {
   Upload,
   Plus,
   Sparkles,
+  Save,
+  Send,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,10 +29,9 @@ import { FieldLabel, StepHeader } from "@/features/ApplyPageComponent";
 
 function Apply() {
   const {
-    id,
-    navigate,
     job,
     isLoading,
+    isGeneratingCL,
     coverLetters,
     myCvs,
     selectedCv,
@@ -48,6 +49,8 @@ function Apply() {
     handleSelectCoverLetter,
     handleSelectCv,
     handleSubmit,
+    handleSaveDraft,
+    handleGenerateCoverLetter,
   } = useApply();
 
   if (!job) {
@@ -328,9 +331,11 @@ function Apply() {
                 variant="ghost"
                 size="sm"
                 className="text-primary h-7 gap-1.5 px-2 text-xs font-bold"
+                onClick={handleGenerateCoverLetter}
+                disabled={isGeneratingCL}
               >
                 <Sparkles className="size-3.5" fill="currentColor" />
-                Tối ưu bằng AI Scout
+                {isGeneratingCL ? "Đang tạo..." : "Tối ưu bằng AI Scout"}
               </Button>
             </div>
           </div>
@@ -354,13 +359,22 @@ function Apply() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => navigate(`/jobs/${id}`)}
+              onClick={handleSaveDraft}
               disabled={isLoading}
             >
+              {isLoading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Save className="size-4" />
+              )}
               Lưu nháp
             </Button>
             <Button type="submit" disabled={isLoading || !agreedToTerms}>
-              {isLoading && <Loader2 className="mr-1.5 size-4 animate-spin" />}
+              {isLoading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Send className="size-4" />
+              )}
               Nộp hồ sơ ngay
             </Button>
           </div>

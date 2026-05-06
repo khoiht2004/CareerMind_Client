@@ -46,6 +46,8 @@ function MyCoverLetter() {
     handleOpenDelete,
     handleSubmit,
     handleDelete,
+    handleGenerateCoverLetter,
+    isGeneratingCL,
   } = useMyCoverLetter();
 
   return (
@@ -161,6 +163,8 @@ function MyCoverLetter() {
         onSubmit={handleSubmit}
         isLoading={isCreating || isUpdating}
         isEditing={!!editingItem}
+        onGenerate={handleGenerateCoverLetter}
+        isGeneratingCL={isGeneratingCL}
       />
 
       <CoverLetterDeleteDialog

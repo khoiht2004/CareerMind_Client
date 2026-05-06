@@ -6,6 +6,7 @@ import {
   useUpdateCoverLetterMutation,
   useDeleteCoverLetterMutation,
 } from "@/services/coverLetter.service";
+import { useGenerateCoverLetterMutation } from "@/services/chat.service";
 
 const EMPTY_FORM = { title: "", content: "" };
 
@@ -19,6 +20,8 @@ export function useMyCoverLetter() {
     useUpdateCoverLetterMutation();
   const [deleteCoverLetter, { isLoading: isDeleting }] =
     useDeleteCoverLetterMutation();
+  const [generateCoverLetterAI, { isLoading: isGeneratingCL }] =
+    useGenerateCoverLetterMutation();
 
   const [search, setSearch] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -83,6 +86,19 @@ export function useMyCoverLetter() {
     [formData, editingItem, updateCoverLetter, createCoverLetter],
   );
 
+  const handleGenerateCoverLetter = useCallback(async () => {
+    if (!formData.title.trim()) {
+      return toast.error("Nhập tiêu đề trước để AI biết vị trí cần viết thư");
+    }
+    try {
+      const res = await generateCoverLetterAI({ title: formData.title }).unwrap();
+      setFormData((prev) => ({ ...prev, content: res.data.coverLetter }));
+      toast.success("AI đã tạo nội dung thư cho bạn");
+    } catch {
+      toast.error("Không thể tạo thư, vui lòng thử lại");
+    }
+  }, [formData.title, generateCoverLetterAI]);
+
   const handleDelete = useCallback(async () => {
     try {
       await deleteCoverLetter(deletingId).unwrap();
@@ -115,5 +131,7 @@ export function useMyCoverLetter() {
     handleOpenDelete,
     handleSubmit,
     handleDelete,
+    handleGenerateCoverLetter,
+    isGeneratingCL,
   };
 }

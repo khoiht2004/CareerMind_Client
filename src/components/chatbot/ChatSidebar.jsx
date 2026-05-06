@@ -42,14 +42,7 @@ const SessionItem = memo(function SessionItem({
         onClick={handleSelect}
         className="min-w-0 flex-1 cursor-pointer px-3 py-3 text-left"
       >
-        <p
-          className={cn(
-            "truncate text-sm",
-            isActive ? "font-semibold" : "font-medium",
-          )}
-        >
-          {session.title}
-        </p>
+        <p className="text-sm font-medium">{session.title}</p>
         <p className="text-muted-foreground mt-0.5 text-[11px]">
           {formatRelativeTime(session.updatedAt ?? session.createdAt) ||
             `${session._count?.messages ?? 0} tin nhắn`}

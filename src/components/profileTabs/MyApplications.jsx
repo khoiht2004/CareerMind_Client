@@ -24,6 +24,7 @@ function MyApplications() {
     isLoading,
     isDeleting,
     filters,
+    setTab,
     setStatusFilter,
     setDaysFilter,
     setPage,
@@ -44,6 +45,26 @@ function MyApplications() {
           Theo dõi trạng thái và tiến trình các cơ hội nghề nghiệp của bạn tại
           một nơi duy nhất.
         </p>
+      </div>
+
+      {/* Tab navigation */}
+      <div className="bg-muted flex max-w-[200px] rounded-xl p-1">
+        {[
+          { value: "submitted", label: "Đã nộp" },
+          { value: "draft", label: "Bản nháp" },
+        ].map(({ value, label }) => (
+          <button
+            key={value}
+            className={`flex-1 cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+              filters.tab === value
+                ? "bg-background shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+            onClick={() => setTab(value)}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
       {/* Filter row */}

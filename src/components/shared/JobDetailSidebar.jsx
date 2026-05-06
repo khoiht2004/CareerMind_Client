@@ -95,7 +95,7 @@ function JobDetailSidebar({
                   className="w-full cursor-pointer"
                   asChild
                 >
-                  <Link to={`/chatbot?job=${id}`}>
+                  <Link to="/chatbot" state={{ jobId: id }}>
                     <BotMessageSquare /> Tư vấn AI về vị trí này
                   </Link>
                 </Button>
@@ -212,7 +212,9 @@ function JobDetailSidebar({
             className="w-full cursor-pointer"
             asChild
           >
-            <Link to={`/chatbot?job=${id}`}>Tư vấn CV ngay!</Link>
+            <Link to="/chatbot" state={{ jobId: id }}>
+              Tư vấn CV ngay!
+            </Link>
           </Button>
         </CardContent>
       </Card>
