@@ -73,8 +73,9 @@ export function useChatBot() {
 
         const message = buildJobConsultMessage(job);
         await sendMessage({ sessionId, content: message, attachments: [] }).unwrap();
-      } catch {
-        // silent — user can still chat normally
+      } catch (error) {
+        toast.error("Không thể tạo cuộc trò chuyện mới");
+        console.error(error);
       }
     })();
   }, [initJobId, jobData, profileLoading, createSession, sendMessage, navigate, location.pathname]);
