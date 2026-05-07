@@ -18,7 +18,7 @@ function AppSidebar() {
   const navItems = isRecruiter ? RECRUITER_NAV_ITEMS : CANDIDATE_NAV_ITEMS;
 
   return (
-    <div className="bg-sidebar-primary-foreground flex h-full flex-col pt-4 pb-2">
+    <div className="bg-sidebar-accent flex h-full flex-col pt-4 pb-2">
       {/* Logo */}
       <Logo isCollapsed={isCollapsed} />
 
@@ -34,7 +34,7 @@ function AppSidebar() {
       <div className="mb-2 px-4">
         <Button
           size="icon"
-          className="bg-secondary hover:bg-secondary/80 h-10 w-full rounded-xl text-white"
+          className="bg-primary hover:bg-primary/80 h-10 w-full rounded-xl text-white"
           asChild
         >
           <Link to={path.aiPricing}>

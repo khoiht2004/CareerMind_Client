@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: 'SF Pro Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -96,216 +96,243 @@
 }
 
 :root {
-  /* ── Surface Hierarchy ── */
-  --background: #f7f9fb; /* surface */
-  --foreground: #191c1e; /* on_surface */
+  /* ── Surface Hierarchy (Apple Design) ── */
+  --background: #ffffff; /* canvas */
+  --foreground: #1d1d1f; /* ink / body */
 
   /* Level 1 (Sections) */
-  --muted: #f2f4f6; /* surface-container-low */
-  --muted-foreground: #44474c; /* on_surface_variant */
+  --muted: #f5f5f7; /* canvas-parchment */
+  --muted-foreground: #7a7a7a; /* ink-muted-48 */
 
   /* Level 2 (Cards) */
-  --card: #ffffff; /* surface-container-lowest */
-  --card-foreground: #191c1e;
+  --card: #fafafc; /* surface-pearl */
+  --card-foreground: #1d1d1f;
 
   /* Interactive (Hover) */
-  --accent: #e6e8ea; /* surface-container-high */
-  --accent-foreground: #191c1e;
+  --accent: #f0f0f0; /* divider-soft */
+  --accent-foreground: #1d1d1f;
 
   --popover: #ffffff;
-  --popover-foreground: #191c1e;
+  --popover-foreground: #1d1d1f;
 
-  /* ── Primary: Midnight ── */
-  --primary: #1d2b3e;
+  /* ── Primary: Action Blue ── */
+  --primary: #0066cc;
   --primary-foreground: #ffffff;
-  --primary-container: #334155;
+  --primary-container: #0071e3; /* primary-focus */
 
-  /* ── Secondary: Sky / Actions ── */
-  --secondary: #006591;
-  --secondary-foreground: #ffffff;
-  --secondary-container: #39b8fd;
-  --on-secondary-container: #004666;
+  /* ── Secondary ── */
+  --secondary: #f5f5f7;
+  --secondary-foreground: #1d1d1f;
+  --secondary-container: #e0e0e0;
+  --on-secondary-container: #1d1d1f;
 
   /* ── UI Elements ── */
-  --border: rgba(29, 43, 62, 0.2); /* Ghost border */
-  --input: #f2f4f6; /* surface-container-low */
-  --ring: #006591; /* secondary */
-  --primary-fixed-dim: #b9c7e0;
+  --border: #e0e0e0; /* hairline */
+  --input: #f5f5f7;
+  --ring: #0066cc;
+  --primary-fixed-dim: #0066cc;
 
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
+  --destructive: #ff3b30; /* Apple red */
+  --destructive-foreground: #ffffff;
 
-  --radius: 0.5rem; /* 8px corner radius */
+  --radius: 0.75rem; /* 12px base radius */
 
   /* ── Charts ── */
-  --chart-1: #1d2b3e;
-  --chart-2: #334155;
-  --chart-3: #006591;
-  --chart-4: #39b8fd;
-  --chart-5: #b9c7e0;
+  --chart-1: #0066cc;
+  --chart-2: #34c759; /* Apple green */
+  --chart-3: #ff9500; /* Apple orange */
+  --chart-4: #5856d6; /* Apple purple */
+  --chart-5: #ff2d55; /* Apple pink */
 
   /* ── Sidebar ── */
-  --sidebar: #f7f9fb;
-  --sidebar-foreground: #191c1e;
-  --sidebar-primary: #1d2b3e;
+  --sidebar: #f5f5f7;
+  --sidebar-foreground: #1d1d1f;
+  --sidebar-primary: #0066cc;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e6e8ea;
-  --sidebar-accent-foreground: #191c1e;
-  --sidebar-border: rgba(29, 43, 62, 0.2);
-  --sidebar-ring: #006591;
+  --sidebar-accent: #e0e0e0;
+  --sidebar-accent-foreground: #1d1d1f;
+  --sidebar-border: #e0e0e0;
+  --sidebar-ring: #0066cc;
 
-  --footer-app: #f7f9fb;
+  --footer-app: #f5f5f7;
 
   /* ── Hot badge ── */
-  --hot: #ffedd5;            /* orange-100 */
-  --hot-foreground: #ea580c; /* orange-600 */
-  --hot-border: #fed7aa;     /* orange-200 */
+  --hot: #fff2ed;
+  --hot-foreground: #ff3b30;
+  --hot-border: #ffccca;
 
   /* ── Job status indicators ── */
-  --status-published: #16a34a; /* green-600 */
-  --status-draft: #6b7280;     /* gray-500  */
-  --status-closed: #dc2626;    /* red-600   */
+  --status-published: #34c759;
+  --status-draft: #8e8e93;
+  --status-closed: #ff3b30;
 
   /* ── Application status ── */
-  --status-pending-bg: #fef9c3;
-  --status-pending-text: #a16207;
-  --status-pending-border: #fde68a;
+  --status-pending-bg: #fff5e5;
+  --status-pending-text: #ff9500;
+  --status-pending-border: #ffe6c2;
 
-  --status-reviewing-bg: #dbeafe;
-  --status-reviewing-text: #1d4ed8;
-  --status-reviewing-border: #bfdbfe;
+  --status-reviewing-bg: #e5f0ff;
+  --status-reviewing-text: #0066cc;
+  --status-reviewing-border: #cce0ff;
 
-  --status-interview-bg: #ede9fe;
-  --status-interview-text: #6d28d9;
-  --status-interview-border: #ddd6fe;
+  --status-interview-bg: #f2e5ff;
+  --status-interview-text: #af52de;
+  --status-interview-border: #e5ccff;
 
-  --status-accepted-bg: #dcfce7;
-  --status-accepted-text: #15803d;
-  --status-accepted-border: #bbf7d0;
+  --status-accepted-bg: #e8f8ec;
+  --status-accepted-text: #34c759;
+  --status-accepted-border: #d1f1d9;
 
-  --status-rejected-bg: #fee2e2;
-  --status-rejected-text: #b91c1c;
-  --status-rejected-border: #fecaca;
+  --status-rejected-bg: #ffebe5;
+  --status-rejected-text: #ff3b30;
+  --status-rejected-border: #ffd6cc;
 
   /* ── Trend indicators ── */
-  --trend-up: #16a34a;
-  --trend-down: #ef4444;
+  --trend-up: #34c759;
+  --trend-down: #ff3b30;
 
   /* ── Job status badges ── */
-  --job-published-bg: #dcfce7;
-  --job-published-text: #15803d;
-  --job-published-border: #bbf7d0;
+  --job-published-bg: #e8f8ec;
+  --job-published-text: #34c759;
+  --job-published-border: #d1f1d9;
 
-  --job-draft-bg: #f3f4f6;
-  --job-draft-text: #4b5563;
-  --job-draft-border: #d1d5db;
+  --job-draft-bg: #f5f5f7;
+  --job-draft-text: #8e8e93;
+  --job-draft-border: #e0e0e0;
 
-  --job-closed-bg: #fee2e2;
-  --job-closed-text: #b91c1c;
-  --job-closed-border: #fecaca;
+  --job-closed-bg: #ffebe5;
+  --job-closed-text: #ff3b30;
+  --job-closed-border: #ffd6cc;
 }
 
 .dark {
-  /* Simplified Dark Mode equivalent mapping */
-  --background: #191c1e;
-  --foreground: #f7f9fb;
-  --card: #202428;
-  --card-foreground: #f7f9fb;
-  --popover: #202428;
-  --popover-foreground: #f7f9fb;
+  /* ── Surface Hierarchy (Apple Design) ── */
+  --background: #000000; /* surface-black */
+  --foreground: #ffffff; /* on-dark */
 
-  --muted: #2d3135;
-  --muted-foreground: #c0c4c9;
+  --card: #1c1c1e; /* Apple dark mode card */
+  --card-foreground: #ffffff;
 
-  --accent: #373b3f;
-  --accent-foreground: #f7f9fb;
+  --popover: #1c1c1e;
+  --popover-foreground: #ffffff;
 
-  --primary: #b9c7e0;
-  --primary-foreground: #1d2b3e;
-  --primary-container: #334155;
+  --muted: #2c2c2e; /* secondary background */
+  --muted-foreground: #8e8e93; /* system gray */
 
-  --secondary: #39b8fd;
-  --secondary-foreground: #004666;
-  --secondary-container: #006591;
+  --accent: #3a3a3c; /* tertiary background */
+  --accent-foreground: #ffffff;
+
+  /* ── Primary: Action Blue on Dark ── */
+  --primary: #0a84ff; /* Apple system blue (dark) */
+  --primary-foreground: #ffffff;
+  --primary-container: #0066cc;
+
+  /* ── Secondary ── */
+  --secondary: #2c2c2e;
+  --secondary-foreground: #ffffff;
+  --secondary-container: #3a3a3c;
   --on-secondary-container: #ffffff;
 
-  --border: rgba(247, 249, 251, 0.2);
-  --input: #2d3135;
-  --ring: #39b8fd;
-  --primary-fixed-dim: #1d2b3e;
-  
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
+  /* ── UI Elements ── */
+  --border: #38383a; /* dark mode separator */
+  --input: #2c2c2e;
+  --ring: #0a84ff;
+  --primary-fixed-dim: #0a84ff;
 
-  --chart-1: #b9c7e0;
-  --chart-2: #334155;
-  --chart-3: #39b8fd;
-  --chart-4: #006591;
-  --chart-5: #1d2b3e;
+  --destructive: #ff453a; /* Apple system red (dark) */
+  --destructive-foreground: #ffffff;
 
-  --sidebar: #191c1e;
-  --sidebar-foreground: #f7f9fb;
-  --sidebar-primary: #b9c7e0;
-  --sidebar-primary-foreground: #202428;
-  --sidebar-accent: #373b3f;
-  --sidebar-accent-foreground: #f7f9fb;
-  --sidebar-border: rgba(247, 249, 251, 0.2);
-  --sidebar-ring: #39b8fd;
+  /* ── Charts ── */
+  --chart-1: #0a84ff;
+  --chart-2: #30d158; /* Apple green (dark) */
+  --chart-3: #ff9f0a; /* Apple orange (dark) */
+  --chart-4: #5e5ce6; /* Apple purple (dark) */
+  --chart-5: #ff375f; /* Apple pink (dark) */
 
-  --footer-app: #191c1e;
+  /* ── Sidebar ── */
+  --sidebar: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #0a84ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c1c1e;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #38383a;
+  --sidebar-ring: #0a84ff;
+
+  --footer-app: #000000;
 
   /* ── Hot badge ── */
-  --hot: #431407;            /* dark orange background */
-  --hot-foreground: #fed7aa; /* orange-200 */
-  --hot-border: #7c2d12;    /* orange-900 */
+  --hot: #4a1109;
+  --hot-foreground: #ff453a;
+  --hot-border: #751a0e;
 
   /* ── Application status (dark) ── */
-  --status-pending-bg: #422006;
-  --status-pending-text: #fde68a;
-  --status-pending-border: #78350f;
+  --status-pending-bg: #4a2b00;
+  --status-pending-text: #ff9f0a;
+  --status-pending-border: #734300;
 
-  --status-reviewing-bg: #1e3a5f;
-  --status-reviewing-text: #93c5fd;
-  --status-reviewing-border: #1d4ed8;
+  --status-reviewing-bg: #003366;
+  --status-reviewing-text: #0a84ff;
+  --status-reviewing-border: #004c99;
 
-  --status-interview-bg: #2e1065;
-  --status-interview-text: #c4b5fd;
-  --status-interview-border: #5b21b6;
+  --status-interview-bg: #32174d;
+  --status-interview-text: #bf5af2;
+  --status-interview-border: #4d2373;
 
-  --status-accepted-bg: #052e16;
-  --status-accepted-text: #86efac;
-  --status-accepted-border: #166534;
+  --status-accepted-bg: #0e3b1a;
+  --status-accepted-text: #30d158;
+  --status-accepted-border: #155827;
 
-  --status-rejected-bg: #450a0a;
-  --status-rejected-text: #fca5a5;
-  --status-rejected-border: #991b1b;
+  --status-rejected-bg: #4a1109;
+  --status-rejected-text: #ff453a;
+  --status-rejected-border: #751a0e;
 
   /* ── Trend indicators (dark) ── */
-  --trend-up: #4ade80;
-  --trend-down: #f87171;
+  --trend-up: #30d158;
+  --trend-down: #ff453a;
 
   /* ── Job status badges (dark) ── */
-  --job-published-bg: #052e16;
-  --job-published-text: #86efac;
-  --job-published-border: #166534;
+  --job-published-bg: #0e3b1a;
+  --job-published-text: #30d158;
+  --job-published-border: #155827;
 
-  --job-draft-bg: #1f2937;
-  --job-draft-text: #9ca3af;
-  --job-draft-border: #374151;
+  --job-draft-bg: #1c1c1e;
+  --job-draft-text: #8e8e93;
+  --job-draft-border: #38383a;
 
-  --job-closed-bg: #450a0a;
-  --job-closed-text: #fca5a5;
-  --job-closed-border: #991b1b;
+  --job-closed-bg: #4a1109;
+  --job-closed-text: #ff453a;
+  --job-closed-border: #751a0e;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
   body {
     @apply bg-background text-foreground;
-    }
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11"; /* Apple typography crispness */
+  }
   html {
     @apply font-sans;
-    }
+  }
+  
+  /* Apple Typography Emulation */
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    @apply font-heading tracking-tight;
+  }
+  
+  h1 { letter-spacing: -0.022em; }
+  h2 { letter-spacing: -0.021em; }
+  h3 { letter-spacing: -0.019em; }
+
+  /* Apple UI receding chrome: no shadows on buttons except explicitly requested */
+  button, .btn, [role="button"], input, select, textarea {
+    box-shadow: none !important;
+  }
+  
+  /* The single soft drop shadow allowed for resting product imagery / elevated tiles */
+  .apple-shadow {
+    box-shadow: 3px 5px 30px rgba(0, 0, 0, 0.12); /* Slightly softer than 0.22 for web */
+  }
 }

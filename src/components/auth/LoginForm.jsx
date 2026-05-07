@@ -38,7 +38,7 @@ function LoginForm({ onSwitch }) {
               type="email"
               placeholder="name@company.com"
               autoComplete="email"
-              className="pl-10"
+              className="bg-muted-foreground/10 pl-10"
               {...register("email")}
             />
           </div>
@@ -66,7 +66,7 @@ function LoginForm({ onSwitch }) {
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="current-password"
-              className="pr-10 pl-10"
+              className="bg-muted-foreground/10 pr-10 pl-10"
               {...register("password")}
             />
             <button

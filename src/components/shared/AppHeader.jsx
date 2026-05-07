@@ -34,7 +34,7 @@ function AppHeader() {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <header className="bg-sidebar-primary-foreground sticky top-2 z-10 mx-auto flex h-14 w-[98%] items-center justify-between rounded-4xl px-3 shadow-sm backdrop-blur">
+    <header className="bg-sidebar-accent sticky top-2 z-10 mx-auto flex h-14 w-[98%] items-center justify-between rounded-4xl px-3 shadow-sm backdrop-blur">
       {/* Sidebar toggle */}
       <Tooltip>
         <TooltipTrigger asChild>
