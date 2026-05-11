@@ -33,9 +33,13 @@ import {
   JobInitials,
 } from "@/components/recuiter/components/JobsComponent";
 import { path } from "@/config/path";
+import { usePermission, useAnyPermission } from "@/hooks/usePermission";
 
 function RecruiterJobs() {
   const navigate = useNavigate();
+  const canCreate = usePermission("job:create");
+  const canEdit = useAnyPermission("job:update:own", "job:update:company");
+  const canDelete = usePermission("job:delete:own");
   const {
     filterOpen,
     setFilterOpen,
@@ -85,10 +89,12 @@ function RecruiterJobs() {
             <Filter className="size-4" />
             Lọc nâng cao
           </Button>
-          <Button onClick={openCreate} className="cursor-pointer gap-2">
-            <Plus className="size-4" />
-            Đăng tin mới
-          </Button>
+          {canCreate && (
+            <Button onClick={openCreate} className="cursor-pointer gap-2">
+              <Plus className="size-4" />
+              Đăng tin mới
+            </Button>
+          )}
         </div>
       </div>
 
@@ -196,25 +202,29 @@ function RecruiterJobs() {
                         >
                           <Eye className="size-4" />
                         </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="size-8 cursor-pointer"
-                          title="Sửa"
-                          onClick={() => openEdit(job)}
-                        >
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="size-8 cursor-pointer"
-                          style={{ color: "var(--destructive)" }}
-                          title="Xóa"
-                          onClick={() => setDeleteId(job.id)}
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
+                        {canEdit && (
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="size-8 cursor-pointer"
+                            title="Sửa"
+                            onClick={() => openEdit(job)}
+                          >
+                            <Pencil className="size-4" />
+                          </Button>
+                        )}
+                        {canDelete && (
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="size-8 cursor-pointer"
+                            style={{ color: "var(--destructive)" }}
+                            title="Xóa"
+                            onClick={() => setDeleteId(job.id)}
+                          >
+                            <Trash2 className="size-4" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

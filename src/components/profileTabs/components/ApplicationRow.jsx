@@ -73,7 +73,7 @@ function ApplicationCard({ app, onDeleteClick }) {
   const initials = (app.job?.company?.name ?? "C").charAt(0).toUpperCase();
 
   const handleNavigate = useCallback(() => {
-    if (app.isDraft) {
+    if (app.status === "DRAFT") {
       navigate(`/jobs/${app.job?.id}/apply`, { state: { draft: app } });
     } else {
       navigate(`/applications/${app.id}`);

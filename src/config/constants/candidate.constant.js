@@ -13,6 +13,7 @@ import {
   Shield,
   LogOut,
   Headset,
+  FileEdit,
 } from "lucide-react";
 import { path } from "../path";
 
@@ -33,6 +34,7 @@ export const PROFILE_TABS = [
 ];
 
 export const APPLICATION_STATUS_LABELS = {
+  DRAFT: "Bản nháp",
   PENDING: "Chờ xét duyệt",
   REVIEWING: "Đang xem xét",
   INTERVIEW: "Phỏng vấn",
@@ -41,6 +43,11 @@ export const APPLICATION_STATUS_LABELS = {
 };
 
 export const STATUS_CONFIG = {
+  DRAFT: {
+    icon: FileEdit,
+    className:
+      "bg-[var(--status-draft-bg,#f3f4f6)] text-[var(--status-draft-text,#6b7280)] border-[var(--status-draft-border,#d1d5db)]",
+  },
   PENDING: {
     icon: Clock,
     className:

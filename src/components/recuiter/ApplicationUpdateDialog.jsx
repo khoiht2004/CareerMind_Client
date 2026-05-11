@@ -81,7 +81,7 @@ function ApplicationUpdateDialog({
     useApplicationProfile(app);
 
   const typeConfig =
-    FILE_TYPE_CONFIG[app?.cv.fileType?.toLowerCase()] ?? DEFAULT_TYPE_CONFIG;
+    FILE_TYPE_CONFIG[app?.cv?.fileType?.toLowerCase()] ?? DEFAULT_TYPE_CONFIG;
 
   return (
     <>

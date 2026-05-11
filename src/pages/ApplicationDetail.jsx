@@ -30,6 +30,7 @@ import {
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import { NotFound } from "@/components/shared/NotFound";
 import { useApplicationDetail } from "@/hooks/useApplicationDetail";
+import { usePermission } from "@/hooks/usePermission";
 import { formatDate, formatFileSize } from "@/utils/helper";
 import { AssessmentBar, UserInfo } from "@/features/ApplicationDetail";
 import { Separator } from "@/components/ui/separator";
@@ -52,6 +53,7 @@ function ApplicationDetail() {
     isUpdating,
   } = useApplicationDetail();
   const navigate = useNavigate();
+  const canUpdateStatus = usePermission("application:update:status");
 
   if (isLoading) {
     return (
@@ -84,7 +86,6 @@ function ApplicationDetail() {
   const statusLabel = APPLICATION_STATUS_LABELS[status] ?? status;
   const typeLabel = JOB_TYPE_LABELS[job?.type] ?? job?.type;
   const fullName = user?.profile?.fullName ?? user?.email ?? "Ứng viên";
-  const isRecruiter = user?.role === "RECRUITER";
   const initials = fullName.charAt(0).toUpperCase();
 
   return (
@@ -99,7 +100,7 @@ function ApplicationDetail() {
             Hãy theo dõi trạng thái và tiến trình của đơn ứng tuyển này.
           </p>
         </div>
-        {isRecruiter && (
+        {canUpdateStatus && (
           <div className="ml-auto flex items-center gap-2">
             <Button variant="outline" size="sm" className="gap-1.5">
               <Share2 className="size-4" />

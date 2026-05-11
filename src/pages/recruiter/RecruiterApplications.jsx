@@ -35,9 +35,11 @@ import {
 } from "@/components/recuiter/components/ApplicationComponent";
 import { buildCvPreview } from "@/utils/recruiter.helper";
 import { formatDate } from "@/utils/helper";
+import { usePermission } from "@/hooks/usePermission";
 
 function RecruiterApplications() {
   const [previewCv, setPreviewCv] = useState(null);
+  const canUpdateStatus = usePermission("application:update:status");
 
   const {
     staged,
@@ -242,14 +244,16 @@ function RecruiterApplications() {
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-end">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="cursor-pointer"
-                            onClick={() => openUpdate(app)}
-                          >
-                            Chi tiết
-                          </Button>
+                          {canUpdateStatus && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="cursor-pointer"
+                              onClick={() => openUpdate(app)}
+                            >
+                              Chi tiết
+                            </Button>
+                          )}
                         </div>
                       </TableCell>
                     </TableRow>

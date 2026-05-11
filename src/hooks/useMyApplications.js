@@ -18,9 +18,13 @@ export function useMyApplications() {
 
   const queryParams = useMemo(() => {
     const p = { page: filters.page, limit: PAGE_SIZE };
-    if (filters.status !== "ALL") p.status = filters.status;
     if (filters.days !== "0") p.days = filters.days;
-    p.isDraft = filters.tab === "draft" ? "true" : "false";
+    if (filters.tab === "draft") {
+      p.status = "DRAFT";
+    } else {
+      if (filters.status !== "ALL") p.status = filters.status;
+      p.isDraft = "false";
+    }
     return p;
   }, [filters]);
 
