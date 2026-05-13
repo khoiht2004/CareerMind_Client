@@ -46,6 +46,10 @@ export const applicationService = apiSlice.injectEndpoints({
       query: (jobId) => `/application/check?jobId=${jobId}`,
       providesTags: (result, error, jobId) => [{ type: "Application", id: `check-${jobId}` }],
     }),
+    getMyInsights: builder.query({
+      query: () => "/application/my/insights",
+      providesTags: ["Application"],
+    }),
   }),
 });
 
@@ -57,4 +61,5 @@ export const {
   useUpdateApplicationStatusMutation,
   useDeleteApplicationMutation,
   useCheckAppliedQuery,
+  useGetMyInsightsQuery,
 } = applicationService;

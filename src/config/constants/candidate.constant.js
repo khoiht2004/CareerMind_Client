@@ -30,6 +30,7 @@ export const PROFILE_TABS = [
   { key: "cv", label: "CV của tôi" },
   { key: "cover-letter", label: "Thư xin việc" },
   { key: "chatbot", label: "Chatbot của tôi" },
+  { key: "insights", label: "Phân tích hồ sơ" },
   { key: "settings", label: "Cài đặt" },
 ];
 

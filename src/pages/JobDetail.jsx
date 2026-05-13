@@ -5,8 +5,6 @@ import {
   ChevronRight,
   FileText,
   ClipboardCheck,
-  Puzzle,
-  Handshake,
   PartyPopper,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";

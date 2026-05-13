@@ -35,6 +35,7 @@ import { formatDate, formatFileSize } from "@/utils/helper";
 import { AssessmentBar, UserInfo } from "@/features/ApplicationDetail";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 import {
   DEFAULT_TYPE_CONFIG,
   FILE_TYPE_CONFIG,
@@ -54,6 +55,8 @@ function ApplicationDetail() {
   } = useApplicationDetail();
   const navigate = useNavigate();
   const canUpdateStatus = usePermission("application:update:status");
+  const authUser = useSelector((state) => state.auth.user);
+  const isRecruiter = authUser?.role === "RECRUITER";
 
   if (isLoading) {
     return (
@@ -295,12 +298,14 @@ function ApplicationDetail() {
               </div>
 
               {interviewDate && (
-                <div className="text-muted flex items-center gap-2 text-xs font-medium">
-                  <CalendarDays className="size-3.5 shrink-0" />
-                  <span>Lịch hẹn </span>
-                  <div className="ml-auto">
-                    {formatDate(interviewDate)}
-                    {interviewTime ? ` · ${interviewTime}` : ""}
+                <div className="text-muted flex flex-col gap-2 text-xs font-medium">
+                  <div className="flex items-center gap-2">
+                    <CalendarDays className="size-3.5 shrink-0" />
+                    <span>Lịch hẹn </span>
+                    <div className="ml-auto">
+                      {formatDate(interviewDate)}
+                      {interviewTime ? ` · ${interviewTime}` : ""}
+                    </div>
                   </div>
                 </div>
               )}
@@ -309,6 +314,37 @@ function ApplicationDetail() {
                 <p>Ngày nộp</p>
                 <p className="ml-auto">{formatDate(createdAt)}</p>
               </div>
+              {!isRecruiter && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-primary-foreground border-primary-foreground w-full gap-1.5 border"
+                  onClick={() => {
+                    const startDate = new Date(interviewDate);
+                    if (interviewTime) {
+                      const [hours, minutes] = interviewTime.split(":");
+                      startDate.setHours(hours, minutes, 0, 0);
+                    }
+                    const endDate = new Date(
+                      startDate.getTime() + 60 * 60 * 1000,
+                    );
+                    const formatGCalDate = (d) =>
+                      d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+                    const dates = `${formatGCalDate(startDate)}/${formatGCalDate(endDate)}`;
+                    const text = encodeURIComponent(
+                      `Phỏng vấn vị trí ${job?.title}`,
+                    );
+                    const details = encodeURIComponent(
+                      `Công ty: ${job?.company?.name}`,
+                    );
+                    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}`;
+                    window.open(url, "_blank");
+                  }}
+                >
+                  <CalendarClock className="size-4" />
+                  Thêm vào Google Calendar
+                </Button>
+              )}
 
               {isRecruiter && (
                 <Button

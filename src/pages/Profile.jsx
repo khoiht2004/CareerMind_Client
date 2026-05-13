@@ -6,6 +6,7 @@ import {
   BotMessageSquare,
   Settings,
   FileUser,
+  ChartNoAxesCombined,
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,11 +15,12 @@ import MyApplications from "@/components/profileTabs/MyApplications";
 import MyCv from "@/components/profileTabs/MyCv";
 import MyCoverLetter from "@/components/profileTabs/MyCoverLetter";
 import MyChatbot from "@/components/profileTabs/MyChatbot";
+import MyInsights from "@/components/profileTabs/MyInsights";
 import MySettings from "@/components/profileTabs/MySettings";
 import { PROFILE_TABS } from "@/config/constants/candidate.constant";
 import { cn } from "@/lib/utils";
 
-const RECRUITER_HIDDEN_TABS = new Set(["applications", "cv", "cover-letter"]);
+const RECRUITER_HIDDEN_TABS = new Set(["applications", "cv", "cover-letter", "insights"]);
 
 const TAB_ICONS = {
   profile: User,
@@ -26,6 +28,7 @@ const TAB_ICONS = {
   cv: FileUser,
   "cover-letter": FileText,
   chatbot: BotMessageSquare,
+  insights: ChartNoAxesCombined,
   settings: Settings,
 };
 
@@ -35,6 +38,7 @@ const TAB_CONTENT = {
   cv: <MyCv />,
   "cover-letter": <MyCoverLetter />,
   chatbot: <MyChatbot />,
+  insights: <MyInsights />,
   settings: <MySettings />,
 };
 
