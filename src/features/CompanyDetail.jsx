@@ -22,7 +22,7 @@ export function ContactRow({ icon, label, value }) {
 
 export function CompanyJobCard({ job }) {
   return (
-    <Link to={`/jobs/${job.id}`} className="block">
+    <Link to={`/jobs/${job.id}`} target="_blank" rel="noreferrer" className="block">
       <div className="bg-card border-primary/40 hover:border-primary flex items-start gap-4 rounded-xl border-l-4 p-4 transition-colors">
         <div className="min-w-0 flex-1 space-y-1.5">
           <p className="font-semibold">{job.title}</p>
@@ -48,7 +48,7 @@ export function CompanyJobCard({ job }) {
             onClick={(e) => e.preventDefault()}
             asChild
           >
-            <Link to={`/jobs/${job.id}`}>
+            <Link to={`/jobs/${job.id}`} target="_blank" rel="noreferrer">
               Ứng tuyển ngay
               <ArrowRight className="size-3" />
             </Link>

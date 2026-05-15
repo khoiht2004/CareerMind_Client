@@ -1,23 +1,20 @@
 import { memo } from "react";
 import { MapPin, DollarSign, Bookmark, Building2, Flame, SendHorizontal } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
 
 function CardVariant({ job, isSaved }) {
-  const navigate = useNavigate();
   const { id, title, company, location, salary, isHot } = job;
   const companyName = company?.name ?? company ?? "";
   const logoUrl = company?.logoUrl;
 
   const handleApply = (e) => {
     e.stopPropagation();
-    navigate(`/jobs/${id}/apply`);
+    window.open(`/jobs/${id}/apply`, "_blank", "noopener,noreferrer");
   };
 
   return (
     <div
-      onClick={() => navigate(`/jobs/${id}`)}
+      onClick={() => window.open(`/jobs/${id}`, "_blank", "noopener,noreferrer")}
       className="bg-card border-border group relative flex cursor-pointer flex-col gap-3 rounded-xl border p-5 transition-shadow hover:shadow-md"
     >
       {/* Top row: logo + badges */}

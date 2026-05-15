@@ -8,31 +8,31 @@ import {
   BarChart3,
   FileText,
   Compass,
+  Building2,
 } from "lucide-react";
 import { path } from "../path";
 
-// ─── Job Management ────────────────────────────────────────────────────────────
-
 export const RECRUITER_NAV_ITEMS = [
-  { to: path.home, icon: Compass, label: "Khám phá", end: true },
-  { to: path.recruiter.stats, icon: BarChart3, label: "Thống kê" },
-  { to: path.recruiter.jobs, icon: BriefcaseBusiness, label: "Quản lý việc làm" },
-  { to: path.recruiter.applications, icon: FileText, label: "Đơn ứng tuyển" },
+  { to: path.home, icon: Compass, label: "Kham pha", end: true },
+  { to: path.recruiter.stats, icon: BarChart3, label: "Thong ke" },
+  { to: path.recruiter.jobs, icon: BriefcaseBusiness, label: "Quan ly viec lam" },
+  { to: path.recruiter.applications, icon: FileText, label: "Don ung tuyen" },
+  { to: path.recruiter.company, icon: Building2, label: "Cong ty" },
   { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
-  { to: path.profile, icon: User, label: "Hồ sơ" },
+  { to: path.profile, icon: User, label: "Ho so" },
 ];
 
 export const JOB_STATUS_OPTIONS = [
-  { label: "Tất cả", value: "ALL" },
-  { label: "Công khai", value: "PUBLISHED" },
-  { label: "Nháp", value: "DRAFT" },
-  { label: "Đã đóng", value: "CLOSED" },
+  { label: "Tat ca", value: "ALL" },
+  { label: "Cong khai", value: "PUBLISHED" },
+  { label: "Nhap", value: "DRAFT" },
+  { label: "Da dong", value: "CLOSED" },
 ];
 
 export const JOB_STATUS_LABELS = {
-  PUBLISHED: "Công khai",
-  DRAFT: "Nháp",
-  CLOSED: "Đã đóng",
+  PUBLISHED: "Cong khai",
+  DRAFT: "Nhap",
+  CLOSED: "Da dong",
 };
 
 export const JOB_STATUS_BADGE = {
@@ -65,15 +65,13 @@ export const JOB_STATUS_DOT = {
   CLOSED: "var(--status-closed)",
 };
 
-// ─── Application Management ────────────────────────────────────────────────────
-
 export const APP_STATUS_FILTER_OPTIONS = [
-  { label: "Tất cả trạng thái", value: "ALL" },
-  { label: "Chờ xét duyệt", value: "PENDING" },
-  { label: "Đang xem xét", value: "REVIEWING" },
-  { label: "Phỏng vấn", value: "INTERVIEW" },
-  { label: "Đã nhận", value: "ACCEPTED" },
-  { label: "Từ chối", value: "REJECTED" },
+  { label: "Tat ca trang thai", value: "ALL" },
+  { label: "Cho xet duyet", value: "PENDING" },
+  { label: "Dang xem xet", value: "REVIEWING" },
+  { label: "Phong van", value: "INTERVIEW" },
+  { label: "Da nhan", value: "ACCEPTED" },
+  { label: "Tu choi", value: "REJECTED" },
 ];
 
 export const VALID_APP_STATUSES = [
@@ -84,66 +82,39 @@ export const VALID_APP_STATUSES = [
   "REJECTED",
 ];
 
-// ─── Stats Display ─────────────────────────────────────────────────────────────
-
 export const APP_STATUS_DISPLAY_CONFIG = [
-  {
-    key: "PENDING",
-    label: "Chờ xét duyệt",
-    icon: Clock,
-    dotVar: "--status-pending-text",
-  },
-  {
-    key: "REVIEWING",
-    label: "Đang xem xét",
-    icon: Clock,
-    dotVar: "--status-reviewing-text",
-  },
-  {
-    key: "INTERVIEW",
-    label: "Phỏng vấn",
-    icon: CheckCircle2,
-    dotVar: "--status-interview-text",
-  },
-  {
-    key: "ACCEPTED",
-    label: "Đã nhận",
-    icon: CheckCircle2,
-    dotVar: "--status-accepted-text",
-  },
-  {
-    key: "REJECTED",
-    label: "Từ chối",
-    icon: XCircle,
-    dotVar: "--status-rejected-text",
-  },
+  { key: "PENDING", label: "Cho xet duyet", icon: Clock, dotVar: "--status-pending-text" },
+  { key: "REVIEWING", label: "Dang xem xet", icon: Clock, dotVar: "--status-reviewing-text" },
+  { key: "INTERVIEW", label: "Phong van", icon: CheckCircle2, dotVar: "--status-interview-text" },
+  { key: "ACCEPTED", label: "Da nhan", icon: CheckCircle2, dotVar: "--status-accepted-text" },
+  { key: "REJECTED", label: "Tu choi", icon: XCircle, dotVar: "--status-rejected-text" },
 ];
 
 export const JOB_STATUS_DISPLAY_CONFIG = [
   {
     key: "PUBLISHED",
-    label: "Đang tuyển",
+    label: "Dang tuyen",
     className:
       "bg-[var(--job-published-bg)] text-[var(--job-published-text)] border-[var(--job-published-border)]",
   },
   {
     key: "DRAFT",
-    label: "Nháp",
+    label: "Nhap",
     className:
       "bg-[var(--job-draft-bg)] text-[var(--job-draft-text)] border-[var(--job-draft-border)]",
   },
   {
     key: "CLOSED",
-    label: "Đã đóng",
+    label: "Da dong",
     className:
       "bg-[var(--job-closed-bg)] text-[var(--job-closed-text)] border-[var(--job-closed-border)]",
   },
 ];
 
 export const JOB_TYPE_LABELS = {
-  FULL_TIME: "Toàn thời gian",
-  PART_TIME: "Bán thời gian",
+  FULL_TIME: "Toan thoi gian",
+  PART_TIME: "Ban thoi gian",
   REMOTE: "Remote",
-  INTERNSHIP: "Thực tập",
-  CONTRACT: "Hợp đồng",
+  INTERNSHIP: "Thuc tap",
+  CONTRACT: "Hop dong",
 };

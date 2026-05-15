@@ -10,11 +10,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
 
 // ── Variant: horizontal (dùng ở trang Home) ──────────────────────
 function HorizontalVariant({ job, isSaved }) {
-  const navigate = useNavigate();
   const {
     id,
     title,
@@ -32,7 +30,7 @@ function HorizontalVariant({ job, isSaved }) {
 
   return (
     <Card
-      onClick={() => navigate(`/jobs/${id}`)}
+      onClick={() => window.open(`/jobs/${id}`, "_blank", "noopener,noreferrer")}
       className="group relative cursor-pointer overflow-hidden transition-shadow hover:shadow-md"
     >
       {/* Marks */}
@@ -118,7 +116,7 @@ function HorizontalVariant({ job, isSaved }) {
               className="absolute right-4 shrink-0 cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`/jobs/${id}`);
+                window.open(`/jobs/${id}`, "_blank", "noopener,noreferrer");
               }}
             >
               Ứng tuyển nhanh

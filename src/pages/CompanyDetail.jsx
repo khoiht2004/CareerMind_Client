@@ -11,6 +11,7 @@ import {
   Video,
   Info,
   ChevronsLeftRightEllipsis,
+  Star,
 } from "lucide-react";
 import Iframe from "react-iframe";
 import { Badge } from "@/components/ui/badge";
@@ -175,6 +176,45 @@ function CompanyDetail() {
                   label="Địa chỉ"
                   value={company.address}
                 />
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-primary flex items-center justify-between gap-2 font-bold">
+                <span className="flex items-center gap-2">
+                  <Star className="size-5" />
+                  Review
+                </span>
+                <Badge variant="secondary">
+                  {company.avgRating ?? 0}/5
+                </Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {(company.reviews ?? []).length === 0 ? (
+                <p className="text-muted-foreground text-sm">Chua co review nao.</p>
+              ) : (
+                (company.reviews ?? []).map((review) => (
+                  <div key={review.id} className="rounded-lg border p-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="line-clamp-1 text-sm font-semibold">
+                        {review.user?.profile?.fullName || "Ung vien"}
+                      </p>
+                      <span className="flex text-amber-400">
+                        {Array.from({ length: review.rating }).map((_, index) => (
+                          <Star key={index} className="size-3 fill-current" />
+                        ))}
+                      </span>
+                    </div>
+                    {review.comment ? (
+                      <p className="text-muted-foreground mt-2 line-clamp-3 text-xs">
+                        {review.comment}
+                      </p>
+                    ) : null}
+                  </div>
+                ))
               )}
             </CardContent>
           </Card>

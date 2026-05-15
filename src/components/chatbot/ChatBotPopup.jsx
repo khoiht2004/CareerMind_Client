@@ -1,28 +1,19 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import { Bot, Minus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { usePopupChatBot } from "@/hooks/usePopupChatBot";
 import ChatMessages from "@/components/chatbot/ChatMessages";
 import ChatInput from "@/components/chatbot/ChatInput";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import { useAttachments } from "@/hooks/useAttachments";
+import ChatBotFab from "./ChatBotFab";
 
 export default function ChatBotPopup() {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* Nút bấm tròn nổi */}
-      <div className="fixed right-7 bottom-8 z-50">
-        <Button
-          size="icon"
-          className="bg-primary hover:bg-primary/90 rounded-xxl size-10 shadow-lg hover:-translate-y-1"
-          onClick={() => setOpen(!open)}
-        >
-          <Bot className="text-primary-foreground size-5" />
-        </Button>
-      </div>
-
+      <ChatBotFab open={open} onToggle={() => setOpen((value) => !value)} />
       <ChatbotWindow open={open} setOpen={setOpen} />
     </>
   );
@@ -55,7 +46,6 @@ function ChatbotWindow({ open, setOpen }) {
     clearAttachments,
   } = useAttachments();
 
-  // Tự động tạo session nếu chưa có khi mở popup
   useEffect(() => {
     if (open && !sessionsLoading && !activeSessionId) {
       handleCreateSession();
@@ -80,7 +70,7 @@ function ChatbotWindow({ open, setOpen }) {
   return (
     <>
       <div
-        className={`border-border bg-card fixed right-7 bottom-7 z-50 w-[360px] overflow-hidden rounded-xl border shadow-xl transition-all duration-300 ${open ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible translate-y-4 opacity-0"}`}
+        className={`border-border bg-card fixed right-20 bottom-7 z-50 w-[360px] overflow-hidden rounded-xl border shadow-xl transition-all duration-300 ${open ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible translate-y-4 opacity-0"}`}
       >
         <div className="bg-primary text-primary-foreground flex items-center justify-between px-3 py-2">
           <div className="flex items-center gap-2">
@@ -99,9 +89,7 @@ function ChatbotWindow({ open, setOpen }) {
             <Button
               size="icon"
               className="hover:bg-primary-foreground/5 size-7"
-              onClick={() => {
-                setOpen(false);
-              }}
+              onClick={() => setOpen(false)}
               title="Thu nhỏ"
             >
               <Minus className="size-4" />
@@ -124,7 +112,7 @@ function ChatbotWindow({ open, setOpen }) {
             isSending={isSending}
             onSend={onSendWrapper}
             suggestedQuestions={false}
-            className={`overflow-y-auto overscroll-contain px-2.5`}
+            className="overflow-y-auto overscroll-contain px-2.5"
           />
           <ChatInput
             input={input}

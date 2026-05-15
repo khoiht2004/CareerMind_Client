@@ -2,16 +2,13 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router";
 import { Loader2 } from "lucide-react";
-import AppSidebar from "@/components/shared/AppSidebar";
 import AppHeader from "@/components/shared/AppHeader";
-import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
 import AppFooter from "@/components/shared/AppFooter";
 import ChatBotPopup from "@/components/chatbot/ChatBotPopup";
 
 function LayoutContent() {
-  const { isCollapsed, isMobile, mobileOpen, closeMobile } = useSidebar();
   const location = useLocation();
 
   const hideFooter =
@@ -22,46 +19,24 @@ function LayoutContent() {
   // Scroll to top on every route change + close mobile sidebar
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
-    closeMobile();
-  }, [location.pathname, closeMobile]);
+  }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-start">
-      {/* Mobile backdrop */}
-      {isMobile && mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-black/60" onClick={closeMobile} />
-      )}
-
-      {/* Sidebar */}
-      <aside
+    <div className="flex min-h-screen flex-col">
+      <AppHeader />
+      <main
         className={cn(
-          "text-sidebar-foreground transition-all duration-500",
-          !isMobile && "sticky top-0 h-screen shrink-0 overflow-y-auto",
-          !isMobile && (isCollapsed ? "w-14" : "w-55"),
-          isMobile && "fixed inset-y-0 left-0 z-50 h-full w-64 overflow-y-auto",
-          isMobile && (mobileOpen ? "translate-x-0" : "-translate-x-full"),
+          "bg-background flex min-h-0 flex-1 flex-col",
+          isChatbotPage
+            ? "h-[calc(100vh-5rem)]"
+            : "min-h-[calc(100vh-5rem)]",
+          !hideFooter && "pb-25",
         )}
       >
-        <AppSidebar />
-      </aside>
-
-      {/* Main content */}
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col self-stretch">
-        <AppHeader />
-        <main
-          className={cn(
-            "bg-background flex min-h-0 flex-1 flex-col",
-            isChatbotPage
-              ? "h-[calc(100vh-3.5rem)]"
-              : "min-h-[calc(100vh-3.5rem)]",
-            !hideFooter && "pb-25",
-          )}
-        >
-          <Outlet />
-        </main>
-        {!hideFooter && <AppFooter />}
-        {!isChatbotPage && <ChatBotPopup />}
-      </div>
+        <Outlet />
+      </main>
+      {!hideFooter && <AppFooter />}
+      {!isChatbotPage && <ChatBotPopup />}
     </div>
   );
 }
@@ -81,11 +56,7 @@ function PrivateLayout() {
     return <Navigate to={path.auth + "?tab=login"} replace />;
   }
 
-  return (
-    <SidebarProvider>
-      <LayoutContent />
-    </SidebarProvider>
-  );
+  return <LayoutContent />;
 }
 
 export default PrivateLayout;

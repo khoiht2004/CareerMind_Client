@@ -1,127 +1,98 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { Bell, Settings, User, KeyRound, LogOut } from "lucide-react";
+import { Bell, ChevronDown, LogOut, MessageCircle, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { path } from "@/config/path";
+import { USER_MENU_SECTIONS } from "@/config/constants/user-menu.constant";
 import handleLogout from "@/hooks/useLogout";
+import UserMenuIconButton from "./user-menu/UserMenuIconButton";
+import UserMenuSection from "./user-menu/UserMenuSection";
+import UserSummary from "./user-menu/UserSummary";
+
+function getAvatar(user) {
+  if (user.avatarUrl) {
+    return (
+      <img
+        src={user.avatarUrl}
+        alt={user.name ?? "Người dùng"}
+        className="h-full w-full object-cover object-top"
+      />
+    );
+  }
+
+  return <UserRound className="size-8 text-slate-300" />;
+}
 
 function UserMenu() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   if (!user) return null;
 
-  const isRecruiter = user?.role === "RECRUITER";
-  const sectionLabel = isRecruiter ? "Nhà tuyển dụng" : "Người dùng";
-
-  const avatarContent = user.avatarUrl ? (
-    <img
-      src={user.avatarUrl}
-      alt={user.name}
-      className="h-full w-full object-cover object-top"
-    />
-  ) : (
-    <span>{user.name?.[0]?.toUpperCase() ?? "U"}</span>
-  );
+  const avatar = getAvatar(user);
+  const userName = user.name ?? "Người dùng";
+  const userCode = user.id ? `ID ${user.id}` : "Tài khoản ứng viên";
 
   return (
-    <div className="flex items-center gap-0.5">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 cursor-pointer"
-          >
-            <Bell className="size-5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>Thông báo</TooltipContent>
-      </Tooltip>
-
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 cursor-pointer"
-          >
-            <Settings className="size-5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>Cài đặt</TooltipContent>
-      </Tooltip>
+    <div className="flex items-center gap-2">
+      <UserMenuIconButton icon={Bell} label="Thông báo" />
+      <UserMenuIconButton icon={MessageCircle} label="Tin nhắn" />
 
       <DropdownMenu>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DropdownMenuTrigger asChild>
-              <button className="hover:ring-primary ml-1 flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-sm font-bold text-white transition-all duration-150 hover:ring-2">
-                {avatarContent}
-              </button>
-            </DropdownMenuTrigger>
-          </TooltipTrigger>
-          <TooltipContent>{sectionLabel}</TooltipContent>
-        </Tooltip>
-
-        <DropdownMenuContent align="end" className="w-64">
-          {/* User info */}
-          <DropdownMenuLabel className="px-3 py-3 font-normal">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-zinc-600 text-base font-bold text-white">
-                {avatarContent}
-              </div>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold">
-                  {user.name ?? "Người dùng"}
-                </p>
-                <p className="text-muted-foreground truncate text-xs">
-                  {user.email}
-                </p>
-              </div>
-            </div>
-          </DropdownMenuLabel>
-
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            className="cursor-pointer gap-2.5 py-2.5"
-            onClick={() => navigate(path.profile)}
+        <DropdownMenuTrigger asChild>
+          <button
+            type="button"
+            className="group flex items-center gap-1 rounded-full outline-none"
+            aria-label="Mở menu tài khoản"
           >
-            <User className="size-4" />
-            Trang cá nhân
-          </DropdownMenuItem>
+            <span className="bg-muted flex size-11 items-center justify-center overflow-hidden rounded-full border text-sm font-bold text-white transition group-hover:ring-2 group-hover:ring-primary/30">
+              {avatar}
+            </span>
+            <ChevronDown className="size-4 text-slate-500" />
+          </button>
+        </DropdownMenuTrigger>
 
-          <DropdownMenuItem
-            className="cursor-pointer gap-2.5 py-2.5"
-            onClick={() => navigate(`${path.profile}?tab=settings`)}
-          >
-            <KeyRound className="size-4" />
-            Đổi mật khẩu
-          </DropdownMenuItem>
+        <DropdownMenuContent
+          align="end"
+          sideOffset={10}
+          className="w-[400px] rounded-xl p-0 shadow-popover-soft"
+        >
+          <UserSummary
+            avatar={avatar}
+            email={user.email}
+            name={userName}
+            userCode={userCode}
+          />
 
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="m-0" />
 
-          <DropdownMenuItem
-            className="cursor-pointer gap-2.5 py-2.5 text-red-500 focus:bg-red-50 focus:text-red-500 dark:focus:bg-red-950/30"
-            onClick={() => handleLogout(dispatch, navigate)}
-          >
-            <LogOut className="size-4" />
-            Đăng xuất
-          </DropdownMenuItem>
+          <div className="py-2">
+            {USER_MENU_SECTIONS.map((section) => (
+              <UserMenuSection
+                key={section.title}
+                section={section}
+                onNavigate={navigate}
+              />
+            ))}
+          </div>
+
+          <div className="px-5 pt-1 pb-4">
+            <Button
+              type="button"
+              variant="secondary"
+              className="h-11 w-full rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
+              onClick={() => handleLogout(dispatch, navigate)}
+            >
+              <LogOut className="size-4" />
+              Đăng xuất
+            </Button>
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

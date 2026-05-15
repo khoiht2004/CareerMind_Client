@@ -54,7 +54,7 @@ function ChatInput({
     (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
 
   return (
-    <div className="bg-primary/10 px-4 py-2">
+    <div className="bg-primary/5 px-4 py-2">
       <div className="relative mx-auto flex max-w-3xl items-end gap-2">
         {/* Hidden file input */}
         <input

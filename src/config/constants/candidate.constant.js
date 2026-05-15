@@ -14,14 +14,42 @@ import {
   LogOut,
   Headset,
   FileEdit,
+  Building2,
 } from "lucide-react";
 import { path } from "../path";
 
 export const CANDIDATE_NAV_ITEMS = [
   { to: path.home, icon: Compass, label: "Khám phá", end: true },
   { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
+  { to: path.companies, icon: Building2, label: "Công ty" },
   { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
   { to: path.profile, icon: User, label: "Hồ sơ" },
+];
+
+export const INDUSTRY_OPTIONS = [
+  { label: "Tất cả ngành nghề", value: "ALL" },
+  { label: "Công nghệ thông tin", value: "IT" },
+  { label: "Marketing/PR", value: "Marketing" },
+  { label: "Kinh doanh/Bán hàng", value: "Sales" },
+  { label: "Tài chính/Ngân hàng", value: "Finance" },
+  { label: "Nhân sự", value: "HR" },
+  { label: "Vận hành", value: "Operations" },
+];
+
+export const SALARY_OPTIONS = [
+  { label: "Tất cả mức lương", value: "ALL" },
+  { label: "Dưới 10 triệu", value: "10" },
+  { label: "10 - 20 triệu", value: "20" },
+  { label: "20 - 30 triệu", value: "30" },
+  { label: "Thỏa thuận", value: "Thoa thuan" },
+];
+
+export const COMPANY_SIZE_OPTIONS = [
+  { label: "Tất cả quy mô", value: "ALL" },
+  { label: "1-50 nhân viên", value: "1-50" },
+  { label: "51-200 nhân viên", value: "51-200" },
+  { label: "201-1000 nhân viên", value: "201-1000" },
+  { label: "1000+ nhân viên", value: "1000+" },
 ];
 
 export const PROFILE_TABS = [

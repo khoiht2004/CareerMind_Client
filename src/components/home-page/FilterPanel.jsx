@@ -5,10 +5,15 @@ import { Button } from "@/components/ui/button";
 import {
   JOB_TYPE_OPTIONS,
   EXP_LEVEL_OPTIONS,
+  INDUSTRY_OPTIONS,
+  SALARY_OPTIONS,
 } from "@/config/constants/candidate.constant";
 
-// Loại bỏ option "Tất cả" ra khỏi danh sách checkbox
 const TYPE_CHECKBOX_OPTIONS = JOB_TYPE_OPTIONS.filter((o) => o.value !== "ALL");
+const INDUSTRY_CHECKBOX_OPTIONS = INDUSTRY_OPTIONS.filter(
+  (o) => o.value !== "ALL",
+);
+const SALARY_CHECKBOX_OPTIONS = SALARY_OPTIONS.filter((o) => o.value !== "ALL");
 
 function FilterSection({ title, options, activeValue, onToggle }) {
   return (
@@ -43,6 +48,10 @@ function FilterPanel({
   onTypeChange,
   levelFilter,
   onLevelChange,
+  industryFilter,
+  onIndustryChange,
+  salaryFilter,
+  onSalaryChange,
   hasFilters,
   onClearFilters,
 }) {
@@ -58,10 +67,17 @@ function FilterPanel({
             className="text-muted-foreground hover:text-foreground h-7 cursor-pointer gap-1 px-2 text-xs"
           >
             <X className="size-3" />
-            Xóa tất cả
+            Xóa bộ lọc
           </Button>
         )}
       </div>
+
+      <FilterSection
+        title="Ngành nghề"
+        options={INDUSTRY_CHECKBOX_OPTIONS}
+        activeValue={industryFilter}
+        onToggle={onIndustryChange}
+      />
 
       <FilterSection
         title="Loại công việc"
@@ -70,11 +86,18 @@ function FilterPanel({
         onToggle={onTypeChange}
       />
 
-      <FilterSection
-        title="Mức kinh nghiệm"
+      {/* <FilterSection
+        title="Kinh nghiệm "
         options={EXP_LEVEL_OPTIONS}
         activeValue={levelFilter}
         onToggle={onLevelChange}
+      /> */}
+
+      <FilterSection
+        title="Mức lương"
+        options={SALARY_CHECKBOX_OPTIONS}
+        activeValue={salaryFilter}
+        onToggle={onSalaryChange}
       />
     </div>
   );

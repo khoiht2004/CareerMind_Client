@@ -79,7 +79,7 @@ function ChatSidebar({
       )}
     >
       <div className="flex h-14 shrink-0 items-center justify-between px-4">
-        <h2 className="font-bold">Lịch sử trò chuyện</h2>
+        <h3 className="font-bold">Lịch sử trò chuyện</h3>
         <button
           type="button"
           onClick={onCreate}

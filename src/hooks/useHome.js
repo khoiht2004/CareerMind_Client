@@ -12,6 +12,8 @@ const DEFAULT_FILTERS = {
   type: "ALL",
   location: "ALL",
   level: "ALL",
+  industry: "ALL",
+  salary: "ALL",
   sort: "newest",
 };
 
@@ -38,6 +40,8 @@ export function useHome() {
     type: filters.type === "ALL" ? undefined : filters.type,
     location: filters.location === "ALL" ? undefined : filters.location,
     level: filters.level === "ALL" ? undefined : filters.level,
+    industry: filters.industry === "ALL" ? undefined : filters.industry,
+    salary: filters.salary === "ALL" ? undefined : filters.salary,
     page,
     limit: LIMIT,
   });
@@ -83,6 +87,16 @@ export function useHome() {
     setFilters((f) => ({ ...f, location: v }));
   }, []);
 
+  const handleIndustryChange = useCallback((v) => {
+    setPage(1);
+    setFilters((f) => ({ ...f, industry: f.industry === v ? "ALL" : v }));
+  }, []);
+
+  const handleSalaryChange = useCallback((v) => {
+    setPage(1);
+    setFilters((f) => ({ ...f, salary: f.salary === v ? "ALL" : v }));
+  }, []);
+
   const handleSortChange = useCallback((v) => {
     setPage(1);
     setFilters((f) => ({ ...f, sort: v }));
@@ -98,7 +112,9 @@ export function useHome() {
     filters.search ||
     filters.type !== "ALL" ||
     filters.location !== "ALL" ||
-    filters.level !== "ALL";
+    filters.level !== "ALL" ||
+    filters.industry !== "ALL" ||
+    filters.salary !== "ALL";
 
   return {
     user,
@@ -119,6 +135,8 @@ export function useHome() {
     handleSearch,
     handleTypeChange,
     handleLevelChange,
+    handleIndustryChange,
+    handleSalaryChange,
     handleLocationChange,
     handleSortChange,
     handleClearFilters,

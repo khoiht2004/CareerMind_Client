@@ -18,8 +18,13 @@ import VerifyEmail from "@/pages/auth/VerifyEmail";
 import Home from "@/pages/Home";
 import AIPricing from "./pages/AIPricing";
 import Auth from "./pages/auth/Auth";
+import TemplateGallery from "@/pages/TemplateGallery";
 const JobDetail = lazy(() => import("@/pages/JobDetail"));
 const CompanyDetail = lazy(() => import("@/pages/CompanyDetail"));
+const Companies = lazy(() => import("@/pages/Companies"));
+const Posts = lazy(() => import("@/pages/Posts"));
+const PostDetail = lazy(() => import("@/pages/PostDetail"));
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 
 // Private pages
 const Apply = lazy(() => import("@/pages/Apply"));
@@ -34,6 +39,7 @@ const RecruiterApplications = lazy(
   () => import("@/pages/recruiter/RecruiterApplications"),
 );
 const RecruiterStats = lazy(() => import("@/pages/recruiter/RecruiterStats"));
+const RecruiterCompany = lazy(() => import("@/pages/recruiter/RecruiterCompany"));
 
 // Fallback hiển thị trong khi đang tải
 function PageLoader() {
@@ -61,8 +67,22 @@ function App() {
           {/* Public routes */}
           <Route element={<DefaultLayout />}>
             <Route path={path.home} element={<Home />} />
+            <Route path={path.jobs} element={<Home />} />
+            <Route path={path.companies} element={<Companies />} />
+            <Route
+              path={path.cvTemplates}
+              element={<TemplateGallery type="cv" />}
+            />
+            <Route
+              path={path.coverLetterTemplates}
+              element={<TemplateGallery type="cover-letter" />}
+            />
+            <Route path={path.posts} element={<Posts />} />
+            <Route path={path.postDetail} element={<PostDetail />} />
             <Route path={path.jobDetail} element={<JobDetail />} />
             <Route path={path.companyDetail} element={<CompanyDetail />} />
+            <Route path={path.notFound} element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
 
           {/* Private routes */}
@@ -84,6 +104,7 @@ function App() {
               element={<RecruiterApplications />}
             />
             <Route path={path.recruiter.stats} element={<RecruiterStats />} />
+            <Route path={path.recruiter.company} element={<RecruiterCompany />} />
           </Route>
         </Routes>
       </Suspense>

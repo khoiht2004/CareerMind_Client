@@ -1,5 +1,12 @@
 import { memo } from "react";
-import { Search, Loader2, MapPin } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  ChevronDown,
+  List,
+  Loader2,
+  MapPin,
+  Search,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,39 +31,49 @@ function HeroBanner({
   };
 
   return (
-    <div className="from-chart-1 to-chart-2 rounded-2xl bg-linear-to-r px-5 py-8 sm:px-8 sm:py-12">
-      <div className="max-w-full space-y-4 sm:max-w-[82%] sm:space-y-5">
-        {/* Heading */}
-        <div className="space-y-1.5">
-          <h1 className="text-primary-foreground text-2xl font-bold leading-snug sm:text-3xl">
-            Tìm kiếm cơ hội nghề nghiệp
-            <br className="hidden sm:block" /> tiếp theo của bạn
+    <section className="relative -mx-4 overflow-hidden bg-[#063f3f] px-4 pt-6 pb-8 text-white sm:-mx-6 sm:px-6 md:-mx-10 md:px-10">
+      <div className="pointer-events-none absolute inset-0 opacity-35">
+        <div className="absolute top-8 -left-16 h-72 w-72 rotate-45 border-[28px] border-emerald-400/25" />
+        <div className="absolute top-12 -right-20 h-80 w-80 rotate-45 border-[32px] border-emerald-500/20" />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl space-y-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-emerald-400 sm:text-4xl">
+            Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc
           </h1>
-          <p className="text-primary-foreground/70 text-xs sm:text-sm">
-            Kết nối với các công ty đang phát triển hàng đầu. Sự nghiệp của bạn
-            bắt đầu từ đây.
+          <p className="mt-2 text-sm font-semibold sm:text-base">
+            Tiếp cận 60.000+ tin tuyển dụng mỗi ngày từ hàng nghìn doanh nghiệp
+            uy tín tại Việt Nam
           </p>
         </div>
 
-        {/* Search bar — column on mobile, row on sm+ */}
-        <div className="bg-input flex flex-col gap-2 rounded-xl p-2 sm:flex-row">
-          {/* Keyword input */}
-          <div className="relative flex-1">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+        <div className="mx-auto flex max-w-5xl flex-col gap-2 rounded-3xl bg-white p-2 text-slate-900 shadow-xl md:flex-row md:items-center">
+          <Button
+            type="button"
+            variant="outline"
+            className="h-12 shrink-0 gap-2 rounded-2xl border-slate-200 bg-white px-4 font-semibold"
+          >
+            <List className="size-4" />
+            Danh mục nghề nghiệp
+            <ChevronDown className="size-4" />
+          </Button>
+
+          <div className="relative min-w-0 flex-1">
+            <BriefcaseBusiness className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400" />
             <Input
-              placeholder="Chức danh hoặc kỹ năng..."
-              className="bg-input border-border h-10 pl-9"
+              placeholder="Vị trí tuyển dụng, tên công ty"
+              className="h-12 border-0 pl-9 text-base shadow-none focus-visible:ring-0"
               value={inputValue}
               onChange={(e) => onInputChange(e.target.value)}
               onKeyDown={handleKeyDown}
             />
           </div>
 
-          {/* Location select */}
-          <div className="bg-input border-border flex items-center gap-1 rounded-lg border px-2">
-            <MapPin className="text-muted-foreground size-4 shrink-0" />
+          <div className="flex min-w-0 items-center gap-1 border-t border-slate-100 px-2 md:w-64 md:border-t-0 md:border-l">
+            <MapPin className="size-4 shrink-0 text-slate-500" />
             <Select value={locationValue} onValueChange={onLocationChange}>
-              <SelectTrigger className="bg-input h-10 w-full cursor-pointer border-0 focus:ring-0 sm:w-44">
+              <SelectTrigger className="h-12 cursor-pointer border-0 bg-white focus:ring-0">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -73,22 +90,37 @@ function HeroBanner({
             </Select>
           </div>
 
-          {/* Search button — full width on mobile */}
           <Button
             onClick={onSearch}
             disabled={isFetching}
-            className="bg-secondary text-secondary-foreground hover:bg-secondary/90 h-10 w-full cursor-pointer gap-2 px-3 sm:w-auto"
+            className="h-12 rounded-2xl bg-emerald-500 px-8 font-bold text-white hover:bg-emerald-600"
           >
             {isFetching ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
-              <Search className="size-4" />
+              <Search className="size-5" />
             )}
-            Tìm việc làm
+            Tìm kiếm
           </Button>
         </div>
+
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-2 text-sm">
+          <span className="font-semibold">Gợi ý:</span>
+          {["Công nghệ thông tin", "Marketing", "Kinh doanh", "Nhân sự"].map(
+            (keyword) => (
+              <button
+                key={keyword}
+                type="button"
+                onClick={() => onInputChange(keyword)}
+                className="cursor-pointer rounded-full bg-white px-3 py-1 text-slate-800"
+              >
+                {keyword}
+              </button>
+            ),
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

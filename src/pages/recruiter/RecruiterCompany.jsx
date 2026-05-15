@@ -1,0 +1,106 @@
+import { useEffect, useState } from "react";
+import { Building2, Loader2, Save } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { NotFound } from "@/components/shared/NotFound";
+import {
+  useGetMyCompanyProfileQuery,
+  useUpdateMyCompanyProfileMutation,
+} from "@/services/company.service";
+import { usePermission } from "@/hooks/usePermission";
+
+const FIELDS = [
+  ["name", "Ten cong ty"],
+  ["email", "Email"],
+  ["phone", "Dien thoai"],
+  ["industry", "Nganh nghe"],
+  ["size", "Quy mo"],
+  ["address", "Dia chi"],
+  ["logoUrl", "Logo URL"],
+  ["coverImageUrl", "Cover image URL"],
+  ["mapUrl", "Google map embed URL"],
+];
+
+function RecruiterCompany() {
+  const canManage = usePermission("company:manage");
+  const { data, isLoading } = useGetMyCompanyProfileQuery(undefined, {
+    skip: !canManage,
+  });
+  const [updateCompany, { isLoading: isSaving }] = useUpdateMyCompanyProfileMutation();
+  const [form, setForm] = useState({});
+
+  useEffect(() => {
+    if (data?.data) setForm(data.data);
+  }, [data]);
+
+  if (!canManage) {
+    return <NotFound message="Ban khong co quyen quan ly ho so cong ty" />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Loader2 className="text-muted-foreground size-8 animate-spin" />
+      </div>
+    );
+  }
+
+  const handleChange = (key, value) => setForm((current) => ({ ...current, [key]: value }));
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await updateCompany(form).unwrap();
+    toast.success("Da cap nhat ho so cong ty");
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mx-auto max-w-5xl space-y-6 p-6">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-bold">
+            <Building2 className="size-6" />
+            Ho so cong ty
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Cap nhat thong tin hien thi tren trang cong ty public.
+          </p>
+        </div>
+        <Button disabled={isSaving} className="gap-2">
+          {isSaving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
+          Luu thay doi
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {FIELDS.map(([key, label]) => (
+          <label key={key} className="space-y-1.5">
+            <span className="text-sm font-medium">{label}</span>
+            <Input value={form[key] ?? ""} onChange={(e) => handleChange(key, e.target.value)} />
+          </label>
+        ))}
+      </div>
+
+      <label className="block space-y-1.5">
+        <span className="text-sm font-medium">Mo ta ngan</span>
+        <Textarea
+          value={form.subDescription ?? ""}
+          onChange={(e) => handleChange("subDescription", e.target.value)}
+          rows={3}
+        />
+      </label>
+
+      <label className="block space-y-1.5">
+        <span className="text-sm font-medium">Gioi thieu cong ty</span>
+        <Textarea
+          value={form.description ?? ""}
+          onChange={(e) => handleChange("description", e.target.value)}
+          rows={8}
+        />
+      </label>
+    </form>
+  );
+}
+
+export default RecruiterCompany;
