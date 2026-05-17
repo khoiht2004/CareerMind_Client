@@ -1,6 +1,7 @@
 import { CalendarDays, Eye, Loader2 } from "lucide-react";
 import { useParams } from "react-router";
 import { NotFound } from "@/components/shared/NotFound";
+import PageContainer from "@/components/shared/PageContainer";
 import { useGetPostByIdQuery } from "@/services/post.service";
 import { formatDate } from "@/utils/helper";
 
@@ -20,7 +21,7 @@ function PostDetail() {
   if (isError || !post) return <NotFound message="Khong tim thay bai viet" />;
 
   return (
-    <article className="mx-auto max-w-3xl space-y-6 p-6">
+    <PageContainer as="article" className="max-w-3xl">
       {post.coverUrl ? (
         <img src={post.coverUrl} alt={post.title} className="h-72 w-full rounded-lg object-cover" />
       ) : null}
@@ -42,7 +43,7 @@ function PostDetail() {
       <div className="text-foreground/85 whitespace-pre-line text-sm leading-7">
         {post.content}
       </div>
-    </article>
+    </PageContainer>
   );
 }
 

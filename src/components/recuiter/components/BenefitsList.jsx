@@ -1,6 +1,7 @@
 import { Plus, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 function BenefitsList({ items, onChange }) {
   const update = (index, field, value) => {
@@ -33,25 +34,25 @@ function BenefitsList({ items, onChange }) {
     <div className="space-y-2">
       {items.map((item, index) => (
         <div key={index} className="flex items-center gap-2">
-          <div className="grid flex-1 grid-cols-[1fr_1.6fr_3fr] gap-2">
-            <Input
+          <div className="grid flex-1 grid-cols-[1fr_3fr] gap-2">
+            {/* <Input
               value={item.icon}
               onChange={(e) => update(index, "icon", e.target.value)}
               maxLength={4}
               placeholder="Icon"
               className="bg-primary/10"
-            />
+            /> */}
             <Input
               value={item.label}
               onChange={(e) => update(index, "label", e.target.value)}
               placeholder="Nhãn (VD: Bảo hiểm)"
               className="bg-primary/10"
             />
-            <Input
+            <Textarea
               value={item.content}
               onChange={(e) => update(index, "content", e.target.value)}
               placeholder="Nội dung"
-              className="bg-primary/10"
+              className="bg-primary/10 resize-none"
             />
           </div>
 

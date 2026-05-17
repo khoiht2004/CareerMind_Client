@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Check, Clipboard, FileText, Loader2, Search } from "lucide-react";
+import PageContainer from "@/components/shared/PageContainer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -55,7 +56,7 @@ function TemplateGallery({ type = "cv" }) {
   const title = type === "cv" ? "CV mẫu" : "Cover Letter mẫu";
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
+    <PageContainer>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold">{title}</h1>
@@ -89,7 +90,7 @@ function TemplateGallery({ type = "cv" }) {
           ))}
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
 

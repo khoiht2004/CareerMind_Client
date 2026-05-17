@@ -11,7 +11,7 @@ function AppHeader() {
 
   return (
     <header className="shadow-nav sticky top-0 z-40 border-b bg-white/95 backdrop-blur">
-      <div className="flex h-20 items-center gap-6 px-5">
+      <div className="flex h-15 items-center gap-6 px-5">
         <HeaderBrand />
         <HeaderNav pathname={pathname} />
 

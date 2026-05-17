@@ -19,7 +19,7 @@ function SlidingPanel() {
           Smart Recruit Assistants
         </span>
         <div className="space-y-4">
-          <h1 className="text-4xl leading-tight font-black">
+          <h1 className="text-background text-4xl leading-tight font-black">
             Kết nối tiềm năng với sự nghiệp xứng tầm.
           </h1>
           <p className="text-background/60 text-sm leading-relaxed">

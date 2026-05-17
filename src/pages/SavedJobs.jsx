@@ -2,6 +2,7 @@ import { Loader2, Bookmark, SlidersHorizontal, ArrowRight, ChevronDown } from "l
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import JobCard from "@/components/shared/JobCard";
+import PageContainer from "@/components/shared/PageContainer";
 import { useGetSavedJobsQuery } from "@/services/job.service";
 import { formatDate, convertArray } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
@@ -20,7 +21,7 @@ function SavedJobs() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
+    <PageContainer>
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -102,7 +103,7 @@ function SavedJobs() {
           </div>
         </>
       )}
-    </div>
+    </PageContainer>
   );
 }
 

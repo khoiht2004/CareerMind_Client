@@ -31,7 +31,7 @@ function HeroBanner({
   };
 
   return (
-    <section className="relative -mx-4 overflow-hidden bg-[#063f3f] px-4 pt-6 pb-8 text-white sm:-mx-6 sm:px-6 md:-mx-10 md:px-10">
+    <section className="relative overflow-hidden bg-[#063f3f] px-4 pt-6 pb-8 text-white">
       <div className="pointer-events-none absolute inset-0 opacity-35">
         <div className="absolute top-8 -left-16 h-72 w-72 rotate-45 border-[28px] border-emerald-400/25" />
         <div className="absolute top-12 -right-20 h-80 w-80 rotate-45 border-[32px] border-emerald-500/20" />
@@ -77,13 +77,13 @@ function HeroBanner({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {LOCATION_OPTIONS.map((o) => (
+                {LOCATION_OPTIONS.map((option) => (
                   <SelectItem
-                    key={o.value}
-                    value={o.value}
+                    key={option.value}
+                    value={option.value}
                     className="cursor-pointer"
                   >
-                    {o.label}
+                    {option.label}
                   </SelectItem>
                 ))}
               </SelectContent>

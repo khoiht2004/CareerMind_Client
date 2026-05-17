@@ -25,6 +25,7 @@ import { useApply } from "@/hooks/useApply";
 import { formatFileSize } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { BackButton } from "@/components/shared/NotFound";
+import PageContainer from "@/components/shared/PageContainer";
 import { FieldLabel, StepHeader } from "@/features/ApplyPageComponent";
 
 function Apply() {
@@ -62,7 +63,7 @@ function Apply() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 p-6">
+    <PageContainer className="max-w-4xl">
       <BackButton label="Quay lại danh sách việc làm" />
 
       {/* Job header */}
@@ -380,7 +381,7 @@ function Apply() {
           </div>
         </div>
       </form>
-    </div>
+    </PageContainer>
   );
 }
 

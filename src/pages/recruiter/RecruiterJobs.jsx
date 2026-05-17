@@ -248,7 +248,7 @@ function RecruiterJobs() {
       )}
 
       {/* Promo cards */}
-      <article className="from-primary to-primary-container text-primary-foreground rounded-3xl bg-linear-to-r p-6">
+      <article className="from-primary to-primary-container text-primary-foreground rounded-xl bg-linear-to-r p-6">
         <div className="max-w-[60%]">
           <span className="bg-primary-foreground/10 text-md rounded-full px-3 py-1 font-bold">
             Mẹo tuyển dụng

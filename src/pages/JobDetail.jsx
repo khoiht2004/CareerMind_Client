@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { NotFound } from "@/components/shared/NotFound";
+import PageContainer from "@/components/shared/PageContainer";
 import { useJobDetail } from "@/hooks/useJobDetail";
 import JobDetailHeader from "@/components/shared/JobDetailHeader";
 import JobDetailSidebar from "@/components/shared/JobDetailSidebar";
@@ -45,7 +46,7 @@ function JobDetail() {
   const hasRequirements = requirements?.length > 0;
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
+    <PageContainer className="max-w-5xl">
       {/* Breadcrumbs */}
       <nav className="text-muted-foreground flex items-center gap-1 text-xs">
         <Link to="/" className="hover:text-foreground transition-colors">
@@ -134,7 +135,7 @@ function JobDetail() {
         {/* Right - sidebar */}
         <JobDetailSidebar {...hookResult} />
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

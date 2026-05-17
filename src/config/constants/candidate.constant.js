@@ -123,7 +123,7 @@ export const JOB_TYPE_OPTIONS = [
 
 export const LOCATION_OPTIONS = [
   { label: "Tất cả địa điểm", value: "ALL" },
-  { label: "TP. Hồ Chí Minh", value: "Hồ Chí Minh" },
+  { label: "TP. Hồ Chí Minh", value: "TP. Hồ Chí Minh" },
   { label: "Hà Nội", value: "Hà Nội" },
   { label: "Đà Nẵng", value: "Đà Nẵng" },
   { label: "Remote", value: "Remote" },

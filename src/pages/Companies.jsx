@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
-import { Building2, CheckCircle2, Loader2, MapPin, Search, Users } from "lucide-react";
+import {
+  Building2,
+  CheckCircle2,
+  Loader2,
+  MapPin,
+  Search,
+  Users,
+} from "lucide-react";
 import { Link } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,6 +16,7 @@ import {
   INDUSTRY_OPTIONS,
 } from "@/config/constants/candidate.constant";
 import { useGetCompaniesQuery } from "@/services/company.service";
+import PageContainer from "@/components/shared/PageContainer";
 
 function Companies() {
   const [search, setSearch] = useState("");
@@ -22,11 +30,11 @@ function Companies() {
   const companies = data?.data?.data ?? [];
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
+    <PageContainer>
       <div>
-        <h1 className="text-2xl font-bold">Danh sach cong ty</h1>
+        <h1 className="text-2xl font-bold">Danh sách công ty</h1>
         <p className="text-muted-foreground mt-1 text-sm">
-          Kham pha doanh nghiep dang tuyen dung va xem tin viec dang mo.
+          Khám phá doanh nghiệp đang tuyển dụng và xem tin việc đang mở.
         </p>
       </div>
 
@@ -36,7 +44,7 @@ function Companies() {
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Ten cong ty, dia diem, nganh nghe..."
+            placeholder="Tên công ty, địa điểm, ngành nghề..."
             className="pl-9"
           />
         </div>
@@ -88,18 +96,26 @@ function Companies() {
                 <div className="flex gap-3">
                   <div className="bg-background border-border flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border">
                     {company.logoUrl ? (
-                      <img src={company.logoUrl} alt={company.name} className="h-full w-full object-cover" />
+                      <img
+                        src={company.logoUrl}
+                        alt={company.name}
+                        className="h-full w-full object-cover"
+                      />
                     ) : (
                       <Building2 className="text-muted-foreground size-6" />
                     )}
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <h2 className="line-clamp-1 text-sm font-semibold">{company.name}</h2>
-                      {company.isVerified ? <CheckCircle2 className="size-4 text-blue-500" /> : null}
+                      <h2 className="line-clamp-1 text-sm font-semibold">
+                        {company.name}
+                      </h2>
+                      {company.isVerified ? (
+                        <CheckCircle2 className="size-4 text-blue-500" />
+                      ) : null}
                     </div>
                     <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">
-                      {company.description || "Chua co gioi thieu"}
+                      {company.description || "Chưa có giới thiệu"}
                     </p>
                   </div>
                 </div>
@@ -118,10 +134,16 @@ function Companies() {
                   ) : null}
                 </div>
                 <div className="flex items-center justify-between gap-3">
-                  <Badge variant="secondary">{company.industry || "General"}</Badge>
+                  <Badge variant="secondary">
+                    {company.industry || "General"}
+                  </Badge>
                   <Button size="sm" asChild>
-                    <Link to={`/companies/${company.id}`} target="_blank" rel="noreferrer">
-                      Xem cong ty
+                    <Link
+                      to={`/companies/${company.id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Xem công ty
                     </Link>
                   </Button>
                 </div>
@@ -130,7 +152,7 @@ function Companies() {
           ))}
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
 

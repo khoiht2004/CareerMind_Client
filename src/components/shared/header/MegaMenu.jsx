@@ -5,9 +5,16 @@ import { cn } from "@/lib/utils";
 function MegaMenuLink({ item }) {
   const Icon = item.icon;
 
+  const handleClick = () => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
   return (
     <Link
       to={item.to}
+      onClick={handleClick}
       className="group/item hover:text-primary flex min-h-9 items-start gap-3 rounded-lg px-1 py-1.5 text-sm font-semibold text-slate-700 transition-colors"
     >
       {Icon ? (
@@ -45,7 +52,7 @@ function MegaMenuColumn({ column }) {
 
 function MegaMenu({ menu }) {
   return (
-    <div className="invisible fixed top-18 left-1/2 z-50 -translate-x-1/2 opacity-0 transition-all duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+    <div className="invisible fixed top-13 left-1/2 z-50 -translate-x-1/2 opacity-0 transition-all duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
       <div className="w-[min(72rem,calc(100vw-2rem))] rounded-2xl border bg-white p-7 text-slate-700 drop-shadow-lg">
         <div
           className={cn(

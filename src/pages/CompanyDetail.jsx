@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NotFound } from "@/components/shared/NotFound";
+import PageContainer from "@/components/shared/PageContainer";
 import { useCompanyDetail } from "@/hooks/useCompanyDetail";
 import { CompanyJobCard, ContactRow } from "@/features/CompanyDetail";
 
@@ -44,7 +45,7 @@ function CompanyDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-full space-y-6 p-6 lg:max-w-6xl">
+    <PageContainer className="max-w-full lg:max-w-6xl">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* ── Left col ── */}
         <div className="mb-8 space-y-4 lg:col-span-2">
@@ -281,7 +282,7 @@ function CompanyDetail() {
           </Card>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

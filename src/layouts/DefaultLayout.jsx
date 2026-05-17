@@ -14,11 +14,11 @@ function LayoutContent() {
   return (
     <div className="flex min-h-screen flex-col">
       <AppHeader />
-      <main className="bg-background min-h-[calc(100vh-5rem)] flex-1 pb-25">
+      <main className="bg-background min-h-[calc(100vh-5rem)] flex-1 overflow-x-hidden pb-25">
         <Outlet />
       </main>
       <AppFooter />
-      <ChatBotPopup />
+      {/* <ChatBotPopup /> */}
     </div>
   );
 }

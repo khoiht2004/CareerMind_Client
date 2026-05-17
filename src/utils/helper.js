@@ -70,6 +70,41 @@ function formatFileSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
 
+function compactMillionAmount(value) {
+  const amount =
+    typeof value === "number"
+      ? value
+      : Number(String(value).replace(/[^\d]/g, ""));
+
+  if (!Number.isFinite(amount) || amount < 1000000) {
+    return String(value);
+  }
+
+  const millions = Math.round((amount / 1000000) * 10) / 10;
+  return `${Number.isInteger(millions) ? millions : millions.toFixed(1)}tr`;
+}
+
+function formatCompactSalary(value) {
+  if (value === null || value === undefined || value === "") return value;
+
+  if (typeof value === "number") {
+    return compactMillionAmount(value);
+  }
+
+  let didCompact = false;
+  const result = String(value).replace(
+    /(?<!\d)(\d{1,3}(?:[.,]\d{3})+|\d+)(?!\d)/g,
+    (match) => {
+      const compacted = compactMillionAmount(match);
+      if (compacted !== match) didCompact = true;
+      return compacted;
+    },
+  );
+
+  if (!didCompact) return result;
+  return result.replace(/\s*(VND|VNĐ|đồng|Đồng)\b/g, "").trim();
+}
+
 function buildJobConsultMessage(job) {
   const requirements = Array.isArray(job.requirements)
     ? job.requirements
@@ -103,5 +138,6 @@ export {
   formatDate,
   formatVN,
   formatFileSize,
+  formatCompactSalary,
   buildJobConsultMessage,
 };

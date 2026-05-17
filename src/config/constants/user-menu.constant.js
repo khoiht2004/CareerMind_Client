@@ -13,7 +13,7 @@ export const USER_MENU_SECTIONS = [
   {
     title: "Quản lý tìm việc",
     icon: BriefcaseBusiness,
-    expanded: true,
+    // expanded: true,
     items: [
       { label: "Việc làm đã lưu", to: path.savedJobs },
       { label: "Việc làm đã ứng tuyển", to: profileTabPath("applications") },
@@ -24,7 +24,7 @@ export const USER_MENU_SECTIONS = [
   {
     title: "Quản lý CV & Cover letter",
     icon: FileText,
-    expanded: true,
+    // expanded: true,
     items: [
       { label: "CV của tôi", to: profileTabPath("cv") },
       { label: "Cover Letter của tôi", to: profileTabPath("cover-letter") },
@@ -40,11 +40,19 @@ export const USER_MENU_SECTIONS = [
   {
     title: "Cá nhân & Bảo mật",
     icon: UserRound,
-    items: [{ label: "Thông tin cá nhân", to: path.profile }],
+    items: [
+      { label: "Cài đặt thông tin cá nhân", to: profileTabPath("profile") },
+      { label: "Cài đặt bảo mật", to: path.notFound },
+      { label: "Đổi mật khẩu", to: profileTabPath("settings") },
+      { label: "Xác minh 2 bước (Chưa kích hoạt)", to: path.notFound },
+    ],
   },
   {
     title: "Nâng cấp tài khoản",
     icon: IdCard,
-    items: [{ label: "Bảng giá AI", to: path.aiPricing }],
+    items: [
+      { label: "Nâng cấp tài khoản VIP", to: path.aiPricing },
+      { label: "Kích hoạt quà tặng", to: path.notFound },
+    ],
   },
 ];

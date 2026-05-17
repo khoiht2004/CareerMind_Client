@@ -1,6 +1,7 @@
 import { Plus, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 function RequirementsList({ items, onChange }) {
   const update = (index, field, value) => {
@@ -32,22 +33,21 @@ function RequirementsList({ items, onChange }) {
   return (
     <div className="space-y-2">
       {items.map((item, index) => (
-        <div
-          key={index}
-          className="grid grid-cols-[1.5fr_3fr_auto] items-center gap-2"
-        >
-          <Input
-            value={item.label}
-            onChange={(e) => update(index, "label", e.target.value)}
-            placeholder="Nhãn (VD: Học vấn)"
-            className="bg-primary/10"
-          />
-          <Input
-            value={item.content}
-            onChange={(e) => update(index, "content", e.target.value)}
-            placeholder="Nội dung"
-            className="bg-primary/10"
-          />
+        <div key={index} className="flex items-center gap-2">
+          <div className="grid flex-1 grid-cols-[1fr_3fr] gap-2">
+            <Input
+              value={item.label}
+              onChange={(e) => update(index, "label", e.target.value)}
+              placeholder="Nhãn (VD: Học vấn)"
+              className="bg-primary/10"
+            />
+            <Input
+              value={item.content}
+              onChange={(e) => update(index, "content", e.target.value)}
+              placeholder="Nội dung"
+              className="bg-primary/10"
+            />
+          </div>
           <button
             type="button"
             onClick={() => remove(index)}

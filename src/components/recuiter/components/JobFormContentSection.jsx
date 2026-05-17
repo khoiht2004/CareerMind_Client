@@ -60,16 +60,28 @@ function JobFormContentSection({ form, onChange }) {
         />
       </JobFormField>
 
-      {/* Tags */}
-      <JobFormField label="Tags kỹ năng" hint="Cách nhau bằng dấu phẩy">
-        <Textarea
-          name="tags"
-          placeholder="ReactJS, NodeJS, TypeScript"
-          value={form.tags}
-          onChange={onChange}
-          className="bg-primary/10 resize-none"
-        />
-      </JobFormField>
+      {/* Tags and Industry */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <JobFormField label="Tags kỹ năng" hint="Cách nhau bằng dấu phẩy">
+          <Textarea
+            name="tags"
+            placeholder="ReactJS, NodeJS, TypeScript"
+            value={form.tags}
+            onChange={onChange}
+            className="bg-primary/10 resize-none"
+          />
+        </JobFormField>
+
+        <JobFormField label="Ngành nghề" hint="Cách nhau bằng dấu phẩy">
+          <Textarea
+            name="industry"
+            placeholder="IT, Kế toán, Sales"
+            value={form.industry}
+            onChange={onChange}
+            className="bg-primary/10 resize-none"
+          />
+        </JobFormField>
+      </div>
 
       {/* Requirements */}
       <JobFormField label="Yêu cầu ứng viên">

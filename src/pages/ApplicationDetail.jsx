@@ -28,6 +28,7 @@ import {
   STATUS_CONFIG,
 } from "@/config/constants/candidate.constant";
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
+import PageContainer from "@/components/shared/PageContainer";
 import { NotFound } from "@/components/shared/NotFound";
 import { useApplicationDetail } from "@/hooks/useApplicationDetail";
 import { usePermission } from "@/hooks/usePermission";
@@ -92,7 +93,7 @@ function ApplicationDetail() {
   const initials = fullName.charAt(0).toUpperCase();
 
   return (
-    <div className="mx-auto max-w-full space-y-6 p-6 lg:max-w-6xl">
+    <PageContainer className="max-w-full lg:max-w-6xl">
       {/* Page header */}
       <div className="flex items-center gap-3">
         <div className="space-y-1">
@@ -407,7 +408,7 @@ function ApplicationDetail() {
           cv={cvFile}
         />
       )}
-    </div>
+    </PageContainer>
   );
 }
 

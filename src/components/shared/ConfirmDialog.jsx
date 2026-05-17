@@ -22,7 +22,7 @@ function ConfirmDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="flex flex-col items-center gap-0 rounded-3xl p-8 sm:max-w-[400px]"
+        className="flex flex-col items-center gap-0 rounded-2xl p-8 sm:max-w-[400px]"
         showCloseButton={false}
       >
         <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-red-50 text-red-600">

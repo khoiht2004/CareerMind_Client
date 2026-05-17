@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { Input } from "@/components/ui/input";
 import { useGetPostsQuery } from "@/services/post.service";
 import { formatDate } from "@/utils/helper";
+import PageContainer from "@/components/shared/PageContainer";
 
 function Posts() {
   const [search, setSearch] = useState("");
@@ -11,7 +12,7 @@ function Posts() {
   const posts = data?.data?.data ?? [];
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
+    <PageContainer>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold">Cam nang nghe nghiep</h1>
@@ -70,7 +71,7 @@ function Posts() {
           ))}
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
 

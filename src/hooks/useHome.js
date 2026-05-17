@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useGetJobsQuery, useGetSavedJobsQuery } from "@/services/job.service";
-import { formatDate, convertArray } from "@/utils/helper";
+import { formatDate, convertArray, formatCompactSalary } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { useDebounce } from "@/hooks/useDebounce";
 
@@ -14,7 +14,7 @@ const DEFAULT_FILTERS = {
   level: "ALL",
   industry: "ALL",
   salary: "ALL",
-  sort: "newest",
+  // sort: "newest",
 };
 
 export function useHome() {
@@ -55,6 +55,7 @@ export function useHome() {
         tags: convertArray(job.tags),
         type: JOB_TYPE_LABELS[job.type] ?? job.type,
         postedAt: formatDate(job.createdAt),
+        salary: formatCompactSalary(job.salary),
       })),
     [data],
   );
