@@ -67,7 +67,7 @@ function ChatInput({
         />
 
         {/* Textarea container */}
-        <div className="bg-background flex min-w-0 flex-1 flex-col rounded-3xl px-3 pt-3 pb-2">
+        <div className="bg-card flex min-w-0 flex-1 flex-col rounded-xl px-3 pt-3 pb-2">
           {attachments.length > 0 && (
             <div className="mb-2 flex flex-wrap gap-2">
               {attachments.map((attachment) => (

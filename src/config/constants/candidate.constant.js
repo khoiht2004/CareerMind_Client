@@ -157,10 +157,10 @@ export const APPLICATION_DATE_RANGE_OPTIONS = [
 ];
 
 export const SETTINGS_SIDEBAR_ITEMS = [
-  { id: "personal", label: "Thông tin cá nhân", icon: User },
-  { id: "notifications", label: "Thông báo", icon: Bell },
+  // { id: "personal", label: "Thông tin cá nhân", icon: User },
   { id: "security", label: "Đổi mật khẩu", icon: Lock },
   { id: "privacy", label: "Quyền riêng tư", icon: Shield },
+  { id: "notifications", label: "Thông báo", icon: Bell },
 ];
 
 export const AI_INTEREST_OPTIONS = [
