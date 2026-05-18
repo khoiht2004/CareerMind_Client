@@ -7,7 +7,7 @@ function SlideBox({ slide }) {
   return (
     <div
       className={cn(
-        "flex h-44 min-w-0 flex-1 flex-col justify-end rounded-xl bg-gradient-to-br p-6 text-white shadow-sm",
+        "flex h-44 min-w-0 flex-1 flex-col justify-end rounded-xl bg-linear-to-br p-6 text-white shadow-sm",
         slide.className,
       )}
     >

@@ -33,8 +33,8 @@ function HeroBanner({
   return (
     <section className="relative overflow-hidden bg-[#063f3f] px-4 pt-6 pb-8 text-white">
       <div className="pointer-events-none absolute inset-0 opacity-35">
-        <div className="absolute top-8 -left-16 h-72 w-72 rotate-45 border-[28px] border-emerald-400/25" />
-        <div className="absolute top-12 -right-20 h-80 w-80 rotate-45 border-[32px] border-emerald-500/20" />
+        <div className="absolute top-8 -left-16 h-72 w-72 rotate-45 border-28 border-emerald-400/25" />
+        <div className="absolute top-12 -right-20 h-80 w-80 rotate-45 border-32 border-emerald-500/20" />
       </div>
 
       <div className="relative mx-auto max-w-6xl space-y-6">

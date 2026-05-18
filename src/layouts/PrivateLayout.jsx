@@ -28,7 +28,6 @@ function LayoutContent() {
         className={cn(
           "bg-background flex min-h-0 flex-1 flex-col overflow-x-hidden",
           isChatbotPage ? "h-[calc(100vh-5rem)]" : "min-h-[calc(100vh-5rem)]",
-          !hideFooter && "pb-25",
         )}
       >
         <Outlet />

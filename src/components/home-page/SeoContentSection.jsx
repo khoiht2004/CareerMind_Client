@@ -24,7 +24,7 @@ function SeoContentSection() {
           {POPULAR_KEYWORD_COLUMNS.map((column) => (
             <div key={column.title} className="rounded-lg bg-slate-100 p-5">
               <h3 className="mb-3 font-bold text-slate-900">{column.title}</h3>
-              <div className="max-h-72 overflow-y-auto pr-2">
+              <div className="max-h-72 overflow-y-auto pr-2 [scrollbar-width:none] hover:[scrollbar-width:thin]">
                 {column.items.map((item) => (
                   <div
                     key={item}
@@ -36,18 +36,6 @@ function SeoContentSection() {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      <div className="mt-14 bg-slate-100 py-12">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="flex flex-wrap gap-x-5 gap-y-3 text-xs leading-6 text-slate-700">
-            {HOME_TAG_CLOUD.map((tag) => (
-              <a key={tag} href="#" className="hover:text-primary hover:underline">
-                {tag}
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </section>
