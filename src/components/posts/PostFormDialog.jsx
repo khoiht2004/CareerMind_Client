@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { POST_CATEGORIES } from "@/config/constants/post.constant";
+import { POST_CATEGORIES, POST_STATUS } from "@/config/constants/post.constant";
 import PostEditor from "./PostEditor";
 
 function PostFormDialog({
@@ -34,17 +34,27 @@ function PostFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl">
         <DialogHeader className="border-b px-6 py-4">
-          <DialogTitle>{editPost ? "Chỉnh sửa bài viết" : "Tạo bài viết mới"}</DialogTitle>
+          <DialogTitle>
+            {editPost ? "Chỉnh sửa bài viết" : "Tạo bài viết mới"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2 md:col-span-2">
-              <Label>Tiêu đề</Label>
+          <div className="space-y-2 md:col-span-2">
+            <Label>Tiêu đề</Label>
+            <Input
+              value={form.title}
+              onChange={(e) => onChange("title", e.target.value)}
+              placeholder="Nhập tiêu đề bài viết"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex-1 space-y-2">
+              <Label>Tác giả hiển thị</Label>
               <Input
-                value={form.title}
-                onChange={(e) => onChange("title", e.target.value)}
-                placeholder="Nhập tiêu đề bài viết"
+                value={form.authorName}
+                onChange={(e) => onChange("authorName", e.target.value)}
+                placeholder="Nhập tên tác giả"
               />
             </div>
             <div className="space-y-2">
@@ -66,29 +76,40 @@ function PostFormDialog({
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Tác giả hiển thị</Label>
-              <Input
-                value={form.authorName}
-                onChange={(e) => onChange("authorName", e.target.value)}
-                placeholder="SRA Editorial"
-              />
+              <Label>Trạng thái</Label>
+              <Select
+                value={form.isPublished}
+                onValueChange={(value) => onChange("isPublished", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {POST_STATUS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label>Ảnh bìa URL</Label>
-              <Input
-                value={form.coverUrl}
-                onChange={(e) => onChange("coverUrl", e.target.value)}
-                placeholder="Để trống để dùng placeholder"
-              />
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label>Mô tả ngắn</Label>
-              <Textarea
-                value={form.excerpt}
-                onChange={(e) => onChange("excerpt", e.target.value)}
-                placeholder="Tóm tắt bài viết"
-              />
-            </div>
+          </div>
+
+          <div className="space-y-2 md:col-span-2">
+            <Label>Ảnh bìa URL</Label>
+            <Input
+              value={form.coverUrl}
+              onChange={(e) => onChange("coverUrl", e.target.value)}
+              placeholder="Để trống để dùng placeholder"
+            />
+          </div>
+          <div className="space-y-2 md:col-span-2">
+            <Label>Mô tả ngắn</Label>
+            <Textarea
+              value={form.excerpt}
+              onChange={(e) => onChange("excerpt", e.target.value)}
+              placeholder="Tóm tắt bài viết"
+            />
           </div>
 
           <div className="space-y-2">
@@ -98,22 +119,22 @@ function PostFormDialog({
               onChange={(value) => onChange("content", value)}
             />
           </div>
-
-          <label className="flex items-center gap-2 text-sm">
-            <Checkbox
-              checked={form.isPublished}
-              onCheckedChange={(checked) => onChange("isPublished", Boolean(checked))}
-            />
-            Công khai bài viết
-          </label>
         </div>
 
-        <DialogFooter className="border-t px-6 py-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isSaving}>
+        <DialogFooter className="border-border m-0 shrink-0 gap-2 border-t px-6 py-3">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isSaving}
+          >
             Hủy
           </Button>
           <Button onClick={onSubmit} disabled={isSaving} className="gap-2">
-            {isSaving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
+            {isSaving ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Save className="size-4" />
+            )}
             {editPost ? "Lưu thay đổi" : "Tạo mới"}
           </Button>
         </DialogFooter>

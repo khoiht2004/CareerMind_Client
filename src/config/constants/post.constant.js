@@ -20,6 +20,11 @@ export const POST_CATEGORIES = [
   "Thị trường và xu hướng tuyển dụng",
 ];
 
+export const POST_STATUS = [
+  { label: "Công khai", value: true },
+  { label: "Nháp", value: false },
+];
+
 export const POST_CATEGORY_OPTIONS = [
   { label: "Tất cả", value: "ALL" },
   ...POST_CATEGORIES.map((category) => ({ label: category, value: category })),
