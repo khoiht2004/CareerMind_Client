@@ -34,6 +34,7 @@ export const path = {
   // Recruiter
   recruiter: {
     jobs: "/recruiter/jobs",
+    posts: "/recruiter/posts",
     applications: "/recruiter/applications",
     stats: "/recruiter/stats",
     company: "/recruiter/company",

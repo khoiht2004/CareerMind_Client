@@ -26,17 +26,22 @@ function TemplateCard({ item }) {
         <div className="min-w-0 flex-1">
           <h3 className="line-clamp-2 text-sm font-semibold">{item.title}</h3>
           <p className="text-muted-foreground mt-1 text-xs">
-            {[item.industry, item.level].filter(Boolean).join(" / ") || "Mau chung"}
+            {[item.industry, item.level].filter(Boolean).join(" / ") ||
+              "Mẫu chung"}
           </p>
         </div>
       </div>
-      <pre className="text-muted-foreground flex-1 overflow-hidden whitespace-pre-wrap p-4 text-xs leading-relaxed">
+      <pre className="text-muted-foreground flex-1 overflow-hidden p-4 text-xs leading-relaxed whitespace-pre-wrap">
         {item.content}
       </pre>
       <div className="border-border flex justify-end border-t p-3">
         <Button size="sm" onClick={handleCopy} className="gap-2">
-          {copied ? <Check className="size-4" /> : <Clipboard className="size-4" />}
-          {copied ? "Da copy" : "Copy"}
+          {copied ? (
+            <Check className="size-4" />
+          ) : (
+            <Clipboard className="size-4" />
+          )}
+          {copied ? "Đã copy" : "Copy"}
         </Button>
       </div>
     </article>
@@ -61,7 +66,7 @@ function TemplateGallery({ type = "cv" }) {
         <div>
           <h1 className="text-2xl font-bold">{title}</h1>
           <p className="text-muted-foreground mt-1 text-sm">
-            Xem nhanh noi dung mau va copy de tuy bien cho ho so ung tuyen.
+            Xem nhanh nội dung mẫu và copy để tùy biến cho hồ sơ ứng tuyển.
           </p>
         </div>
         <div className="relative w-full sm:w-80">
@@ -69,7 +74,7 @@ function TemplateGallery({ type = "cv" }) {
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tim theo nganh, cap bac..."
+            placeholder="Tìm theo ngành, cấp bậc..."
             className="pl-9"
           />
         </div>
@@ -81,7 +86,7 @@ function TemplateGallery({ type = "cv" }) {
         </div>
       ) : items.length === 0 ? (
         <div className="text-muted-foreground py-20 text-center text-sm">
-          Chua co mau nao. Hay insert data vao bang template tu MySQL.
+          Chưa có mẫu nào được cập nhật.
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">

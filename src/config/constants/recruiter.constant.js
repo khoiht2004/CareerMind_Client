@@ -13,6 +13,7 @@ export const RECRUITER_MENU_SECTIONS = {
     { to: path.recruiter.stats, label: "Thống kê" },
     { to: path.recruiter.jobs, label: "Quản lý việc làm" },
     { to: path.recruiter.applications, label: "Quản lý đơn ứng tuyển" },
+    { to: path.recruiter.posts, label: "Quản lý bài viết" },
     { to: path.recruiter.company, label: "Quản lý công ty" },
   ]
 };

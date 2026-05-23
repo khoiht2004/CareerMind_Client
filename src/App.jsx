@@ -35,6 +35,7 @@ const SavedJobs = lazy(() => import("@/pages/SavedJobs"));
 
 // Recruiter pages ── (chỉ load khi cần)
 const RecruiterJobs = lazy(() => import("@/pages/recruiter/RecruiterJobs"));
+const RecruiterPosts = lazy(() => import("@/pages/recruiter/RecruiterPosts"));
 const RecruiterApplications = lazy(
   () => import("@/pages/recruiter/RecruiterApplications"),
 );
@@ -99,6 +100,7 @@ function App() {
 
             {/* Recruiter routes */}
             <Route path={path.recruiter.jobs} element={<RecruiterJobs />} />
+            <Route path={path.recruiter.posts} element={<RecruiterPosts />} />
             <Route
               path={path.recruiter.applications}
               element={<RecruiterApplications />}
