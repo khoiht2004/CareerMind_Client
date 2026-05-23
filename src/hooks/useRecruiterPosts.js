@@ -8,7 +8,7 @@ import {
   useUpdatePostMutation,
 } from "@/services/post.service";
 
-export function useRecruiterPosts() {
+export function useRecruiterPosts({ canRead = true } = {}) {
   const [filters, setFilters] = useState({ search: "", status: "ALL", page: 1 });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editPost, setEditPost] = useState(null);
@@ -20,6 +20,8 @@ export function useRecruiterPosts() {
     status: filters.status !== "ALL" ? filters.status : undefined,
     page: filters.page,
     limit: RECRUITER_POST_PAGE_SIZE,
+  }, {
+    skip: !canRead,
   });
   const [createPost, { isLoading: creating }] = useCreatePostMutation();
   const [updatePost, { isLoading: updating }] = useUpdatePostMutation();
