@@ -69,23 +69,6 @@ function Apply() {
       {/* Job header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 flex-col items-start gap-4">
-          {/* Logo + company name */}
-          <section className="flex items-center gap-2">
-            <div className="bg-muted flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg text-sm font-bold">
-              {job.company?.logoUrl ? (
-                <img
-                  src={job.company.logoUrl}
-                  alt={job.company.name}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                job.company?.name?.[0]
-              )}
-            </div>
-            <p className="text-primary text-xs font-bold tracking-widest uppercase">
-              {job.company?.name}
-            </p>
-          </section>
           {/* Job title + info */}
           <section>
             <h1 className="text-3xl leading-tight font-black">{job.title}</h1>

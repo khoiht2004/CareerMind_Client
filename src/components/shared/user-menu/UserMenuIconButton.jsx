@@ -4,8 +4,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useNavigate } from "react-router";
 
-function UserMenuIconButton({ icon: Icon, label }) {
+function UserMenuIconButton({ icon: Icon, label, toPath = "" }) {
+  const navigate = useNavigate();
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -13,7 +16,8 @@ function UserMenuIconButton({ icon: Icon, label }) {
           type="button"
           variant="ghost"
           size="icon"
-          className="bg-muted/70 hover:bg-muted size-10 rounded-full"
+          className="bg-muted/70 hover:bg-muted size-10 cursor-pointer rounded-full"
+          onClick={() => toPath && navigate(toPath)}
         >
           <Icon className="size-5 text-slate-700" />
         </Button>

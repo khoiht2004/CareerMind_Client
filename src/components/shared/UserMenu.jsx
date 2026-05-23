@@ -5,7 +5,7 @@ import {
   Bell,
   ChevronDown,
   LogOut,
-  MessageCircle,
+  MessageCircleMore,
   UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import handleLogout from "@/hooks/useLogout";
 import UserMenuIconButton from "./user-menu/UserMenuIconButton";
 import UserMenuSection from "./user-menu/UserMenuSection";
 import UserSummary from "./user-menu/UserSummary";
+import { path } from "@/config/path";
 
 const INDEPENDENT_COUNT = 2;
 
@@ -73,8 +74,11 @@ function UserMenu() {
   return (
     <div className="flex items-center gap-2">
       <UserMenuIconButton icon={Bell} label="Thông báo" />
-      <UserMenuIconButton icon={MessageCircle} label="Tin nhắn" />
-
+      <UserMenuIconButton
+        icon={MessageCircleMore}
+        label="Tin nhắn"
+        toPath={path.chatbot}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button

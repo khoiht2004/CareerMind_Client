@@ -39,7 +39,7 @@ function HeaderNav({ pathname }) {
         to={path.aiPricing}
         className="hover:text-primary flex h-full items-center gap-1.5 px-3 text-sm font-bold text-slate-700"
       >
-        AI Scout
+        TopCV
         <Badge className="rounded-full bg-amber-200 px-2 text-[10px] text-amber-900">
           Pro
         </Badge>

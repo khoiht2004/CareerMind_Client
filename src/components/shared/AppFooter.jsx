@@ -248,7 +248,7 @@ function CompanyInfo() {
 export default function AppFooter() {
   return (
     <footer className="bg-white">
-      <div className="mt-14 bg-slate-100 py-12">
+      <div className="bg-slate-100 py-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-wrap gap-x-5 gap-y-3 text-xs leading-6 text-slate-700">
             {HOME_TAG_CLOUD.map((tag) => (
