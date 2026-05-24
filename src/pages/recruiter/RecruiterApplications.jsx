@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { APP_STATUS_FILTER_OPTIONS } from "@/config/constants/recruiter.constant";
 import ApplicationUpdateDialog from "@/components/recuiter/ApplicationUpdateDialog";
+import RecruiterAiAssistant from "@/components/recuiter/RecruiterAiAssistant";
 import { useRecruiterApplications } from "@/hooks/useRecruiterApplications";
 import {
   StatusBadge,
@@ -110,6 +111,8 @@ function RecruiterApplications() {
           </div>
         </div>
       </div>
+
+      <RecruiterAiAssistant jobs={myJobs} defaultJobId={filters.jobId} />
 
       {/* Filters */}
       <div className="bg-card flex flex-wrap items-end gap-4 rounded-xl p-4">

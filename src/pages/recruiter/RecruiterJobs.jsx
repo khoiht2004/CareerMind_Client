@@ -21,6 +21,7 @@ import Pagination from "@/components/shared/Pagination";
 import JobsCard from "@/components/recuiter/JobsCard";
 import JobFormDialog from "@/components/recuiter/JobFormDialog";
 import JobDeleteDialog from "@/components/recuiter/JobDeleteDialog";
+import RecruiterAiAssistant from "@/components/recuiter/RecruiterAiAssistant";
 import { JOB_CARD_CONFIG, useRecruiterJobs } from "@/hooks/useRecruiterJobs";
 import {
   JOB_STATUS_OPTIONS,
@@ -244,6 +245,8 @@ function RecruiterJobs() {
               showPageNumbers
             />
           </div>
+
+          <RecruiterAiAssistant jobs={jobs} compact />
         </>
       )}
 
