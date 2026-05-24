@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
-import { ArrowRight, Badge, DollarSign, MapPin } from "lucide-react";
+import { ArrowRight, DollarSign, MapPin } from "lucide-react";
 import { Link } from "react-router";
 
 export function ContactRow({ icon, label, value }) {

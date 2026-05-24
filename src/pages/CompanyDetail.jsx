@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Loader2,
   MapPin,
@@ -6,12 +7,13 @@ import {
   Globe,
   CheckCircle2,
   Building2,
-  Briefcase,
   Users,
   Video,
   Info,
   ChevronsLeftRightEllipsis,
   Star,
+  ChevronDown,
+  FileText,
 } from "lucide-react";
 import Iframe from "react-iframe";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +21,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NotFound } from "@/components/shared/NotFound";
 import PageContainer from "@/components/shared/PageContainer";
+import Pagination from "@/components/shared/Pagination";
+import PostCard from "@/components/posts/PostCard";
 import { useCompanyDetail } from "@/hooks/useCompanyDetail";
 import { CompanyJobCard, ContactRow } from "@/features/CompanyDetail";
 
@@ -30,7 +34,24 @@ const SOCIAL_ICONS = {
 };
 
 function CompanyDetail() {
-  const { company, jobs, socialLinks, isLoading, isError } = useCompanyDetail();
+  const {
+    company,
+    jobs,
+    paginatedJobs,
+    jobPage,
+    totalJobPages,
+    setJobPage,
+    posts,
+    postPage,
+    totalPosts,
+    totalPostPages,
+    setPostPage,
+    socialLinks,
+    isLoading,
+    isPostsLoading,
+    isError,
+  } = useCompanyDetail();
+  const [showFullDesc, setShowFullDesc] = useState(false);
 
   if (isLoading) {
     return (
@@ -80,7 +101,7 @@ function CompanyDetail() {
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-2xl font-bold text-white text-shadow-sm">
+                    <h1 className="text-2xl font-bold text-black text-shadow-sm">
                       {company.name}
                     </h1>
                     {company.isVerified && (
@@ -110,10 +131,33 @@ function CompanyDetail() {
                     Giới thiệu công ty
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-line">
+                <CardContent className="space-y-4">
+                  <div
+                    className={`relative text-muted-foreground text-sm leading-relaxed whitespace-pre-line ${
+                      !showFullDesc ? "max-h-[300px] overflow-hidden" : ""
+                    }`}
+                  >
                     {company.description}
-                  </p>
+                    {!showFullDesc && (
+                      <div className="from-background absolute right-0 bottom-0 left-0 h-24 bg-linear-to-t to-transparent" />
+                    )}
+                  </div>
+                  <div className="flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowFullDesc((value) => !value)}
+                      className="text-primary border-primary hover:bg-primary/5 flex items-center gap-1 rounded-full border px-4 py-1.5 text-sm font-medium transition-colors"
+                    >
+                      {showFullDesc
+                        ? "Thu gọn giới thiệu công ty"
+                        : "Xem đầy đủ giới thiệu công ty"}
+                      <ChevronDown
+                        className={`size-4 transition-transform ${
+                          showFullDesc ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -140,9 +184,57 @@ function CompanyDetail() {
                   </p>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    {jobs.map((job) => (
+                    {paginatedJobs.map((job) => (
                       <CompanyJobCard key={job.id} job={job} />
                     ))}
+                    <Pagination
+                      page={jobPage}
+                      totalPages={totalJobPages}
+                      onPageChange={setJobPage}
+                      showPageNumbers
+                    />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Company posts */}
+            <Card className="bg-transparent">
+              <CardHeader>
+                <CardTitle className="text-primary flex items-center justify-between gap-2 text-xl font-bold">
+                  <div className="flex items-center gap-2">
+                    <FileText className="size-6" />
+                    Bài viết của công ty
+                  </div>
+                  {totalPosts > 0 && (
+                    <Badge variant="secondary" className="px-3 py-1">
+                      Tổng số {totalPosts}
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-0">
+                {isPostsLoading ? (
+                  <div className="flex h-32 items-center justify-center">
+                    <Loader2 className="text-muted-foreground size-6 animate-spin" />
+                  </div>
+                ) : posts.length === 0 ? (
+                  <p className="text-muted-foreground py-6 text-center text-sm">
+                    Hiện tại công ty chưa có bài viết nào.
+                  </p>
+                ) : (
+                  <div className="space-y-5">
+                    <div className="grid gap-5 md:grid-cols-2">
+                      {posts.map((post) => (
+                        <PostCard key={post.id} post={post} />
+                      ))}
+                    </div>
+                    <Pagination
+                      page={postPage}
+                      totalPages={totalPostPages}
+                      onPageChange={setPostPage}
+                      showPageNumbers
+                    />
                   </div>
                 )}
               </CardContent>
@@ -188,14 +280,14 @@ function CompanyDetail() {
                   <Star className="size-5" />
                   Review
                 </span>
-                <Badge variant="secondary">
-                  {company.avgRating ?? 0}/5
-                </Badge>
+                <Badge variant="secondary">{company.avgRating ?? 0}/5</Badge>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {(company.reviews ?? []).length === 0 ? (
-                <p className="text-muted-foreground text-sm">Chua co review nao.</p>
+                <p className="text-muted-foreground text-sm">
+                  Chưa có review nào.
+                </p>
               ) : (
                 (company.reviews ?? []).map((review) => (
                   <div key={review.id} className="rounded-lg border p-3">
@@ -204,9 +296,11 @@ function CompanyDetail() {
                         {review.user?.profile?.fullName || "Ung vien"}
                       </p>
                       <span className="flex text-amber-400">
-                        {Array.from({ length: review.rating }).map((_, index) => (
-                          <Star key={index} className="size-3 fill-current" />
-                        ))}
+                        {Array.from({ length: review.rating }).map(
+                          (_, index) => (
+                            <Star key={index} className="size-3 fill-current" />
+                          ),
+                        )}
                       </span>
                     </div>
                     {review.comment ? (
