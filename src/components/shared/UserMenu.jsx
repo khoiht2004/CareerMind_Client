@@ -80,7 +80,7 @@ function UserMenu() {
         toPath={path.chatbot}
       />
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger asChild className="relative">
           <button
             type="button"
             className="group flex cursor-pointer items-center gap-1 rounded-full outline-none"
@@ -89,7 +89,7 @@ function UserMenu() {
             <span className="bg-muted group-hover:ring-primary/30 flex size-11 items-center justify-center overflow-hidden rounded-full border text-sm font-bold text-white transition group-hover:ring-2">
               {avatar}
             </span>
-            <ChevronDown className="size-4 text-slate-500" />
+            <ChevronDown className="bg-primary absolute right-0 bottom-0 size-4 rounded-full text-white" />
           </button>
         </DropdownMenuTrigger>
 

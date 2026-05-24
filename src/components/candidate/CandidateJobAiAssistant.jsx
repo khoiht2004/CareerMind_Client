@@ -25,7 +25,7 @@ function CandidateJobAiAssistant({ jobId }) {
 
   return (
     <Card className="border-primary/30 bg-primary/5">
-      <CardHeader className="flex items-center justify-between pb-3">
+      <CardHeader className="flex items-center justify-between">
         <CardTitle className="text-primary flex items-center gap-2 text-lg font-bold">
           <Bot className="size-5" />
           AI phân tích độ phù hợp
@@ -46,8 +46,8 @@ function CandidateJobAiAssistant({ jobId }) {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {result && (
+      {result && (
+        <CardContent className="space-y-4">
           <div className="bg-background overflow-hidden rounded-lg border text-sm leading-relaxed">
             <button
               type="button"
@@ -67,8 +67,8 @@ function CandidateJobAiAssistant({ jobId }) {
               </div>
             )}
           </div>
-        )}
-      </CardContent>
+        </CardContent>
+      )}
     </Card>
   );
 }
