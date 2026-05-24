@@ -5,7 +5,8 @@ import { formatDate, convertArray } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { useDebounce } from "@/hooks/useDebounce";
 
-const LIMIT = 10;
+const LIMIT = 12;
+const ATTRACTIVE_LIMIT = 8;
 
 const DEFAULT_FILTERS = {
   search: "",
@@ -23,45 +24,107 @@ export function useHome() {
   const [inputValue, setInputValue] = useState("");
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
-  const [page, setPage] = useState(1);
+  const [topPage, setTopPage] = useState(1);
+  const [attractivePage, setAttractivePage] = useState(1);
 
   const debouncedInput = useDebounce(inputValue, 500);
 
   useEffect(() => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => {
       if (f.search === debouncedInput) return f;
       return { ...f, search: debouncedInput };
     });
   }, [debouncedInput]);
 
-  const { data, isLoading, isFetching } = useGetJobsQuery({
-    ...filters,
-    type: filters.type === "ALL" ? undefined : filters.type,
-    location: filters.location === "ALL" ? undefined : filters.location,
-    level: filters.level === "ALL" ? undefined : filters.level,
-    industry: filters.industry === "ALL" ? undefined : filters.industry,
-    salary: filters.salary === "ALL" ? undefined : filters.salary,
-    page,
+  const queryFilters = useMemo(
+    () => ({
+      ...filters,
+      type: filters.type === "ALL" ? undefined : filters.type,
+      location: filters.location === "ALL" ? undefined : filters.location,
+      level: filters.level === "ALL" ? undefined : filters.level,
+      industry: filters.industry === "ALL" ? undefined : filters.industry,
+      salary: filters.salary === "ALL" ? undefined : filters.salary,
+    }),
+    [filters],
+  );
+
+  const topQuery = useGetJobsQuery({
+    ...queryFilters,
+    page: topPage,
     limit: LIMIT,
   });
 
-  const { data: savedData } = useGetSavedJobsQuery(undefined, { skip: !user });
+  const attractiveQuery = useGetJobsQuery({
+    ...queryFilters,
+    page: attractivePage,
+    limit: ATTRACTIVE_LIMIT,
+    isHot: true,
+  });
 
-  const jobs = useMemo(
-    () =>
-      (data?.data?.jobs ?? []).map((job) => ({
+  const recommendedQuery = useGetJobsQuery({
+    ...queryFilters,
+    page: 1,
+    limit: 4,
+  });
+
+  const lightningQuery = useGetJobsQuery({
+    ...queryFilters,
+    page: 1,
+    limit: 4,
+    sort: "views_desc",
+  });
+
+  const normalizeJobs = useCallback(
+    (source) =>
+      (source?.data?.jobs ?? []).map((job) => ({
         ...job,
         tags: convertArray(job.tags),
         type: JOB_TYPE_LABELS[job.type] ?? job.type,
         postedAt: formatDate(job.createdAt),
         salary: job.salary,
       })),
-    [data],
+    [],
   );
 
-  const total = data?.data?.total ?? 0;
-  const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+  const topJobs = useMemo(() => normalizeJobs(topQuery.data), [normalizeJobs, topQuery.data]);
+  const attractiveJobs = useMemo(
+    () => normalizeJobs(attractiveQuery.data),
+    [attractiveQuery.data, normalizeJobs],
+  );
+  const recommendedJobs = useMemo(
+    () => normalizeJobs(recommendedQuery.data),
+    [normalizeJobs, recommendedQuery.data],
+  );
+  const lightningJobs = useMemo(
+    () => normalizeJobs(lightningQuery.data),
+    [lightningQuery.data, normalizeJobs],
+  );
+
+  const isLoading =
+    topQuery.isLoading ||
+    attractiveQuery.isLoading ||
+    recommendedQuery.isLoading ||
+    lightningQuery.isLoading;
+  const isFetching =
+    topQuery.isFetching ||
+    attractiveQuery.isFetching ||
+    recommendedQuery.isFetching ||
+    lightningQuery.isFetching;
+
+  const topTotal = topQuery.data?.data?.total ?? 0;
+  const topTotalPages = Math.max(
+    1,
+    topQuery.data?.data?.totalPages ?? Math.ceil(topTotal / LIMIT),
+  );
+  const attractiveTotal = attractiveQuery.data?.data?.total ?? 0;
+  const attractiveTotalPages = Math.max(
+    1,
+    attractiveQuery.data?.data?.totalPages ?? Math.ceil(attractiveTotal / ATTRACTIVE_LIMIT),
+  );
+
+  const { data: savedData } = useGetSavedJobsQuery(undefined, { skip: !user });
 
   const savedIds = useMemo(
     () => new Set((savedData?.data ?? []).map((j) => j.id)),
@@ -69,42 +132,50 @@ export function useHome() {
   );
 
   const handleSearch = useCallback(() => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => ({ ...f, search: inputValue }));
   }, [inputValue]);
 
   const handleTypeChange = useCallback((v) => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => ({ ...f, type: f.type === v ? "ALL" : v }));
   }, []);
 
   const handleLevelChange = useCallback((v) => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => ({ ...f, level: f.level === v ? "ALL" : v }));
   }, []);
 
   const handleLocationChange = useCallback((v) => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => ({ ...f, location: v }));
   }, []);
 
   const handleIndustryChange = useCallback((v) => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => ({ ...f, industry: f.industry === v ? "ALL" : v }));
   }, []);
 
   const handleSalaryChange = useCallback((v) => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => ({ ...f, salary: f.salary === v ? "ALL" : v }));
   }, []);
 
   const handleSortChange = useCallback((v) => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setFilters((f) => ({ ...f, sort: v }));
   }, []);
 
   const handleClearFilters = useCallback(() => {
-    setPage(1);
+    setTopPage(1);
+    setAttractivePage(1);
     setInputValue("");
     setFilters(DEFAULT_FILTERS);
   }, []);
@@ -121,14 +192,21 @@ export function useHome() {
     user,
     inputValue,
     setInputValue,
-    page,
-    setPage,
+    topPage,
+    setTopPage,
+    attractivePage,
+    setAttractivePage,
     filterSheetOpen,
     setFilterSheetOpen,
     filters,
-    jobs,
-    total,
-    totalPages,
+    topJobs,
+    attractiveJobs,
+    recommendedJobs,
+    lightningJobs,
+    topTotal,
+    topTotalPages,
+    attractiveTotal,
+    attractiveTotalPages,
     savedIds,
     isLoading,
     isFetching,

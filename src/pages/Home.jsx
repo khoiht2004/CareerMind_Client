@@ -13,13 +13,6 @@ import FeaturedIndustrySection from "@/components/home-page/FeaturedIndustrySect
 import HotlineSection from "@/components/home-page/HotlineSection";
 import SeoContentSection from "@/components/home-page/SeoContentSection";
 
-function getJobsByRange(jobs, start, end) {
-  if (jobs.length === 0) return [];
-  const result = jobs.slice(start, end);
-  if (result.length === end - start) return result;
-  return [...result, ...jobs].slice(0, end - start);
-}
-
 function HomeLoading() {
   return (
     <div className="flex justify-center py-24">
@@ -43,10 +36,16 @@ function Home() {
     inputValue,
     setInputValue,
     filters,
-    jobs,
-    page,
-    setPage,
-    totalPages,
+    topJobs,
+    attractiveJobs,
+    recommendedJobs,
+    lightningJobs,
+    topPage,
+    setTopPage,
+    topTotalPages,
+    attractivePage,
+    setAttractivePage,
+    attractiveTotalPages,
     isLoading,
     isFetching,
     handleSearch,
@@ -74,10 +73,11 @@ function Home() {
     ],
   );
 
-  const topJobs = getJobsByRange(jobs, 0, 12);
-  const attractiveJobs = getJobsByRange(jobs, 3, 9);
-  const recommendedJobs = getJobsByRange(jobs, 6, 10);
-  const lightningJobs = getJobsByRange(jobs, 0, 4);
+  const hasAnyJobs =
+    topJobs.length > 0 ||
+    attractiveJobs.length > 0 ||
+    recommendedJobs.length > 0 ||
+    lightningJobs.length > 0;
 
   return (
     <div className="min-h-screen bg-white">
@@ -92,15 +92,15 @@ function Home() {
 
       {isLoading ? (
         <HomeLoading />
-      ) : jobs.length === 0 ? (
+      ) : !hasAnyJobs ? (
         <HomeEmpty />
       ) : (
         <>
           <TopJobsSection
             jobs={topJobs}
-            page={page}
-            totalPages={totalPages}
-            onPageChange={setPage}
+            page={topPage}
+            totalPages={topTotalPages}
+            onPageChange={setTopPage}
             isLoading={isFetching}
             filters={filters}
             onFilterChange={handleFilterChange}
@@ -108,6 +108,10 @@ function Home() {
           <SlideBannerSection />
           <AttractiveJobsSection
             jobs={attractiveJobs}
+            page={attractivePage}
+            totalPages={attractiveTotalPages}
+            onPageChange={setAttractivePage}
+            isLoading={isFetching}
             filters={filters}
             onFilterChange={handleFilterChange}
           />

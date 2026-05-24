@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Heart, Trash2 } from "lucide-react";
+import { Flame, Heart, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -74,7 +74,10 @@ function HorizontalVariant({
         </div>
         <div className="flex shrink-0 items-end self-stretch">
           {actions === "both" ? (
-            <div className="flex gap-1">
+            <div className="flex items-center gap-1">
+              {job.isHot ? (
+                <Flame className="size-4 fill-orange-500 text-orange-500" />
+              ) : null}
               <Button
                 variant="ghost"
                 size="icon"
@@ -91,13 +94,18 @@ function HorizontalVariant({
               </Button>
             </div>
           ) : (
-            <Button
-              variant="outline"
-              size="icon"
-              className="text-primary size-8 rounded-full"
-            >
-              <Heart className={cn("size-4", isSaved && "fill-primary")} />
-            </Button>
+            <div className="flex items-center gap-2">
+              {job.isHot ? (
+                <Flame className="size-5 rounded-full bg-amber-100 fill-orange-500 p-1 text-orange-500" />
+              ) : null}
+              <Button
+                variant="outline"
+                size="icon"
+                className="hover:text-primary size-8 rounded-full"
+              >
+                <Heart className={cn("size-4", isSaved && "fill-primary")} />
+              </Button>
+            </div>
           )}
         </div>
       </section>

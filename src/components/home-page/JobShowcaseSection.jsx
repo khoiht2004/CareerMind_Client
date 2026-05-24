@@ -38,7 +38,15 @@ function TopJobsSection({
   );
 }
 
-function AttractiveJobsSection({ jobs, filters, onFilterChange }) {
+function AttractiveJobsSection({
+  jobs,
+  page,
+  totalPages,
+  onPageChange,
+  isLoading,
+  filters,
+  onFilterChange,
+}) {
   return (
     <section className="bg-slate-100 py-6">
       <div className="mx-auto flex max-w-6xl gap-4 px-4">
@@ -57,6 +65,12 @@ function AttractiveJobsSection({ jobs, filters, onFilterChange }) {
               <JobCard key={job.id} job={job} variant="horizontal" compact />
             ))}
           </div>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+            isLoading={isLoading}
+          />
         </div>
         <div className="hidden w-96 shrink-0 rounded-lg bg-linear-to-b from-emerald-950 to-emerald-600 p-6 text-white shadow-sm lg:block">
           <p className="text-sm font-semibold">Slide quảng cáo</p>
