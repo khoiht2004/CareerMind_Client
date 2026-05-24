@@ -63,6 +63,13 @@ export const chatService = apiSlice.injectEndpoints({
         body: { jobId, criteria },
       }),
     }),
+    analyzeCandidateJobFit: builder.mutation({
+      query: ({ jobId } = {}) => ({
+        url: "/chat/candidate/job-fit",
+        method: "POST",
+        body: { jobId },
+      }),
+    }),
   }),
 });
 
@@ -75,4 +82,5 @@ export const {
   useDeleteSessionMutation,
   useGenerateCoverLetterMutation,
   useAnalyzeRecruiterCandidatesMutation,
+  useAnalyzeCandidateJobFitMutation,
 } = chatService;

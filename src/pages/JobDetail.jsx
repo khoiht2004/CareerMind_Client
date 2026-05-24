@@ -18,11 +18,13 @@ import { useJobDetail } from "@/hooks/useJobDetail";
 import JobDetailHeader from "@/components/shared/JobDetailHeader";
 import JobDetailSidebar from "@/components/shared/JobDetailSidebar";
 import JobCard from "@/components/shared/JobCard";
+import CandidateJobAiAssistant from "@/components/candidate/CandidateJobAiAssistant";
 import { useGetJobsQuery } from "@/services/job.service";
 
 function JobDetail() {
   const hookResult = useJobDetail();
-  const { job, isLoading, isError, benefits, requirements, tags } = hookResult;
+  const { job, user, isLoading, isError, benefits, requirements, tags } =
+    hookResult;
   const [showFullDesc, setShowFullDesc] = useState(false);
 
   // Fetch some mock related jobs
@@ -61,6 +63,10 @@ function JobDetail() {
           {/* Left - main content */}
           <div className="space-y-6 lg:col-span-2">
             <JobDetailHeader {...hookResult} />
+
+            {user?.role === "CANDIDATE" && (
+              <CandidateJobAiAssistant jobId={job.id} />
+            )}
 
             <Card className="border-border rounded-xl shadow-sm">
               <CardContent className="p-6">
