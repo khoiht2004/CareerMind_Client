@@ -88,7 +88,9 @@ function buildJobConsultMessage(job) {
     `**Công ty:** ${job.company?.name || "Chưa rõ"}`,
     job.location ? `**Địa điểm:** ${job.location}` : null,
     job.level ? `**Cấp độ:** ${job.level}` : null,
-    requirements?.length ? `**Yêu cầu:** ${requirements.join(", ")}` : null,
+    requirements?.length
+      ? `**Yêu cầu:** ${requirements.map((r) => (typeof r === "object" && r !== null ? r.label : r)).join(", ")}`
+      : null,
     job.description ? `**Mô tả:** ${job.description.slice(0, 500)}` : null,
   ];
 
