@@ -8,7 +8,7 @@ function TableOfContents({ items }) {
   if (!items.length) return null;
 
   return (
-    <section className="rounded-lg bg-muted p-4">
+    <section className="bg-muted rounded-lg p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 font-semibold">
           <List className="size-4" />
@@ -20,7 +20,9 @@ function TableOfContents({ items }) {
           className="size-8"
           onClick={() => setOpen((value) => !value)}
         >
-          <ChevronUp className={`size-4 transition-transform ${open ? "" : "rotate-180"}`} />
+          <ChevronUp
+            className={`size-4 transition-transform ${open ? "" : "rotate-180"}`}
+          />
         </Button>
       </div>
       {open ? (
@@ -29,7 +31,7 @@ function TableOfContents({ items }) {
             <a
               key={item.id}
               href={`#${item.id}`}
-              className="block rounded-md py-1 text-foreground/80 hover:text-primary"
+              className="text-foreground/80 hover:text-primary block rounded-md py-1"
               style={{ paddingLeft: `${(item.level - 1) * 14}px` }}
             >
               {item.text}

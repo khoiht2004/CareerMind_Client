@@ -6,7 +6,7 @@ import {
 
 function SeoContentSection() {
   return (
-    <section className="bg-white pt-10">
+    <section className="bg-white py-10">
       <div className="mx-auto max-w-6xl px-4">
         <div className="space-y-5 text-sm leading-6 text-slate-800">
           {SEO_PARAGRAPHS.map((item) => (

@@ -7,11 +7,15 @@ function PostCard({ post, featured = false, dark = false }) {
   return (
     <Link
       to={`/post/${post.id}`}
-      className={`group block overflow-hidden rounded-lg border transition-colors hover:border-primary ${
-        dark ? "border-white/10 bg-transparent text-white" : "border-border bg-card"
+      className={`group hover:border-primary block overflow-hidden rounded-lg border transition-colors ${
+        dark
+          ? "border-white/10 bg-transparent text-white"
+          : "border-border bg-card"
       }`}
     >
-      <div className={featured ? "h-64 overflow-hidden" : "h-40 overflow-hidden"}>
+      <div
+        className={featured ? "h-64 overflow-hidden" : "h-40 overflow-hidden"}
+      >
         <img
           src={getPostImage(post.coverUrl)}
           alt={post.title}
@@ -19,17 +23,21 @@ function PostCard({ post, featured = false, dark = false }) {
         />
       </div>
       <div className="space-y-3 p-4">
-        <p className={`text-xs font-semibold uppercase ${dark ? "text-white" : "text-primary"}`}>
+        <p
+          className={`text-xs font-semibold uppercase ${dark ? "text-white" : "text-primary"}`}
+        >
           {post.category || "Career"}
         </p>
         <h2
-          className={`line-clamp-2 font-semibold transition-transform duration-300 group-hover:translate-x-[3px] group-hover:text-primary ${
+          className={`group-hover:text-primary line-clamp-2 font-semibold transition-transform duration-300 group-hover:translate-x-[3px] ${
             featured ? "text-xl" : "text-base"
           }`}
         >
           {post.title}
         </h2>
-        <p className={`line-clamp-3 text-sm ${dark ? "text-white/80" : "text-muted-foreground"}`}>
+        <p
+          className={`line-clamp-3 text-sm ${dark ? "text-white/80" : "text-muted-foreground"}`}
+        >
           {post.excerpt}
         </p>
         <div

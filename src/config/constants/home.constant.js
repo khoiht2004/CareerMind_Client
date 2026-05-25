@@ -107,17 +107,59 @@ export const HOME_BANNER_SLIDES = [
     subtitle: "Chương trình tuyển dụng giáo dục",
     className: "from-sky-100 via-white to-amber-200",
   },
+  {
+    title: "Slide 4",
+    subtitle: "Cơ hội việc làm AI & Big Data",
+    className: "from-blue-900 via-indigo-800 to-violet-600",
+  },
+  {
+    title: "Slide 5",
+    subtitle: "Tối ưu hóa CV chuẩn ATS cùng SRA",
+    className: "from-purple-900 via-purple-700 to-pink-500",
+  },
+  {
+    title: "Slide 6",
+    subtitle: "Bí quyết phỏng vấn thành công",
+    className: "from-amber-600 via-orange-600 to-red-700",
+  },
+  {
+    title: "Slide 7",
+    subtitle: "Kết nối nhanh với Nhà Tuyển Dụng",
+    className: "from-cyan-950 via-cyan-800 to-teal-600",
+  },
+  {
+    title: "Slide 8",
+    subtitle: "Báo cáo thị trường tuyển dụng 2026",
+    className: "from-neutral-800 via-slate-700 to-zinc-600",
+  },
+  {
+    title: "Slide 9",
+    subtitle: "Ứng tuyển ngay - Nhận quà liền tay",
+    className: "from-yellow-600 via-amber-600 to-orange-500",
+  },
 ];
 
 export const FEATURED_INDUSTRIES = [
   { label: "Kinh doanh - Bán hàng", count: "11.394 việc làm", icon: Tag },
-  { label: "Marketing - PR - Quảng cáo", count: "8.161 việc làm", icon: Megaphone },
+  {
+    label: "Marketing - PR - Quảng cáo",
+    count: "8.161 việc làm",
+    icon: Megaphone,
+  },
   { label: "Chăm sóc khách hàng", count: "1.634 việc làm", icon: Headphones },
-  { label: "Nhân sự - Hành chính", count: "3.670 việc làm", icon: BriefcaseBusiness },
+  {
+    label: "Nhân sự - Hành chính",
+    count: "3.670 việc làm",
+    icon: BriefcaseBusiness,
+  },
   { label: "Công nghệ Thông tin", count: "2.086 việc làm", icon: MonitorCog },
   { label: "Tài chính - Ngân hàng", count: "1.173 việc làm", icon: Landmark },
   { label: "Bất động sản", count: "410 việc làm", icon: Building2 },
-  { label: "Kế toán - Kiểm toán - Thuế", count: "5.548 việc làm", icon: Calculator },
+  {
+    label: "Kế toán - Kiểm toán - Thuế",
+    count: "5.548 việc làm",
+    icon: Calculator,
+  },
 ];
 
 export const FEATURED_EMPLOYERS = [
@@ -130,7 +172,8 @@ export const FEATURED_EMPLOYERS = [
 
 export const SEO_PARAGRAPHS = [
   {
-    title: "Cơ hội ứng tuyển việc làm với đãi ngộ hấp dẫn tại các công ty hàng đầu",
+    title:
+      "Cơ hội ứng tuyển việc làm với đãi ngộ hấp dẫn tại các công ty hàng đầu",
     body: "Trước sự phát triển vượt bậc của nền kinh tế, rất nhiều ngành nghề trở nên khan hiếm nhân lực hoặc thiếu nhân lực giỏi. TopCV giúp bạn tiếp cận nhanh các tin tuyển dụng chất lượng, rèn luyện bản thân và làm quen với môi trường làm việc chuyên nghiệp.",
   },
   {
