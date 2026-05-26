@@ -120,11 +120,18 @@ export default function ChatMessages({
             <div className="bg-muted flex size-8 shrink-0 items-center justify-center rounded-full">
               <Bot className="size-4" />
             </div>
-            <div className="bg-muted flex items-center gap-1.5 rounded-2xl rounded-tl-sm px-4 py-3">
-              <Loader2 className="text-muted-foreground size-3.5 animate-spin" />
-              <span className="text-muted-foreground text-xs">
-                Đang trả lời...
-              </span>
+            <div className="bg-muted flex h-[38px] min-w-[56px] items-center justify-center rounded-2xl rounded-tl-sm px-4 py-2">
+              <div className="flex items-center gap-1.5 pt-1.5">
+                <div
+                  className="bg-muted-foreground/70 animate-jump size-1.25 rounded-full"
+                  style={{ animationDelay: "-0.32s" }}
+                />
+                <div
+                  className="bg-muted-foreground/70 animate-jump size-1.25 rounded-full"
+                  style={{ animationDelay: "-0.16s" }}
+                />
+                <div className="bg-muted-foreground/70 animate-jump size-1.25 rounded-full" />
+              </div>
             </div>
           </div>
         )}

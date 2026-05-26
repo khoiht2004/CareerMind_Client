@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")).render(
     <ThemeProvider>
       <TooltipProvider>
         <App />
-        <Toaster richColors position="top-center" />
+        <Toaster richColors position="top-left" />
       </TooltipProvider>
     </ThemeProvider>
   </Provider>,

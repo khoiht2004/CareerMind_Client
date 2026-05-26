@@ -1,10 +1,11 @@
-import { memo, useMemo } from "react";
-import { Bot, User } from "lucide-react";
+import { memo, useMemo, useState } from "react";
+import { Bot, User, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import InlineJobCard from "./InlineJobCard";
 import { parseContent } from "@/utils/chatbot.helper";
 import renderText from "./renderText";
 import AttachmentThumbnail from "@/components/shared/AttachmentThumbnail";
+import { toast } from "sonner";
 
 function AttachmentsViewer({ attachments }) {
   if (!attachments?.length) return null;
@@ -19,6 +20,7 @@ function AttachmentsViewer({ attachments }) {
 
 function MessageBubble({ message }) {
   const isUser = message.role === "USER";
+  const [copied, setCopied] = useState(false);
 
   const segments = useMemo(() => {
     const raw = message.content
@@ -32,8 +34,19 @@ function MessageBubble({ message }) {
     return parseContent(raw);
   }, [message.content]);
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(message.content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error("Lỗi khi copy nội dung");
+      console.error("Failed to copy text: ", err);
+    }
+  };
+
   return (
-    <div className={cn("flex gap-2", isUser && "flex-row-reverse")}>
+    <div className={cn("group flex gap-2", isUser && "flex-row-reverse")}>
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
@@ -95,12 +108,32 @@ function MessageBubble({ message }) {
             ),
           )}
         </div>
-        <span className="text-muted-foreground px-1 text-[10px]">
-          {new Date(message.createdAt).toLocaleTimeString("vi-VN", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </span>
+        <div
+          className={cn(
+            "flex items-center gap-2 px-1",
+            isUser && "flex-row-reverse",
+          )}
+        >
+          <span className="text-muted-foreground text-[10px]">
+            {new Date(message.createdAt).toLocaleTimeString("vi-VN", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </span>
+          {message.content && message.id !== "__pending__" && (
+            <button
+              onClick={handleCopy}
+              className="text-muted-foreground hover:text-foreground hover:bg-muted-foreground/10 rounded p-0.5 opacity-0 transition-opacity group-hover:opacity-100 hover:cursor-pointer"
+              title="Sao chép nội dung"
+            >
+              {copied ? (
+                <Check className="size-3 text-green-500" />
+              ) : (
+                <Copy className="size-3" />
+              )}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

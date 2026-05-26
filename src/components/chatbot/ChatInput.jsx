@@ -54,7 +54,7 @@ function ChatInput({
     (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
 
   return (
-    <div className="bg-primary/5 px-4 py-2">
+    <div className="bg-primary/10 px-4 py-2">
       <div className="relative mx-auto flex max-w-3xl items-end gap-2">
         {/* Hidden file input */}
         <input
@@ -67,7 +67,7 @@ function ChatInput({
         />
 
         {/* Textarea container */}
-        <div className="bg-card flex min-w-0 flex-1 flex-col rounded-xl px-3 pt-3 pb-2">
+        <div className="bg-card flex min-w-0 flex-1 flex-col rounded-xl px-3 pt-2.5 pb-2">
           {attachments.length > 0 && (
             <div className="mb-2 flex flex-wrap gap-2">
               {attachments.map((attachment) => (
@@ -93,7 +93,7 @@ function ChatInput({
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
             disabled={isSending || !hasActiveSession}
-            className="placeholder:text-muted-foreground/30 min-h-0 resize-none border-0 bg-transparent p-0 shadow-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
+            className="placeholder:text-muted-foreground/30 min-h-0 resize-none rounded-xs border-0 bg-transparent p-0 shadow-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
           />
 
           <article className="flex justify-between">

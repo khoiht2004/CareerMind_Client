@@ -90,6 +90,16 @@
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
   --radius-3xl: 9999px;
+
+  --animate-jump: custom-jump 0.8s infinite ease-in-out;
+  @keyframes custom-jump {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
 }
 
 :root {
@@ -366,7 +376,7 @@
   input:focus,
   textarea:focus,
   select:focus {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 12%, transparent);
+    /* box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 12%, transparent); */
   }
 }
 
