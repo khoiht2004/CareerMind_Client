@@ -51,7 +51,7 @@ export const USER_MENU_SECTIONS = [
     title: "Nâng cấp tài khoản",
     icon: IdCard,
     items: [
-      { label: "Nâng cấp tài khoản VIP", to: path.aiPricing },
+      { label: "Nâng cấp tài khoản VIP", to: path.membership },
       { label: "Kích hoạt quà tặng", to: path.notFound },
     ],
   },

@@ -269,7 +269,7 @@ function RecruiterJobs() {
             className="text-md bg-secondary-container text-primary mt-5 cursor-pointer rounded-2xl p-6 font-semibold"
             asChild
           >
-            <Link to={path.aiPricing}>Khám phá gói Premium</Link>
+            <Link to={path.membership}>Khám phá gói Premium</Link>
           </Button>
         </div>
       </article>

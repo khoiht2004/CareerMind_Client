@@ -16,8 +16,8 @@ import VerifyEmail from "@/pages/auth/VerifyEmail";
 
 // Public pages
 import Home from "@/pages/Home";
-import AIPricing from "./pages/AIPricing";
-import Auth from "./pages/auth/Auth";
+import MembershipPage from "@/pages/Membership";
+import Auth from "@/pages/auth/Auth";
 import TemplateGallery from "@/pages/TemplateGallery";
 const JobDetail = lazy(() => import("@/pages/JobDetail"));
 const CompanyDetail = lazy(() => import("@/pages/CompanyDetail"));
@@ -40,7 +40,9 @@ const RecruiterApplications = lazy(
   () => import("@/pages/recruiter/RecruiterApplications"),
 );
 const RecruiterStats = lazy(() => import("@/pages/recruiter/RecruiterStats"));
-const RecruiterCompany = lazy(() => import("@/pages/recruiter/RecruiterCompany"));
+const RecruiterCompany = lazy(
+  () => import("@/pages/recruiter/RecruiterCompany"),
+);
 
 // Fallback hiển thị trong khi đang tải
 function PageLoader() {
@@ -96,7 +98,7 @@ function App() {
               element={<ApplicationDetail />}
             />
             <Route path={path.savedJobs} element={<SavedJobs />} />
-            <Route path={path.aiPricing} element={<AIPricing />} />
+            <Route path={path.membership} element={<MembershipPage />} />
 
             {/* Recruiter routes */}
             <Route path={path.recruiter.jobs} element={<RecruiterJobs />} />
@@ -106,7 +108,10 @@ function App() {
               element={<RecruiterApplications />}
             />
             <Route path={path.recruiter.stats} element={<RecruiterStats />} />
-            <Route path={path.recruiter.company} element={<RecruiterCompany />} />
+            <Route
+              path={path.recruiter.company}
+              element={<RecruiterCompany />}
+            />
           </Route>
         </Routes>
       </Suspense>

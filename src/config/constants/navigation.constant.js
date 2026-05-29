@@ -65,9 +65,17 @@ const cvMenu = {
     {
       title: "Mẫu CV theo style",
       items: [
-        { label: "Mẫu CV Đơn giản", to: path.cvTemplates, icon: LayoutTemplate },
+        {
+          label: "Mẫu CV Đơn giản",
+          to: path.cvTemplates,
+          icon: LayoutTemplate,
+        },
         { label: "Mẫu CV Ấn tượng", to: path.cvTemplates, icon: Sparkles },
-        { label: "Mẫu CV Chuyên nghiệp", to: path.cvTemplates, icon: GraduationCap },
+        {
+          label: "Mẫu CV Chuyên nghiệp",
+          to: path.cvTemplates,
+          icon: GraduationCap,
+        },
         { label: "Mẫu CV Harvard", to: path.cvTemplates, icon: PenLine },
       ],
     },
@@ -98,9 +106,17 @@ const toolMenu = {
       title: "Công cụ",
       items: [
         { label: "AI Scout", to: path.chatbot, icon: Bot },
-        { label: "Phân tích hồ sơ", to: profileTabPath("insights"), icon: Sparkles },
-        { label: "Cài đặt tài khoản", to: profileTabPath("settings"), icon: ShieldCheck },
-        { label: "Bảng giá AI", to: path.aiPricing, icon: Compass },
+        {
+          label: "Phân tích hồ sơ",
+          to: profileTabPath("insights"),
+          icon: Sparkles,
+        },
+        {
+          label: "Cài đặt tài khoản",
+          to: profileTabPath("settings"),
+          icon: ShieldCheck,
+        },
+        { label: "Bảng giá AI", to: path.membership, icon: Compass },
       ],
     },
   ],

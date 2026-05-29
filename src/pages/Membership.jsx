@@ -278,7 +278,7 @@ function FaqItem({ item }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-function AIPricing() {
+function MembershipPage() {
   const [isYearly, setIsYearly] = useState(false);
 
   return (
@@ -390,4 +390,4 @@ function AIPricing() {
   );
 }
 
-export default AIPricing;
+export default MembershipPage;
