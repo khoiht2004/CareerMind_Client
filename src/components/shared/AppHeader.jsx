@@ -4,6 +4,7 @@ import UserMenu from "./UserMenu";
 import AuthButtons from "./header/AuthButtons";
 import HeaderBrand from "./header/HeaderBrand";
 import HeaderNav from "./header/HeaderNav";
+import ThemeToggle from "./ThemeToggle";
 
 function AppHeader() {
   const { user } = useSelector((state) => state.auth);
@@ -16,6 +17,10 @@ function AppHeader() {
         <HeaderNav pathname={pathname} />
 
         <div className="ml-auto flex min-w-0 items-center gap-3">
+          {/* Switch theme btn */}
+          <ThemeToggle />
+
+          {/* Other */}
           {user ? <UserMenu /> : <AuthButtons />}
         </div>
       </div>

@@ -1,82 +1,52 @@
-/* eslint-disable no-unused-vars */
-import { Sun, Moon, Monitor, Menu } from "lucide-react";
+import { memo, useMemo } from "react";
+import { Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/ThemeContext";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
-const THEME_OPTIONS = [
-  { value: "light", Icon: Sun, label: "Sáng" },
-  { value: "dark", Icon: Moon, label: "Tối" },
-  { value: "system", Icon: Monitor, label: "Theo hệ thống" },
-];
-
-function ThemeToggle({ isCollapsed }) {
+function ThemeToggle() {
   const { mode, setMode } = useTheme();
 
-  return (
-    <div className={cn("mt-1 pb-1", isCollapsed ? "px-1" : "px-2")}>
-      <Popover>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <PopoverTrigger asChild>
-              <button
-                className={cn(
-                  "text-sidebar-foreground hover:bg-sidebar-border hover:text-sidebar-foreground flex w-full cursor-pointer items-center rounded-lg py-2 text-sm font-medium transition-all duration-500",
-                  isCollapsed ? "justify-center px-0" : "gap-3 px-3",
-                )}
-              >
-                <Menu className="size-4 shrink-0" />
-                {!isCollapsed && "Giao diện"}
-              </button>
-            </PopoverTrigger>
-          </TooltipTrigger>
-          {isCollapsed && (
-            <TooltipContent side="right">Giao diện</TooltipContent>
-          )}
-        </Tooltip>
+  // Xác định trạng thái dark hiện tại (kể cả khi là system)
+  const isDark = useMemo(() => {
+    if (mode === "system") {
+      return (
+        typeof window !== "undefined" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      );
+    }
+    return mode === "dark";
+  }, [mode]);
 
-        <PopoverContent
-          side="top"
-          align="start"
-          sideOffset={8}
-          className="bg-background border-border w-52 p-2"
-        >
-          <p className="text-foreground mb-2 px-2 text-[11px] font-semibold tracking-widest uppercase">
-            Giao diện
-          </p>
-          <div className="space-y-0.5">
-            {THEME_OPTIONS.map(({ value, Icon, label }) => (
-              <button
-                key={value}
-                onClick={() => setMode(value)}
-                className={cn(
-                  "flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-                  mode === value
-                    ? "bg-background text-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                )}
-              >
-                <Icon className="size-4 shrink-0" />
-                {label}
-                {mode === value && (
-                  <span className="bg-foreground ml-auto h-1.5 w-1.5 rounded-full" />
-                )}
-              </button>
-            ))}
-          </div>
-        </PopoverContent>
-      </Popover>
-    </div>
+  const toggleTheme = () => {
+    setMode(isDark ? "light" : "dark");
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className={cn(
+        "relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border transition-colors duration-300 focus:ring-0 focus:outline-none",
+        isDark ? "border-slate-700 bg-[#1E2024]" : "bg-slate-100",
+      )}
+      aria-label="Chuyển đổi giao diện"
+    >
+      <span
+        className={cn(
+          "pointer-events-none flex h-5.5 w-5.5 items-center justify-center rounded-full shadow-sm transition-transform duration-300 ease-in-out",
+          isDark
+            ? "translate-x-5.5 bg-black text-slate-100"
+            : "translate-x-0.5 bg-white text-slate-600",
+        )}
+      >
+        {isDark ? (
+          <Moon className="size-3 fill-current" />
+        ) : (
+          <Sun className="size-3.5" />
+        )}
+      </span>
+    </button>
   );
 }
 
-export default ThemeToggle;
+export default memo(ThemeToggle);

@@ -42,6 +42,7 @@ function ChatBot() {
         isSending={isSending}
         isLoading={messagesLoading}
         hasActiveSession={!!activeSessionId}
+        userAvatar={sessions[0]?.user?.profile?.avatarUrl}
       />
     </div>
   );

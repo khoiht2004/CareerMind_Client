@@ -19,6 +19,7 @@ function ChatArea({
   suggestedQuestions,
   showAiHelpers = true,
   showBotAvatar = true,
+  userAvatar = null,
   footerText,
   placeholder,
 }) {
@@ -56,6 +57,7 @@ function ChatArea({
         suggestedQuestions={suggestedQuestions}
         showBotAvatar={showBotAvatar}
         isAiChat={true}
+        userAvatar={userAvatar}
       />
 
       {/* Input area */}
