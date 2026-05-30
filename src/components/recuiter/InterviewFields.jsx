@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { Calendar, Video, Users, MapPin, Clock8 } from "lucide-react";
+import { createElement } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import AppDatePicker from "../shared/AppDatePicker";
@@ -14,8 +14,8 @@ function InterviewFields({ fields, onFieldChange }) {
   const today = new Date();
 
   return (
-    <div className="space-y-3 rounded-lg border border-blue-200 bg-blue-50/50 p-4 dark:border-blue-900 dark:bg-blue-950/30">
-      <p className="flex items-center gap-1.5 text-xs font-semibold text-blue-700 dark:text-blue-400">
+    <div className="space-y-3 rounded-lg border border-[var(--status-reviewing-border)] bg-[var(--status-reviewing-bg)]/50 p-4">
+      <p className="flex items-center gap-1.5 text-xs font-semibold text-[var(--status-reviewing-text)]">
         <Calendar className="size-3.5" />
         Thông tin phỏng vấn
       </p>
@@ -49,7 +49,7 @@ function InterviewFields({ fields, onFieldChange }) {
       <div className="space-y-1.5">
         <Label className="text-sm font-medium">Hình thức phỏng vấn</Label>
         <div className="grid grid-cols-2 gap-2">
-          {FORMAT_OPTIONS.map(({ value, label, icon: Icon }) => {
+          {FORMAT_OPTIONS.map(({ value, label, icon }) => {
             const selected = fields.interviewFormat === value;
             return (
               <button
@@ -58,11 +58,11 @@ function InterviewFields({ fields, onFieldChange }) {
                 onClick={() => onFieldChange("interviewFormat", value)}
                 className={`bg-primary/10 flex cursor-pointer items-center justify-center gap-2 rounded-lg border px-2 py-1.5 text-sm font-medium transition-all ${
                   selected
-                    ? "border-blue-500 bg-blue-500 text-white shadow-sm"
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
                     : "border-input bg-background text-foreground hover:bg-muted"
                 }`}
               >
-                <Icon className="size-4" />
+                {createElement(icon, { className: "size-4" })}
                 {label}
               </button>
             );
@@ -74,9 +74,9 @@ function InterviewFields({ fields, onFieldChange }) {
       <div className="space-y-1.5">
         <Label className="flex items-center gap-1.5 text-sm font-medium">
           {isOnline ? (
-            <Video className="size-3.5 text-blue-500" />
+            <Video className="size-3.5 text-[var(--status-reviewing-text)]" />
           ) : (
-            <MapPin className="size-3.5 text-blue-500" />
+            <MapPin className="size-3.5 text-[var(--status-reviewing-text)]" />
           )}
           {isOnline ? "Link phỏng vấn" : "Địa điểm phỏng vấn"}
         </Label>

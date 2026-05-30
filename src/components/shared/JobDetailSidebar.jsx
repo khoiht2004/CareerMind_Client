@@ -36,31 +36,31 @@ function JobDetailSidebar({ job, id, typeLabel }) {
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-base leading-tight font-bold text-slate-800">
+              <p className="text-foreground text-base leading-tight font-bold">
                 {companyName}
               </p>
             </div>
           </div>
 
-          <div className="space-y-3 text-sm text-slate-600">
+          <div className="text-muted-foreground space-y-3 text-sm">
             <div className="flex items-start gap-2">
-              <Users className="mt-0.5 size-4 shrink-0 text-slate-400" />
+              <Users className="text-muted-foreground mt-0.5 size-4 shrink-0" />
               <span className="w-20 shrink-0">Quy mô:</span>
-              <span className="font-medium text-slate-800">
+              <span className="text-foreground font-medium">
                 {company?.companySize || "25-99 nhân viên"}
               </span>
             </div>
             <div className="flex items-start gap-2">
-              <Building2 className="mt-0.5 size-4 shrink-0 text-slate-400" />
+              <Building2 className="text-muted-foreground mt-0.5 size-4 shrink-0" />
               <span className="w-20 shrink-0">Lĩnh vực:</span>
-              <span className="font-medium text-slate-800">
+              <span className="text-foreground font-medium">
                 {company?.industry || "Chưa xác định"}
               </span>
             </div>
             <div className="flex items-start gap-2">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-slate-400" />
+              <MapPin className="text-muted-foreground mt-0.5 size-4 shrink-0" />
               <span className="w-20 shrink-0">Địa điểm:</span>
-              <span className="font-medium text-slate-800">
+              <span className="text-foreground font-medium">
                 {company?.address || job.location || "Cập nhật sau"}
               </span>
             </div>
@@ -80,37 +80,37 @@ function JobDetailSidebar({ job, id, typeLabel }) {
       {/* Thông tin chung */}
       <Card className="overflow-hidden rounded-xl shadow-sm">
         <CardContent className="space-y-4 p-5">
-          <h3 className="text-lg font-bold text-slate-800">Thông tin chung</h3>
+          <h3 className="text-foreground text-lg font-bold">Thông tin chung</h3>
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="bg-primary flex size-10 shrink-0 items-center justify-center rounded-full text-lg text-white">
+              <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full text-lg">
                 <Medal />
               </div>
               <div>
-                <p className="text-xs text-slate-500">Cấp bậc</p>
-                <p className="text-sm font-semibold text-slate-800">
+                <p className="text-muted-foreground text-xs">Cấp bậc</p>
+                <p className="text-foreground text-sm font-semibold">
                   {job.level || "Nhân viên"}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="bg-primary flex size-10 shrink-0 items-center justify-center rounded-full text-lg text-white">
+              <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full text-lg">
                 <Users />
               </div>
               <div>
-                <p className="text-xs text-slate-500">Số lượng tuyển</p>
-                <p className="text-sm font-semibold text-slate-800">
+                <p className="text-muted-foreground text-xs">Số lượng tuyển</p>
+                <p className="text-foreground text-sm font-semibold">
                   {job.slots ? `${job.slots} người` : "Không giới hạn"}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="bg-primary flex size-10 shrink-0 items-center justify-center rounded-full text-lg text-white">
+              <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full text-lg">
                 <BriefcaseBusiness />
               </div>
               <div>
-                <p className="text-xs text-slate-500">Hình thức làm việc</p>
-                <p className="text-sm font-semibold text-slate-800">
+                <p className="text-muted-foreground text-xs">Hình thức làm việc</p>
+                <p className="text-foreground text-sm font-semibold">
                   {typeLabel || "Thoả thuận"}
                 </p>
               </div>
@@ -122,7 +122,7 @@ function JobDetailSidebar({ job, id, typeLabel }) {
       {/* Danh mục ngành nghề liên quan */}
       <Card className="overflow-hidden rounded-xl shadow-sm">
         <CardContent className="space-y-3 p-5">
-          <h3 className="text-lg font-bold text-slate-800">
+          <h3 className="text-foreground text-lg font-bold">
             Danh mục Nghề liên quan
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -130,7 +130,7 @@ function JobDetailSidebar({ job, id, typeLabel }) {
               (tag, i) => (
                 <span
                   key={i}
-                  className="cursor-pointer rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-200"
+                  className="bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors"
                 >
                   {tag}
                 </span>

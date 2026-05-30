@@ -95,47 +95,47 @@ export const HOME_BANNER_SLIDES = [
   {
     title: "Slide 1",
     subtitle: "Banner tuyển dụng toàn quốc",
-    className: "from-emerald-950 via-emerald-800 to-lime-600",
+    className: "from-primary-container via-secondary to-primary",
   },
   {
     title: "Slide 2",
     subtitle: "Chiến dịch tuyển dụng nổi bật",
-    className: "from-rose-200 via-red-200 to-red-500",
+    className: "from-hot via-tertiary-container to-tertiary",
   },
   {
     title: "Slide 3",
     subtitle: "Chương trình tuyển dụng giáo dục",
-    className: "from-sky-100 via-white to-amber-200",
+    className: "from-muted via-card to-hot",
   },
   {
     title: "Slide 4",
     subtitle: "Cơ hội việc làm AI & Big Data",
-    className: "from-blue-900 via-indigo-800 to-violet-600",
+    className: "from-chart-1 via-chart-3 to-chart-2",
   },
   {
     title: "Slide 5",
     subtitle: "Tối ưu hóa CV chuẩn ATS cùng SRA",
-    className: "from-purple-900 via-purple-700 to-pink-500",
+    className: "from-secondary-container via-primary-container to-primary",
   },
   {
     title: "Slide 6",
     subtitle: "Bí quyết phỏng vấn thành công",
-    className: "from-amber-600 via-orange-600 to-red-700",
+    className: "from-tertiary via-hot-foreground to-destructive",
   },
   {
     title: "Slide 7",
     subtitle: "Kết nối nhanh với Nhà Tuyển Dụng",
-    className: "from-cyan-950 via-cyan-800 to-teal-600",
+    className: "from-primary-container via-chart-3 to-secondary",
   },
   {
     title: "Slide 8",
     subtitle: "Báo cáo thị trường tuyển dụng 2026",
-    className: "from-neutral-800 via-slate-700 to-zinc-600",
+    className: "from-foreground via-muted-foreground to-surface-variant",
   },
   {
     title: "Slide 9",
     subtitle: "Ứng tuyển ngay - Nhận quà liền tay",
-    className: "from-yellow-600 via-amber-600 to-orange-500",
+    className: "from-hot-foreground via-tertiary to-primary-fixed-dim",
   },
 ];
 

@@ -27,7 +27,7 @@ function ThemeToggle() {
       onClick={toggleTheme}
       className={cn(
         "relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border transition-colors duration-300 focus:ring-0 focus:outline-none",
-        isDark ? "border-slate-700 bg-[#1E2024]" : "bg-slate-100",
+        isDark ? "border-border bg-muted" : "bg-muted",
       )}
       aria-label="Chuyển đổi giao diện"
     >
@@ -35,8 +35,8 @@ function ThemeToggle() {
         className={cn(
           "pointer-events-none flex h-5.5 w-5.5 items-center justify-center rounded-full shadow-sm transition-transform duration-300 ease-in-out",
           isDark
-            ? "translate-x-5.5 bg-black text-slate-100"
-            : "translate-x-0.5 bg-white text-slate-600",
+            ? "bg-foreground text-background translate-x-5.5"
+            : "bg-background text-muted-foreground translate-x-0.5",
         )}
       >
         {isDark ? (

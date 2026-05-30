@@ -4,7 +4,7 @@ function ImagePreviewModal({ src, alt = "", open, onClose }) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
-        className="p-0 [&>button]:text-white"
+        className="p-0 [&>button]:text-primary-foreground"
         showCloseButton={false}
       >
         <div className="flex items-center justify-center">

@@ -63,9 +63,9 @@ function NotificationDropdown() {
           className="bg-muted/70 hover:bg-muted relative flex size-10 cursor-pointer items-center justify-center rounded-full transition-colors outline-none"
           aria-label="Thông báo"
         >
-          <Bell className="size-5 text-slate-700" />
+          <Bell className="text-foreground size-5" />
           {unreadCount > 0 && (
-            <span className="ring-background absolute -top-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2">
+            <span className="ring-background bg-destructive text-destructive-foreground absolute -top-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[10px] font-bold ring-2">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
@@ -75,11 +75,11 @@ function NotificationDropdown() {
       <DropdownMenuContent
         align="end"
         sideOffset={10}
-        className="shadow-popover-soft w-[360px] overflow-hidden rounded-xl p-0 sm:w-[400px]"
+        className="shadow-popover-soft bg-popover text-popover-foreground w-[360px] overflow-hidden rounded-xl p-0 sm:w-[400px]"
       >
         {/* Header */}
         <div className="bg-muted/50 flex items-center justify-between border-b px-4 py-3">
-          <h3 className="text-sm font-bold text-slate-800 dark:text-white">
+          <h3 className="text-foreground text-sm font-bold">
             Thông báo
           </h3>
           {unreadCount > 0 && (
@@ -116,7 +116,7 @@ function NotificationDropdown() {
                   )}
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm leading-snug font-bold text-slate-800 dark:text-white">
+                    <p className="text-foreground text-sm leading-snug font-bold">
                       {noti.title}
                     </p>
                     {!noti.isRead && (

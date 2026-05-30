@@ -48,7 +48,7 @@ export default function MyInsights() {
             <CardTitle className="text-sm font-medium text-muted-foreground">Thành công (Đã nhận)</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{statusCounts['ACCEPTED'] || 0}</div>
+            <div className="text-2xl font-bold text-[var(--status-accepted-text)]">{statusCounts['ACCEPTED'] || 0}</div>
           </CardContent>
         </Card>
       </div>
@@ -67,7 +67,7 @@ export default function MyInsights() {
                   <YAxis allowDecimals={false} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="Số lượng" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Số lượng" fill="var(--chart-2)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

@@ -6,7 +6,7 @@ function HomeSectionHeader({ title, showAll = true }) {
     <div className="mb-4 flex items-center justify-between gap-4">
       <div className="flex items-center gap-3">
         <h2 className="text-2xl font-bold text-primary">{title}</h2>
-        <div className="hidden items-center gap-1 border-l pl-3 text-xs font-bold text-slate-700 sm:flex">
+        <div className="text-muted-foreground hidden items-center gap-1 border-l pl-3 text-xs font-bold sm:flex">
           <span className="grid size-6 place-items-center rounded-full border-2 border-primary text-primary">
             AI
           </span>

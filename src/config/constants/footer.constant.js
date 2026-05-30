@@ -9,21 +9,21 @@ export const FOOTER_ECOSYSTEM = [
   {
     name: "topcv",
     description: "Nền tảng công nghệ tuyển dụng thông minh TopCV.vn",
-    className: "bg-emerald-800",
+    className: "bg-primary-container",
   },
   {
     name: "HappyTime",
     description: "Nền tảng quản lý & gia tăng trải nghiệm nhân viên",
-    className: "bg-orange-400",
+    className: "bg-tertiary",
   },
   {
     name: "TestCenter",
     description: "Nền tảng thiết lập và đánh giá năng lực nhân viên",
-    className: "bg-blue-700",
+    className: "bg-chart-1",
   },
   {
     name: "SHiring.ai",
     description: "Giải pháp quản trị tuyển dụng hiệu suất cao",
-    className: "bg-emerald-500",
+    className: "bg-chart-2",
   },
 ];

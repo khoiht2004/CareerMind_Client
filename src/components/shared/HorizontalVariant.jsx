@@ -8,7 +8,7 @@ function CompanyLogo({ company }) {
   const logoUrl = company?.logoUrl;
 
   return (
-    <div className="text-primary flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md border bg-white text-center text-xs font-semibold">
+    <div className="text-primary bg-card flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md border text-center text-xs font-semibold">
       {logoUrl ? (
         <img
           src={logoUrl}
@@ -34,8 +34,8 @@ function HorizontalVariant({
   return (
     <div
       className={cn(
-        "group hover:border-primary/50 min-w-0 cursor-pointer rounded-lg border bg-white p-3 shadow-sm transition hover:shadow-md",
-        highlighted && "border-primary/30 bg-emerald-50/50",
+        "group hover:border-primary/50 bg-card min-w-0 cursor-pointer rounded-lg border p-3 shadow-sm transition hover:shadow-md",
+        highlighted && "border-primary/30 bg-primary/5",
         compact ? "items-center" : "items-start",
       )}
       onClick={() =>
@@ -49,14 +49,14 @@ function HorizontalVariant({
           <div className="flex gap-2">
             <h3
               className={cn(
-                "group-hover:text-primary line-clamp-2 flex-1 font-bold text-slate-800",
+                "text-foreground group-hover:text-primary line-clamp-2 flex-1 font-bold",
                 compact ? "text-sm" : "text-[15px]",
               )}
             >
               {job.title}
             </h3>
           </div>
-          <p className="mt-1 line-clamp-1 text-xs text-slate-500 uppercase">
+          <p className="text-muted-foreground mt-1 line-clamp-1 text-xs uppercase">
             {companyName}
           </p>
         </div>
@@ -65,10 +65,10 @@ function HorizontalVariant({
       {/* Section 2 */}
       <section className="flex justify-between">
         <div className="mt-2 flex shrink-0 items-center gap-2 self-stretch">
-          <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
+          <span className="bg-muted text-muted-foreground rounded-full px-2.5 py-1 text-xs font-medium">
             {job.salary || "Thoả thuận"}
           </span>
-          <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
+          <span className="bg-muted text-muted-foreground rounded-full px-2.5 py-1 text-xs font-medium">
             {job.location || "Hà Nội"}
           </span>
         </div>
@@ -76,12 +76,12 @@ function HorizontalVariant({
           {actions === "both" ? (
             <div className="flex items-center gap-1">
               {job.isHot ? (
-                <Flame className="size-4 fill-orange-500 text-orange-500" />
+                <Flame className="text-hot-foreground fill-hot-foreground size-4" />
               ) : null}
               <Button
                 variant="ghost"
                 size="icon"
-                className="size-8 rounded-md text-slate-400"
+                className="text-muted-foreground hover:text-destructive size-8 rounded-md"
               >
                 <Trash2 className="size-4" />
               </Button>
@@ -96,7 +96,7 @@ function HorizontalVariant({
           ) : (
             <div className="flex items-center gap-2">
               {job.isHot ? (
-                <Flame className="size-5 rounded-full bg-amber-100 fill-orange-500 p-1 text-orange-500" />
+                <Flame className="bg-hot text-hot-foreground fill-hot-foreground size-5 rounded-full p-1" />
               ) : null}
               <Button
                 variant="outline"

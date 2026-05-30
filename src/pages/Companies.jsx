@@ -111,7 +111,7 @@ function Companies() {
                         {company.name}
                       </h2>
                       {company.isVerified ? (
-                        <CheckCircle2 className="size-4 text-blue-500" />
+                        <CheckCircle2 className="size-4 text-[var(--status-reviewing-text)]" />
                       ) : null}
                     </div>
                     <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">

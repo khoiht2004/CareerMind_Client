@@ -116,17 +116,17 @@ function ChatbotConfigForm({
           </div>
 
           {/* Map placeholder */}
-          <div className="border-border relative h-40 w-full overflow-hidden rounded-xl border bg-[#486361] opacity-90">
+          <div className="border-border bg-primary-container relative h-40 w-full overflow-hidden rounded-xl border opacity-90">
             <div
               className="absolute inset-0"
               style={{
                 backgroundImage:
-                  "radial-gradient(circle at center, transparent 30%, #486361 80%), repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 11px), repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255,255,255,0.1) 15px, rgba(255,255,255,0.1) 16px)",
+                  "radial-gradient(circle at center, transparent 30%, var(--primary-container) 80%), repeating-linear-gradient(45deg, transparent, transparent 10px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 10px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 11px), repeating-linear-gradient(-45deg, transparent, transparent 15px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 15px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 16px)",
               }}
             ></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="size-48 rounded-full border border-white/20"></div>
-              <div className="absolute size-24 rounded-full border border-white/20"></div>
+              <div className="border-on-primary-container/20 size-48 rounded-full border"></div>
+              <div className="border-on-primary-container/20 absolute size-24 rounded-full border"></div>
             </div>
           </div>
         </div>

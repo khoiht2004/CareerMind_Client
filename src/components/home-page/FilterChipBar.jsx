@@ -48,11 +48,11 @@ function FilterChipBar({ filterGroups, activeValues = {}, onChipChange }) {
   return (
     <div className="mb-4 flex items-center gap-2">
       {/* Filter Select */}
-      <div className="flex shrink-0 items-center gap-2 rounded-md border bg-white px-3 py-2 text-sm text-slate-600">
+      <div className="bg-card text-muted-foreground flex shrink-0 items-center gap-2 rounded-md border px-3 py-2 text-sm">
         <Filter className="size-4 shrink-0" />
         <span className="shrink-0">Lọc theo:</span>
         <Select value={activeFilterKey} onValueChange={setActiveFilterKey}>
-          <SelectTrigger className="h-auto w-auto gap-1 border-none p-0 font-medium text-slate-800 shadow-none focus:ring-0">
+          <SelectTrigger className="text-foreground h-auto w-auto gap-1 border-none p-0 font-medium shadow-none focus:ring-0">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -90,8 +90,8 @@ function FilterChipBar({ filterGroups, activeValues = {}, onChipChange }) {
             type="button"
             className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               chip.value === activeChipValue
-                ? "bg-primary text-white"
-                : "bg-slate-200 text-slate-700 hover:bg-slate-300"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
             }`}
             onClick={() => onChipChange?.(currentGroup.paramKey, chip.value)}
           >

@@ -62,7 +62,7 @@ function CardVariant({ job, isSaved: initialIsSaved }) {
     <>
       <div
         onClick={() => navigate(`/jobs/${id}`)}
-        className="border-border group hover:border-primary/50 relative cursor-pointer rounded-xl border bg-white p-4 transition-all hover:shadow-md sm:flex-row"
+        className="border-border bg-card group hover:border-primary/50 relative cursor-pointer rounded-xl border p-4 transition-all hover:shadow-md sm:flex-row"
       >
         {/* Section 1 */}
         <section className="flex gap-4">
@@ -84,7 +84,7 @@ function CardVariant({ job, isSaved: initialIsSaved }) {
           {/* Info */}
           <div className="flex min-w-0 flex-1 flex-col justify-between">
             <div>
-              <h3 className="group-hover:text-primary line-clamp-1 text-base font-bold text-slate-800 transition-colors">
+              <h3 className="text-foreground group-hover:text-primary line-clamp-1 text-base font-bold transition-colors">
                 {title}
               </h3>
               <p className="text-muted-foreground mt-1 line-clamp-1 text-sm uppercase">
@@ -93,10 +93,10 @@ function CardVariant({ job, isSaved: initialIsSaved }) {
             </div>
 
             <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-              <span className="rounded-xl bg-slate-100 px-2.5 py-0.5 text-slate-700">
+              <span className="bg-muted text-muted-foreground rounded-xl px-2.5 py-0.5">
                 {location || "Hà Nội"}
               </span>
-              <span className="rounded-xl bg-slate-100 px-2.5 py-0.5 text-slate-700">
+              <span className="bg-muted text-muted-foreground rounded-xl px-2.5 py-0.5">
                 {experience || "Không yêu cầu"}
               </span>
             </div>
@@ -118,7 +118,7 @@ function CardVariant({ job, isSaved: initialIsSaved }) {
             <Button
               size="sm"
               onClick={handleApply}
-              className="hover:bg-primary/90 border-primary text-primary hover:text-muted-foreground h-9 rounded-md bg-transparent px-4 font-semibold"
+              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground h-9 rounded-md bg-transparent px-4 font-semibold"
             >
               Ứng tuyển
             </Button>
@@ -126,7 +126,7 @@ function CardVariant({ job, isSaved: initialIsSaved }) {
               size="icon"
               variant="outline"
               onClick={handleToggleSave}
-              className={`h-9 w-9 rounded-md transition-colors ${isSaved ? "border-primary text-primary bg-primary/5" : "border-slate-200 text-slate-400"}`}
+              className={`h-9 w-9 rounded-md transition-colors ${isSaved ? "border-primary text-primary bg-primary/5" : "border-border text-muted-foreground"}`}
             >
               <Heart className={`size-4 ${isSaved ? "fill-primary" : ""}`} />
             </Button>

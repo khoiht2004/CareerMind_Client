@@ -163,7 +163,7 @@ function BillingToggle({ isYearly, onChange }) {
       >
         <span
           className={cn(
-            "pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-sm transition-transform",
+            "bg-background pointer-events-none inline-block size-4 transform rounded-full shadow-sm transition-transform",
             isYearly ? "translate-x-6" : "translate-x-1",
           )}
         />

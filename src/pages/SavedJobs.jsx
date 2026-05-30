@@ -31,14 +31,14 @@ function SavedJobs() {
         <div className="space-y-8 lg:col-span-2">
           <div>
             <div className="mb-4 flex items-center justify-between">
-              <h1 className="text-xl font-bold text-slate-800">
+              <h1 className="text-foreground text-xl font-bold">
                 Danh sách <span className="text-primary">{jobs.length}</span>{" "}
                 việc làm đã lưu
               </h1>
             </div>
 
             {jobs.length === 0 ? (
-              <div className="text-muted-foreground border-border flex flex-col items-center justify-center rounded-xl border bg-white py-16 shadow-sm">
+              <div className="text-muted-foreground border-border bg-card flex flex-col items-center justify-center rounded-xl border py-16 shadow-sm">
                 <Bookmark className="mb-3 size-12 opacity-20" />
                 <p className="text-lg font-medium">
                   Chưa có việc làm nào được lưu
@@ -74,7 +74,7 @@ function SavedJobs() {
           {/* Việc làm tương tự việc bạn đã lưu */}
           {similarJobs.length > 0 && (
             <div className="pt-2">
-              <h2 className="mb-4 text-xl font-bold text-slate-800">
+              <h2 className="text-foreground mb-4 text-xl font-bold">
                 Việc làm tương tự việc bạn đã lưu
               </h2>
               <div className="space-y-4">
@@ -109,16 +109,16 @@ function SavedJobs() {
           <div className="sticky top-6">
             {/* Fake Banner */}
             <div className="from-primary/80 to-primary group relative flex h-[500px] w-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl bg-linear-to-b shadow-sm">
-              <div className="relative z-10 p-6 text-white">
+              <div className="text-primary-foreground relative z-10 p-6">
                 <h3 className="mb-2 text-2xl font-bold">
                   CV "Hịn" Trên Tay
                   <br />
                   Bắt Ngay Công Việc!
                 </h3>
-                <p className="mb-6 text-sm text-white/80">
+                <p className="text-primary-foreground/80 mb-6 text-sm">
                   Chuyên gia của TopCV sẵn sàng hỗ trợ bạn.
                 </p>
-                <Button className="text-primary w-max rounded-full border-none bg-white font-bold hover:bg-slate-100">
+                <Button className="text-primary bg-card hover:bg-muted w-max rounded-full border-none font-bold">
                   Tạo CV Ngay
                 </Button>
               </div>

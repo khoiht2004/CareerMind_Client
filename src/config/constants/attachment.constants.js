@@ -31,30 +31,30 @@ export const FILE_INPUT_ACCEPT =
   "image/jpeg,image/png,image/gif,image/webp,application/pdf,.doc,.docx,.xls,.xlsx";
 
 export const FILE_ICONS = {
-  pdf: { icon: FileType, bg: "bg-red-100", text: "text-red-600", label: "PDF" },
-  doc: { icon: FileText, bg: "bg-blue-100", text: "text-blue-600", label: "DOC" },
-  excel: { icon: Sheet, bg: "bg-green-100", text: "text-green-600", label: "XLS" },
+  pdf: { icon: FileType, bg: "bg-destructive/10", text: "text-destructive", label: "PDF" },
+  doc: { icon: FileText, bg: "bg-[var(--status-reviewing-bg)]", text: "text-[var(--status-reviewing-text)]", label: "DOC" },
+  excel: { icon: Sheet, bg: "bg-[var(--status-accepted-bg)]", text: "text-[var(--status-accepted-text)]", label: "XLS" },
   default: { icon: FileText, bg: "bg-muted", text: "text-muted-foreground", label: "FILE" },
 };
 
 export const FILE_TYPE_CONFIG = {
   pdf: {
     label: "PDF",
-    iconClass: "text-rose-600 dark:text-rose-400",
-    bgClass: "bg-rose-100 dark:bg-rose-900/30",
-    badgeClass: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
+    iconClass: "text-destructive",
+    bgClass: "bg-destructive/10",
+    badgeClass: "bg-destructive/10 text-destructive",
   },
   docx: {
     label: "DOCX",
-    iconClass: "text-blue-600 dark:text-blue-400",
-    bgClass: "bg-blue-100 dark:bg-blue-900/30",
-    badgeClass: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+    iconClass: "text-[var(--status-reviewing-text)]",
+    bgClass: "bg-[var(--status-reviewing-bg)]",
+    badgeClass: "bg-[var(--status-reviewing-bg)] text-[var(--status-reviewing-text)]",
   },
   doc: {
     label: "DOC",
-    iconClass: "text-blue-600 dark:text-blue-400",
-    bgClass: "bg-blue-100 dark:bg-blue-900/30",
-    badgeClass: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+    iconClass: "text-[var(--status-reviewing-text)]",
+    bgClass: "bg-[var(--status-reviewing-bg)]",
+    badgeClass: "bg-[var(--status-reviewing-bg)] text-[var(--status-reviewing-text)]",
   },
 };
 

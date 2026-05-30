@@ -38,7 +38,7 @@ function getAvatar(user) {
     );
   }
 
-  return <UserRound className="size-8 text-slate-300" />;
+  return <UserRound className="text-muted-foreground size-8" />;
 }
 
 function UserMenu() {
@@ -49,9 +49,12 @@ function UserMenu() {
   const [openIndependent, setOpenIndependent] = useState(new Set());
   const [openExclusive, setOpenExclusive] = useState(null);
 
-  const { data: unreadData, refetch: refetchUnread } = useGetUnreadCountQuery(undefined, {
-    skip: !user,
-  });
+  const { data: unreadData, refetch: refetchUnread } = useGetUnreadCountQuery(
+    undefined,
+    {
+      skip: !user,
+    },
+  );
   const socket = useSocket();
 
   useEffect(() => {
@@ -97,12 +100,16 @@ function UserMenu() {
   return (
     <div className="flex items-center gap-2">
       <NotificationDropdown />
+
       <UserMenuIconButton
         icon={MessageCircleMore}
         label="Tin nhắn"
         toPath={path.conversations}
-        showBadge={unreadData?.data?.unreadCount > 0 || unreadData?.unreadCount > 0}
+        showBadge={
+          unreadData?.data?.unreadCount > 0 || unreadData?.unreadCount > 0
+        }
       />
+      {/* Dropdown menu */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="relative">
           <button
@@ -110,17 +117,17 @@ function UserMenu() {
             className="group flex cursor-pointer items-center gap-1 rounded-full outline-none"
             aria-label="Mở menu tài khoản"
           >
-            <span className="bg-muted group-hover:ring-primary/30 flex size-11 items-center justify-center overflow-hidden rounded-full border text-sm font-bold text-white transition group-hover:ring-2">
+            <span className="bg-muted text-muted-foreground group-hover:ring-primary/30 flex size-11 items-center justify-center overflow-hidden rounded-full border text-sm font-bold transition group-hover:ring-2">
               {avatar}
             </span>
-            <ChevronDown className="bg-primary absolute right-0 bottom-0 size-4 rounded-full text-white" />
+            <ChevronDown className="bg-primary text-primary-foreground absolute right-0 bottom-0 size-4 rounded-full" />
           </button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
           align="end"
           sideOffset={10}
-          className="shadow-popover-soft w-[400px] rounded-xl p-0"
+          className="shadow-popover-soft bg-popover text-popover-foreground w-[400px] rounded-xl p-0"
         >
           <UserSummary
             avatar={avatar}
@@ -150,7 +157,7 @@ function UserMenu() {
             <Button
               type="button"
               variant="secondary"
-              className="h-11 w-full rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200"
+              className="bg-muted text-foreground hover:bg-accent hover:text-accent-foreground h-11 w-full rounded-full"
               onClick={() => handleLogout(dispatch, navigate)}
             >
               <LogOut className="size-4" />

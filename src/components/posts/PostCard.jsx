@@ -9,7 +9,7 @@ function PostCard({ post, featured = false, dark = false }) {
       to={`/post/${post.id}`}
       className={`group hover:border-primary block overflow-hidden rounded-lg border transition-colors ${
         dark
-          ? "border-white/10 bg-transparent text-white"
+          ? "border-primary-foreground/10 text-primary-foreground bg-transparent"
           : "border-border bg-card"
       }`}
     >
@@ -24,7 +24,7 @@ function PostCard({ post, featured = false, dark = false }) {
       </div>
       <div className="space-y-3 p-4">
         <p
-          className={`text-xs font-semibold uppercase ${dark ? "text-white" : "text-primary"}`}
+          className={`text-xs font-semibold uppercase ${dark ? "text-primary-foreground" : "text-primary"}`}
         >
           {post.category || "Career"}
         </p>
@@ -36,13 +36,13 @@ function PostCard({ post, featured = false, dark = false }) {
           {post.title}
         </h2>
         <p
-          className={`line-clamp-3 text-sm ${dark ? "text-white/80" : "text-muted-foreground"}`}
+          className={`line-clamp-3 text-sm ${dark ? "text-primary-foreground/80" : "text-muted-foreground"}`}
         >
           {post.excerpt}
         </p>
         <div
           className={`flex items-center justify-between text-xs ${
-            dark ? "text-white/70" : "text-muted-foreground"
+            dark ? "text-primary-foreground/70" : "text-muted-foreground"
           }`}
         >
           <span className="flex items-center gap-1">

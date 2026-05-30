@@ -75,7 +75,7 @@ export const STATUS_CONFIG = {
   DRAFT: {
     icon: FileEdit,
     className:
-      "bg-[var(--status-draft-bg,#f3f4f6)] text-[var(--status-draft-text,#6b7280)] border-[var(--status-draft-border,#d1d5db)]",
+      "bg-[var(--job-draft-bg)] text-[var(--job-draft-text)] border-[var(--job-draft-border)]",
   },
   PENDING: {
     icon: Clock,

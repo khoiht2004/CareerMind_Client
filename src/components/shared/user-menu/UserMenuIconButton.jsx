@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { Button } from "@/components/ui/button";
+import { createElement } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -25,9 +25,9 @@ function UserMenuIconButton({
           className="bg-muted/70 hover:bg-muted relative size-10 cursor-pointer rounded-full"
           onClick={() => toPath && navigate(toPath)}
         >
-          <Icon className="size-5 text-slate-700" />
+          {createElement(Icon, { className: "text-foreground size-5" })}
           {showBadge && (
-            <span className="absolute top-2 right-2 flex size-2.5 rounded-full bg-red-500 ring-2 ring-white" />
+            <span className="bg-destructive ring-background absolute top-2 right-2 flex size-2.5 rounded-full ring-2" />
           )}
         </Button>
       </TooltipTrigger>

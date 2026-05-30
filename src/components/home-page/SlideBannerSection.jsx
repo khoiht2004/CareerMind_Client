@@ -9,20 +9,20 @@ function SlideBox({ slide }) {
   return (
     <div
       className={cn(
-        "group relative flex h-48 min-w-0 cursor-pointer flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br p-6 text-white shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-xl",
+        "text-primary-foreground border-primary-foreground/10 group relative flex h-48 min-w-0 cursor-pointer flex-col justify-end overflow-hidden rounded-2xl border bg-linear-to-br p-6 shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-xl",
         slide.className,
       )}
     >
       {/* Phông nền trang trí động nhẹ nhàng */}
-      <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:bg-transparent" />
+      <div className="bg-foreground/10 absolute inset-0 transition-opacity duration-300 group-hover:bg-transparent" />
 
-      <p className="relative z-10 text-xs font-bold tracking-widest text-white/80 uppercase">
+      <p className="text-primary-foreground/80 relative z-10 text-xs font-bold tracking-widest uppercase">
         {slide.title}
       </p>
       <h3 className="relative z-10 mt-2 text-lg leading-tight font-black tracking-tight drop-shadow-xs transition-transform duration-300 group-hover:translate-x-1 md:text-xl">
         {slide.subtitle}
       </h3>
-      <span className="relative z-10 mt-4 w-fit rounded-full bg-white/20 px-3.5 py-1 text-[10px] font-black tracking-wider uppercase backdrop-blur-md transition-colors duration-300 group-hover:bg-white group-hover:text-black">
+      <span className="bg-primary-foreground/20 group-hover:bg-primary-foreground group-hover:text-primary relative z-10 mt-4 w-fit rounded-full px-3.5 py-1 text-[10px] font-black tracking-wider uppercase backdrop-blur-md transition-colors duration-300">
         Khám phá ngay
       </span>
     </div>
@@ -136,7 +136,7 @@ function SlideBannerSection() {
   };
 
   return (
-    <section className="group/section relative bg-slate-50/50 py-8">
+    <section className="group/section bg-background relative py-8">
       <div className="relative mx-auto flex max-w-6xl items-center gap-4 px-4">
         {/* Nút điều khiển Prev */}
         <Button
@@ -146,9 +146,9 @@ function SlideBannerSection() {
             handlePrev();
             resetAutoPlay();
           }}
-          className="absolute -left-1 z-20 hidden size-10 shrink-0 rounded-full border-slate-200 bg-white/90 opacity-0 shadow-md backdrop-blur-xs transition-all duration-300 group-hover/section:opacity-100 hover:scale-110 hover:bg-white active:scale-95 md:-left-2 md:inline-flex"
+          className="border-border bg-card/90 hover:bg-card absolute -left-1 z-20 hidden size-10 shrink-0 rounded-full opacity-0 shadow-md backdrop-blur-xs transition-all duration-300 group-hover/section:opacity-100 hover:scale-110 active:scale-95 md:-left-2 md:inline-flex"
         >
-          <ChevronLeft className="size-5 text-slate-700" />
+          <ChevronLeft className="text-foreground size-5" />
         </Button>
 
         {/* Viewport chứa slider */}
@@ -191,9 +191,9 @@ function SlideBannerSection() {
             handleNext();
             resetAutoPlay();
           }}
-          className="absolute -right-1 z-20 hidden size-10 shrink-0 rounded-full border-slate-200 bg-white/90 opacity-0 shadow-md backdrop-blur-xs transition-all duration-300 group-hover/section:opacity-100 hover:scale-110 hover:bg-white active:scale-95 md:-right-2 md:inline-flex"
+          className="border-border bg-card/90 hover:bg-card absolute -right-1 z-20 hidden size-10 shrink-0 rounded-full opacity-0 shadow-md backdrop-blur-xs transition-all duration-300 group-hover/section:opacity-100 hover:scale-110 active:scale-95 md:-right-2 md:inline-flex"
         >
-          <ChevronRight className="size-5 text-slate-700" />
+          <ChevronRight className="text-foreground size-5" />
         </Button>
       </div>
 
@@ -206,8 +206,8 @@ function SlideBannerSection() {
             className={cn(
               "h-2 cursor-pointer rounded-full transition-all duration-500",
               activePageIndex === idx
-                ? "w-8 bg-emerald-600 shadow-xs shadow-emerald-500/50"
-                : "w-2 bg-slate-300 hover:bg-slate-400",
+                ? "bg-primary shadow-primary/50 w-8 shadow-xs"
+                : "bg-muted-foreground/30 hover:bg-muted-foreground/50 w-2",
             )}
             aria-label={`Đi tới trang ${idx + 1}`}
           />

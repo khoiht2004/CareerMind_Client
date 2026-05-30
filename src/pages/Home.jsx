@@ -23,7 +23,7 @@ function HomeLoading() {
 
 function HomeEmpty() {
   return (
-    <div className="text-muted-foreground bg-white py-24 text-center">
+    <div className="text-muted-foreground bg-background py-24 text-center">
       <Search className="mx-auto mb-3 size-12 opacity-30" />
       <p className="text-lg font-medium">Không tìm thấy kết quả phù hợp</p>
       <p className="mt-1 text-sm">Thử thay đổi từ khóa hoặc bộ lọc</p>
@@ -80,7 +80,7 @@ function Home() {
     lightningJobs.length > 0;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <HeroBanner
         inputValue={inputValue}
         onInputChange={setInputValue}

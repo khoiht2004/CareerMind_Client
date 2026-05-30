@@ -41,7 +41,7 @@ function ConversationArea({
   );
 
   return (
-    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl border border-slate-150 shadow-sm">
+    <div className="bg-card border-border flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl border shadow-sm">
       {header}
       <ChatMessages
         messages={messages}

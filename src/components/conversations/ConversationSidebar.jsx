@@ -18,13 +18,13 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
       className={cn(
         "relative flex w-full cursor-pointer items-center gap-3 rounded-xl p-3 text-left transition-all duration-200",
         isActive
-          ? "border-primary border-l-[3px] bg-white shadow-sm"
-          : "hover:bg-white/50",
+          ? "bg-card border-primary border-l-[3px] shadow-sm"
+          : "hover:bg-card/50",
       )}
     >
       {/* Avatar */}
       <div className="relative shrink-0">
-        <div className="bg-primary/10 text-primary flex size-10 items-center justify-center overflow-hidden rounded-full border border-slate-200 text-sm font-bold">
+        <div className="bg-primary/10 text-primary border-border flex size-10 items-center justify-center overflow-hidden rounded-full border text-sm font-bold">
           {partner?.avatar ? (
             <img
               src={partner.avatar}
@@ -36,13 +36,13 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
           )}
         </div>
         {partner?.isActive && (
-          <span className="absolute right-0 bottom-0 size-2.5 rounded-full bg-green-500 ring-2 ring-slate-100" />
+          <span className="ring-background absolute right-0 bottom-0 size-2.5 rounded-full bg-[var(--trend-up)] ring-2" />
         )}
       </div>
 
       {/* Info & Message Preview */}
       <div className="min-w-0 flex-1 pr-4">
-        <p className="mb-1 truncate text-sm font-bold text-slate-800">
+        <p className="text-foreground mb-1 truncate text-sm font-bold">
           {partner?.name}
         </p>
 
@@ -53,7 +53,7 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
 
       {/* Red Dot Badge for Unread */}
       {unreadCount > 0 && (
-        <span className="absolute top-1/2 right-3 flex size-2 -translate-y-1/2 rounded-full bg-red-500 shadow-sm" />
+        <span className="absolute top-1/2 right-3 flex size-2 -translate-y-1/2 rounded-full bg-destructive shadow-sm" />
       )}
     </button>
   );
@@ -70,12 +70,12 @@ function ConversationSidebar({
     <div
       className={cn(
         "bg-primary/5 flex h-full min-h-0 shrink-0 flex-col overflow-hidden rounded-4xl",
-        "border-slate-150 border-r transition-all duration-200",
+        "border-border border-r transition-all duration-200",
         isOpen ? "w-75" : "w-0 border-0",
       )}
     >
       <div className="border-primary/10 flex h-14 shrink-0 items-center border-b px-4">
-        <h3 className="text-base font-bold text-slate-800">
+        <h3 className="text-foreground text-base font-bold">
           Lịch sử trò chuyện
         </h3>
       </div>

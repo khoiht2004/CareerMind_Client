@@ -11,7 +11,7 @@ function AppHeader() {
   const { pathname } = useLocation();
 
   return (
-    <header className="shadow-nav sticky top-0 z-40 border-b bg-white/95 backdrop-blur">
+    <header className="shadow-nav bg-background/95 sticky top-0 z-40 border-b backdrop-blur">
       <div className="flex h-15 items-center gap-6 px-5">
         <HeaderBrand />
         <HeaderNav pathname={pathname} />

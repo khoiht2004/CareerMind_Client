@@ -85,10 +85,10 @@ function MessageBubble({
       {showBotAvatar && (
         <div
           className={cn(
-            "flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200",
+            "border-border flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border",
             isUser
               ? "bg-primary text-primary-foreground"
-              : "bg-muted text-slate-700",
+              : "bg-muted text-foreground",
           )}
         >
           {renderAvatar()}
@@ -166,7 +166,7 @@ function MessageBubble({
               title="Sao chép nội dung"
             >
               {copied ? (
-                <Check className="size-3 text-green-500" />
+                <Check className="size-3 text-[var(--trend-up)]" />
               ) : (
                 <Copy className="size-3" />
               )}

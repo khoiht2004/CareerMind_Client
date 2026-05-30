@@ -136,7 +136,7 @@ export default function ChatMessages({
         {isSending && (
           <div className="flex gap-2">
             {showBotAvatar && (
-              <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 text-slate-700">
+              <div className="bg-muted border-border text-foreground flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border">
                 {isAiChat ? (
                   <Bot className="size-4" />
                 ) : partnerAvatar ? (

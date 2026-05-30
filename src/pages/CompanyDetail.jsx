@@ -101,11 +101,11 @@ function CompanyDetail() {
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-2xl font-bold text-black text-shadow-sm">
+                    <h1 className="text-foreground text-2xl font-bold text-shadow-sm">
                       {company.name}
                     </h1>
                     {company.isVerified && (
-                      <Badge className="gap-1 border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-400">
+                      <Badge className="gap-1 border-[var(--status-reviewing-border)] bg-[var(--status-reviewing-bg)] text-[var(--status-reviewing-text)]">
                         <CheckCircle2 className="size-3" />
                         Đã xác minh
                       </Badge>
@@ -295,7 +295,7 @@ function CompanyDetail() {
                       <p className="line-clamp-1 text-sm font-semibold">
                         {review.user?.profile?.fullName || "Ung vien"}
                       </p>
-                      <span className="flex text-amber-400">
+                      <span className="text-hot-foreground flex">
                         {Array.from({ length: review.rating }).map(
                           (_, index) => (
                             <Star key={index} className="size-3 fill-current" />

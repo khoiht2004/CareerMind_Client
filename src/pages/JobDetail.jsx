@@ -46,7 +46,7 @@ function JobDetail() {
   const hasDescription = Boolean(job.description);
 
   return (
-    <div className="min-h-screen bg-[#f4f5f5] pb-10">
+    <div className="min-h-screen bg-background pb-10">
       <PageContainer className="max-w-6xl py-6">
         {/* Breadcrumbs */}
         <nav className="text-muted-foreground mb-4 flex items-center gap-1 text-xs">
@@ -70,13 +70,13 @@ function JobDetail() {
 
             <Card className="border-border rounded-xl shadow-sm">
               <CardContent className="p-6">
-                <h2 className="border-primary mb-6 border-l-4 pl-3 text-xl font-bold text-slate-800">
+                <h2 className="border-primary text-foreground mb-6 border-l-4 pl-3 text-xl font-bold">
                   Chi tiết tin tuyển dụng
                 </h2>
 
                 {tags?.length > 0 && (
                   <div className="mb-6 flex gap-4">
-                    <h3 className="font-bold text-slate-800">Tags</h3>
+                    <h3 className="text-foreground font-bold">Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       {tags.map((tag, index) => (
                         <section
@@ -93,15 +93,15 @@ function JobDetail() {
                 {hasDescription && (
                   <div className="space-y-6">
                     <div>
-                      <h3 className="mb-2 font-bold text-slate-800">
+                      <h3 className="text-foreground mb-2 font-bold">
                         Mô tả công việc
                       </h3>
                       <div
-                        className={`relative text-sm leading-relaxed whitespace-pre-line text-slate-700 ${!showFullDesc && "max-h-[300px] overflow-hidden"}`}
+                        className={`text-muted-foreground relative text-sm leading-relaxed whitespace-pre-line ${!showFullDesc && "max-h-[300px] overflow-hidden"}`}
                       >
                         {job.description}
                         {!showFullDesc && (
-                          <div className="absolute right-0 bottom-0 left-0 h-24 bg-linear-to-t from-white to-transparent" />
+                          <div className="from-card absolute right-0 bottom-0 left-0 h-24 bg-linear-to-t to-transparent" />
                         )}
                       </div>
                     </div>
@@ -110,7 +110,7 @@ function JobDetail() {
                       <>
                         {requirements?.length > 0 && (
                           <div>
-                            <h3 className="mb-2 font-bold text-slate-800">
+                            <h3 className="text-foreground mb-2 font-bold">
                               Yêu cầu ứng viên
                             </h3>
                             <div className="grid grid-cols-2 gap-2.5">
@@ -135,7 +135,7 @@ function JobDetail() {
 
                         {benefits?.length > 0 && (
                           <div>
-                            <h3 className="mb-2 font-bold text-slate-800">
+                            <h3 className="text-foreground mb-2 font-bold">
                               Quyền lợi
                             </h3>
                             <div className="grid grid-cols-2 gap-2.5">
@@ -185,28 +185,28 @@ function JobDetail() {
             {/* Rating */}
             <Card className="border-border rounded-xl shadow-sm">
               <CardContent className="p-6">
-                <h3 className="mb-6 text-center font-bold text-slate-800">
+                <h3 className="text-foreground mb-6 text-center font-bold">
                   Bạn thấy độ tin cậy & Rõ ràng của tin tuyển dụng này thế nào?
                 </h3>
                 <div className="mx-auto flex max-w-lg justify-between">
                   <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="rounded-xl bg-slate-100 p-3">
-                      <Frown className="size-8 text-slate-400" />
+                    <div className="bg-muted rounded-xl p-3">
+                      <Frown className="text-muted-foreground size-8" />
                     </div>
-                    <span className="max-w-[60px] text-center text-[10px] text-slate-500">
+                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
                       Không đáng tin cậy & rõ ràng
                     </span>
                   </div>
                   <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="rounded-xl bg-slate-100 p-3">
-                      <Meh className="size-8 text-slate-400" />
+                    <div className="bg-muted rounded-xl p-3">
+                      <Meh className="text-muted-foreground size-8" />
                     </div>
-                    <span className="max-w-[60px] text-center text-[10px] text-slate-500">
+                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
                       Ít đáng tin cậy & rõ ràng
                     </span>
                   </div>
                   <div className="flex cursor-pointer flex-col items-center gap-2 opacity-100">
-                    <div className="border-primary/20 rounded-xl border bg-slate-100 p-3">
+                    <div className="border-primary/20 bg-muted rounded-xl border p-3">
                       <Smile className="text-primary size-8" />
                     </div>
                     <span className="text-primary max-w-[60px] text-center text-[10px] font-medium">
@@ -214,18 +214,18 @@ function JobDetail() {
                     </span>
                   </div>
                   <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="rounded-xl bg-slate-100 p-3">
-                      <Laugh className="size-8 text-slate-400" />
+                    <div className="bg-muted rounded-xl p-3">
+                      <Laugh className="text-muted-foreground size-8" />
                     </div>
-                    <span className="max-w-[60px] text-center text-[10px] text-slate-500">
+                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
                       Đáng tin cậy & rõ ràng
                     </span>
                   </div>
                   <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="rounded-xl bg-slate-100 p-3">
-                      <Heart className="size-8 text-slate-400" />
+                    <div className="bg-muted rounded-xl p-3">
+                      <Heart className="text-muted-foreground size-8" />
                     </div>
-                    <span className="max-w-[60px] text-center text-[10px] text-slate-500">
+                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
                       Rất đáng tin cậy & rõ ràng
                     </span>
                   </div>
@@ -236,7 +236,7 @@ function JobDetail() {
             {/* Việc làm liên quan */}
             {relatedJobs.length > 0 && (
               <div>
-                <h2 className="border-primary mb-4 border-l-4 pl-3 text-xl font-bold text-slate-800">
+                <h2 className="border-primary text-foreground mb-4 border-l-4 pl-3 text-xl font-bold">
                   Việc làm liên quan
                 </h2>
                 <div className="space-y-4">

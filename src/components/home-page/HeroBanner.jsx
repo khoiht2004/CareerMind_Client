@@ -31,15 +31,15 @@ function HeroBanner({
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#063f3f] px-4 pt-6 pb-8 text-white">
+    <section className="bg-primary-container text-on-primary-container relative overflow-hidden px-4 pt-6 pb-8">
       <div className="pointer-events-none absolute inset-0 opacity-35">
-        <div className="absolute top-8 -left-16 h-72 w-72 rotate-45 border-28 border-emerald-400/25" />
-        <div className="absolute top-12 -right-20 h-80 w-80 rotate-45 border-32 border-emerald-500/20" />
+        <div className="border-primary-fixed-dim/25 absolute top-8 -left-16 h-72 w-72 rotate-45 border-28" />
+        <div className="border-primary/20 absolute top-12 -right-20 h-80 w-80 rotate-45 border-32" />
       </div>
 
       <div className="relative mx-auto max-w-6xl space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-emerald-400 sm:text-4xl">
+          <h1 className="text-primary-fixed-dim text-2xl font-bold sm:text-4xl">
             Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc
           </h1>
           <p className="mt-2 text-sm font-semibold sm:text-base">
@@ -48,11 +48,11 @@ function HeroBanner({
           </p>
         </div>
 
-        <div className="mx-auto flex max-w-5xl flex-col gap-2 rounded-3xl bg-white p-2 text-slate-900 shadow-xl md:flex-row md:items-center">
+        <div className="bg-card text-foreground mx-auto flex max-w-5xl flex-col gap-2 rounded-3xl p-2 shadow-xl md:flex-row md:items-center">
           <Button
             type="button"
             variant="outline"
-            className="h-12 shrink-0 gap-2 rounded-2xl border-slate-200 bg-white px-4 font-semibold"
+            className="border-border bg-card h-12 shrink-0 gap-2 rounded-2xl px-4 font-semibold"
           >
             <List className="size-4" />
             Danh mục nghề nghiệp
@@ -60,7 +60,7 @@ function HeroBanner({
           </Button>
 
           <div className="relative min-w-0 flex-1">
-            <BriefcaseBusiness className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400" />
+            <BriefcaseBusiness className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               placeholder="Vị trí tuyển dụng, tên công ty"
               className="h-12 border-0 pl-9 text-base shadow-none focus-visible:ring-0"
@@ -70,10 +70,10 @@ function HeroBanner({
             />
           </div>
 
-          <div className="flex min-w-0 items-center gap-1 border-t border-slate-100 px-2 md:w-64 md:border-t-0 md:border-l">
-            <MapPin className="size-4 shrink-0 text-slate-500" />
+          <div className="border-border flex min-w-0 items-center gap-1 border-t px-2 md:w-64 md:border-t-0 md:border-l">
+            <MapPin className="text-muted-foreground size-4 shrink-0" />
             <Select value={locationValue} onValueChange={onLocationChange}>
-              <SelectTrigger className="h-12 cursor-pointer border-0 bg-white focus:ring-0">
+              <SelectTrigger className="bg-card h-12 cursor-pointer border-0 focus:ring-0">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -93,7 +93,7 @@ function HeroBanner({
           <Button
             onClick={onSearch}
             disabled={isFetching}
-            className="h-12 rounded-2xl bg-emerald-500 px-8 font-bold text-white hover:bg-emerald-600"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 rounded-2xl px-8 font-bold"
           >
             {isFetching ? (
               <Loader2 className="size-4 animate-spin" />
@@ -112,7 +112,7 @@ function HeroBanner({
                 key={keyword}
                 type="button"
                 onClick={() => onInputChange(keyword)}
-                className="cursor-pointer rounded-full bg-white px-3 py-1 text-slate-800"
+                className="bg-card text-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-full px-3 py-1"
               >
                 {keyword}
               </button>

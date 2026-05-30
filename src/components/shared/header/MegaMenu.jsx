@@ -15,15 +15,15 @@ function MegaMenuLink({ item }) {
     <Link
       to={item.to}
       onClick={handleClick}
-      className="group/item hover:text-primary flex min-h-9 items-start gap-3 rounded-lg px-1 py-1.5 text-sm font-semibold text-slate-700 transition-colors"
+      className="group/item hover:text-primary text-foreground flex min-h-9 items-start gap-3 rounded-lg px-1 py-1.5 text-sm font-semibold transition-colors"
     >
       {Icon ? (
-        <Icon className="group-hover/item:text-primary mt-0.5 size-4 shrink-0 text-slate-500" />
+        <Icon className="group-hover/item:text-primary text-muted-foreground mt-0.5 size-4 shrink-0" />
       ) : null}
       <span className="min-w-0">
         <span className="line-clamp-1">{item.label}</span>
         {item.description ? (
-          <span className="mt-1 line-clamp-2 block text-xs font-normal text-slate-500">
+          <span className="text-muted-foreground mt-1 line-clamp-2 block text-xs font-normal">
             {item.description}
           </span>
         ) : null}
@@ -38,7 +38,7 @@ function MegaMenuLink({ item }) {
 function MegaMenuColumn({ column }) {
   return (
     <div className="min-w-0 space-y-4">
-      <p className="text-xs font-bold tracking-wide text-slate-400 uppercase">
+      <p className="text-muted-foreground text-xs font-bold tracking-wide uppercase">
         {column.title}
       </p>
       <div className="space-y-1.5">
@@ -53,7 +53,7 @@ function MegaMenuColumn({ column }) {
 function MegaMenu({ menu }) {
   return (
     <div className="invisible fixed top-13 left-1/2 z-50 -translate-x-1/2 opacity-0 transition-all duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-      <div className="w-[min(72rem,calc(100vw-2rem))] rounded-2xl border bg-white p-7 text-slate-700 drop-shadow-lg">
+      <div className="bg-popover text-popover-foreground w-[min(72rem,calc(100vw-2rem))] rounded-2xl border p-7 drop-shadow-lg">
         <div
           className={cn(
             "grid gap-8",

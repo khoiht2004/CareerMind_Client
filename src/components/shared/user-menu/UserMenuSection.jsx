@@ -8,11 +8,11 @@ function UserMenuSection({ section, isOpen, onToggle, onNavigate }) {
     <div className="px-4 py-1.5">
       <button
         type="button"
-        className="flex w-full cursor-pointer items-center gap-3 rounded-lg py-1.5 text-left text-sm font-bold text-slate-700"
+        className="text-foreground hover:text-primary flex w-full cursor-pointer items-center gap-3 rounded-lg py-1.5 text-left text-sm font-bold transition-colors"
         onClick={onToggle}
       >
         <Icon
-          className={`size-5 ${isOpen ? "text-primary" : "text-slate-500"}`}
+          className={`size-5 ${isOpen ? "text-primary" : "text-muted-foreground"}`}
         />
         <span
           className={`min-w-0 flex-1 truncate ${isOpen ? "text-primary" : ""}`}
@@ -20,9 +20,9 @@ function UserMenuSection({ section, isOpen, onToggle, onNavigate }) {
           {section.title}
         </span>
         {isOpen ? (
-          <ChevronUp className="size-4 text-slate-500" />
+          <ChevronUp className="text-muted-foreground size-4" />
         ) : (
-          <ChevronDown className="size-4 text-slate-500" />
+          <ChevronDown className="text-muted-foreground size-4" />
         )}
       </button>
 
@@ -39,7 +39,7 @@ function UserMenuSection({ section, isOpen, onToggle, onNavigate }) {
                 className={`cursor-pointer rounded-md px-0 text-sm focus:bg-transparent ${
                   item.highlight
                     ? "text-primary focus:text-primary"
-                    : "focus:text-primary text-slate-500"
+                    : "text-muted-foreground focus:text-primary"
                 }`}
                 onSelect={() => onNavigate(item.to)}
               >

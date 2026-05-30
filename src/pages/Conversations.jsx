@@ -11,7 +11,7 @@ const ConversationsHeader = memo(function ConversationsHeader({ partner }) {
   return (
     <div className="border-border bg-card flex items-center justify-between border-b px-6 py-3">
       <div className="flex items-center gap-3">
-        <div className="bg-primary/10 text-primary flex size-10 items-center justify-center overflow-hidden rounded-full border border-slate-200 text-sm font-bold">
+        <div className="bg-primary/10 text-primary border-border flex size-10 items-center justify-center overflow-hidden rounded-full border text-sm font-bold">
           {partner.avatar ? (
             <img
               src={partner.avatar}
@@ -23,7 +23,7 @@ const ConversationsHeader = memo(function ConversationsHeader({ partner }) {
           )}
         </div>
         <div className="flex flex-col gap-0.5">
-          <p className="text-sm font-bold text-slate-800">
+          <p className="text-foreground text-sm font-bold">
             {partner.name}
             <span className="text-muted-foreground ml-1 text-xs font-medium">
               {partner.company ? `• ${partner.company}` : ""}
@@ -32,7 +32,7 @@ const ConversationsHeader = memo(function ConversationsHeader({ partner }) {
 
           <div className="flex items-center gap-1.5">
             <Circle
-              className={`size-2.5 ${partner.isActive ? "fill-green-500 text-green-500" : "fill-slate-300 text-slate-300"}`}
+              className={`size-2.5 ${partner.isActive ? "fill-[var(--trend-up)] text-[var(--trend-up)]" : "fill-muted-foreground/30 text-muted-foreground/30"}`}
             />
             <span className="text-muted-foreground text-xs font-medium">
               {partner.isActive

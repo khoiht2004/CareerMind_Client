@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { BriefcaseBusiness, FileText, MapPin, Play } from "lucide-react";
 import {
   FOOTER_COMPANY_LINES,
@@ -10,7 +9,7 @@ function FooterLink({ children }) {
   return (
     <a
       href="#"
-      className="hover:text-primary block text-sm text-slate-600 transition-colors"
+      className="text-muted-foreground hover:text-primary block text-sm transition-colors"
     >
       {children}
     </a>
@@ -21,9 +20,9 @@ function AppStoreButton({ type }) {
   return (
     <button
       type="button"
-      className="flex h-10 min-w-36 items-center gap-2 rounded-md bg-black px-3 text-left text-white"
+      className="bg-foreground text-background flex h-10 min-w-36 items-center gap-2 rounded-md px-3 text-left"
     >
-      <Play className="size-5 fill-white" />
+      <Play className="fill-background size-5" />
       <span>
         <span className="block text-[9px] leading-none">
           {type === "ios" ? "Download on the" : "Get it on"}
@@ -41,7 +40,7 @@ function SocialButton({ label, shortLabel }) {
     <button
       type="button"
       aria-label={label}
-      className="hover:bg-primary grid size-8 place-items-center rounded-full bg-slate-600 text-white transition-colors"
+      className="bg-muted-foreground text-background hover:bg-primary hover:text-primary-foreground grid size-8 place-items-center rounded-full transition-colors"
     >
       <span className="text-xs font-black">{shortLabel}</span>
     </button>
@@ -53,43 +52,35 @@ function FooterBrandColumn() {
     <div className="space-y-7">
       <div>
         <div className="text-5xl font-black tracking-tight">
-          <span className="text-slate-800">top</span>
+          <span className="text-foreground">top</span>
           <span className="text-primary">cv</span>
         </div>
-        <p className="mt-3 text-sm font-bold text-slate-700">
+        <p className="text-muted-foreground mt-3 text-sm font-bold">
           Tiếp lợi thế - Nối thành công
         </p>
-        {/* <div className="mt-6 flex items-center gap-3 text-sm text-slate-500">
-          <span className="font-semibold text-blue-500">
-            Google for Startups
-          </span>
-          <span className="rounded bg-emerald-500 px-2 py-1 text-xs font-bold text-white">
-            DMCA
-          </span>
-        </div> */}
       </div>
 
       <div>
-        <h3 className="mb-3 font-bold text-slate-900">Liên hệ</h3>
-        <div className="space-y-1 text-sm text-slate-600">
+        <h3 className="text-foreground mb-3 font-bold">Liên hệ</h3>
+        <div className="text-muted-foreground space-y-1 text-sm">
           <p>
             Hotline:{" "}
-            <strong className="text-slate-900">
+            <strong className="text-foreground">
               (024) 6680 5588 (Giờ hành chính)
             </strong>
           </p>
           <p>
-            Email: <strong className="text-slate-900">hotro@topcv.vn</strong>
+            Email: <strong className="text-foreground">hotro@topcv.vn</strong>
           </p>
           <p>
             Zalo hỗ trợ ứng viên:{" "}
-            <strong className="text-slate-900">Kết nối ngay →</strong>
+            <strong className="text-foreground">Kết nối ngay →</strong>
           </p>
         </div>
       </div>
 
       <div>
-        <h3 className="mb-3 font-bold text-slate-900">Ứng dụng tải xuống</h3>
+        <h3 className="text-foreground mb-3 font-bold">Ứng dụng tải xuống</h3>
         <div className="flex flex-wrap gap-2">
           <AppStoreButton type="ios" />
           <AppStoreButton type="android" />
@@ -97,7 +88,7 @@ function FooterBrandColumn() {
       </div>
 
       <div>
-        <h3 className="mb-3 font-bold text-slate-900">Cộng đồng TopCV</h3>
+        <h3 className="text-foreground mb-3 font-bold">Cộng đồng TopCV</h3>
         <div className="flex gap-3">
           <SocialButton label="Facebook" shortLabel="f" />
           <SocialButton label="Youtube" shortLabel="▶" />
@@ -114,8 +105,8 @@ function FooterLinks() {
     <div className="flex justify-between">
       <section>
         {/* Về topcv */}
-        <h3 className="mb-3 font-bold text-slate-900">Về TopCV</h3>
-        <div className="mb-6 flex flex-col gap-3 text-sm text-slate-600">
+        <h3 className="text-foreground mb-3 font-bold">Về TopCV</h3>
+        <div className="text-muted-foreground mb-6 flex flex-col gap-3 text-sm">
           <a href="#">Giới thiệu</a>
           <a href="#">Góc báo chí</a>
           <a href="#">Tuyển dụng</a>
@@ -126,8 +117,8 @@ function FooterLinks() {
         </div>
         {/* Đối tác */}
         <div>
-          <h3 className="mb-3 font-bold text-slate-900">Đối tác</h3>
-          <div className="flex flex-col gap-3 text-sm text-slate-600">
+          <h3 className="text-foreground mb-3 font-bold">Đối tác</h3>
+          <div className="text-muted-foreground flex flex-col gap-3 text-sm">
             <a href="#">TestCenter</a>
             <a href="#">TopHR</a>
             <a href="#">ViecNgay</a>
@@ -138,8 +129,8 @@ function FooterLinks() {
 
       <section>
         {/* Hồ sơ và CV */}
-        <h3 className="mb-3 font-bold text-slate-900">Hồ sơ và CV</h3>
-        <div className="mb-6 flex flex-col gap-3 text-sm text-slate-600">
+        <h3 className="text-foreground mb-3 font-bold">Hồ sơ và CV</h3>
+        <div className="text-muted-foreground mb-6 flex flex-col gap-3 text-sm">
           <a href="#">Quản lý CV của bạn</a>
           <a href="#">Hướng dẫn viết CV</a>
           <a href="#">Thư viện CV theo ngành nghề</a>
@@ -147,8 +138,8 @@ function FooterLinks() {
         </div>
         {/* Khám phá */}
         <div>
-          <h3 className="mb-3 font-bold text-slate-900">Khám phá</h3>
-          <div className="flex flex-col gap-3 text-sm text-slate-600">
+          <h3 className="text-foreground mb-3 font-bold">Khám phá</h3>
+          <div className="text-muted-foreground flex flex-col gap-3 text-sm">
             <a href="#">Ứng dụng di động TopCV</a>
             <a href="#">Tính lương Gross-Net</a>
             <a href="#">Tính lãi suất kép</a>
@@ -163,8 +154,8 @@ function FooterLinks() {
 
       <section>
         {/* Xây dựng sự nghiệp */}
-        <h3 className="mb-3 font-bold text-slate-900">Xây dựng sự nghiệp</h3>
-        <div className="mb-6 flex flex-col gap-3 text-sm text-slate-600">
+        <h3 className="text-foreground mb-3 font-bold">Xây dựng sự nghiệp</h3>
+        <div className="text-muted-foreground mb-6 flex flex-col gap-3 text-sm">
           <a href="#">Việc làm tốt nhất</a>
           <a href="#">Việc làm lương cao</a>
           <a href="#">Việc làm quản lý</a>
@@ -174,8 +165,8 @@ function FooterLinks() {
         </div>
         {/* Quy tắc chung */}
         <div>
-          <h3 className="mb-3 font-bold text-slate-900">Quy tắc chung</h3>
-          <div className="flex flex-col gap-3 text-sm text-slate-600">
+          <h3 className="text-foreground mb-3 font-bold">Quy tắc chung</h3>
+          <div className="text-muted-foreground flex flex-col gap-3 text-sm">
             <a href="#">Điều kiện giao dịch chung</a>
             <a href="#">Giá dịch vụ & Cách thanh toán</a>
             <a href="#">Thông tin về vận chuyển</a>
@@ -192,7 +183,7 @@ function QrPlaceholder() {
       <img
         src="../../assets/qr_code.webp"
         alt="QR"
-        className="mx-auto rounded-md bg-white p-2 shadow-sm"
+        className="bg-card mx-auto rounded-md p-2 shadow-sm"
       />
       <p className="text-primary mt-2 text-xs font-bold">topcv.com.vn</p>
     </div>
@@ -203,13 +194,13 @@ function CompanyInfo() {
   const icons = [FileText, BriefcaseBusiness, MapPin, MapPin];
 
   return (
-    <div className="border-t bg-white py-7">
+    <div className="bg-card border-t py-7">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 lg:grid-cols-[1fr_auto]">
         <div>
-          <h2 className="mb-5 text-2xl font-bold text-slate-900">
+          <h2 className="text-foreground mb-5 text-2xl font-bold">
             Công ty Cổ phần TopCV Việt Nam
           </h2>
-          <div className="space-y-3 text-sm text-slate-600">
+          <div className="text-muted-foreground space-y-3 text-sm">
             {FOOTER_COMPANY_LINES.map((line, index) => {
               const Icon = icons[index] ?? FileText;
               return (
@@ -221,14 +212,14 @@ function CompanyInfo() {
             })}
           </div>
 
-          <h3 className="mt-7 mb-4 font-bold text-slate-900">
+          <h3 className="text-foreground mt-7 mb-4 font-bold">
             Hệ sinh thái HR Tech của TopCV
           </h3>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {FOOTER_ECOSYSTEM.map((item) => (
               <div
                 key={item.name}
-                className={`rounded-lg p-4 text-white ${item.className}`}
+                className={`text-primary-foreground rounded-lg p-4 ${item.className}`}
               >
                 <div className="text-lg font-black">{item.name}</div>
                 <p className="mt-2 text-xs leading-5 font-semibold">
@@ -247,10 +238,10 @@ function CompanyInfo() {
 
 export default function AppFooter() {
   return (
-    <footer className="bg-white">
-      <div className="bg-slate-100 py-12">
+    <footer className="bg-footer-app">
+      <div className="bg-muted py-12">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="flex flex-wrap gap-x-5 gap-y-3 text-xs leading-6 text-slate-700">
+          <div className="text-muted-foreground flex flex-wrap gap-x-5 gap-y-3 text-xs leading-6">
             {HOME_TAG_CLOUD.map((tag) => (
               <a
                 key={tag}

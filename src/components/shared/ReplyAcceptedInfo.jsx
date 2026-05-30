@@ -12,9 +12,9 @@ export function ReplyAcceptedInfo({
   if (status !== "ACCEPTED") return null;
 
   return (
-    <Card className="border-green-200 dark:border-green-900">
+    <Card className="border-[var(--status-accepted-border)]">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base text-green-700 dark:text-green-400">
+        <CardTitle className="flex items-center gap-2 text-base text-[var(--status-accepted-text)]">
           <Building2 className="size-4" />
           Thông tin nhận việc
         </CardTitle>

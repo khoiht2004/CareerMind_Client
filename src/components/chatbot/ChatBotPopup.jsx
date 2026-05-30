@@ -96,7 +96,7 @@ function ChatbotWindow({ open, setOpen }) {
             </Button>
             <Button
               size="icon"
-              className="hover:bg-primary-foreground/5 size-7 hover:text-red-400"
+              className="hover:bg-primary-foreground/5 hover:text-destructive size-7"
               onClick={() => setShowConfirm(true)}
             >
               <X className="size-4" />

@@ -13,7 +13,7 @@ function NotFoundPage() {
         <p className="text-primary text-sm font-bold tracking-wide uppercase">
           Lỗi 404
         </p>
-        <h1 className="mt-3 text-3xl font-bold text-slate-900">
+        <h1 className="text-foreground mt-3 text-3xl font-bold">
           Không tìm thấy trang
         </h1>
         <p className="text-muted-foreground mt-3 text-sm">
