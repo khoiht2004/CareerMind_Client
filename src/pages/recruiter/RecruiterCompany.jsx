@@ -59,7 +59,7 @@ function RecruiterCompany() {
   };
 
   return (
-    <PageContainer as="form" onSubmit={handleSubmit} className="max-w-5xl">
+    <PageContainer as="form" onSubmit={handleSubmit} className="max-w-6xl">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-bold">

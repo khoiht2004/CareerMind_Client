@@ -9,7 +9,7 @@ const ConversationsHeader = memo(function ConversationsHeader({ partner }) {
   if (!partner) return null;
 
   return (
-    <div className="border-border bg-card flex items-center justify-between border-b px-6 py-3">
+    <div className="border-border bg-card flex items-center justify-between border-b px-3 py-3 sm:px-6">
       <div className="flex items-center gap-3">
         <div className="bg-primary/10 text-primary border-border flex size-10 items-center justify-center overflow-hidden rounded-full border text-sm font-bold">
           {partner.avatar ? (
@@ -65,7 +65,7 @@ export default function Conversations() {
   } = useConversations();
 
   return (
-    <div className="-mb-25 flex h-[calc(100svh-3.5rem)] w-full gap-3 overflow-hidden md:p-6">
+    <div className="-mb-25 flex h-[calc(100svh-3.5rem)] w-full min-w-0 flex-col gap-3 overflow-hidden p-2 sm:p-3 md:flex-row md:p-6">
       <ConversationSidebar
         isOpen={true}
         sessions={conversations}

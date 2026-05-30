@@ -16,7 +16,7 @@ function ChatbotConfigForm({
   handleCancel,
 }) {
   return (
-    <div className="bg-card border-border flex-1 rounded-2xl border p-6 shadow-sm">
+    <div className="bg-card border-border flex-1 rounded-2xl border p-4 shadow-sm sm:p-6">
       <div className="space-y-8">
         {/* Lĩnh vực quan tâm */}
         <div className="space-y-4">
@@ -64,7 +64,7 @@ function ChatbotConfigForm({
           </div>
 
           <div className="bg-muted/30 rounded-xl p-5">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
               <span className="text-muted-foreground text-sm">
                 Khoảng lương (VNĐ)
               </span>
@@ -98,12 +98,12 @@ function ChatbotConfigForm({
             <h3 className="text-base font-semibold">Địa điểm làm việc</h3>
           </div>
 
-          <div className="bg-muted/30 relative flex flex-wrap items-center gap-2 rounded-xl p-2 pl-4">
+          <div className="bg-muted/30 relative flex flex-wrap items-center gap-2 rounded-xl p-2 sm:pl-4">
             <Input
-              className="text-muted-foreground min-w-[200px] flex-1 text-sm"
+              className="text-muted-foreground min-w-0 flex-1 text-sm"
               placeholder="Nhập thành phố hoặc khu vực..."
             />
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {locations.map((location) => (
                 <span
                   key={location}
@@ -132,7 +132,7 @@ function ChatbotConfigForm({
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:gap-4">
           <Button
             onClick={handleCancel}
             variant="secondary"

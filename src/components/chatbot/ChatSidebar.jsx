@@ -74,9 +74,11 @@ function ChatSidebar({
   return (
     <div
       className={cn(
-        "bg-primary/5 flex h-full min-h-0 shrink-0 flex-col overflow-hidden rounded-4xl",
+        "bg-primary/5 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-2xl md:h-full md:rounded-4xl",
         "transition-all duration-200",
-        isOpen ? "w-75" : "w-0 border-0",
+        isOpen
+          ? "h-48 w-full md:h-full md:w-75"
+          : "h-0 w-full border-0 md:h-full md:w-0",
       )}
     >
       <div className="flex h-14 shrink-0 items-center justify-between px-4">
@@ -117,7 +119,7 @@ function ChatSidebar({
       </ScrollArea>
 
       {showUpgradePro && (
-        <div className="p-3">
+        <div className="hidden p-3 md:block">
           <div className="bg-foreground text-background rounded-xl p-3">
             <p className="text-background/50 mb-1 text-[10px] font-bold tracking-widest uppercase">
               Nâng cấp Pro

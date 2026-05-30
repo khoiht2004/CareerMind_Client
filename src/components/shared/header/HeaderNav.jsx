@@ -14,7 +14,7 @@ function isNavItemActive(pathname, itemTo) {
 
 function HeaderNav({ pathname }) {
   return (
-    <nav className="hidden h-full items-center gap-2 lg:flex">
+    <nav className="hidden h-full items-center gap-1 lg:flex xl:gap-2">
       {HEADER_NAV_ITEMS.map((item) => (
         <div
           key={item.label}
@@ -23,7 +23,7 @@ function HeaderNav({ pathname }) {
           <Link
             to={item.to}
             className={cn(
-              "hover:text-primary text-foreground flex h-full items-center gap-1.5 px-3 text-sm font-bold transition-colors",
+              "hover:text-primary text-foreground flex h-full items-center gap-1 px-2 text-xs font-bold transition-colors xl:gap-1.5 xl:px-3 xl:text-sm",
               isNavItemActive(pathname, item.to) && "text-primary",
             )}
           >
@@ -37,7 +37,7 @@ function HeaderNav({ pathname }) {
 
       <Link
         to={path.membership}
-        className="hover:text-primary text-foreground flex h-full items-center gap-1.5 px-3 text-sm font-bold"
+        className="hover:text-primary text-foreground flex h-full items-center gap-1 px-2 text-xs font-bold xl:gap-1.5 xl:px-3 xl:text-sm"
       >
         TopCV
         <Badge className="bg-hot text-hot-foreground rounded-full px-2 text-[10px]">

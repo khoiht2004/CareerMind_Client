@@ -48,7 +48,7 @@ function MyApplications() {
       </div>
 
       {/* Tab navigation */}
-      <div className="bg-muted flex max-w-[200px] rounded-xl p-1">
+      <div className="bg-muted flex w-full max-w-[220px] rounded-xl p-1">
         {[
           { value: "submitted", label: "Đã nộp" },
           { value: "draft", label: "Bản nháp" },
@@ -68,15 +68,15 @@ function MyApplications() {
       </div>
 
       {/* Filter row */}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         {/* Status filter */}
-        <div className="bg-primary/5 flex items-center gap-2 rounded-lg px-3 py-1.5">
+        <div className="bg-primary/5 flex min-w-0 items-center gap-2 rounded-lg px-3 py-1.5">
           <Filter className="text-muted-foreground size-4 shrink-0" />
           <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             Trạng thái:
           </span>
           <Select value={filters.status} onValueChange={setStatusFilter}>
-            <SelectTrigger className="h-auto w-[150px] border-0 p-0 text-sm font-medium shadow-none focus:ring-0">
+            <SelectTrigger className="h-auto w-full min-w-[150px] border-0 p-0 text-sm font-medium shadow-none focus:ring-0 sm:w-[150px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -90,10 +90,10 @@ function MyApplications() {
         </div>
 
         {/* Date filter */}
-        <div className="bg-primary/5 flex items-center gap-2 rounded-lg px-3 py-1.5">
+        <div className="bg-primary/5 flex min-w-0 items-center gap-2 rounded-lg px-3 py-1.5">
           <CalendarDays className="text-muted-foreground size-4 shrink-0" />
           <Select value={filters.days} onValueChange={setDaysFilter}>
-            <SelectTrigger className="h-auto w-[130px] border-0 p-0 text-sm font-medium shadow-none focus:ring-0">
+            <SelectTrigger className="h-auto w-full min-w-[130px] border-0 p-0 text-sm font-medium shadow-none focus:ring-0 sm:w-[130px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -106,18 +106,18 @@ function MyApplications() {
           </Select>
         </div>
 
-        <div className="flex-1" />
+        <div className="hidden flex-1 sm:block" />
 
         {/* Stat mini-cards */}
-        <div className="bg-primary text-background flex overflow-hidden rounded-xl">
-          <div className="px-5 py-2.5 text-center">
+        <div className="bg-primary text-background flex w-full overflow-hidden rounded-xl sm:w-auto">
+          <div className="flex-1 px-4 py-2.5 text-center sm:flex-none sm:px-5">
             <p className="text-background/60 text-xs font-semibold tracking-wider uppercase">
               Tổng cộng
             </p>
             <p className="text-2xl font-black">{total}</p>
           </div>
           <div className="bg-background/10 w-px" />
-          <div className="px-5 py-2.5 text-center">
+          <div className="flex-1 px-4 py-2.5 text-center sm:flex-none sm:px-5">
             <p className="text-secondary-container text-xs font-semibold tracking-wider uppercase opacity-80">
               Phỏng vấn
             </p>

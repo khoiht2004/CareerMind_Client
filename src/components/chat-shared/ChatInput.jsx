@@ -63,7 +63,7 @@ function ChatInput({
       : "Bắt đầu cuộc trò chuyện mới";
 
   return (
-    <div className="bg-primary/10 px-4 py-2">
+    <div className="bg-primary/10 px-2 py-2 sm:px-4">
       <div className="relative mx-auto flex max-w-3xl items-end gap-2">
         {/* Hidden file input */}
         <input

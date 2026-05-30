@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 import AuthButtons from "./header/AuthButtons";
 import HeaderBrand from "./header/HeaderBrand";
+import HeaderMobileMenu from "./header/HeaderMobileMenu";
 import HeaderNav from "./header/HeaderNav";
 import ThemeToggle from "./ThemeToggle";
 
@@ -12,11 +13,12 @@ function AppHeader() {
 
   return (
     <header className="shadow-nav bg-background/95 sticky top-0 z-40 border-b backdrop-blur">
-      <div className="flex h-15 items-center gap-6 px-5">
+      <div className="flex h-14 min-w-0 items-center gap-2 px-2 min-[576px]:h-15 min-[576px]:px-3 sm:gap-4 sm:px-5 lg:gap-6">
+        <HeaderMobileMenu pathname={pathname} user={user} />
         <HeaderBrand />
         <HeaderNav pathname={pathname} />
 
-        <div className="ml-auto flex min-w-0 items-center gap-3">
+        <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
           {/* Switch theme btn */}
           <ThemeToggle />
 

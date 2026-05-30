@@ -178,7 +178,7 @@ function Apply() {
                     )}
                   </button>
                 </PopoverTrigger>
-                <PopoverContent align="start" className="w-80 p-2">
+                <PopoverContent align="start" className="w-[calc(100vw-2rem)] max-w-80 p-2">
                   <p className="text-muted-foreground mb-2 px-2 text-xs font-semibold tracking-wider uppercase">
                     Chọn từ thư viện CV
                   </p>
@@ -283,7 +283,7 @@ function Apply() {
                       Dùng thư có sẵn
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent align="end" className="w-80 p-2">
+                  <PopoverContent align="end" className="w-[calc(100vw-2rem)] max-w-80 p-2">
                     <p className="text-muted-foreground mb-2 px-1 text-xs font-medium">
                       Chọn thư giới thiệu
                     </p>
@@ -339,7 +339,7 @@ function Apply() {
               CareerPartner & {job.company?.name}.
             </span>
           </label>
-          <div className="ml-auto flex gap-3">
+          <div className="ml-auto flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Button
               type="button"
               variant="outline"

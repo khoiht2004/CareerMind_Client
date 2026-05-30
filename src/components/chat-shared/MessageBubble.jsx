@@ -96,7 +96,7 @@ function MessageBubble({
       )}
       <div
         className={cn(
-          "max-w-[80%] space-y-1",
+          "max-w-[88%] space-y-1 sm:max-w-[80%]",
           isUser && "flex flex-col items-end",
         )}
       >
@@ -135,7 +135,7 @@ function MessageBubble({
 
           {segments.map((seg, i) =>
             seg.type === "jobs" ? (
-              <div key={i} className="grid grid-cols-3 gap-2">
+              <div key={i} className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
                 {seg.ids.map((id) => (
                   <InlineJobCard key={id} id={id} />
                 ))}

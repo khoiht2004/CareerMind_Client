@@ -24,7 +24,7 @@ function CoverLetterFormDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[368px] sm:max-w-[480px] md:max-w-[750px]">
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[480px] md:max-w-[750px]">
         <DialogHeader>
           <DialogTitle>
             {isEditing ? "Sửa thư xin việc" : "Tạo thư xin việc"}
@@ -52,7 +52,7 @@ function CoverLetterFormDialog({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <label className="text-sm font-semibold">Nội dung thư</label>
               <Button
                 type="button"
@@ -68,7 +68,7 @@ function CoverLetterFormDialog({
             </div>
             <Textarea
               placeholder="Kính gửi nhà tuyển dụng..."
-              className="bg-primary/10 max-h-[350px] min-h-[200px] resize-none"
+              className="bg-primary/10 max-h-[min(350px,50svh)] min-h-[200px] resize-none"
               value={formData.content}
               onChange={(e) =>
                 onFormChange({ ...formData, content: e.target.value })

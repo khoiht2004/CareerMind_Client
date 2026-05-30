@@ -38,7 +38,7 @@ function JobFormBasicSection({ form, onChange, onSelectChange }) {
       </JobFormField>
 
       {/* Địa điểm */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <JobFormField label="Địa điểm" required>
           <Select
             value={form.location}

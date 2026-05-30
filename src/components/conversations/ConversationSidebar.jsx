@@ -69,9 +69,11 @@ function ConversationSidebar({
   return (
     <div
       className={cn(
-        "bg-primary/5 flex h-full min-h-0 shrink-0 flex-col overflow-hidden rounded-4xl",
+        "bg-primary/5 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-2xl md:h-full md:rounded-4xl",
         "border-border border-r transition-all duration-200",
-        isOpen ? "w-75" : "w-0 border-0",
+        isOpen
+          ? "h-48 w-full md:h-full md:w-75"
+          : "h-0 w-full border-0 md:h-full md:w-0",
       )}
     >
       <div className="border-primary/10 flex h-14 shrink-0 items-center border-b px-4">

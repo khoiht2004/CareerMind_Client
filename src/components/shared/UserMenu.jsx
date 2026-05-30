@@ -98,7 +98,7 @@ function UserMenu() {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
       <NotificationDropdown />
 
       <UserMenuIconButton
@@ -127,7 +127,7 @@ function UserMenu() {
         <DropdownMenuContent
           align="end"
           sideOffset={10}
-          className="shadow-popover-soft bg-popover text-popover-foreground w-[400px] rounded-xl p-0"
+          className="shadow-popover-soft bg-popover text-popover-foreground w-[calc(100vw-1rem)] max-w-[400px] rounded-xl p-0"
         >
           <UserSummary
             avatar={avatar}

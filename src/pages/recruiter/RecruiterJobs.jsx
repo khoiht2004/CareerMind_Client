@@ -72,16 +72,16 @@ function RecruiterJobs() {
   } = useRecruiterJobs();
 
   return (
-    <div className="max-w-full space-y-6 px-10 pt-6">
+    <div className="max-w-full space-y-6 px-4 pt-6 sm:px-6 lg:px-10">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-primary text-4xl font-black">Quản lý việc làm</h1>
+          <h1 className="text-primary text-3xl font-black sm:text-4xl">Quản lý việc làm</h1>
           <p className="text-muted-foreground mt-1 text-sm">
             Theo dõi và tối ưu hóa các chiến dịch tuyển dụng của bạn.
           </p>
         </div>
-        <div className="mt-1 flex items-center gap-2">
+        <div className="mt-1 flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
           <Button
             variant="outline"
             className="cursor-pointer gap-2"
@@ -100,7 +100,7 @@ function RecruiterJobs() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {JOB_CARD_CONFIG.map((cfg) => (
           <JobsCard
             key={cfg.id}
@@ -119,12 +119,12 @@ function RecruiterJobs() {
         <div className="border-border flex flex-wrap gap-3 rounded-lg border p-4">
           <Input
             placeholder="Tìm kiếm theo tiêu đề..."
-            className="border-border w-72 border"
+            className="border-border w-full border sm:w-72"
             value={filters.search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <Select value={filters.status} onValueChange={setStatusFilter}>
-            <SelectTrigger className="border-border w-40 border">
+            <SelectTrigger className="border-border w-full border sm:w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -234,7 +234,7 @@ function RecruiterJobs() {
             </Table>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground text-sm">
               Hiển thị {from} - {to} trong số {total} tin
             </p>
@@ -252,7 +252,7 @@ function RecruiterJobs() {
 
       {/* Promo cards */}
       <article className="from-primary to-primary-container text-primary-foreground rounded-xl bg-linear-to-r p-6">
-        <div className="max-w-[60%]">
+        <div className="max-w-full sm:max-w-[60%]">
           <span className="bg-primary-foreground/10 text-md rounded-full px-3 py-1 font-bold">
             Mẹo tuyển dụng
           </span>

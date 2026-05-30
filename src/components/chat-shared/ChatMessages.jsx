@@ -63,7 +63,7 @@ export default function ChatMessages({
   const WelcomeIcon = welcomeIcon;
 
   return (
-    <ScrollArea className={cn("min-h-0 flex-1 px-6 pt-3", className)}>
+    <ScrollArea className={cn("min-h-0 flex-1 px-3 pt-3 sm:px-6", className)}>
       <div className="max-w-full space-y-4">
         {isLoading ? (
           <div className="flex justify-center py-8">
@@ -71,17 +71,17 @@ export default function ChatMessages({
           </div>
         ) : isEmpty ? (
           <div className="flex flex-col items-center justify-center gap-6 py-12 text-center">
-            <div className="bg-foreground text-background flex size-24 items-center justify-center rounded-3xl shadow-lg">
-              <WelcomeIcon className="size-12" />
+            <div className="bg-foreground text-background flex size-20 items-center justify-center rounded-3xl shadow-lg sm:size-24">
+              <WelcomeIcon className="size-10 sm:size-12" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold">{welcomeTitle}</h2>
+              <h2 className="text-xl font-bold sm:text-2xl">{welcomeTitle}</h2>
               <p className="text-muted-foreground mx-auto max-w-sm text-sm leading-relaxed">
                 {welcomeDescription}
               </p>
             </div>
             {suggestedQuestions && (
-              <div className="grid w-full max-w-lg grid-cols-2 gap-3">
+              <div className="grid w-full max-w-lg grid-cols-1 gap-3 sm:grid-cols-2">
                 {SUGGESTED_QUESTIONS.map(({ q, icon, cls }) => {
                   const Icon = icon;
                   return (

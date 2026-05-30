@@ -75,7 +75,7 @@ function NotificationDropdown() {
       <DropdownMenuContent
         align="end"
         sideOffset={10}
-        className="shadow-popover-soft bg-popover text-popover-foreground w-[360px] overflow-hidden rounded-xl p-0 sm:w-[400px]"
+        className="shadow-popover-soft bg-popover text-popover-foreground w-[calc(100vw-1rem)] max-w-[400px] overflow-hidden rounded-xl p-0"
       >
         {/* Header */}
         <div className="bg-muted/50 flex items-center justify-between border-b px-4 py-3">
@@ -94,7 +94,7 @@ function NotificationDropdown() {
         </div>
 
         {/* Content list */}
-        <ScrollArea className="h-[360px]">
+        <ScrollArea className="h-[min(360px,calc(100svh-9rem))]">
           {isLoading ? (
             <div className="flex h-[300px] items-center justify-center">
               <Loader2 className="text-muted-foreground size-6 animate-spin" />

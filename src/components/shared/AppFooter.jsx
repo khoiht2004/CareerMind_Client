@@ -102,7 +102,7 @@ function FooterBrandColumn() {
 
 function FooterLinks() {
   return (
-    <div className="flex justify-between">
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       <section>
         {/* Về topcv */}
         <h3 className="text-foreground mb-3 font-bold">Về TopCV</h3>
@@ -255,7 +255,7 @@ export default function AppFooter() {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-6xl gap-14 px-4 py-12 lg:grid-cols-[280px_1fr]">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-[280px_1fr] lg:gap-14">
         <FooterBrandColumn />
         <FooterLinks />
       </div>

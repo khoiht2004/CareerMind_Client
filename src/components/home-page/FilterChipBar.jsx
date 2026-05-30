@@ -46,9 +46,9 @@ function FilterChipBar({ filterGroups, activeValues = {}, onChipChange }) {
   };
 
   return (
-    <div className="mb-4 flex items-center gap-2">
+    <div className="mb-4 grid gap-2 min-[576px]:flex min-[576px]:items-center">
       {/* Filter Select */}
-      <div className="bg-card text-muted-foreground flex shrink-0 items-center gap-2 rounded-md border px-3 py-2 text-sm">
+      <div className="bg-card text-muted-foreground flex min-w-0 shrink-0 items-center gap-2 rounded-md border px-3 py-2 text-sm max-[575px]:w-full">
         <Filter className="size-4 shrink-0" />
         <span className="shrink-0">Lọc theo:</span>
         <Select value={activeFilterKey} onValueChange={setActiveFilterKey}>
@@ -65,50 +65,52 @@ function FilterChipBar({ filterGroups, activeValues = {}, onChipChange }) {
         </Select>
       </div>
 
-      {/* Left chevron */}
-      <Button
-        variant="outline"
-        size="icon"
-        className="size-8 shrink-0 rounded-full"
-        onClick={() => scroll(-1)}
-      >
-        <ChevronLeft className="size-4" />
-      </Button>
+      <div className="flex min-w-0 items-center gap-2">
+        {/* Left chevron */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-8 shrink-0 rounded-full"
+          onClick={() => scroll(-1)}
+        >
+          <ChevronLeft className="size-4" />
+        </Button>
 
-      {/* Scrollable chips */}
-      <div
-        ref={scrollRef}
-        className="flex flex-1 cursor-grab gap-2 overflow-x-auto scroll-smooth select-none [scrollbar-width:none]"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-      >
-        {currentGroup?.chips.map((chip) => (
-          <button
-            key={chip.value}
-            type="button"
-            className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              chip.value === activeChipValue
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-            }`}
-            onClick={() => onChipChange?.(currentGroup.paramKey, chip.value)}
-          >
-            {chip.label}
-          </button>
-        ))}
+        {/* Scrollable chips */}
+        <div
+          ref={scrollRef}
+          className="flex min-w-0 flex-1 cursor-grab gap-2 overflow-x-auto scroll-smooth select-none [scrollbar-width:none]"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
+          {currentGroup?.chips.map((chip) => (
+            <button
+              key={chip.value}
+              type="button"
+              className={`shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                chip.value === activeChipValue
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+              }`}
+              onClick={() => onChipChange?.(currentGroup.paramKey, chip.value)}
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Right chevron */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-8 shrink-0 rounded-full"
+          onClick={() => scroll(1)}
+        >
+          <ChevronRight className="size-4" />
+        </Button>
       </div>
-
-      {/* Right chevron */}
-      <Button
-        variant="outline"
-        size="icon"
-        className="size-8 shrink-0 rounded-full"
-        onClick={() => scroll(1)}
-      >
-        <ChevronRight className="size-4" />
-      </Button>
     </div>
   );
 }

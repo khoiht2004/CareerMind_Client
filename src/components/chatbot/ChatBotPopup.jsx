@@ -70,7 +70,7 @@ function ChatbotWindow({ open, setOpen }) {
   return (
     <>
       <div
-        className={`border-border bg-card fixed right-20 bottom-7 z-50 w-[360px] overflow-hidden rounded-xl border shadow-xl transition-all duration-300 ${open ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible translate-y-4 opacity-0"}`}
+        className={`border-border bg-card fixed right-3 bottom-20 left-3 z-50 overflow-hidden rounded-xl border shadow-xl transition-all duration-300 sm:left-auto sm:right-20 sm:bottom-7 sm:w-[360px] ${open ? "visible translate-y-0 opacity-100" : "pointer-events-none invisible translate-y-4 opacity-0"}`}
       >
         <div className="bg-primary text-primary-foreground flex items-center justify-between px-3 py-2">
           <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ function ChatbotWindow({ open, setOpen }) {
             </Button>
           </div>
         </div>
-        <div className="bg-card flex h-[480px] flex-col pt-2">
+        <div className="bg-card flex h-[min(480px,calc(100svh-9rem))] flex-col pt-2">
           <ChatMessages
             messages={messages}
             pendingMessage={pendingMessage}

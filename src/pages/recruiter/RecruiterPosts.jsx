@@ -63,10 +63,12 @@ function RecruiterPosts() {
   }, [canRead]);
 
   return (
-    <div className="max-w-full space-y-6 px-10 pt-6">
-      <div className="flex items-start justify-between">
+    <div className="max-w-full space-y-6 px-4 py-6 sm:px-6 lg:px-10">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-primary text-4xl font-black">Quản lý bài viết</h1>
+          <h1 className="text-primary text-3xl font-black sm:text-4xl">
+            Quản lý bài viết
+          </h1>
           <p className="text-muted-foreground mt-1 text-sm">
             Viết blog tuyển dụng, quản lý bản nháp và xuất bản nội dung cho ứng
             viên.
@@ -81,7 +83,7 @@ function RecruiterPosts() {
       </div>
 
       {!canRead ? (
-        <div className="rounded-lg border border-dashed p-10 text-center">
+        <div className="rounded-lg border border-dashed p-5 text-center sm:p-10">
           <h2 className="font-semibold">
             Bạn chưa có quyền xem danh sách bài viết
           </h2>
@@ -92,7 +94,7 @@ function RecruiterPosts() {
       ) : (
         <>
           <div className="flex flex-wrap gap-3 rounded-lg border p-4">
-            <div className="relative w-80">
+            <div className="relative w-full sm:w-80">
               <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
               <Input
                 value={filters.search}
@@ -102,7 +104,7 @@ function RecruiterPosts() {
               />
             </div>
             <Select value={filters.status} onValueChange={setStatus}>
-              <SelectTrigger className="w-44">
+              <SelectTrigger className="w-full sm:w-44">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -196,7 +198,7 @@ function RecruiterPosts() {
                 </Table>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-muted-foreground text-sm">
                   Tổng {total} bài viết
                 </p>

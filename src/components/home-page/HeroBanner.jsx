@@ -48,7 +48,7 @@ function HeroBanner({
           </p>
         </div>
 
-        <div className="bg-card text-foreground mx-auto flex max-w-5xl flex-col gap-2 rounded-3xl p-2 shadow-xl md:flex-row md:items-center">
+        <div className="bg-card text-foreground mx-auto flex max-w-5xl flex-col gap-2 rounded-xl p-2 shadow-xl md:flex-row md:items-center md:rounded-3xl">
           <Button
             type="button"
             variant="outline"

@@ -42,7 +42,7 @@ function ChatArea({
   );
 
   return (
-    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl">
+    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-2xl md:rounded-4xl">
       {header}
       <ChatMessages
         messages={messages}

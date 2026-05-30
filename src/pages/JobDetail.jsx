@@ -113,7 +113,7 @@ function JobDetail() {
                             <h3 className="text-foreground mb-2 font-bold">
                               Yêu cầu ứng viên
                             </h3>
-                            <div className="grid grid-cols-2 gap-2.5">
+                            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                               {requirements.map((requirement, index) => (
                                 <article
                                   key={index}
@@ -138,7 +138,7 @@ function JobDetail() {
                             <h3 className="text-foreground mb-2 font-bold">
                               Quyền lợi
                             </h3>
-                            <div className="grid grid-cols-2 gap-2.5">
+                            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                               {benefits.map((benefit, index) => {
                                 const Icon = benefit.icon;
                                 return (
@@ -188,7 +188,7 @@ function JobDetail() {
                 <h3 className="text-foreground mb-6 text-center font-bold">
                   Bạn thấy độ tin cậy & Rõ ràng của tin tuyển dụng này thế nào?
                 </h3>
-                <div className="mx-auto flex max-w-lg justify-between">
+                <div className="mx-auto grid max-w-lg grid-cols-2 gap-4 sm:flex sm:justify-between">
                   <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
                     <div className="bg-muted rounded-xl p-3">
                       <Frown className="text-muted-foreground size-8" />

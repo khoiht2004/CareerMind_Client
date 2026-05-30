@@ -5,7 +5,7 @@ const STATS = [
 
 function SlidingPanel() {
   return (
-    <div className="bg-foreground text-background relative flex h-full flex-col justify-between overflow-hidden p-10">
+    <div className="bg-foreground text-background relative flex h-full flex-col justify-between overflow-hidden p-6 lg:p-10">
       {/* Decorative shapes */}
       <div className="pointer-events-none absolute inset-0">
         <div className="bg-background/5 absolute -top-16 -right-16 h-72 w-72 rotate-12 rounded-3xl" />
@@ -19,7 +19,7 @@ function SlidingPanel() {
           Smart Recruit Assistants
         </span>
         <div className="space-y-4">
-          <h1 className="text-background text-4xl leading-tight font-black">
+          <h1 className="text-background text-3xl leading-tight font-black lg:text-4xl">
             Kết nối tiềm năng với sự nghiệp xứng tầm.
           </h1>
           <p className="text-background/60 text-sm leading-relaxed">
@@ -32,7 +32,7 @@ function SlidingPanel() {
       {/* Stats */}
       <div className="relative grid grid-cols-2 gap-3">
         {STATS.map(({ value, label }) => (
-          <div key={label} className="bg-background/10 rounded-2xl p-5">
+          <div key={label} className="bg-background/10 rounded-2xl p-4 lg:p-5">
             <p className="text-2xl font-black">{value}</p>
             <p className="text-background/60 mt-1 text-xs font-semibold tracking-wider uppercase">
               {label}

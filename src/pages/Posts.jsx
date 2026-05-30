@@ -5,7 +5,10 @@ import PageContainer from "@/components/shared/PageContainer";
 import Pagination from "@/components/shared/Pagination";
 import PostCard from "@/components/posts/PostCard";
 import { Button } from "@/components/ui/button";
-import { POST_CATEGORY_OPTIONS, POST_HERO_FLOATING_CARDS } from "@/config/constants/post.constant";
+import {
+  POST_CATEGORY_OPTIONS,
+  POST_HERO_FLOATING_CARDS,
+} from "@/config/constants/post.constant";
 import { usePosts } from "@/hooks/usePosts";
 
 function Posts() {
@@ -24,24 +27,27 @@ function Posts() {
 
   return (
     <div className="bg-background">
-      <section className="bg-linear-to-b from-primary/15 to-background pt-8">
+      <section className="from-primary/15 to-background bg-linear-to-b pt-8">
         <PageContainer className="space-y-8">
-          <div className="relative min-h-64 overflow-hidden rounded-lg bg-primary/10 px-6 py-10 text-center">
+          <div className="bg-primary/10 relative min-h-64 overflow-hidden rounded-lg px-4 py-8 text-center sm:px-6 sm:py-10">
             <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-4">
               {POST_HERO_FLOATING_CARDS.map(({ label, icon: Icon }) => (
                 <div
                   key={label}
-                  className="flex items-center gap-2 rounded-lg border bg-background/90 px-4 py-3 text-sm shadow-sm"
+                  className="bg-background/90 flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-3 text-sm shadow-sm sm:w-auto"
                 >
-                  <Icon className="size-4 text-primary" />
+                  <Icon className="text-primary size-4" />
                   {label}
                 </div>
               ))}
             </div>
             <div className="mx-auto mt-10 max-w-3xl">
-              <h1 className="text-4xl font-black text-primary">Cẩm nang nghề nghiệp</h1>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Khám phá thông tin hữu ích liên quan tới nghề nghiệp, kinh nghiệm tìm việc và phát triển bản thân.
+              <h1 className="text-primary text-3xl font-black sm:text-4xl">
+                Cẩm nang nghề nghiệp
+              </h1>
+              <p className="text-muted-foreground mt-3 text-sm">
+                Khám phá thông tin hữu ích liên quan tới nghề nghiệp, kinh
+                nghiệm tìm việc và phát triển bản thân.
               </p>
             </div>
           </div>
@@ -51,7 +57,9 @@ function Posts() {
               {POST_CATEGORY_OPTIONS.map((option) => (
                 <Button
                   key={option.value}
-                  variant={filters.category === option.value ? "default" : "outline"}
+                  variant={
+                    filters.category === option.value ? "default" : "outline"
+                  }
                   size="sm"
                   onClick={() => setCategory(option.value)}
                 >
@@ -81,17 +89,25 @@ function Posts() {
           <>
             {featuredPosts.length ? (
               <section className="space-y-5">
-                <h2 className="text-3xl font-bold">Bài viết nổi bật</h2>
+                <h2 className="text-2xl font-bold sm:text-3xl">
+                  Bài viết nổi bật
+                </h2>
                 <div className="grid gap-5 lg:grid-cols-3">
                   {featuredPosts.map((post, index) => (
-                    <PostCard key={post.id} post={post} featured={index === 0} />
+                    <PostCard
+                      key={post.id}
+                      post={post}
+                      featured={index === 0}
+                    />
                   ))}
                 </div>
               </section>
             ) : null}
 
             <section className="space-y-5">
-              <h2 className="text-3xl font-bold">Bài viết mới nhất</h2>
+              <h2 className="text-2xl font-bold sm:text-3xl">
+                Bài viết mới nhất
+              </h2>
               {remainingPosts.length ? (
                 <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                   {remainingPosts.map((post) => (

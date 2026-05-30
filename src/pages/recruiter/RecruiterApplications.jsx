@@ -75,16 +75,18 @@ function RecruiterApplications() {
   } = useRecruiterApplications();
 
   return (
-    <div className="max-w-full space-y-6 px-10 pt-6">
+    <div className="max-w-full space-y-6 px-4 py-6 sm:px-6 lg:px-10">
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-primary text-4xl font-black">Đơn ứng tuyển</h1>
+          <h1 className="text-primary text-3xl font-black sm:text-4xl">
+            Đơn ứng tuyển
+          </h1>
           <p className="text-muted-foreground mt-1 text-sm">
             Quản lý và sàng lọc hồ sơ ứng viên một cách chuyên nghiệp.
           </p>
         </div>
-        <div className="flex shrink-0 gap-3">
+        <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2">
           {/* Tổng ứng viên */}
           <div className="bg-card border-secondary flex items-center gap-3 rounded-xl border-l-4 px-4 py-3">
             <div className="bg-secondary/10 flex size-9 items-center justify-center rounded-lg">
@@ -115,8 +117,8 @@ function RecruiterApplications() {
       <RecruiterAiAssistant jobs={myJobs} defaultJobId={filters.jobId} />
 
       {/* Filters */}
-      <div className="bg-card flex flex-wrap items-end gap-4 rounded-xl p-4">
-        <div className="min-w-48 flex-1">
+      <div className="bg-card flex flex-col gap-4 rounded-xl p-4 md:flex-row md:flex-wrap md:items-end">
+        <div className="min-w-0 flex-1 md:min-w-48">
           <p className="text-muted-foreground mb-1.5 text-xs font-medium tracking-wider uppercase">
             Lọc theo công việc
           </p>
@@ -137,7 +139,7 @@ function RecruiterApplications() {
             </SelectContent>
           </Select>
         </div>
-        <div className="min-w-44 flex-1">
+        <div className="min-w-0 flex-1 md:min-w-44">
           <p className="text-muted-foreground mb-1.5 text-xs font-medium tracking-wider uppercase">
             Trạng thái
           </p>
@@ -157,7 +159,7 @@ function RecruiterApplications() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Button onClick={handleApply} className="cursor-pointer px-6 py-4">
             <ListFilter className="size-4" />
             Áp dụng
@@ -183,7 +185,7 @@ function RecruiterApplications() {
         </p>
       ) : (
         <>
-          <div className="rounded-lg border">
+          <div className="overflow-x-auto rounded-lg border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -266,7 +268,7 @@ function RecruiterApplications() {
             </Table>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground text-sm">
               Hiển thị {from} - {to} của {total} đơn ứng tuyển
             </p>

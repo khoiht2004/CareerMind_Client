@@ -90,9 +90,9 @@ function ApplicationUpdateDialog({
           className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl"
           showCloseButton={false}
         >
-          <div className="flex min-h-0 flex-1 overflow-hidden">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
             {/* ── Left sidebar ── */}
-            <aside className="bg-muted border-border flex w-64 shrink-0 flex-col gap-4 overflow-y-auto border-r px-5 py-5 [scrollbar-width:thin]">
+            <aside className="bg-muted border-border flex max-h-72 w-full shrink-0 flex-col gap-4 overflow-y-auto border-b px-5 py-5 [scrollbar-width:thin] md:max-h-none md:w-64 md:border-r md:border-b-0">
               {/* Avatar + name */}
               <div className="flex flex-col items-center gap-2 text-center">
                 <div className="relative">
@@ -186,7 +186,7 @@ function ApplicationUpdateDialog({
             </aside>
 
             {/* ── Right panel ── */}
-            <div className="flex-1 space-y-5 overflow-y-auto px-6 py-5 [scrollbar-width:thin]">
+            <div className="flex-1 space-y-5 overflow-y-auto px-4 py-5 [scrollbar-width:thin] sm:px-6">
               {/* Giới thiệu */}
               {bio && (
                 <div>
@@ -211,7 +211,7 @@ function ApplicationUpdateDialog({
               <div className="space-y-4">
                 <div>
                   <SectionLabel>Cập nhật trạng thái</SectionLabel>
-                  <div className="flex gap-2">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
                     {VALID_APP_STATUSES.map((s) => {
                       const cfg = STATUS_CONFIG[s];
                       const Icon = cfg?.icon;
@@ -221,7 +221,7 @@ function ApplicationUpdateDialog({
                           key={s}
                           type="button"
                           onClick={() => onStatusChange(s)}
-                          className={`flex flex-1 cursor-pointer flex-col items-center gap-1 rounded-lg border px-1 py-2.5 text-xs font-medium transition-all ${
+                          className={`flex min-w-0 cursor-pointer flex-col items-center gap-1 rounded-lg border px-1 py-2.5 text-xs font-medium transition-all ${
                             selected
                               ? `${cfg?.className} shadow-sm`
                               : "border-input bg-background text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -289,7 +289,7 @@ function ApplicationUpdateDialog({
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2">
+              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                 <Button
                   variant="outline"
                   onClick={() => onOpenChange(false)}
