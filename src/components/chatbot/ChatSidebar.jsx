@@ -69,6 +69,7 @@ function ChatSidebar({
   onRename,
   onDelete,
   isLoading,
+  showUpgradePro = true,
 }) {
   return (
     <div
@@ -115,19 +116,21 @@ function ChatSidebar({
         )}
       </ScrollArea>
 
-      <div className="p-3">
-        <div className="bg-foreground text-background rounded-xl p-3">
-          <p className="text-background/50 mb-1 text-[10px] font-bold tracking-widest uppercase">
-            Nâng cấp Pro
-          </p>
-          <p className="text-xs leading-snug">
-            Mở khóa phân tích chuyên sâu từ AI Scout.
-          </p>
-          <Button className="mt-3" variant="secondary" asChild>
-            <Link to={path.membership}>Nâng cấp Pro</Link>
-          </Button>
+      {showUpgradePro && (
+        <div className="p-3">
+          <div className="bg-foreground text-background rounded-xl p-3">
+            <p className="text-background/50 mb-1 text-[10px] font-bold tracking-widest uppercase">
+              Nâng cấp Pro
+            </p>
+            <p className="text-xs leading-snug">
+              Mở khóa phân tích chuyên sâu từ AI Scout.
+            </p>
+            <Button className="mt-3" variant="secondary" asChild>
+              <Link to={path.membership}>Nâng cấp Pro</Link>
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

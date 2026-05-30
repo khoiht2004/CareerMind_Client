@@ -7,7 +7,10 @@ export function useAttachmentThumbnail(attachment) {
   const handleOpen = useCallback(() => setPreviewOpen(true), []);
   const handleClose = useCallback(() => setPreviewOpen(false), []);
 
-  const isImage = attachment.category === "image";
+  const isImage =
+    attachment.category === "image" ||
+    attachment.type?.startsWith("image/") ||
+    attachment.mediaType?.startsWith("image/");
 
   const fileConfig = useMemo(
     () => (isImage ? null : (FILE_ICONS[attachment.category] ?? FILE_ICONS.default)),

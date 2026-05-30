@@ -4,8 +4,8 @@ import { toast } from "sonner";
 import {
   useGetSessionsQuery,
   useCreateSessionMutation,
-  useGetMessagesQuery,
-  useSendMessageMutation,
+  useGetChatBotMessagesQuery,
+  useSendChatBotMessageMutation,
   useDeleteSessionMutation,
   useUpdateSessionTitleMutation,
 } from "@/services/chat.service";
@@ -30,10 +30,10 @@ export function useChatBot() {
   const { data: sessionsData, isLoading: sessionsLoading } =
     useGetSessionsQuery();
   const { data: messageData, isLoading: messagesLoading } =
-    useGetMessagesQuery(activeSessionId, { skip: !activeSessionId });
+    useGetChatBotMessagesQuery(activeSessionId, { skip: !activeSessionId });
 
   const [createSession] = useCreateSessionMutation();
-  const [sendMessage] = useSendMessageMutation();
+  const [sendMessage] = useSendChatBotMessageMutation();
   const [deleteSession] = useDeleteSessionMutation();
   const [updateSessionTitle] = useUpdateSessionTitleMutation();
 

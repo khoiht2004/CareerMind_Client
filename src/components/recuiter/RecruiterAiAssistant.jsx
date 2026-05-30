@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useAnalyzeRecruiterCandidatesMutation } from "@/services/chat.service";
-import renderText from "@/components/chatbot/renderText";
+import renderText from "../chat-shared/renderText";
 
 function RecruiterAiAssistant({
   jobs = [],

@@ -16,6 +16,9 @@ export const apiSlice = createApi({
     "Template",
     "Post",
     "Insight",
+    "Notification",
+    "Conversation",
+    "ConversationMessage",
   ],
   endpoints: () => ({}),
 });

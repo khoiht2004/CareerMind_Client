@@ -45,6 +45,13 @@ export default function ChatMessages({
   onSend,
   className,
   suggestedQuestions = true,
+  welcomeTitle = "Xin chào, tôi là AI Scout",
+  welcomeDescription = "Tôi là trợ lý sự nghiệp thông minh của bạn. Hãy bắt đầu cuộc trò chuyện để tối ưu hóa tương lai của bạn.",
+  welcomeIcon = Bot,
+  showBotAvatar = true,
+  partnerAvatar = null,
+  userAvatar = null,
+  isAiChat = false,
 }) {
   const bottomRef = useRef(null);
 
@@ -53,9 +60,10 @@ export default function ChatMessages({
   }, [messages, isSending, pendingMessage]);
 
   const isEmpty = messages.length === 0 && !pendingMessage;
+  const WelcomeIcon = welcomeIcon;
 
   return (
-    <ScrollArea className={cn("min-h-0 flex-1 px-6", className)}>
+    <ScrollArea className={cn("min-h-0 flex-1 px-6 pt-3", className)}>
       <div className="max-w-full space-y-4">
         {isLoading ? (
           <div className="flex justify-center py-8">
@@ -64,13 +72,12 @@ export default function ChatMessages({
         ) : isEmpty ? (
           <div className="flex flex-col items-center justify-center gap-6 py-12 text-center">
             <div className="bg-foreground text-background flex size-24 items-center justify-center rounded-3xl shadow-lg">
-              <Bot className="size-12" />
+              <WelcomeIcon className="size-12" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold">Xin chào, tôi là AI Scout</h2>
+              <h2 className="text-2xl font-bold">{welcomeTitle}</h2>
               <p className="text-muted-foreground mx-auto max-w-sm text-sm leading-relaxed">
-                Tôi là trợ lý sự nghiệp thông minh của bạn. Hãy bắt đầu cuộc trò
-                chuyện để tối ưu hóa tương lai của bạn.
+                {welcomeDescription}
               </p>
             </div>
             {suggestedQuestions && (
@@ -100,7 +107,14 @@ export default function ChatMessages({
         ) : (
           <>
             {messages.map((msg) => (
-              <MessageBubble key={msg.id} message={msg} />
+              <MessageBubble
+                key={msg.id}
+                message={msg}
+                showBotAvatar={showBotAvatar}
+                partnerAvatar={partnerAvatar}
+                userAvatar={userAvatar}
+                isAiChat={isAiChat}
+              />
             ))}
             {pendingMessage && (
               <MessageBubble
@@ -110,6 +124,10 @@ export default function ChatMessages({
                   images: pendingMessage.attachments,
                   createdAt: new Date().toISOString(),
                 }}
+                showBotAvatar={showBotAvatar}
+                partnerAvatar={partnerAvatar}
+                userAvatar={userAvatar}
+                isAiChat={isAiChat}
               />
             )}
           </>
@@ -117,9 +135,21 @@ export default function ChatMessages({
 
         {isSending && (
           <div className="flex gap-2">
-            <div className="bg-muted flex size-8 shrink-0 items-center justify-center rounded-full">
-              <Bot className="size-4" />
-            </div>
+            {showBotAvatar && (
+              <div className="bg-muted flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 text-slate-700">
+                {isAiChat ? (
+                  <Bot className="size-4" />
+                ) : partnerAvatar ? (
+                  <img
+                    src={partnerAvatar}
+                    alt="Partner avatar"
+                    className="h-full w-full rounded-full object-cover"
+                  />
+                ) : (
+                  <Bot className="size-4" />
+                )}
+              </div>
+            )}
             <div className="bg-muted flex h-[38px] min-w-[56px] items-center justify-center rounded-2xl rounded-tl-sm px-4 py-2">
               <div className="flex items-center gap-1.5 pt-1.5">
                 <div

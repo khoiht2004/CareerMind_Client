@@ -3,8 +3,8 @@ import { Bot, ChevronDown, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import renderText from "@/components/chatbot/renderText";
 import { useAnalyzeCandidateJobFitMutation } from "@/services/chat.service";
+import renderText from "../chat-shared/renderText";
 
 function CandidateJobAiAssistant({ jobId }) {
   const [result, setResult] = useState("");

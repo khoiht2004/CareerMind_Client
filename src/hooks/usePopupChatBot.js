@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import {
   useCreateSessionMutation,
-  useGetMessagesQuery,
-  useSendMessageMutation,
+  useGetChatBotMessagesQuery,
+  useSendChatBotMessageMutation,
   useDeleteSessionMutation,
 } from "@/services/chat.service";
 
@@ -23,10 +23,10 @@ export function usePopupChatBot() {
     isLoading: messagesLoading,
     isError: messagesError,
     error: messagesErrorObj,
-  } = useGetMessagesQuery(activeSessionId, { skip: !activeSessionId });
+  } = useGetChatBotMessagesQuery(activeSessionId, { skip: !activeSessionId });
 
   const [createSession] = useCreateSessionMutation();
-  const [sendMessage] = useSendMessageMutation();
+  const [sendMessage] = useSendChatBotMessageMutation();
   const [deleteSession] = useDeleteSessionMutation();
 
   const messages = useMemo(

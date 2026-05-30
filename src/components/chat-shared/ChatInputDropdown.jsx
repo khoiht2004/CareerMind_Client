@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-function ChatInputDropdown({ hasActiveSession, triggerFileInput }) {
+function ChatInputDropdown({ hasActiveSession, triggerFileInput, showAiHelpers = true }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -16,7 +16,7 @@ function ChatInputDropdown({ hasActiveSession, triggerFileInput }) {
           size="icon"
           variant="ghost"
           disabled={!hasActiveSession}
-          className="hover:bg-primary/10 flex size-9 shrink-0 rounded-full"
+          className="hover:bg-primary/10 flex size-9 shrink-0 rounded-full cursor-pointer"
         >
           <Plus className="size-4" />
         </Button>
@@ -29,14 +29,19 @@ function ChatInputDropdown({ hasActiveSession, triggerFileInput }) {
           <ImagePlus className="mr-2 size-4" />
           Thêm ảnh và tệp
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <Globe className="mr-2 size-4" />
-          Nghiên cứu chuyên sâu
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <Sparkles className="mr-2 size-4" />
-          Phân tích và thêm
-        </DropdownMenuItem>
+        
+        {showAiHelpers && (
+          <>
+            <DropdownMenuItem className="cursor-pointer">
+              <Globe className="mr-2 size-4" />
+              Nghiên cứu chuyên sâu
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <Sparkles className="mr-2 size-4" />
+              Phân tích và thêm
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

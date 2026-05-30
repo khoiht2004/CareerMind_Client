@@ -22,6 +22,9 @@ function ChatInput({
   handlePaste,
   removeAttachment,
   footer = true,
+  footerText,
+  placeholder,
+  showAiHelpers = true,
 }) {
   const textareaRef = useRef(null);
 
@@ -53,6 +56,12 @@ function ChatInput({
   const canSend =
     (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
 
+  const resolvedPlaceholder = placeholder
+    ? placeholder
+    : hasActiveSession
+      ? "Nhập câu hỏi của bạn tại đây..."
+      : "Bắt đầu cuộc trò chuyện mới";
+
   return (
     <div className="bg-primary/10 px-4 py-2">
       <div className="relative mx-auto flex max-w-3xl items-end gap-2">
@@ -82,11 +91,7 @@ function ChatInput({
 
           <Textarea
             ref={textareaRef}
-            placeholder={
-              hasActiveSession
-                ? "Nhập câu hỏi của bạn tại đây..."
-                : "Tạo cuộc trò chuyện mới để bắt đầu"
-            }
+            placeholder={resolvedPlaceholder}
             value={input}
             onChange={(e) => onInputChange(e.target.value)}
             onInput={handleResize}
@@ -101,12 +106,13 @@ function ChatInput({
             <ChatInputDropdown
               hasActiveSession={hasActiveSession}
               triggerFileInput={triggerFileInput}
+              showAiHelpers={showAiHelpers}
             />
 
             {/* Send button */}
             <Button
               size="icon"
-              className="flex size-9 shrink-0 rounded-full"
+              className="flex size-9 shrink-0 rounded-full cursor-pointer"
               onClick={onSend}
               disabled={!canSend}
             >
@@ -122,8 +128,13 @@ function ChatInput({
 
       {footer && (
         <p className="text-muted-foreground mt-2 text-center text-xs">
-          <b className="font-bold">AI Scout</b> có thể mắc lỗi. Hãy kiểm tra các
-          thông tin quan trọng.
+          {footerText ? (
+            footerText
+          ) : (
+            <>
+              <b className="font-bold">AI Scout</b> có thể mắc lỗi. Hãy kiểm tra các thông tin quan trọng.
+            </>
+          )}
         </p>
       )}
     </div>
@@ -136,6 +147,7 @@ export default memo(ChatInput, (prev, next) => {
     prev.isSending === next.isSending &&
     prev.hasActiveSession === next.hasActiveSession &&
     prev.attachments.length === next.attachments.length &&
-    prev.attachments === next.attachments
+    prev.attachments === next.attachments &&
+    prev.showAiHelpers === next.showAiHelpers
   );
 });

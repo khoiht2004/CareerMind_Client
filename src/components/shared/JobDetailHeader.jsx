@@ -97,6 +97,17 @@ function JobDetailHeader({
                 </Link>
               )}
             </Button>
+            {job.postedBy?.id && (
+              <Button
+                size="lg"
+                asChild
+                className="border-primary bg-primary/20 hover:text-accent text-primary cursor-pointer gap-2 rounded-lg border px-6 font-bold"
+              >
+                <Link to="/conversations" state={{ posterId: job.postedBy.id }}>
+                  Trò chuyện với Nhà tuyển dụng
+                </Link>
+              </Button>
+            )}
             <Button
               variant="outline"
               size="lg"

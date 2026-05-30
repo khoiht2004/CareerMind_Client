@@ -7,14 +7,15 @@ import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
 import AppFooter from "@/components/shared/AppFooter";
 import ChatBotPopup from "@/components/chatbot/ChatBotPopup";
+import { SocketProvider } from "@/contexts/SocketContext";
 
 function LayoutContent() {
   const location = useLocation();
 
   const hideFooter =
-    location.pathname === path.profile || location.pathname === path.chatbot;
+    location.pathname === path.profile || location.pathname === path.chatbot || location.pathname === path.conversations;
 
-  const isChatbotPage = location.pathname === path.chatbot;
+  const isChatbotPage = location.pathname === path.chatbot || location.pathname === path.conversations;
 
   // Scroll to top on every route change + close mobile sidebar
   useEffect(() => {
@@ -53,7 +54,11 @@ function PrivateLayout() {
     return <Navigate to={path.auth + "?tab=login"} replace />;
   }
 
-  return <LayoutContent />;
+  return (
+    <SocketProvider>
+      <LayoutContent />
+    </SocketProvider>
+  );
 }
 
 export default PrivateLayout;

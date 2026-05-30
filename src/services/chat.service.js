@@ -10,11 +10,11 @@ export const chatService = apiSlice.injectEndpoints({
       query: (body = {}) => ({ url: "/chat/sessions", method: "POST", body }),
       invalidatesTags: [{ type: "Chat", id: "LIST" }],
     }),
-    getMessages: builder.query({
+    getChatBotMessages: builder.query({
       query: (sessionId) => `/chat/sessions/${sessionId}`,
       providesTags: (result, error, id) => [{ type: "Chat", id }],
     }),
-    sendMessage: builder.mutation({
+    sendChatBotMessage: builder.mutation({
       query: ({ sessionId, content, attachments }) => {
         const cleanAttachments = (attachments ?? []).map(({ data, mediaType, name, category }) => ({
           data,
@@ -76,8 +76,8 @@ export const chatService = apiSlice.injectEndpoints({
 export const {
   useGetSessionsQuery,
   useCreateSessionMutation,
-  useGetMessagesQuery,
-  useSendMessageMutation,
+  useGetChatBotMessagesQuery,
+  useSendChatBotMessageMutation,
   useUpdateSessionTitleMutation,
   useDeleteSessionMutation,
   useGenerateCoverLetterMutation,

@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import {
-  Bell,
   ChevronDown,
   LogOut,
   MessageCircleMore,
@@ -21,7 +20,10 @@ import handleLogout from "@/hooks/useLogout";
 import UserMenuIconButton from "./user-menu/UserMenuIconButton";
 import UserMenuSection from "./user-menu/UserMenuSection";
 import UserSummary from "./user-menu/UserSummary";
+import NotificationDropdown from "./NotificationDropdown";
 import { path } from "@/config/path";
+import { useGetUnreadCountQuery } from "@/services/conversation.service";
+import { useSocket } from "@/contexts/SocketContext";
 
 const INDEPENDENT_COUNT = 2;
 
@@ -46,6 +48,27 @@ function UserMenu() {
 
   const [openIndependent, setOpenIndependent] = useState(new Set());
   const [openExclusive, setOpenExclusive] = useState(null);
+
+  const { data: unreadData, refetch: refetchUnread } = useGetUnreadCountQuery(undefined, {
+    skip: !user,
+  });
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (!socket || !user) return;
+
+    const handleNewMessage = () => {
+      refetchUnread();
+    };
+
+    socket.on("chat:new_message", handleNewMessage);
+    socket.on("chat:message_received", handleNewMessage); // also listen to incoming message in any active chat
+
+    return () => {
+      socket.off("chat:new_message", handleNewMessage);
+      socket.off("chat:message_received", handleNewMessage);
+    };
+  }, [socket, user, refetchUnread]);
 
   if (!user) return null;
 
@@ -73,11 +96,12 @@ function UserMenu() {
 
   return (
     <div className="flex items-center gap-2">
-      <UserMenuIconButton icon={Bell} label="Thông báo" />
+      <NotificationDropdown />
       <UserMenuIconButton
         icon={MessageCircleMore}
         label="Tin nhắn"
-        toPath={path.chatbot}
+        toPath={path.conversations}
+        showBadge={unreadData?.data?.unreadCount > 0 || unreadData?.unreadCount > 0}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="relative">

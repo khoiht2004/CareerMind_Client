@@ -30,6 +30,7 @@ const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
 const Apply = lazy(() => import("@/pages/Apply"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const ChatBot = lazy(() => import("@/pages/ChatBot"));
+const Conversations = lazy(() => import("@/pages/Conversations"));
 const ApplicationDetail = lazy(() => import("@/pages/ApplicationDetail"));
 const SavedJobs = lazy(() => import("@/pages/SavedJobs"));
 
@@ -93,6 +94,7 @@ function App() {
             <Route path={path.apply} element={<Apply />} />
             <Route path={path.profile} element={<Profile />} />
             <Route path={path.chatbot} element={<ChatBot />} />
+            <Route path={path.conversations} element={<Conversations />} />
             <Route
               path={path.applicationDetail}
               element={<ApplicationDetail />}

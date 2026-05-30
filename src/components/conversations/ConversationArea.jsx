@@ -3,7 +3,7 @@ import ChatInput from "@/components/chat-shared/ChatInput";
 import ChatMessages from "@/components/chat-shared/ChatMessages";
 import { useAttachments } from "@/hooks/useAttachments";
 
-function ChatArea({
+function ConversationArea({
   messages,
   pendingMessage,
   input,
@@ -16,11 +16,11 @@ function ChatArea({
   welcomeTitle,
   welcomeDescription,
   welcomeIcon,
-  suggestedQuestions,
-  showAiHelpers = true,
   showBotAvatar = true,
   footerText,
   placeholder,
+  partnerAvatar = null,
+  userAvatar = null,
 }) {
   const {
     attachments,
@@ -41,7 +41,7 @@ function ChatArea({
   );
 
   return (
-    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl">
+    <div className="bg-card flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-4xl border border-slate-150 shadow-sm">
       {header}
       <ChatMessages
         messages={messages}
@@ -53,9 +53,11 @@ function ChatArea({
         welcomeTitle={welcomeTitle}
         welcomeDescription={welcomeDescription}
         welcomeIcon={welcomeIcon}
-        suggestedQuestions={suggestedQuestions}
+        suggestedQuestions={false}
         showBotAvatar={showBotAvatar}
-        isAiChat={true}
+        partnerAvatar={partnerAvatar}
+        userAvatar={userAvatar}
+        isAiChat={false}
       />
 
       {/* Input area */}
@@ -71,7 +73,7 @@ function ChatArea({
         handleFileInputChange={handleFileInputChange}
         handlePaste={handlePaste}
         removeAttachment={removeAttachment}
-        showAiHelpers={showAiHelpers}
+        showAiHelpers={false}
         footerText={footerText}
         placeholder={placeholder}
       />
@@ -79,4 +81,4 @@ function ChatArea({
   );
 }
 
-export default memo(ChatArea);
+export default memo(ConversationArea);
