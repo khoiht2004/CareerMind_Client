@@ -287,7 +287,7 @@ function MembershipPage() {
       <section className="mx-auto max-w-3xl space-y-6 px-4 text-center sm:px-6">
         <div className="bg-primary/10 text-primary mx-auto flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold">
           <Zap className="size-4" />
-          AI Scout Pricing
+          MindScout Pricing
         </div>
         <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
           Bảng giá dịch vụ
@@ -311,14 +311,16 @@ function MembershipPage() {
       {/* ── Comparison table ── */}
       <section className="mx-auto max-w-5xl space-y-10 px-4 sm:px-6">
         <div className="space-y-2 text-center">
-          <h2 className="text-2xl font-black sm:text-3xl">So sánh tính năng chi tiết</h2>
+          <h2 className="text-2xl font-black sm:text-3xl">
+            So sánh tính năng chi tiết
+          </h2>
           <p className="text-muted-foreground">
             Phân tích sâu hơn để tìm ra gói dịch vụ phù hợp nhất với bạn
           </p>
         </div>
 
         <div className="overflow-x-auto rounded-2xl border">
-          <table className="min-w-[720px] w-full text-sm">
+          <table className="w-full min-w-[720px] text-sm">
             <thead>
               <tr className="bg-muted/40">
                 <th className="p-4 text-left font-semibold">Tính năng</th>
@@ -358,7 +360,9 @@ function MembershipPage() {
       {/* ── FAQ ── */}
       <section className="mx-auto max-w-2xl space-y-8 px-4 sm:px-6">
         <div className="space-y-2 text-center">
-          <h2 className="text-2xl font-black sm:text-3xl">Câu hỏi thường gặp</h2>
+          <h2 className="text-2xl font-black sm:text-3xl">
+            Câu hỏi thường gặp
+          </h2>
         </div>
         <div>
           {FAQ_ITEMS.map((item) => (

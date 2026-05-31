@@ -45,7 +45,7 @@ export default function ChatMessages({
   onSend,
   className,
   suggestedQuestions = true,
-  welcomeTitle = "Xin chào, tôi là AI Scout",
+  welcomeTitle = "Xin chào, tôi là MindScout",
   welcomeDescription = "Tôi là trợ lý sự nghiệp thông minh của bạn. Hãy bắt đầu cuộc trò chuyện để tối ưu hóa tương lai của bạn.",
   welcomeIcon = Bot,
   showBotAvatar = true,

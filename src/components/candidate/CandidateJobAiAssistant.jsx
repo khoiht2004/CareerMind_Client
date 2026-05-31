@@ -28,7 +28,7 @@ function CandidateJobAiAssistant({ jobId }) {
       <CardHeader className="flex items-center justify-between">
         <CardTitle className="text-primary flex items-center gap-2 text-lg font-bold">
           <Bot className="size-5" />
-          AI phân tích độ phù hợp
+          MindScout phân tích độ phù hợp
         </CardTitle>
 
         <div>

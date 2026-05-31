@@ -43,14 +43,14 @@ function ChatBotFab({ open, onToggle }) {
         <TooltipTrigger asChild>
           <Button
             size="icon"
-            aria-label={open ? "Đóng AI Scout" : "Mở AI Scout"}
+            aria-label={open ? "Đóng MindScout" : "Mở MindScout"}
             className="bg-primary hover:bg-primary/90 size-14 rounded-full shadow-lg transition-transform hover:-translate-y-1"
             onClick={onToggle}
           >
             <StickyNotes className="text-primary-foreground size-7" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="left">AI Scout</TooltipContent>
+        <TooltipContent side="left">MindScout</TooltipContent>
       </Tooltip>
     </div>
   );

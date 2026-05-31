@@ -18,7 +18,7 @@ function SeoContentSection() {
         </div>
 
         <h2 className="text-foreground mt-8 mb-5 text-xl font-bold">
-          Từ khoá tìm việc làm phổ biến tại TopCV
+          Từ khoá tìm việc làm phổ biến tại CareerMind
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {POPULAR_KEYWORD_COLUMNS.map((column) => (

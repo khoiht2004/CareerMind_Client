@@ -5,12 +5,12 @@ function HomeSectionHeader({ title, showAll = true }) {
   return (
     <div className="mb-4 flex items-center justify-between gap-4">
       <div className="flex items-center gap-3">
-        <h2 className="text-2xl font-bold text-primary">{title}</h2>
+        <h2 className="text-primary text-2xl font-bold">{title}</h2>
         <div className="text-muted-foreground hidden items-center gap-1 border-l pl-3 text-xs font-bold sm:flex">
-          <span className="grid size-6 place-items-center rounded-full border-2 border-primary text-primary">
+          <span className="border-primary text-primary grid size-6 place-items-center rounded-full border-2">
             AI
           </span>
-          Đề xuất bởi TOPPYAI
+          Đề xuất bởi MindScoutAI
         </div>
       </div>
       <div className="flex items-center gap-2">

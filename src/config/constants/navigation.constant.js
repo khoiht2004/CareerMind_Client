@@ -105,7 +105,7 @@ const toolMenu = {
     {
       title: "Công cụ",
       items: [
-        { label: "AI Scout", to: path.chatbot, icon: Bot },
+        { label: "MindScout", to: path.chatbot, icon: Bot },
         {
           label: "Phân tích hồ sơ",
           to: profileTabPath("insights"),
@@ -138,7 +138,7 @@ const careerMenu = {
       title: "Bài viết nổi bật",
       items: [
         {
-          label: "TopCV Pro - Không gian tuyển dụng chuyên biệt",
+          label: "CareerMind Pro - Không gian tuyển dụng chuyên biệt",
           description:
             "Cập nhật các xu hướng tuyển dụng và xây dựng hồ sơ hiệu quả.",
           to: path.posts,

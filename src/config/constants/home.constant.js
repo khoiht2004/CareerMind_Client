@@ -174,10 +174,10 @@ export const SEO_PARAGRAPHS = [
   {
     title:
       "Cơ hội ứng tuyển việc làm với đãi ngộ hấp dẫn tại các công ty hàng đầu",
-    body: "Trước sự phát triển vượt bậc của nền kinh tế, rất nhiều ngành nghề trở nên khan hiếm nhân lực hoặc thiếu nhân lực giỏi. TopCV giúp bạn tiếp cận nhanh các tin tuyển dụng chất lượng, rèn luyện bản thân và làm quen với môi trường làm việc chuyên nghiệp.",
+    body: "Trước sự phát triển vượt bậc của nền kinh tế, rất nhiều ngành nghề trở nên khan hiếm nhân lực hoặc thiếu nhân lực giỏi. CareerMind giúp bạn tiếp cận nhanh các tin tuyển dụng chất lượng, rèn luyện bản thân và làm quen với môi trường làm việc chuyên nghiệp.",
   },
   {
-    title: "Vậy tại sao nên tìm việc làm tại TopCV?",
+    title: "Vậy tại sao nên tìm việc làm tại CareerMind?",
     body: "Hệ thống cập nhật hàng ngàn tin tuyển dụng mỗi ngày, gợi ý công việc phù hợp theo hồ sơ và hỗ trợ ứng viên tạo CV đẹp, chuyên nghiệp chỉ trong vài phút.",
   },
   {

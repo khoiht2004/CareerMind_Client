@@ -50,8 +50,8 @@ function HeaderMobileMenu({ pathname, user }) {
       >
         <SheetHeader className="border-border border-b p-4">
           <SheetTitle className="text-left">
-            <span className="text-foreground font-black">top</span>
-            <span className="text-primary font-black">cv</span>
+            <span className="text-foreground font-black">Career</span>
+            <span className="text-primary font-black">Mind</span>
           </SheetTitle>
         </SheetHeader>
 
@@ -137,7 +137,7 @@ function HeaderMobileMenu({ pathname, user }) {
               to={path.membership}
               className="hover:bg-muted flex items-center justify-between rounded-lg border px-3 py-3 text-sm font-bold"
             >
-              TopCV
+              CareerMind
               <Badge className="bg-hot text-hot-foreground rounded-full px-2 text-[10px]">
                 Pro
               </Badge>

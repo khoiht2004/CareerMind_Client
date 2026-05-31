@@ -132,7 +132,7 @@ function ChatInput({
             footerText
           ) : (
             <>
-              <b className="font-bold">AI Scout</b> có thể mắc lỗi. Hãy kiểm tra các thông tin quan trọng.
+              <b className="font-bold">MindScout</b> có thể mắc lỗi. Hãy kiểm tra các thông tin quan trọng.
             </>
           )}
         </p>

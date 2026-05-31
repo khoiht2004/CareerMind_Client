@@ -63,7 +63,7 @@ function RecruiterAiAssistant({
       <CardHeader className={compact ? "pb-3" : undefined}>
         <CardTitle className="text-primary flex items-center gap-2 text-lg font-bold">
           <Bot className="size-5" />
-          AI hỗ trợ sàng lọc ứng viên
+          MindScout hỗ trợ sàng lọc ứng viên
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

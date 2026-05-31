@@ -17,8 +17,8 @@ function HotlineSection() {
         <div className="bg-card overflow-hidden rounded-tr-xl rounded-b-xl p-8">
           <div className="grid items-center gap-8 md:grid-cols-2">
             <div>
-              <h3 className="text-foreground text-3xl font-black">
-                Tìm việc khó đã có TopCV
+              <h3 className="text-foreground text-3xl font-black mb-3">
+                Tìm việc khó đã có CareerMind
               </h3>
               <div className="bg-primary text-primary-foreground mt-6 flex w-fit items-center overflow-hidden rounded-full p-1">
                 <span className="px-5 text-lg font-black">(024) 6680 5588</span>
@@ -30,7 +30,7 @@ function HotlineSection() {
               <p className="text-muted-foreground mt-4 flex items-center gap-2 text-sm">
                 Email hỗ trợ Ứng viên:
                 <Mail className="text-primary size-4" />
-                <span className="text-primary font-bold">hotro@topcv.vn</span>
+                <span className="text-primary font-bold">hotro@careermind.vn</span>
               </p>
             </div>
             <div className="bg-muted/70 text-muted-foreground rounded-xl p-8 text-center">

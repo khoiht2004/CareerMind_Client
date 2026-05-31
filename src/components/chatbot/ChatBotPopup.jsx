@@ -78,7 +78,7 @@ function ChatbotWindow({ open, setOpen }) {
               <Bot className="text-primary text-base" />
             </div>
             <div className="flex flex-col gap-0">
-              <p className="text-sm font-medium">AI Scout</p>
+              <p className="text-sm font-medium">MindScout</p>
               <span className="text-[10px] opacity-80">
                 Hỏi tôi bất cứ điều gì bạn muốn
               </span>

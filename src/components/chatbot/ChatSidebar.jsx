@@ -125,7 +125,7 @@ function ChatSidebar({
               Nâng cấp Pro
             </p>
             <p className="text-xs leading-snug">
-              Mở khóa phân tích chuyên sâu từ AI Scout.
+              Mở khóa phân tích chuyên sâu từ MindScout.
             </p>
             <Button className="mt-3" variant="secondary" asChild>
               <Link to={path.membership}>Nâng cấp Pro</Link>

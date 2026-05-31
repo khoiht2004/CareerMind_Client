@@ -52,8 +52,8 @@ function FooterBrandColumn() {
     <div className="space-y-7">
       <div>
         <div className="text-5xl font-black tracking-tight">
-          <span className="text-foreground">top</span>
-          <span className="text-primary">cv</span>
+          <span className="text-foreground">Career</span>
+          <span className="text-primary">Mind</span>
         </div>
         <p className="text-muted-foreground mt-3 text-sm font-bold">
           Tiếp lợi thế - Nối thành công
@@ -70,7 +70,8 @@ function FooterBrandColumn() {
             </strong>
           </p>
           <p>
-            Email: <strong className="text-foreground">hotro@topcv.vn</strong>
+            Email:{" "}
+            <strong className="text-foreground">hotro@careermind.vn</strong>
           </p>
           <p>
             Zalo hỗ trợ ứng viên:{" "}
@@ -88,7 +89,7 @@ function FooterBrandColumn() {
       </div>
 
       <div>
-        <h3 className="text-foreground mb-3 font-bold">Cộng đồng TopCV</h3>
+        <h3 className="text-foreground mb-3 font-bold">Cộng đồng CareerMind</h3>
         <div className="flex gap-3">
           <SocialButton label="Facebook" shortLabel="f" />
           <SocialButton label="Youtube" shortLabel="▶" />
@@ -104,8 +105,8 @@ function FooterLinks() {
   return (
     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       <section>
-        {/* Về topcv */}
-        <h3 className="text-foreground mb-3 font-bold">Về TopCV</h3>
+        {/* Về CareerMind */}
+        <h3 className="text-foreground mb-3 font-bold">Về CareerMind</h3>
         <div className="text-muted-foreground mb-6 flex flex-col gap-3 text-sm">
           <a href="#">Giới thiệu</a>
           <a href="#">Góc báo chí</a>
@@ -140,7 +141,7 @@ function FooterLinks() {
         <div>
           <h3 className="text-foreground mb-3 font-bold">Khám phá</h3>
           <div className="text-muted-foreground flex flex-col gap-3 text-sm">
-            <a href="#">Ứng dụng di động TopCV</a>
+            <a href="#">Ứng dụng di động CareerMind</a>
             <a href="#">Tính lương Gross-Net</a>
             <a href="#">Tính lãi suất kép</a>
             <a href="#">Lập kế hoạch tiết kiệm</a>
@@ -185,7 +186,7 @@ function QrPlaceholder() {
         alt="QR"
         className="bg-card mx-auto rounded-md p-2 shadow-sm"
       />
-      <p className="text-primary mt-2 text-xs font-bold">topcv.com.vn</p>
+      <p className="text-primary mt-2 text-xs font-bold">careermind.com.vn</p>
     </div>
   );
 }
@@ -198,7 +199,7 @@ function CompanyInfo() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 lg:grid-cols-[1fr_auto]">
         <div>
           <h2 className="text-foreground mb-5 text-2xl font-bold">
-            Công ty Cổ phần TopCV Việt Nam
+            Công ty Cổ phần CareerMind Việt Nam
           </h2>
           <div className="text-muted-foreground space-y-3 text-sm">
             {FOOTER_COMPANY_LINES.map((line, index) => {
@@ -213,7 +214,7 @@ function CompanyInfo() {
           </div>
 
           <h3 className="text-foreground mt-7 mb-4 font-bold">
-            Hệ sinh thái HR Tech của TopCV
+            Hệ sinh thái HR Tech của CareerMind
           </h3>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {FOOTER_ECOSYSTEM.map((item) => (

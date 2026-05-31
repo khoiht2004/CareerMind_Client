@@ -1,30 +1,14 @@
 import {
   Clock,
   XCircle,
-  Compass,
-  BotMessageSquare,
-  User,
-  BookmarkCheck,
   Eye,
   MessagesSquare,
   CircleCheck,
   Bell,
   Lock,
   Shield,
-  LogOut,
-  Headset,
   FileEdit,
-  Building2,
 } from "lucide-react";
-import { path } from "../path";
-
-export const CANDIDATE_NAV_ITEMS = [
-  { to: path.home, icon: Compass, label: "Khám phá", end: true },
-  { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
-  { to: path.companies, icon: Building2, label: "Công ty" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
-  { to: path.profile, icon: User, label: "Hồ sơ" },
-];
 
 export const INDUSTRY_OPTIONS = [
   { label: "Tất cả ngành nghề", value: "ALL" },
@@ -129,12 +113,6 @@ export const LOCATION_OPTIONS = [
   { label: "Remote", value: "Remote" },
 ];
 
-export const EXP_LEVEL_OPTIONS = [
-  { label: "Mới đi làm", value: "ENTRY" },
-  { label: "Trung cấp / Cao cấp", value: "MID_SENIOR" },
-  { label: "Giám đốc", value: "DIRECTOR" },
-];
-
 export const JOB_SORT_OPTIONS = [
   { label: "Mới nhất", value: "newest" },
   { label: "Cũ nhất", value: "oldest" },
@@ -170,11 +148,4 @@ export const AI_INTEREST_OPTIONS = [
   "Quản trị Dự án",
   "Data Science",
   "Sales & Business",
-];
-
-export const AI_LOCATION_OPTIONS = [
-  "TP. Hồ Chí Minh",
-  "Hà Nội",
-  "Đà Nẵng",
-  "Từ xa",
 ];

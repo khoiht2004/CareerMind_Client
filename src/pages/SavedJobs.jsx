@@ -116,7 +116,7 @@ function SavedJobs() {
                   Bắt Ngay Công Việc!
                 </h3>
                 <p className="text-primary-foreground/80 mb-6 text-sm">
-                  Chuyên gia của TopCV sẵn sàng hỗ trợ bạn.
+                  Chuyên gia của CareerMind sẵn sàng hỗ trợ bạn.
                 </p>
                 <Button className="text-primary bg-card hover:bg-muted w-max rounded-full border-none font-bold">
                   Tạo CV Ngay

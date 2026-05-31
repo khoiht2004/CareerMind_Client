@@ -39,7 +39,7 @@ function HeaderNav({ pathname }) {
         to={path.membership}
         className="hover:text-primary text-foreground flex h-full items-center gap-1 px-2 text-xs font-bold xl:gap-1.5 xl:px-3 xl:text-sm"
       >
-        TopCV
+        CareerMind
         <Badge className="bg-hot text-hot-foreground rounded-full px-2 text-[10px]">
           Pro
         </Badge>

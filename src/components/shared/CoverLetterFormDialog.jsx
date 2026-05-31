@@ -63,7 +63,7 @@ function CoverLetterFormDialog({
                 disabled={isGeneratingCL}
               >
                 <Sparkles className="size-3.5" fill="currentColor" />
-                {isGeneratingCL ? "Đang tạo..." : "Tối ưu bằng AI Scout"}
+                {isGeneratingCL ? "Đang tạo..." : "Tối ưu bằng MindScout"}
               </Button>
             </div>
             <Textarea

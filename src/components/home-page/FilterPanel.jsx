@@ -4,7 +4,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
   JOB_TYPE_OPTIONS,
-  EXP_LEVEL_OPTIONS,
   INDUSTRY_OPTIONS,
   SALARY_OPTIONS,
 } from "@/config/constants/candidate.constant";
@@ -85,13 +84,6 @@ function FilterPanel({
         activeValue={typeFilter}
         onToggle={onTypeChange}
       />
-
-      {/* <FilterSection
-        title="Kinh nghiệm "
-        options={EXP_LEVEL_OPTIONS}
-        activeValue={levelFilter}
-        onToggle={onLevelChange}
-      /> */}
 
       <FilterSection
         title="Mức lương"

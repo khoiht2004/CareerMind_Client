@@ -178,7 +178,10 @@ function Apply() {
                     )}
                   </button>
                 </PopoverTrigger>
-                <PopoverContent align="start" className="w-[calc(100vw-2rem)] max-w-80 p-2">
+                <PopoverContent
+                  align="start"
+                  className="w-[calc(100vw-2rem)] max-w-80 p-2"
+                >
                   <p className="text-muted-foreground mb-2 px-2 text-xs font-semibold tracking-wider uppercase">
                     Chọn từ thư viện CV
                   </p>
@@ -283,7 +286,10 @@ function Apply() {
                       Dùng thư có sẵn
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent align="end" className="w-[calc(100vw-2rem)] max-w-80 p-2">
+                  <PopoverContent
+                    align="end"
+                    className="w-[calc(100vw-2rem)] max-w-80 p-2"
+                  >
                     <p className="text-muted-foreground mb-2 px-1 text-xs font-medium">
                       Chọn thư giới thiệu
                     </p>
@@ -319,7 +325,7 @@ function Apply() {
                 disabled={isGeneratingCL}
               >
                 <Sparkles className="size-3.5" fill="currentColor" />
-                {isGeneratingCL ? "Đang tạo..." : "Tối ưu bằng AI Scout"}
+                {isGeneratingCL ? "Đang tạo..." : "Tối ưu bằng MindScout"}
               </Button>
             </div>
           </div>

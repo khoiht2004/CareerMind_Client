@@ -140,7 +140,7 @@ function JobDetailSidebar({ job, id, typeLabel }) {
         </CardContent>
       </Card>
 
-      {/* AI Scout */}
+      {/* MindScout */}
       <Card className="from-chart-1 to-chart-2 text-primary-foreground overflow-hidden rounded-xl bg-linear-to-r shadow-sm">
         <CardContent className="space-y-3 p-5">
           <div className="flex items-center gap-3">
@@ -148,9 +148,9 @@ function JobDetailSidebar({ job, id, typeLabel }) {
               <Bot className="text-primary-foreground size-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold">AI Scout</p>
+              <p className="text-sm font-semibold">MindScout</p>
               <p className="text-primary-foreground/70 text-xs">
-                Trợ lý tuyển dụng
+                Trợ lý tuyển dụng thông minh
               </p>
             </div>
           </div>
