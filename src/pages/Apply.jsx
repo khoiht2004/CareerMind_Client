@@ -148,7 +148,7 @@ function Apply() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* CV chính */}
             <div>
-              <FieldLabel>CV Chính thức (Bắt buộc)</FieldLabel>
+              <FieldLabel>CV Chính thức (Tùy chọn)</FieldLabel>
               <Popover open={cvPickerOpen} onOpenChange={setCvPickerOpen}>
                 <PopoverTrigger asChild>
                   <button

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import {
   APPLICATION_STATUS_LABELS,
   STATUS_CONFIG,
@@ -90,6 +90,10 @@ function ApplicationUpdateDialog({
           className="flex max-h-[92vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-4xl"
           showCloseButton={false}
         >
+          <DialogTitle className="sr-only">Cập nhật đơn ứng tuyển</DialogTitle>
+          <DialogDescription className="sr-only">
+            Xem thông tin chi tiết hồ sơ ứng viên và cập nhật trạng thái tuyển dụng.
+          </DialogDescription>
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
             {/* ── Left sidebar ── */}
             <aside className="bg-muted border-border flex max-h-72 w-full shrink-0 flex-col gap-4 overflow-y-auto border-b px-5 py-5 [scrollbar-width:thin] md:max-h-none md:w-64 md:border-r md:border-b-0">

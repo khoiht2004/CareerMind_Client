@@ -31,11 +31,15 @@ function AvatarCard({
             {/* Avatar */}
             <div className="relative shrink-0">
               <Avatar
-                className="border-border size-28 cursor-pointer border-3 text-2xl"
+                className="border-border size-28 cursor-pointer overflow-hidden rounded-2xl border-3 text-2xl"
                 onClick={handleOpen}
               >
-                <AvatarImage src={profile?.avatarUrl} loading="lazy" />
-                <AvatarFallback className="text-2xl font-bold">
+                <AvatarImage
+                  src={profile?.avatarUrl}
+                  loading="lazy"
+                  className={`rounded-none`}
+                />
+                <AvatarFallback className="rounded-none border-none text-2xl font-bold">
                   {profile?.fullName?.[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -46,7 +50,7 @@ function AvatarCard({
                   variant="outline"
                   disabled={isDeleting}
                   onClick={onDeleteDialogOpen}
-                  className="absolute -top-1 -right-1 size-6 cursor-pointer rounded-full"
+                  className="hover:text-destructive hover:border-destructive hover:bg-destructive/20 absolute -top-1 -right-1 size-6 cursor-pointer rounded-full"
                 >
                   <X className="size-3" />
                 </Button>
@@ -54,7 +58,7 @@ function AvatarCard({
 
               <Button
                 disabled={isUploading}
-                className="bg-primary text-primary-foreground absolute -right-1 -bottom-1 size-8 rounded-full shadow-sm"
+                className="bg-primary text-primary-foreground hover:border-primary hover:bg-primary-foreground hover:text-primary absolute -right-1 -bottom-1 size-8 rounded-full shadow-sm"
                 size="icon"
               >
                 <label htmlFor="avatar-file-input" className="cursor-pointer">

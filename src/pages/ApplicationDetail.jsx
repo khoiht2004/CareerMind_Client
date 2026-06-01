@@ -78,9 +78,12 @@ function ApplicationDetail() {
     coverLetter,
     note,
     user,
-    interviewDate,
-    interviewTime,
+    interview,
+    jobOffer,
   } = application;
+
+  const interviewDate = interview?.interviewDate;
+  const interviewTime = interview?.interviewTime;
 
   const typeConfig =
     FILE_TYPE_CONFIG[application?.cv?.fileType?.toLowerCase()] ??

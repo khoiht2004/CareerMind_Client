@@ -32,20 +32,20 @@ export function useApplicationUpdate() {
     setNote(app.note ?? "");
     setSendEmail(true);
     setInterviewFields({
-      interviewDate: toDateStr(app.interviewDate),
-      interviewTime: app.interviewTime || "08:00",
-      interviewFormat: app.interviewFormat || "",
-      interviewLocation: app.interviewLocation || "",
+      interviewDate: toDateStr(app.interview?.interviewDate),
+      interviewTime: app.interview?.interviewTime || "08:00",
+      interviewFormat: app.interview?.interviewFormat || "",
+      interviewLocation: app.interview?.interviewLocation || "",
       confirmDeadline:
-        toDateStr(app.confirmDeadline) ||
+        toDateStr(app.interview?.confirmDeadline) ||
         new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
           .toISOString()
           .slice(0, 10),
     });
     setAcceptedFields({
-      startDate: toDateStr(app.startDate),
-      startTime: app.startTime || "08:00",
-      officeAddress: app.officeAddress || "",
+      startDate: toDateStr(app.jobOffer?.startDate),
+      startTime: app.jobOffer?.startTime || "08:00",
+      officeAddress: app.jobOffer?.officeAddress || "",
     });
   };
 

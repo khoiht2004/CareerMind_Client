@@ -1,5 +1,4 @@
 import { memo, useState, useEffect } from "react";
-import { Link } from "react-router";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatRelativeTime, formatDate } from "@/utils/helper";
@@ -7,6 +6,7 @@ import {
   useSaveJobMutation,
   useUnsaveJobMutation,
 } from "@/services/job.service";
+import { useCheckAppliedQuery } from "@/services/application.service";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
@@ -17,6 +17,9 @@ function CardVariant({ job, isSaved: initialIsSaved }) {
   const companyName = company?.name ?? company ?? "Công ty đang tuyển";
   const logoUrl = company?.logoUrl;
   const { user } = useSelector((state) => state.auth);
+
+  const { data: appliedData } = useCheckAppliedQuery(id, { skip: !user });
+  const hasApplied = appliedData?.data?.applied ?? false;
 
   const [isSaved, setIsSaved] = useState(initialIsSaved);
 
@@ -114,13 +117,14 @@ function CardVariant({ job, isSaved: initialIsSaved }) {
                 : "Mới cập nhật"}
           </div>
           {/* Actione */}
-          <div className="flex items-center gap-2">
+          <div className="mt-3 flex items-center gap-2">
             <Button
               size="sm"
               onClick={handleApply}
+              disabled={hasApplied}
               className="border-primary text-primary hover:bg-primary hover:text-primary-foreground h-9 rounded-md bg-transparent px-4 font-semibold"
             >
-              Ứng tuyển
+              {hasApplied ? "Đã ứng tuyển" : "Ứng tuyển"}
             </Button>
             <Button
               size="icon"

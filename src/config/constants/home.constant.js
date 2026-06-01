@@ -114,7 +114,7 @@ export const HOME_BANNER_SLIDES = [
   },
   {
     title: "Slide 5",
-    subtitle: "Tối ưu hóa CV chuẩn ATS cùng SRA",
+    subtitle: "Tối ưu hóa CV chuẩn ATS cùng CareerMind",
     className: "from-secondary-container via-primary-container to-primary",
   },
   {

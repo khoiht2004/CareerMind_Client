@@ -8,7 +8,7 @@ import {
   FileUser,
   ChartNoAxesCombined,
 } from "lucide-react";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MyProfile from "@/components/profileTabs/MyProfile";
 import MyApplications from "@/components/profileTabs/MyApplications";
@@ -20,7 +20,12 @@ import MySettings from "@/components/profileTabs/MySettings";
 import { PROFILE_TABS } from "@/config/constants/candidate.constant";
 import { cn } from "@/lib/utils";
 
-const RECRUITER_HIDDEN_TABS = new Set(["applications", "cv", "cover-letter", "insights"]);
+// const RECRUITER_HIDDEN_TABS = new Set([
+//   "applications",
+//   "cv",
+//   "cover-letter",
+//   "insights",
+// ]);
 
 const TAB_ICONS = {
   profile: User,
@@ -44,13 +49,13 @@ const TAB_CONTENT = {
 
 function Profile() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { user } = useSelector((state) => state.auth);
   const activeTab = searchParams.get("tab") ?? "profile";
 
-  const visibleTabs =
-    user?.role === "RECRUITER"
-      ? PROFILE_TABS.filter((t) => !RECRUITER_HIDDEN_TABS.has(t.key))
-      : PROFILE_TABS;
+  // const { user } = useSelector((state) => state.auth);
+  // const visibleTabs =
+  //   user?.role === "RECRUITER"
+  //     ? PROFILE_TABS.filter((t) => !RECRUITER_HIDDEN_TABS.has(t.key))
+  //     : PROFILE_TABS;
 
   const handleTabChange = (val) => setSearchParams({ tab: val });
 
@@ -66,7 +71,7 @@ function Profile() {
       <Tabs value={activeTab} onValueChange={handleTabChange}>
         {/* Desktop tabs — hiện > md */}
         <TabsList className="mb-6 hidden h-auto flex-wrap gap-1 md:flex">
-          {visibleTabs.map(({ key, label }) => {
+          {PROFILE_TABS.map(({ key, label }) => {
             const Icon = TAB_ICONS[key];
             return (
               <TabsTrigger
@@ -82,7 +87,7 @@ function Profile() {
         </TabsList>
 
         {/* Tab content */}
-        {visibleTabs.map(({ key }) => (
+        {PROFILE_TABS.map(({ key }) => (
           <TabsContent key={key} value={key} className="max-w-full lg:w-6xl">
             {TAB_CONTENT[key]}
           </TabsContent>
@@ -91,7 +96,7 @@ function Profile() {
 
       {/* Mobile bottom tab nav — hiện < md */}
       <nav className="bg-background/95 fixed bottom-1 left-1/2 flex h-12 w-[95%] translate-x-[-50%] items-center justify-center overflow-hidden rounded-xl border backdrop-blur md:hidden">
-        {visibleTabs.map(({ key }) => {
+        {PROFILE_TABS.map(({ key }) => {
           const Icon = TAB_ICONS[key];
           const isActive = activeTab === key;
           return (

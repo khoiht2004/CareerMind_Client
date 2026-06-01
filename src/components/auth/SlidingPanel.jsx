@@ -16,7 +16,7 @@ function SlidingPanel() {
       {/* Branding */}
       <div className="relative space-y-6">
         <span className="border-background/20 bg-background/10 inline-flex items-center rounded-full border px-4 py-1 text-xs font-bold tracking-widest uppercase">
-          Smart Recruit Assistants
+          CareerMind
         </span>
         <div className="space-y-4">
           <h1 className="text-background text-3xl leading-tight font-black lg:text-4xl">

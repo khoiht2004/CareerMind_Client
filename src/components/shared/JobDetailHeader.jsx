@@ -8,7 +8,7 @@ import {
   BanknoteArrowUp,
   Briefcase,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/utils/helper";
@@ -17,7 +17,7 @@ import { JOB_TYPE_LABELS } from "@/config/constants/recruiter.constant";
 function JobDetailHeader({
   job,
   id,
-  user,
+  // user,
   hasApplied,
   isSaved,
   isSaving,
@@ -25,7 +25,7 @@ function JobDetailHeader({
   handleBookmark,
 }) {
   const { title, location, salary, deadline, type } = job;
-  const isCandidate = !user || user?.role === "CANDIDATE";
+  // const isCandidate = !user || user?.role === "CANDIDATE";
 
   return (
     <Card className="border-border overflow-hidden rounded-xl shadow-sm">
@@ -81,48 +81,46 @@ function JobDetailHeader({
           </span>
         )}
 
-        {isCandidate && (
-          <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-            <Button
-              size="lg"
-              asChild={!hasApplied}
-              disabled={hasApplied}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 cursor-pointer rounded-lg font-bold"
-            >
-              {hasApplied ? (
-                <span>Bạn đã ứng tuyển</span>
-              ) : (
-                <Link to={`/jobs/${id}/apply`}>
-                  <SendHorizontal className="mr-2 size-5" /> Ứng tuyển ngay
-                </Link>
-              )}
-            </Button>
-            {job.postedBy?.id && (
-              <Button
-                size="lg"
-                asChild
-                className="border-primary bg-primary/20 hover:text-accent text-primary cursor-pointer gap-2 rounded-lg border px-6 font-bold"
-              >
-                <Link to="/conversations" state={{ posterId: job.postedBy.id }}>
-                  Trò chuyện với Nhà tuyển dụng
-                </Link>
-              </Button>
+        <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+          <Button
+            size="lg"
+            asChild={!hasApplied}
+            disabled={hasApplied}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 cursor-pointer rounded-lg font-bold"
+          >
+            {hasApplied ? (
+              <span>Bạn đã ứng tuyển</span>
+            ) : (
+              <Link to={`/jobs/${id}/apply`}>
+                <SendHorizontal className="mr-2 size-5" /> Ứng tuyển ngay
+              </Link>
             )}
+          </Button>
+          {job.postedBy?.id && (
             <Button
-              variant="outline"
               size="lg"
-              className={`cursor-pointer gap-2 rounded-lg border px-6 font-bold ${isSaved ? "text-primary border-primary bg-primary/5" : "border-border text-muted-foreground"}`}
-              onClick={handleBookmark}
-              disabled={isSaving || isUnsaving}
+              asChild
+              className="border-primary bg-primary/20 hover:text-accent text-primary cursor-pointer gap-2 rounded-lg border px-6 font-bold"
             >
-              <Bookmark
-                className="size-5"
-                fill={isSaved ? "currentColor" : "none"}
-              />
-              {isSaved ? "Đã lưu" : "Lưu tin"}
+              <Link to="/conversations" state={{ posterId: job.postedBy.id }}>
+                Trò chuyện với Nhà tuyển dụng
+              </Link>
             </Button>
-          </div>
-        )}
+          )}
+          <Button
+            variant="outline"
+            size="lg"
+            className={`cursor-pointer gap-2 rounded-lg border px-6 font-bold ${isSaved ? "text-primary border-primary bg-primary/5" : "border-border text-muted-foreground"}`}
+            onClick={handleBookmark}
+            disabled={isSaving || isUnsaving}
+          >
+            <Bookmark
+              className="size-5"
+              fill={isSaved ? "currentColor" : "none"}
+            />
+            {isSaved ? "Đã lưu" : "Lưu tin"}
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

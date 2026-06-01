@@ -23,7 +23,7 @@ const SUGGESTED_QUESTIONS = [
     cls: "bg-[var(--status-interview-bg)] text-[var(--status-interview-text)]",
   },
   {
-    q: "Xu hướng tuyển dụng 2024?",
+    q: "Xu hướng tuyển dụng 2026?",
     icon: TrendingUp,
     cls: "bg-[var(--status-accepted-bg)] text-[var(--status-accepted-text)]",
   },
