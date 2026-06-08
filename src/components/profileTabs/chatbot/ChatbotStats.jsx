@@ -2,7 +2,7 @@ import { Bot } from "lucide-react";
 
 function ChatbotStats() {
   return (
-    <div className="flex flex-col gap-6 lg:w-[320px] shrink-0">
+    <div className="flex w-full shrink-0 flex-col gap-6 lg:w-[320px]">
       <div className="bg-primary text-primary-foreground rounded-2xl p-6 shadow-md relative overflow-hidden">
         <div className="bg-primary-foreground/10 mb-6 flex size-12 items-center justify-center rounded-xl">
           <Bot className="size-6" />

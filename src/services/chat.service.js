@@ -10,16 +10,28 @@ export const chatService = apiSlice.injectEndpoints({
       query: (body = {}) => ({ url: "/chat/sessions", method: "POST", body }),
       invalidatesTags: [{ type: "Chat", id: "LIST" }],
     }),
-    getMessages: builder.query({
+    getChatBotMessages: builder.query({
       query: (sessionId) => `/chat/sessions/${sessionId}`,
       providesTags: (result, error, id) => [{ type: "Chat", id }],
     }),
-    sendMessage: builder.mutation({
-      query: ({ sessionId, content, images }) => ({
-        url: `/chat/sessions/${sessionId}/messages`,
-        method: "POST",
-        body: { content, ...(images?.length && { images }) },
-      }),
+    sendChatBotMessage: builder.mutation({
+      query: ({ sessionId, content, attachments }) => {
+        const cleanAttachments = (attachments ?? []).map(({ data, mediaType, name, category }) => ({
+          data,
+          mediaType,
+          name,
+          category: category || "file",
+        }));
+
+        return {
+          url: `/chat/sessions/${sessionId}/messages`,
+          method: "POST",
+          body: {
+            content,
+            attachments: cleanAttachments.length ? cleanAttachments : undefined,
+          },
+        };
+      },
       invalidatesTags: (result, error, { sessionId }) => [{ type: "Chat", id: sessionId }],
     }),
     updateSessionTitle: builder.mutation({
@@ -37,14 +49,38 @@ export const chatService = apiSlice.injectEndpoints({
       query: (sessionId) => ({ url: `/chat/sessions/${sessionId}`, method: "DELETE" }),
       invalidatesTags: [{ type: "Chat", id: "LIST" }],
     }),
+    generateCoverLetter: builder.mutation({
+      query: ({ jobId, title } = {}) => ({
+        url: "/chat/generate-cover-letter",
+        method: "POST",
+        body: { jobId, title },
+      }),
+    }),
+    analyzeRecruiterCandidates: builder.mutation({
+      query: ({ jobId, criteria } = {}) => ({
+        url: "/chat/recruiter/candidate-analysis",
+        method: "POST",
+        body: { jobId, criteria },
+      }),
+    }),
+    analyzeCandidateJobFit: builder.mutation({
+      query: ({ jobId } = {}) => ({
+        url: "/chat/candidate/job-fit",
+        method: "POST",
+        body: { jobId },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetSessionsQuery,
   useCreateSessionMutation,
-  useGetMessagesQuery,
-  useSendMessageMutation,
+  useGetChatBotMessagesQuery,
+  useSendChatBotMessageMutation,
   useUpdateSessionTitleMutation,
   useDeleteSessionMutation,
+  useGenerateCoverLetterMutation,
+  useAnalyzeRecruiterCandidatesMutation,
+  useAnalyzeCandidateJobFitMutation,
 } = chatService;

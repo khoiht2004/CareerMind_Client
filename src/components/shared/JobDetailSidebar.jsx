@@ -1,202 +1,154 @@
 import { memo } from "react";
 import { Link } from "react-router";
 import {
-  Bookmark,
-  Share2,
   Bot,
   ExternalLink,
-  Briefcase,
-  Clock,
+  MapPin,
+  Building2,
   Users,
-  FileText,
-  BotMessageSquare,
-  SendHorizontal,
+  Medal,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { formatDate } from "@/utils/helper";
 
-function JobDetailSidebar({
-  job,
-  id,
-  user,
-  hasApplied,
-  isSaved,
-  isSaving,
-  isUnsaving,
-  handleBookmark,
-  typeLabel,
-}) {
-  const isCandidate = !user || user?.role === "CANDIDATE";
-
-  const infoItems = [
-    {
-      icon: <Clock className="text-muted-foreground size-4 shrink-0" />,
-      label: "Hạn nộp",
-      value: formatDate(job.deadline),
-    },
-    {
-      icon: <Briefcase className="text-muted-foreground size-4 shrink-0" />,
-      label: "Hình thức",
-      value: typeLabel,
-    },
-    ...(job.level
-      ? [
-          {
-            icon: <Users className="text-muted-foreground size-4 shrink-0" />,
-            label: "Cấp bậc",
-            value: job.level,
-          },
-        ]
-      : []),
-    {
-      icon: <FileText className="text-muted-foreground size-4 shrink-0" />,
-      label: "Đơn ứng tuyển",
-      value: `${job._count?.applications ?? 0} người`,
-    },
-    ...(job.slots
-      ? [
-          {
-            icon: <Users className="text-muted-foreground size-4 shrink-0" />,
-            label: "Số lượng tuyển",
-            value: `${job.slots} người`,
-          },
-        ]
-      : []),
-  ];
+function JobDetailSidebar({ job, id, typeLabel }) {
+  const company = job.company;
+  const companyName = company?.name ?? "Công ty";
 
   return (
     <div className="space-y-4">
-      <Card>
-        <CardContent className="space-y-3 p-5">
-          {/* Action buttons */}
-          {isCandidate && (
-            <>
-              <div className="space-y-2">
-                <Button
-                  size="lg"
-                  asChild={!hasApplied}
-                  disabled={hasApplied}
-                  className="w-full cursor-pointer"
-                >
-                  {hasApplied ? (
-                    "Bạn đã ứng tuyển vị trí này rồi"
-                  ) : (
-                    <Link to={`/jobs/${id}/apply`}>
-                      <SendHorizontal /> Ứng tuyển ngay
-                    </Link>
-                  )}
-                </Button>
-
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  className="w-full cursor-pointer"
-                  asChild
-                >
-                  <Link to={`/chatbot?job=${id}`}>
-                    <BotMessageSquare /> Tư vấn AI về vị trí này
-                  </Link>
-                </Button>
-
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 cursor-pointer gap-1.5"
-                    onClick={handleBookmark}
-                    disabled={isSaving || isUnsaving}
-                  >
-                    <Bookmark
-                      className="size-4"
-                      fill={isSaved ? "var(--secondary-container)" : "none"}
-                      stroke={
-                        isSaved ? "var(--secondary-container)" : "currentColor"
-                      }
-                    />
-                    {isSaved ? "Đã lưu" : "Lưu tin"}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 cursor-pointer gap-1.5"
-                  >
-                    <Share2 className="size-4" />
-                    Chia sẻ
-                  </Button>
-                </div>
-              </div>
-              <Separator />
-            </>
-          )}
-
-          {/* Thông tin chung */}
-          <h3 className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
-            Thông tin chung
-          </h3>
-          <div className="space-y-3">
-            {infoItems.map(({ icon, label, value }) => (
-              <div key={label} className="flex items-center gap-2.5 text-sm">
-                {icon}
-                <span className="text-muted-foreground">{label}</span>
-                <span className="ml-auto text-right font-medium">{value}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Về công ty */}
-      <Card>
-        <CardContent className="space-y-3 p-5">
-          <h3 className="text-muted-foreground text-xs font-bold tracking-widest uppercase">
-            Về công ty
-          </h3>
-          <Separator />
-          <div className="flex items-center gap-3">
-            <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl text-base font-bold">
-              {job.company?.logoUrl ? (
+      <Card className="overflow-hidden rounded-xl shadow-sm">
+        <CardContent className="space-y-4 p-5">
+          <div className="flex items-start gap-4">
+            <div className="bg-muted flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border font-bold">
+              {company?.logoUrl ? (
                 <img
-                  src={job.company.logoUrl}
-                  alt={job.company.name}
+                  src={company.logoUrl}
+                  alt={companyName}
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <span className="text-foreground">
-                  {job.company?.name?.[0]?.toUpperCase()}
+                <span className="text-foreground text-xl">
+                  {companyName?.[0]?.toUpperCase()}
                 </span>
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold">{job.company?.name}</p>
-              {job.postedBy?.profile?.fullName && (
-                <p className="text-muted-foreground text-xs">
-                  Đăng bởi: {job.postedBy.profile.fullName}
-                </p>
-              )}
+              <p className="text-foreground text-base leading-tight font-bold">
+                {companyName}
+              </p>
             </div>
           </div>
-          {/* Link công ty */}
-          <Link
-            to={`/companies/${job.company?.id}`}
-            className="text-secondary hover:text-secondary/80 flex items-center gap-1 text-sm transition-colors hover:underline"
-          >
-            Xem trang công ty
-            <ExternalLink className="size-3" />
-          </Link>
+
+          <div className="text-muted-foreground space-y-3 text-sm">
+            <div className="flex items-start gap-2">
+              <Users className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+              <span className="w-20 shrink-0">Quy mô:</span>
+              <span className="text-foreground font-medium">
+                {company?.companySize || "25-99 nhân viên"}
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <Building2 className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+              <span className="w-20 shrink-0">Lĩnh vực:</span>
+              <span className="text-foreground font-medium">
+                {company?.industry || "Chưa xác định"}
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <MapPin className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+              <span className="w-20 shrink-0">Địa điểm:</span>
+              <span className="text-foreground font-medium">
+                {company?.address || job.location || "Cập nhật sau"}
+              </span>
+            </div>
+          </div>
+
+          <div className="pt-2 text-center">
+            <Link
+              to={`/companies/${company?.id}`}
+              className="text-primary flex items-center justify-center gap-1 text-sm font-medium hover:underline"
+            >
+              Xem trang công ty <ExternalLink className="size-3.5" />
+            </Link>
+          </div>
         </CardContent>
       </Card>
 
-      {/* AI Scout */}
-      <Card className="from-chart-1 to-chart-2 text-primary-foreground overflow-hidden bg-linear-to-r">
+      {/* Thông tin chung */}
+      <Card className="overflow-hidden rounded-xl shadow-sm">
+        <CardContent className="space-y-4 p-5">
+          <h3 className="text-foreground text-lg font-bold">Thông tin chung</h3>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full text-lg">
+                <Medal />
+              </div>
+              <div>
+                <p className="text-muted-foreground text-xs">Cấp bậc</p>
+                <p className="text-foreground text-sm font-semibold">
+                  {job.level || "Nhân viên"}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full text-lg">
+                <Users />
+              </div>
+              <div>
+                <p className="text-muted-foreground text-xs">Số lượng tuyển</p>
+                <p className="text-foreground text-sm font-semibold">
+                  {job.slots ? `${job.slots} người` : "Không giới hạn"}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full text-lg">
+                <BriefcaseBusiness />
+              </div>
+              <div>
+                <p className="text-muted-foreground text-xs">Hình thức làm việc</p>
+                <p className="text-foreground text-sm font-semibold">
+                  {typeLabel || "Thoả thuận"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Danh mục ngành nghề liên quan */}
+      <Card className="overflow-hidden rounded-xl shadow-sm">
+        <CardContent className="space-y-3 p-5">
+          <h3 className="text-foreground text-lg font-bold">
+            Danh mục Nghề liên quan
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {(job.industry || ["Công nghệ Thông tin", "Việc làm IT"]).map(
+              (tag, i) => (
+                <span
+                  key={i}
+                  className="bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-colors"
+                >
+                  {tag}
+                </span>
+              ),
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* MindScout */}
+      <Card className="from-chart-1 to-chart-2 text-primary-foreground overflow-hidden rounded-xl bg-linear-to-r shadow-sm">
         <CardContent className="space-y-3 p-5">
           <div className="flex items-center gap-3">
-            <div className="bg-primary-foreground/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+            <div className="bg-primary-foreground/10 flex size-10 shrink-0 items-center justify-center rounded-xl">
               <Bot className="text-primary-foreground size-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold">AI Scout</p>
+              <p className="text-sm font-semibold">MindScout</p>
               <p className="text-primary-foreground/70 text-xs">
                 Trợ lý tuyển dụng thông minh
               </p>
@@ -209,10 +161,12 @@ function JobDetailSidebar({
           <Button
             size="sm"
             variant="secondary"
-            className="w-full cursor-pointer"
+            className="w-full cursor-pointer font-bold"
             asChild
           >
-            <Link to={`/chatbot?job=${id}`}>Tư vấn CV ngay!</Link>
+            <Link to="/chatbot" state={{ jobId: id }}>
+              Tư vấn CV ngay!
+            </Link>
           </Button>
         </CardContent>
       </Card>

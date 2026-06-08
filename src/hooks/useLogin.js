@@ -5,10 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { useLoginMutation, authService } from "@/services/auth.service";
-import { REFRESH_TOKEN_KEY, TOKEN_KEY } from "@/config/constants/constants";
+import {
+  REFRESH_TOKEN_KEY,
+  ACCESS_TOKEN_KEY,
+} from "@/config/constants/constants";
 import { path } from "@/config/path";
 import { loginSchema } from "@/validations/auth.schema";
-
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ export function useLogin() {
       const res = await login(data).unwrap();
       const accessToken = res?.data?.accessToken ?? res?.accessToken;
       const refreshToken = res?.data?.refreshToken ?? res?.refreshToken;
-      if (accessToken) localStorage.setItem(TOKEN_KEY, accessToken);
+      if (accessToken) localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
       if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
       await dispatch(
         authService.endpoints.getMe.initiate(undefined, { forceRefetch: true }),
@@ -39,5 +41,13 @@ export function useLogin() {
     }
   };
 
-  return { register, handleSubmit, errors, onSubmit, showPassword, setShowPassword, isLoading };
+  return {
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
+    showPassword,
+    setShowPassword,
+    isLoading,
+  };
 }

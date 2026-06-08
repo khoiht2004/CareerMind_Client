@@ -10,6 +10,8 @@ import {
   Upload,
   Plus,
   Sparkles,
+  Save,
+  Send,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,14 +25,14 @@ import { useApply } from "@/hooks/useApply";
 import { formatFileSize } from "@/utils/helper";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
 import { BackButton } from "@/components/shared/NotFound";
+import PageContainer from "@/components/shared/PageContainer";
 import { FieldLabel, StepHeader } from "@/features/ApplyPageComponent";
 
 function Apply() {
   const {
-    id,
-    navigate,
     job,
     isLoading,
+    isGeneratingCL,
     coverLetters,
     myCvs,
     selectedCv,
@@ -48,6 +50,8 @@ function Apply() {
     handleSelectCoverLetter,
     handleSelectCv,
     handleSubmit,
+    handleSaveDraft,
+    handleGenerateCoverLetter,
   } = useApply();
 
   if (!job) {
@@ -59,29 +63,12 @@ function Apply() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 p-6">
+    <PageContainer className="max-w-4xl">
       <BackButton label="Quay lại danh sách việc làm" />
 
       {/* Job header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex min-w-0 flex-col items-start gap-4">
-          {/* Logo + company name */}
-          <section className="flex items-center gap-2">
-            <div className="bg-muted flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg text-sm font-bold">
-              {job.company?.logoUrl ? (
-                <img
-                  src={job.company.logoUrl}
-                  alt={job.company.name}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                job.company?.name?.[0]
-              )}
-            </div>
-            <p className="text-primary text-xs font-bold tracking-widest uppercase">
-              {job.company?.name}
-            </p>
-          </section>
           {/* Job title + info */}
           <section>
             <h1 className="text-3xl leading-tight font-black">{job.title}</h1>
@@ -161,7 +148,7 @@ function Apply() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* CV chính */}
             <div>
-              <FieldLabel>CV Chính thức (Bắt buộc)</FieldLabel>
+              <FieldLabel>CV Chính thức (Tùy chọn)</FieldLabel>
               <Popover open={cvPickerOpen} onOpenChange={setCvPickerOpen}>
                 <PopoverTrigger asChild>
                   <button
@@ -191,7 +178,10 @@ function Apply() {
                     )}
                   </button>
                 </PopoverTrigger>
-                <PopoverContent align="start" className="w-80 p-2">
+                <PopoverContent
+                  align="start"
+                  className="w-[calc(100vw-2rem)] max-w-80 p-2"
+                >
                   <p className="text-muted-foreground mb-2 px-2 text-xs font-semibold tracking-wider uppercase">
                     Chọn từ thư viện CV
                   </p>
@@ -296,7 +286,10 @@ function Apply() {
                       Dùng thư có sẵn
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent align="end" className="w-80 p-2">
+                  <PopoverContent
+                    align="end"
+                    className="w-[calc(100vw-2rem)] max-w-80 p-2"
+                  >
                     <p className="text-muted-foreground mb-2 px-1 text-xs font-medium">
                       Chọn thư giới thiệu
                     </p>
@@ -328,9 +321,11 @@ function Apply() {
                 variant="ghost"
                 size="sm"
                 className="text-primary h-7 gap-1.5 px-2 text-xs font-bold"
+                onClick={handleGenerateCoverLetter}
+                disabled={isGeneratingCL}
               >
                 <Sparkles className="size-3.5" fill="currentColor" />
-                Tối ưu bằng AI Scout
+                {isGeneratingCL ? "Đang tạo..." : "Tối ưu bằng MindScout"}
               </Button>
             </div>
           </div>
@@ -350,23 +345,32 @@ function Apply() {
               CareerPartner & {job.company?.name}.
             </span>
           </label>
-          <div className="ml-auto flex gap-3">
+          <div className="ml-auto flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Button
               type="button"
               variant="outline"
-              onClick={() => navigate(`/jobs/${id}`)}
+              onClick={handleSaveDraft}
               disabled={isLoading}
             >
+              {isLoading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Save className="size-4" />
+              )}
               Lưu nháp
             </Button>
             <Button type="submit" disabled={isLoading || !agreedToTerms}>
-              {isLoading && <Loader2 className="mr-1.5 size-4 animate-spin" />}
+              {isLoading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Send className="size-4" />
+              )}
               Nộp hồ sơ ngay
             </Button>
           </div>
         </div>
       </form>
-    </div>
+    </PageContainer>
   );
 }
 

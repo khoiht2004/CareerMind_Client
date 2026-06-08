@@ -1,6 +1,7 @@
+import { useState } from "react";
 import {
   Loader2,
-  ExternalLink,
+  Eye,
   Users,
   Clock,
   Sparkles,
@@ -8,6 +9,7 @@ import {
   ListFilter,
 } from "lucide-react";
 import Pagination from "@/components/shared/Pagination";
+import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -26,13 +28,20 @@ import {
 } from "@/components/ui/select";
 import { APP_STATUS_FILTER_OPTIONS } from "@/config/constants/recruiter.constant";
 import ApplicationUpdateDialog from "@/components/recuiter/ApplicationUpdateDialog";
+import RecruiterAiAssistant from "@/components/recuiter/RecruiterAiAssistant";
 import { useRecruiterApplications } from "@/hooks/useRecruiterApplications";
 import {
   StatusBadge,
   ApplicantAvatar,
 } from "@/components/recuiter/components/ApplicationComponent";
+import { buildCvPreview } from "@/utils/recruiter.helper";
+import { formatDate } from "@/utils/helper";
+import { usePermission } from "@/hooks/usePermission";
 
 function RecruiterApplications() {
+  const [previewCv, setPreviewCv] = useState(null);
+  const canUpdateStatus = usePermission("application:update:status");
+
   const {
     staged,
     setStagedField,
@@ -66,16 +75,18 @@ function RecruiterApplications() {
   } = useRecruiterApplications();
 
   return (
-    <div className="max-w-full space-y-6 px-10 pt-6">
+    <div className="max-w-full space-y-6 px-4 py-6 sm:px-6 lg:px-10">
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-primary text-4xl font-black">Đơn ứng tuyển</h1>
+          <h1 className="text-primary text-3xl font-black sm:text-4xl">
+            Đơn ứng tuyển
+          </h1>
           <p className="text-muted-foreground mt-1 text-sm">
             Quản lý và sàng lọc hồ sơ ứng viên một cách chuyên nghiệp.
           </p>
         </div>
-        <div className="flex shrink-0 gap-3">
+        <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2">
           {/* Tổng ứng viên */}
           <div className="bg-card border-secondary flex items-center gap-3 rounded-xl border-l-4 px-4 py-3">
             <div className="bg-secondary/10 flex size-9 items-center justify-center rounded-lg">
@@ -103,9 +114,11 @@ function RecruiterApplications() {
         </div>
       </div>
 
+      <RecruiterAiAssistant jobs={myJobs} defaultJobId={filters.jobId} />
+
       {/* Filters */}
-      <div className="bg-card flex flex-wrap items-end gap-4 rounded-xl p-4">
-        <div className="min-w-48 flex-1">
+      <div className="bg-card flex flex-col gap-4 rounded-xl p-4 md:flex-row md:flex-wrap md:items-end">
+        <div className="min-w-0 flex-1 md:min-w-48">
           <p className="text-muted-foreground mb-1.5 text-xs font-medium tracking-wider uppercase">
             Lọc theo công việc
           </p>
@@ -126,7 +139,7 @@ function RecruiterApplications() {
             </SelectContent>
           </Select>
         </div>
-        <div className="min-w-44 flex-1">
+        <div className="min-w-0 flex-1 md:min-w-44">
           <p className="text-muted-foreground mb-1.5 text-xs font-medium tracking-wider uppercase">
             Trạng thái
           </p>
@@ -146,7 +159,7 @@ function RecruiterApplications() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Button onClick={handleApply} className="cursor-pointer px-6 py-4">
             <ListFilter className="size-4" />
             Áp dụng
@@ -172,7 +185,7 @@ function RecruiterApplications() {
         </p>
       ) : (
         <>
-          <div className="rounded-lg border">
+          <div className="overflow-x-auto rounded-lg border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -195,7 +208,7 @@ function RecruiterApplications() {
                     <TableRow key={app.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <ApplicantAvatar name={name} />
+                          <ApplicantAvatar user={app.user} />
                           <div>
                             <p className="font-medium">{name}</p>
                             <p className="text-muted-foreground text-xs">
@@ -212,21 +225,22 @@ function RecruiterApplications() {
                         <StatusBadge status={app.status} />
                       </TableCell>
                       <TableCell className="text-sm">
-                        {new Date(app.createdAt).toLocaleDateString("vi-VN")}
+                        {formatDate(app.createdAt)}
                       </TableCell>
                       <TableCell className="text-sm">
-                        {new Date(app.updatedAt).toLocaleDateString("vi-VN")}
+                        {formatDate(app.updatedAt)}
                       </TableCell>
                       <TableCell>
-                        {app.cvUrl ? (
-                          <a
-                            href={app.cvUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary inline-flex items-center gap-1 text-xs hover:underline"
+                        {(app.cv?.fileUrl ?? app.cvUrl) ? (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="cursor-pointer text-xs"
+                            onClick={() => setPreviewCv(buildCvPreview(app))}
                           >
-                            Xem CV <ExternalLink className="size-3" />
-                          </a>
+                            Xem CV
+                            <Eye className="size-3" />
+                          </Button>
                         ) : (
                           <span className="text-muted-foreground text-xs">
                             Không có
@@ -235,14 +249,16 @@ function RecruiterApplications() {
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-end">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="cursor-pointer"
-                            onClick={() => openUpdate(app)}
-                          >
-                            Chi tiết
-                          </Button>
+                          {canUpdateStatus && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="cursor-pointer"
+                              onClick={() => openUpdate(app)}
+                            >
+                              Chi tiết
+                            </Button>
+                          )}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -252,7 +268,7 @@ function RecruiterApplications() {
             </Table>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground text-sm">
               Hiển thị {from} - {to} của {total} đơn ứng tuyển
             </p>
@@ -315,6 +331,12 @@ function RecruiterApplications() {
         onAcceptedFieldChange={handleAcceptedFieldChange}
         onSubmit={handleUpdate}
         isLoading={updating}
+      />
+
+      <CvPreviewDialog
+        open={!!previewCv}
+        onClose={() => setPreviewCv(null)}
+        cv={previewCv}
       />
     </div>
   );

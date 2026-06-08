@@ -31,10 +31,10 @@ function RecruiterStats() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="max-w-full space-y-6 px-10 pt-6">
+    <div className="max-w-full space-y-6 px-4 py-6 sm:px-6 lg:px-10">
       {/* Page header */}
       <div>
-        <h1 className="text-primary text-4xl font-black">
+        <h1 className="text-primary text-3xl font-black sm:text-4xl">
           Thống kê tuyển dụng
         </h1>
         <p className="text-muted-foreground mt-1 text-sm">
@@ -43,7 +43,7 @@ function RecruiterStats() {
       </div>
 
       {/* Stat cards — 4 columns */}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {STAT_CARD_CONFIG.map((cfg) => (
           <StatCard
             key={cfg.id}
@@ -62,7 +62,7 @@ function RecruiterStats() {
         {/* Bar chart (wider) */}
         <Card className="md:col-span-3">
           <CardHeader className="pb-2">
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <CardTitle className="text-lg font-bold">
                   Biểu đồ tổng quan

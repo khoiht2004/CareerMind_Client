@@ -21,6 +21,7 @@ import Pagination from "@/components/shared/Pagination";
 import JobsCard from "@/components/recuiter/JobsCard";
 import JobFormDialog from "@/components/recuiter/JobFormDialog";
 import JobDeleteDialog from "@/components/recuiter/JobDeleteDialog";
+import RecruiterAiAssistant from "@/components/recuiter/RecruiterAiAssistant";
 import { JOB_CARD_CONFIG, useRecruiterJobs } from "@/hooks/useRecruiterJobs";
 import {
   JOB_STATUS_OPTIONS,
@@ -33,9 +34,13 @@ import {
   JobInitials,
 } from "@/components/recuiter/components/JobsComponent";
 import { path } from "@/config/path";
+import { usePermission, useAnyPermission } from "@/hooks/usePermission";
 
 function RecruiterJobs() {
   const navigate = useNavigate();
+  const canCreate = usePermission("job:create");
+  const canEdit = useAnyPermission("job:update:own", "job:update:company");
+  const canDelete = usePermission("job:delete:own");
   const {
     filterOpen,
     setFilterOpen,
@@ -67,16 +72,16 @@ function RecruiterJobs() {
   } = useRecruiterJobs();
 
   return (
-    <div className="max-w-full space-y-6 px-10 pt-6">
+    <div className="max-w-full space-y-6 px-4 pt-6 sm:px-6 lg:px-10">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-primary text-4xl font-black">Quản lý việc làm</h1>
+          <h1 className="text-primary text-3xl font-black sm:text-4xl">Quản lý việc làm</h1>
           <p className="text-muted-foreground mt-1 text-sm">
             Theo dõi và tối ưu hóa các chiến dịch tuyển dụng của bạn.
           </p>
         </div>
-        <div className="mt-1 flex items-center gap-2">
+        <div className="mt-1 flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
           <Button
             variant="outline"
             className="cursor-pointer gap-2"
@@ -85,15 +90,17 @@ function RecruiterJobs() {
             <Filter className="size-4" />
             Lọc nâng cao
           </Button>
-          <Button onClick={openCreate} className="cursor-pointer gap-2">
-            <Plus className="size-4" />
-            Đăng tin mới
-          </Button>
+          {canCreate && (
+            <Button onClick={openCreate} className="cursor-pointer gap-2">
+              <Plus className="size-4" />
+              Đăng tin mới
+            </Button>
+          )}
         </div>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {JOB_CARD_CONFIG.map((cfg) => (
           <JobsCard
             key={cfg.id}
@@ -112,12 +119,12 @@ function RecruiterJobs() {
         <div className="border-border flex flex-wrap gap-3 rounded-lg border p-4">
           <Input
             placeholder="Tìm kiếm theo tiêu đề..."
-            className="border-border w-72 border"
+            className="border-border w-full border sm:w-72"
             value={filters.search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <Select value={filters.status} onValueChange={setStatusFilter}>
-            <SelectTrigger className="border-border w-40 border">
+            <SelectTrigger className="border-border w-full border sm:w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -196,25 +203,29 @@ function RecruiterJobs() {
                         >
                           <Eye className="size-4" />
                         </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="size-8 cursor-pointer"
-                          title="Sửa"
-                          onClick={() => openEdit(job)}
-                        >
-                          <Pencil className="size-4" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="size-8 cursor-pointer"
-                          style={{ color: "var(--destructive)" }}
-                          title="Xóa"
-                          onClick={() => setDeleteId(job.id)}
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
+                        {canEdit && (
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="size-8 cursor-pointer"
+                            title="Sửa"
+                            onClick={() => openEdit(job)}
+                          >
+                            <Pencil className="size-4" />
+                          </Button>
+                        )}
+                        {canDelete && (
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="size-8 cursor-pointer"
+                            style={{ color: "var(--destructive)" }}
+                            title="Xóa"
+                            onClick={() => setDeleteId(job.id)}
+                          >
+                            <Trash2 className="size-4" />
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -223,7 +234,7 @@ function RecruiterJobs() {
             </Table>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground text-sm">
               Hiển thị {from} - {to} trong số {total} tin
             </p>
@@ -234,12 +245,14 @@ function RecruiterJobs() {
               showPageNumbers
             />
           </div>
+
+          <RecruiterAiAssistant jobs={jobs} compact />
         </>
       )}
 
       {/* Promo cards */}
-      <article className="from-primary to-primary-container text-primary-foreground rounded-3xl bg-linear-to-r p-6">
-        <div className="max-w-[60%]">
+      <article className="from-primary to-primary-container text-primary-foreground rounded-xl bg-linear-to-r p-6">
+        <div className="max-w-full sm:max-w-[60%]">
           <span className="bg-primary-foreground/10 text-md rounded-full px-3 py-1 font-bold">
             Mẹo tuyển dụng
           </span>
@@ -256,7 +269,7 @@ function RecruiterJobs() {
             className="text-md bg-secondary-container text-primary mt-5 cursor-pointer rounded-2xl p-6 font-semibold"
             asChild
           >
-            <Link to={path.aiPricing}>Khám phá gói Premium</Link>
+            <Link to={path.membership}>Khám phá gói Premium</Link>
           </Button>
         </div>
       </article>

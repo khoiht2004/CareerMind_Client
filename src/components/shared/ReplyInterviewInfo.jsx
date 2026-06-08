@@ -21,9 +21,9 @@ export function ReplyInterviewInfo({
         : null;
 
   return (
-    <Card className="border-blue-200 dark:border-blue-900">
+    <Card className="border-[var(--status-reviewing-border)]">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base text-blue-700 dark:text-blue-400">
+        <CardTitle className="flex items-center gap-2 text-base text-[var(--status-reviewing-text)]">
           <Calendar className="size-4" />
           Thông tin phỏng vấn
         </CardTitle>

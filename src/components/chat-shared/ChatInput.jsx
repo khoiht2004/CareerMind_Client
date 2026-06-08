@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import AttachmentThumbnail from "@/components/shared/AttachmentThumbnail";
 import ChatInputDropdown from "./ChatInputDropdown";
+import { FILE_INPUT_ACCEPT } from "@/config/constants/attachment.constants";
 
-const TEXTAREA_BASE_HEIGHT = 32;
+const TEXTAREA_BASE_HEIGHT = 22;
 const TEXTAREA_MAX_HEIGHT = 100;
 
 function ChatInput({
@@ -20,6 +21,10 @@ function ChatInput({
   handleFileInputChange,
   handlePaste,
   removeAttachment,
+  footer = true,
+  footerText,
+  placeholder,
+  showAiHelpers = true,
 }) {
   const textareaRef = useRef(null);
 
@@ -48,29 +53,36 @@ function ChatInput({
     [onSend],
   );
 
-  const canSend = (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
+  const canSend =
+    (input.trim() || attachments.length > 0) && !isSending && hasActiveSession;
+
+  const resolvedPlaceholder = placeholder
+    ? placeholder
+    : hasActiveSession
+      ? "Nhập câu hỏi của bạn tại đây..."
+      : "Bắt đầu cuộc trò chuyện mới";
 
   return (
-    <div className="bg-primary/10 px-4 py-2">
+    <div className="bg-primary/10 px-2 py-2 sm:px-4">
       <div className="relative mx-auto flex max-w-3xl items-end gap-2">
         {/* Hidden file input */}
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp"
+          accept={FILE_INPUT_ACCEPT}
           multiple
           className="hidden"
           onChange={handleFileInputChange}
         />
 
         {/* Textarea container */}
-        <div className="bg-background flex min-w-0 flex-1 flex-col rounded-3xl px-3 pt-3 pb-2">
+        <div className="bg-card flex min-w-0 flex-1 flex-col rounded-xl px-3 pt-2.5 pb-2">
           {attachments.length > 0 && (
             <div className="mb-2 flex flex-wrap gap-2">
-              {attachments.map((att) => (
+              {attachments.map((attachment) => (
                 <AttachmentThumbnail
-                  key={att.id}
-                  attachment={att}
+                  key={attachment.id}
+                  attachment={attachment}
                   onRemove={removeAttachment}
                 />
               ))}
@@ -79,18 +91,14 @@ function ChatInput({
 
           <Textarea
             ref={textareaRef}
-            placeholder={
-              hasActiveSession
-                ? "Nhập câu hỏi của bạn tại đây..."
-                : "Tạo cuộc trò chuyện mới để bắt đầu"
-            }
+            placeholder={resolvedPlaceholder}
             value={input}
             onChange={(e) => onInputChange(e.target.value)}
             onInput={handleResize}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
             disabled={isSending || !hasActiveSession}
-            className="placeholder:text-muted-foreground min-h-0 resize-none border-0 bg-transparent p-0 shadow-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
+            className="placeholder:text-muted-foreground/30 min-h-0 resize-none rounded-xs border-0 bg-transparent p-0 shadow-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
           />
 
           <article className="flex justify-between">
@@ -98,12 +106,13 @@ function ChatInput({
             <ChatInputDropdown
               hasActiveSession={hasActiveSession}
               triggerFileInput={triggerFileInput}
+              showAiHelpers={showAiHelpers}
             />
 
             {/* Send button */}
             <Button
               size="icon"
-              className="flex size-9 shrink-0 rounded-full"
+              className="flex size-9 shrink-0 rounded-full cursor-pointer"
               onClick={onSend}
               disabled={!canSend}
             >
@@ -117,10 +126,17 @@ function ChatInput({
         </div>
       </div>
 
-      <p className="text-muted-foreground mt-2 text-center text-xs">
-        <b className="font-bold">AI Scout</b> có thể mắc lỗi. Hãy kiểm tra các
-        thông tin quan trọng.
-      </p>
+      {footer && (
+        <p className="text-muted-foreground mt-2 text-center text-xs">
+          {footerText ? (
+            footerText
+          ) : (
+            <>
+              <b className="font-bold">MindScout</b> có thể mắc lỗi. Hãy kiểm tra các thông tin quan trọng.
+            </>
+          )}
+        </p>
+      )}
     </div>
   );
 }
@@ -131,6 +147,7 @@ export default memo(ChatInput, (prev, next) => {
     prev.isSending === next.isSending &&
     prev.hasActiveSession === next.hasActiveSession &&
     prev.attachments.length === next.attachments.length &&
-    prev.attachments === next.attachments
+    prev.attachments === next.attachments &&
+    prev.showAiHelpers === next.showAiHelpers
   );
 });

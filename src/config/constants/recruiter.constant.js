@@ -2,25 +2,21 @@ import {
   Clock,
   CheckCircle2,
   XCircle,
-  BriefcaseBusiness,
-  BotMessageSquare,
-  User,
-  BarChart3,
-  FileText,
-  Compass,
+  UserRoundSearch,
 } from "lucide-react";
 import { path } from "../path";
 
-// ─── Job Management ────────────────────────────────────────────────────────────
-
-export const RECRUITER_NAV_ITEMS = [
-  { to: path.home, icon: Compass, label: "Khám phá", end: true },
-  { to: path.recruiter.stats, icon: BarChart3, label: "Thống kê" },
-  { to: path.recruiter.jobs, icon: BriefcaseBusiness, label: "Quản lý việc làm" },
-  { to: path.recruiter.applications, icon: FileText, label: "Đơn ứng tuyển" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
-  { to: path.profile, icon: User, label: "Hồ sơ" },
-];
+export const RECRUITER_MENU_SECTIONS = {
+  title: "Dành cho nhà tuyển dụng",
+  icon: UserRoundSearch,
+  items: [
+    { to: path.recruiter.stats, label: "Thống kê" },
+    { to: path.recruiter.jobs, label: "Quản lý việc làm" },
+    { to: path.recruiter.applications, label: "Quản lý đơn ứng tuyển" },
+    { to: path.recruiter.posts, label: "Quản lý bài viết" },
+    { to: path.recruiter.company, label: "Quản lý công ty" },
+  ]
+};
 
 export const JOB_STATUS_OPTIONS = [
   { label: "Tất cả", value: "ALL" },
@@ -50,9 +46,10 @@ export const EMPTY_JOB_FORM = {
   requirements: [{ label: "", content: "" }],
   salary: "",
   type: "FULL_TIME",
-  level: "",
+  level: "ALL",
   slots: 1,
   tags: "",
+  industry: "",
   benefits: [{ icon: "", label: "", content: "" }],
   status: "PUBLISHED",
   isHot: false,
@@ -64,8 +61,6 @@ export const JOB_STATUS_DOT = {
   DRAFT: "var(--status-draft)",
   CLOSED: "var(--status-closed)",
 };
-
-// ─── Application Management ────────────────────────────────────────────────────
 
 export const APP_STATUS_FILTER_OPTIONS = [
   { label: "Tất cả trạng thái", value: "ALL" },
@@ -84,39 +79,12 @@ export const VALID_APP_STATUSES = [
   "REJECTED",
 ];
 
-// ─── Stats Display ─────────────────────────────────────────────────────────────
-
 export const APP_STATUS_DISPLAY_CONFIG = [
-  {
-    key: "PENDING",
-    label: "Chờ xét duyệt",
-    icon: Clock,
-    dotVar: "--status-pending-text",
-  },
-  {
-    key: "REVIEWING",
-    label: "Đang xem xét",
-    icon: Clock,
-    dotVar: "--status-reviewing-text",
-  },
-  {
-    key: "INTERVIEW",
-    label: "Phỏng vấn",
-    icon: CheckCircle2,
-    dotVar: "--status-interview-text",
-  },
-  {
-    key: "ACCEPTED",
-    label: "Đã nhận",
-    icon: CheckCircle2,
-    dotVar: "--status-accepted-text",
-  },
-  {
-    key: "REJECTED",
-    label: "Từ chối",
-    icon: XCircle,
-    dotVar: "--status-rejected-text",
-  },
+  { key: "PENDING", label: "Chờ xét duyệt", icon: Clock, dotVar: "--status-pending-text" },
+  { key: "REVIEWING", label: "Đang xem xét", icon: Clock, dotVar: "--status-reviewing-text" },
+  { key: "INTERVIEW", label: "Phỏng vấn", icon: CheckCircle2, dotVar: "--status-interview-text" },
+  { key: "ACCEPTED", label: "Đã nhận", icon: CheckCircle2, dotVar: "--status-accepted-text" },
+  { key: "REJECTED", label: "Từ chối", icon: XCircle, dotVar: "--status-rejected-text" },
 ];
 
 export const JOB_STATUS_DISPLAY_CONFIG = [

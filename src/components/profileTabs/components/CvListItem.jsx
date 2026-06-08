@@ -1,6 +1,10 @@
 import { memo, useCallback } from "react";
-import { Eye, FileText, Pencil, Trash2 } from "lucide-react";
+import { Eye, FileText, Trash2 } from "lucide-react";
 import { formatRelativeTime } from "@/utils/helper";
+import {
+  DEFAULT_TYPE_CONFIG,
+  FILE_TYPE_CONFIG,
+} from "@/config/constants/attachment.constants";
 
 function CvListItem({ cv, onPreview, onSetDefault, onDelete }) {
   const handleSetDefault = useCallback(
@@ -9,16 +13,28 @@ function CvListItem({ cv, onPreview, onSetDefault, onDelete }) {
   );
   const handleDelete = useCallback(() => onDelete(cv), [cv, onDelete]);
 
+  const typeConfig =
+    FILE_TYPE_CONFIG[cv.fileType?.toLowerCase()] ?? DEFAULT_TYPE_CONFIG;
+
   return (
     <div className="bg-card border-border flex min-h-[120px] flex-col gap-2 rounded-xl border p-4">
       <div className="flex items-start gap-3">
-        <div className="bg-primary/10 flex size-10 shrink-0 items-center justify-center rounded-lg">
-          <FileText className="text-primary size-5" />
+        <div
+          className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${typeConfig.bgClass}`}
+        >
+          <FileText className={`size-5 ${typeConfig.iconClass}`} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-foreground line-clamp-1 text-sm font-semibold">
-            {cv.name}
-          </p>
+          <div className="flex items-center gap-1.5">
+            <p className="text-foreground line-clamp-1 text-sm font-semibold">
+              {cv.name}
+            </p>
+            <span
+              className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${typeConfig.badgeClass}`}
+            >
+              {typeConfig.label}
+            </span>
+          </div>
           <p className="text-muted-foreground mt-0.5 text-xs">
             Cập nhật {formatRelativeTime(cv.updatedAt ?? cv.createdAt)}
           </p>

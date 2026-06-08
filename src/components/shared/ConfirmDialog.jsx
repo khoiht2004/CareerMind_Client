@@ -22,10 +22,10 @@ function ConfirmDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="flex flex-col items-center gap-0 rounded-3xl p-8 sm:max-w-[400px]"
+        className="flex flex-col items-center gap-0 rounded-2xl p-5 sm:max-w-[400px] sm:p-8"
         showCloseButton={false}
       >
-        <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-red-50 text-red-600">
+        <div className="bg-destructive/10 text-destructive mb-4 flex size-14 items-center justify-center rounded-full">
           <AlertTriangle className="size-6" />
         </div>
 
@@ -40,7 +40,7 @@ function ConfirmDialog({
           )}
         </DialogHeader>
 
-        <div className="grid w-full grid-cols-2 gap-3">
+        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
           <Button
             variant="ghost"
             onClick={() => onOpenChange(false)}

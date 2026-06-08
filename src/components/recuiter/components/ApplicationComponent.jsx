@@ -14,11 +14,22 @@ export function StatusBadge({ status }) {
   );
 }
 
-export function ApplicantAvatar({ name }) {
-  const letter = name ? name.charAt(0).toUpperCase() : "?";
+export function ApplicantAvatar({ user }) {
+  const avatar = user?.profile.avatarUrl;
+  const letter = user?.profile.fullName
+    ? user.profile.fullName.charAt(0).toUpperCase()
+    : "";
   return (
     <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold">
-      {letter}
+      {avatar ? (
+        <img
+          src={avatar}
+          alt={letter}
+          className="size-full rounded-full object-cover object-top"
+        />
+      ) : (
+        letter
+      )}
     </div>
   );
 }

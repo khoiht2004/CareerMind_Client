@@ -8,6 +8,10 @@ import {
 } from "@/services/profile.service";
 
 export function useMyProfile() {
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const handleOpen = useCallback(() => setPreviewOpen(true), []);
+  const handleClose = useCallback(() => setPreviewOpen(false), []);
+
   const { data: response, isLoading } = useGetProfileQuery();
   const [updateProfile, { isLoading: isSaving }] = useUpdateProfileMutation();
   const [uploadAvatar, { isLoading: isUploading }] = useUploadAvatarMutation();
@@ -111,6 +115,9 @@ export function useMyProfile() {
     skills,
     newSkill,
     setNewSkill,
+    previewOpen,
+    handleOpen,
+    handleClose,
     addingSkill,
     setAddingSkill,
     handleCancel,

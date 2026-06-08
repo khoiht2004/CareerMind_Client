@@ -163,7 +163,7 @@ function BillingToggle({ isYearly, onChange }) {
       >
         <span
           className={cn(
-            "pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-sm transition-transform",
+            "bg-background pointer-events-none inline-block size-4 transform rounded-full shadow-sm transition-transform",
             isYearly ? "translate-x-6" : "translate-x-1",
           )}
         />
@@ -278,21 +278,21 @@ function FaqItem({ item }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-function AIPricing() {
+function MembershipPage() {
   const [isYearly, setIsYearly] = useState(false);
 
   return (
-    <div className="space-y-24 py-16">
+    <div className="space-y-16 py-10 sm:space-y-24 sm:py-16">
       {/* ── Hero ── */}
-      <section className="mx-auto max-w-3xl space-y-6 px-6 text-center">
+      <section className="mx-auto max-w-3xl space-y-6 px-4 text-center sm:px-6">
         <div className="bg-primary/10 text-primary mx-auto flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold">
           <Zap className="size-4" />
-          AI Scout Pricing
+          MindScout Pricing
         </div>
-        <h1 className="text-4xl font-black tracking-tight lg:text-5xl">
+        <h1 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
           Bảng giá dịch vụ
         </h1>
-        <p className="text-muted-foreground text-lg leading-relaxed">
+        <p className="text-muted-foreground text-base leading-relaxed sm:text-lg">
           Chọn giải pháp tuyển dụng phù hợp nhất với quy mô và nhu cầu phát
           triển đội ngũ của doanh nghiệp bạn.
         </p>
@@ -300,7 +300,7 @@ function AIPricing() {
       </section>
 
       {/* ── Pricing cards ── */}
-      <section className="mx-auto max-w-5xl px-6">
+      <section className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {PLANS.map((plan) => (
             <PricingCard key={plan.id} plan={plan} isYearly={isYearly} />
@@ -309,16 +309,18 @@ function AIPricing() {
       </section>
 
       {/* ── Comparison table ── */}
-      <section className="mx-auto max-w-5xl space-y-10 px-6">
+      <section className="mx-auto max-w-5xl space-y-10 px-4 sm:px-6">
         <div className="space-y-2 text-center">
-          <h2 className="text-3xl font-black">So sánh tính năng chi tiết</h2>
+          <h2 className="text-2xl font-black sm:text-3xl">
+            So sánh tính năng chi tiết
+          </h2>
           <p className="text-muted-foreground">
             Phân tích sâu hơn để tìm ra gói dịch vụ phù hợp nhất với bạn
           </p>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto rounded-2xl border">
+          <table className="w-full min-w-[720px] text-sm">
             <thead>
               <tr className="bg-muted/40">
                 <th className="p-4 text-left font-semibold">Tính năng</th>
@@ -356,9 +358,11 @@ function AIPricing() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="mx-auto max-w-2xl space-y-8 px-6">
+      <section className="mx-auto max-w-2xl space-y-8 px-4 sm:px-6">
         <div className="space-y-2 text-center">
-          <h2 className="text-3xl font-black">Câu hỏi thường gặp</h2>
+          <h2 className="text-2xl font-black sm:text-3xl">
+            Câu hỏi thường gặp
+          </h2>
         </div>
         <div>
           {FAQ_ITEMS.map((item) => (
@@ -368,10 +372,10 @@ function AIPricing() {
       </section>
 
       {/* ── Bottom CTA ── */}
-      <section className="mx-auto max-w-3xl px-6 text-center">
+      <section className="mx-auto max-w-3xl px-4 text-center sm:px-6">
         <Separator className="mb-16" />
-        <div className="bg-primary/5 space-y-5 rounded-3xl border p-10">
-          <h3 className="text-2xl font-black">
+        <div className="bg-primary/5 space-y-5 rounded-3xl border p-5 sm:p-10">
+          <h3 className="text-xl font-black sm:text-2xl">
             Vẫn còn phân vân? Hãy để chúng tôi tư vấn.
           </h3>
           <p className="text-muted-foreground">
@@ -390,4 +394,4 @@ function AIPricing() {
   );
 }
 
-export default AIPricing;
+export default MembershipPage;

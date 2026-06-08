@@ -22,7 +22,7 @@ function ChatBot() {
   } = useChatBot();
 
   return (
-    <div className="-mb-25 flex h-[calc(100svh-3.5rem)] w-full gap-3 overflow-hidden md:p-6">
+    <div className="-mb-25 flex h-[calc(100svh-3.5rem)] w-full min-w-0 flex-col gap-3 overflow-hidden p-2 sm:p-3 md:flex-row md:p-6">
       <ChatSidebar
         isOpen={sidebarOpen}
         sessions={sessions}
@@ -42,6 +42,7 @@ function ChatBot() {
         isSending={isSending}
         isLoading={messagesLoading}
         hasActiveSession={!!activeSessionId}
+        userAvatar={sessions[0]?.user?.profile?.avatarUrl}
       />
     </div>
   );

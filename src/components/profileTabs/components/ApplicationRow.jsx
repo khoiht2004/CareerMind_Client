@@ -1,7 +1,6 @@
 import { memo, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { MoreVertical, Trash2 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +16,7 @@ import {
 import { formatRelativeTime } from "@/utils/helper";
 
 const STATUS_BORDER = {
+  DRAFT: "var(--border)",
   PENDING: "var(--status-pending-border)",
   REVIEWING: "var(--status-reviewing-border)",
   INTERVIEW: "var(--status-interview-border)",
@@ -25,6 +25,12 @@ const STATUS_BORDER = {
 };
 
 const RIGHT_CONTENT = {
+  DRAFT: {
+    label: "HỒ SƠ NHÁP",
+    detail: "Chưa hoàn thành hồ sơ",
+    btnText: "Chỉnh sửa",
+    btnVariant: "default",
+  },
   PENDING: {
     label: "CẬP NHẬT CUỐI",
     detail: "Hồ sơ đã gửi",
@@ -62,13 +68,17 @@ function ApplicationCard({ app, onDeleteClick }) {
   const cfg = STATUS_CONFIG[app.status];
   const Icon = cfg?.icon;
   const label = APPLICATION_STATUS_LABELS[app.status] ?? app.status;
-  const right = RIGHT_CONTENT[app.status] ?? RIGHT_CONTENT.PENDING;
+  const right = RIGHT_CONTENT[app.status] ?? RIGHT_CONTENT.DRAFT;
   const borderColor = STATUS_BORDER[app.status] ?? "var(--border)";
   const initials = (app.job?.company?.name ?? "C").charAt(0).toUpperCase();
 
   const handleNavigate = useCallback(() => {
-    navigate(`/applications/${app.id}`);
-  }, [navigate, app.id]);
+    if (app.status === "DRAFT") {
+      navigate(`/jobs/${app.job?.id}/apply`, { state: { draft: app } });
+    } else {
+      navigate(`/applications/${app.id}`);
+    }
+  }, [navigate, app]);
 
   const handleDelete = useCallback(() => {
     onDeleteClick(app);
@@ -97,7 +107,7 @@ function ApplicationCard({ app, onDeleteClick }) {
         <div className="mb-1 flex items-center gap-2">
           <Badge className={`gap-1 border text-xs ${cfg?.className}`}>
             {Icon && <Icon className="size-3" />}
-            {label}
+            {label ?? "Bản nháp"}
           </Badge>
           <span className="text-muted-foreground text-xs">
             Đã ứng tuyển {formatRelativeTime(app.createdAt)}

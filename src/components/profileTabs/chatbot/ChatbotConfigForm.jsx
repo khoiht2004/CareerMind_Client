@@ -16,7 +16,7 @@ function ChatbotConfigForm({
   handleCancel,
 }) {
   return (
-    <div className="bg-card border-border flex-1 rounded-2xl border p-6 shadow-sm">
+    <div className="bg-card border-border flex-1 rounded-2xl border p-4 shadow-sm sm:p-6">
       <div className="space-y-8">
         {/* Lĩnh vực quan tâm */}
         <div className="space-y-4">
@@ -64,7 +64,7 @@ function ChatbotConfigForm({
           </div>
 
           <div className="bg-muted/30 rounded-xl p-5">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
               <span className="text-muted-foreground text-sm">
                 Khoảng lương (VNĐ)
               </span>
@@ -98,12 +98,12 @@ function ChatbotConfigForm({
             <h3 className="text-base font-semibold">Địa điểm làm việc</h3>
           </div>
 
-          <div className="bg-muted/30 relative flex flex-wrap items-center gap-2 rounded-xl p-2 pl-4">
+          <div className="bg-muted/30 relative flex flex-wrap items-center gap-2 rounded-xl p-2 sm:pl-4">
             <Input
-              className="text-muted-foreground min-w-[200px] flex-1 text-sm"
+              className="text-muted-foreground min-w-0 flex-1 text-sm"
               placeholder="Nhập thành phố hoặc khu vực..."
             />
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {locations.map((location) => (
                 <span
                   key={location}
@@ -116,23 +116,23 @@ function ChatbotConfigForm({
           </div>
 
           {/* Map placeholder */}
-          <div className="border-border relative h-40 w-full overflow-hidden rounded-xl border bg-[#486361] opacity-90">
+          <div className="border-border bg-primary-container relative h-40 w-full overflow-hidden rounded-xl border opacity-90">
             <div
               className="absolute inset-0"
               style={{
                 backgroundImage:
-                  "radial-gradient(circle at center, transparent 30%, #486361 80%), repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 11px), repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255,255,255,0.1) 15px, rgba(255,255,255,0.1) 16px)",
+                  "radial-gradient(circle at center, transparent 30%, var(--primary-container) 80%), repeating-linear-gradient(45deg, transparent, transparent 10px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 10px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 11px), repeating-linear-gradient(-45deg, transparent, transparent 15px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 15px, color-mix(in srgb, var(--on-primary-container) 10%, transparent) 16px)",
               }}
             ></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="size-48 rounded-full border border-white/20"></div>
-              <div className="absolute size-24 rounded-full border border-white/20"></div>
+              <div className="border-on-primary-container/20 size-48 rounded-full border"></div>
+              <div className="border-on-primary-container/20 absolute size-24 rounded-full border"></div>
             </div>
           </div>
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:gap-4">
           <Button
             onClick={handleCancel}
             variant="secondary"

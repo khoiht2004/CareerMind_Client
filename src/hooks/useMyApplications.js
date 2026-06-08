@@ -8,13 +8,23 @@ import {
 const PAGE_SIZE = 8;
 
 export function useMyApplications() {
-  const [filters, setFilters] = useState({ status: "ALL", days: "30", page: 1 });
+  const [filters, setFilters] = useState({
+    status: "ALL",
+    days: "30",
+    page: 1,
+    tab: "submitted",
+  });
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const queryParams = useMemo(() => {
     const p = { page: filters.page, limit: PAGE_SIZE };
-    if (filters.status !== "ALL") p.status = filters.status;
     if (filters.days !== "0") p.days = filters.days;
+    if (filters.tab === "draft") {
+      p.status = "DRAFT";
+    } else {
+      if (filters.status !== "ALL") p.status = filters.status;
+      p.isDraft = "false";
+    }
     return p;
   }, [filters]);
 
@@ -32,6 +42,11 @@ export function useMyApplications() {
   const interviewCount = useMemo(
     () => applications.filter((a) => a.status === "INTERVIEW").length,
     [applications],
+  );
+
+  const setTab = useCallback(
+    (tab) => setFilters((f) => ({ ...f, tab, page: 1, status: "ALL" })),
+    [],
   );
 
   const setStatusFilter = useCallback(
@@ -75,6 +90,7 @@ export function useMyApplications() {
     isLoading,
     isDeleting,
     filters,
+    setTab,
     setStatusFilter,
     setDaysFilter,
     setPage,

@@ -7,8 +7,8 @@ function AcceptedFields({ fields, onFieldChange }) {
   const today = new Date();
 
   return (
-    <div className="space-y-3 rounded-lg border border-green-200 bg-green-50/50 p-4 dark:border-green-900 dark:bg-green-950/30">
-      <p className="flex items-center gap-1.5 text-xs font-semibold text-green-700 dark:text-green-400">
+    <div className="space-y-3 rounded-lg border border-[var(--status-accepted-border)] bg-[var(--status-accepted-bg)]/50 p-4">
+      <p className="flex items-center gap-1.5 text-xs font-semibold text-[var(--status-accepted-text)]">
         <Building2 className="size-3.5" />
         Thông tin nhận việc
       </p>
@@ -41,7 +41,7 @@ function AcceptedFields({ fields, onFieldChange }) {
       {/* Địa chỉ */}
       <div className="space-y-1.5">
         <Label className="flex items-center gap-1.5 text-sm font-medium">
-          <MapPin className="size-3.5 text-green-600" />
+          <MapPin className="size-3.5 text-[var(--status-accepted-text)]" />
           Địa chỉ văn phòng
         </Label>
         <Input

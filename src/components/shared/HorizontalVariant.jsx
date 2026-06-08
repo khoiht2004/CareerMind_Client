@@ -1,132 +1,115 @@
 import { memo } from "react";
-import {
-  MapPin,
-  Clock,
-  Flame,
-  DollarSign,
-  Users,
-  Bookmark,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Flame, Heart, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
+import { cn } from "@/lib/utils";
 
-// ── Variant: horizontal (dùng ở trang Home) ──────────────────────
-function HorizontalVariant({ job, isSaved }) {
-  const navigate = useNavigate();
-  const {
-    id,
-    title,
-    company,
-    location,
-    salary,
-    type,
-    level,
-    slots,
-    isHot,
-    postedAt,
-  } = job;
-  const companyName = company?.name ?? "";
-  const initial = (companyName?.[0] ?? "?").toUpperCase();
+function CompanyLogo({ company }) {
+  const companyName = company?.name ?? company ?? "Công ty";
+  const logoUrl = company?.logoUrl;
 
   return (
-    <Card
-      onClick={() => navigate(`/jobs/${id}`)}
-      className="group relative cursor-pointer overflow-hidden transition-shadow hover:shadow-md"
-    >
-      {/* Marks */}
-      {isSaved && (
-        <Bookmark className="fill-secondary stroke-secondary absolute -top-2 left-[2%] size-8" />
+    <div className="text-primary bg-card flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md border text-center text-xs font-semibold">
+      {logoUrl ? (
+        <img
+          src={logoUrl}
+          alt={companyName}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <span>CÔNG TY</span>
       )}
+    </div>
+  );
+}
 
-      {/* Badges */}
-      <div className="absolute top-3 right-3 flex items-center gap-1.5">
-        {isHot && (
-          <span className="bg-hot text-hot-foreground flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold">
-            <Flame className="size-3" />
-            Hot
-          </span>
-        )}
-      </div>
+function HorizontalVariant({
+  job,
+  isSaved = false,
+  compact = false,
+  highlighted = false,
+  actions = "heart",
+}) {
+  const companyName = job.company?.name ?? job.company ?? "Công ty đang tuyển";
 
-      <CardContent className="flex items-center gap-4 px-5 py-4">
-        {/* Company avatar */}
-        <div
-          className={`${company?.logoUrl ? "" : "text-primary border-border border"} flex size-14 shrink-0 items-start justify-center overflow-hidden rounded-lg text-base font-bold`}
-        >
-          {company?.logoUrl ? (
-            <img
-              src={company.logoUrl}
-              alt={company.name}
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            initial
-          )}
-        </div>
-
-        {/* Info */}
-        <div className="min-w-0 flex-1 space-y-1 pr-28">
-          <h3 className="group-hover:text-primary line-clamp-1 text-sm leading-snug font-semibold">
-            {title}
-          </h3>
-
-          <p className="text-muted-foreground text-xs font-medium">
+  return (
+    <div
+      className={cn(
+        "group hover:border-primary/50 bg-card min-w-0 cursor-pointer rounded-lg border p-3 shadow-sm transition hover:shadow-md",
+        highlighted && "border-primary/30 bg-primary/5",
+        compact ? "items-center" : "items-start",
+      )}
+      onClick={() =>
+        window.open(`/jobs/${job.id}`, "_blank", "noopener,noreferrer")
+      }
+    >
+      {/* Section 1 */}
+      <section className="flex gap-3">
+        <CompanyLogo company={job.company} />
+        <div className="min-w-0 flex-1">
+          <div className="flex gap-2">
+            <h3
+              className={cn(
+                "text-foreground group-hover:text-primary line-clamp-2 flex-1 font-bold",
+                compact ? "text-sm" : "text-[15px]",
+              )}
+            >
+              {job.title}
+            </h3>
+          </div>
+          <p className="text-muted-foreground mt-1 line-clamp-1 text-xs uppercase">
             {companyName}
           </p>
-
-          <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-xs">
-            <span className="flex items-center gap-1">
-              <MapPin className="size-3 shrink-0" />
-              {location}
-            </span>
-            {salary && (
-              <span className="flex items-center gap-0.5">
-                <DollarSign className="size-3 shrink-0" />
-                {salary}
-              </span>
-            )}
-          </div>
-
-          <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-xs">
-            {slots > 1 && (
-              <span className="flex items-center gap-1">
-                <Users className="size-3 shrink-0" />
-                {slots} vị trí
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-            <Badge variant="secondary" className="px-2 py-0.5 text-[11px]">
-              {type}
-            </Badge>
-            {level && (
-              <Badge variant="outline" className="px-2 py-0.5 text-[11px]">
-                {level}
-              </Badge>
-            )}
-            <span className="text-muted-foreground flex items-center gap-1 text-[11px]">
-              <Clock className="size-3 shrink-0" />
-              {postedAt}
-            </span>
-
-            {/* Apply button */}
-            <Button
-              size="sm"
-              className="absolute right-4 shrink-0 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/jobs/${id}`);
-              }}
-            >
-              Ứng tuyển nhanh
-            </Button>
-          </div>
         </div>
-      </CardContent>
-    </Card>
+      </section>
+
+      {/* Section 2 */}
+      <section className="flex justify-between">
+        <div className="mt-2 flex shrink-0 items-center gap-2 self-stretch">
+          <span className="bg-muted text-muted-foreground rounded-full px-2.5 py-1 text-xs font-medium">
+            {job.salary || "Thoả thuận"}
+          </span>
+          <span className="bg-muted text-muted-foreground rounded-full px-2.5 py-1 text-xs font-medium">
+            {job.location || "Hà Nội"}
+          </span>
+        </div>
+        <div className="flex shrink-0 items-end self-stretch">
+          {actions === "both" ? (
+            <div className="flex items-center gap-1">
+              {job.isHot ? (
+                <Flame className="text-hot-foreground fill-hot-foreground size-4" />
+              ) : null}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-destructive size-8 rounded-md"
+              >
+                <Trash2 className="size-4" />
+              </Button>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="text-primary size-8 rounded-md"
+              >
+                <Heart className="size-4" />
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              {job.isHot ? (
+                <Flame className="bg-hot text-hot-foreground fill-hot-foreground size-5 rounded-full p-1" />
+              ) : null}
+              <Button
+                variant="outline"
+                size="icon"
+                className="hover:text-primary size-8 rounded-full"
+              >
+                <Heart className={cn("size-4", isSaved && "fill-primary")} />
+              </Button>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
   );
 }
 

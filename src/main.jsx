@@ -12,7 +12,8 @@ createRoot(document.getElementById("root")).render(
     <ThemeProvider>
       <TooltipProvider>
         <App />
-        <Toaster richColors position="top-right" />
+        {/* 0.9s sẽ tự tắt */}
+        <Toaster richColors position="top-right" duration={900} />
       </TooltipProvider>
     </ThemeProvider>
   </Provider>,

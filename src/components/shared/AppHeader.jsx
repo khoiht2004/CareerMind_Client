@@ -1,59 +1,31 @@
-import { Link } from "react-router";
+import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
-import { PanelLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import UserMenu from "./UserMenu";
-import { useSidebar } from "@/contexts/SidebarContext";
-import { path } from "@/config/path";
-
-function AuthButtons() {
-  return (
-    <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        className="h-9 cursor-pointer rounded-4xl"
-        asChild
-      >
-        <Link to={`${path.auth}?tab=login`}>Đăng nhập</Link>
-      </Button>
-      <Button size="sm" className="h-9 cursor-pointer rounded-4xl" asChild>
-        <Link to={`${path.auth}?tab=register`}>Đăng ký</Link>
-      </Button>
-    </div>
-  );
-}
+import AuthButtons from "./header/AuthButtons";
+import HeaderBrand from "./header/HeaderBrand";
+import HeaderMobileMenu from "./header/HeaderMobileMenu";
+import HeaderNav from "./header/HeaderNav";
+import ThemeToggle from "./ThemeToggle";
 
 function AppHeader() {
-  const { isCollapsed, toggle } = useSidebar();
   const { user } = useSelector((state) => state.auth);
+  const { pathname } = useLocation();
 
   return (
-    <header className="bg-sidebar-primary-foreground sticky top-2 z-10 mx-auto flex h-14 w-[98%] items-center justify-between rounded-4xl px-3 shadow-sm backdrop-blur">
-      {/* Sidebar toggle */}
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggle}
-            className="h-10 w-10 cursor-pointer"
-          >
-            <PanelLeft className="size-5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          {isCollapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"}
-        </TooltipContent>
-      </Tooltip>
+    <header className="shadow-nav bg-background/95 sticky top-0 z-40 border-b backdrop-blur">
+      <div className="flex h-14 min-w-0 items-center gap-2 px-2 min-[576px]:h-15 min-[576px]:px-3 sm:gap-4 sm:px-5 lg:gap-6">
+        <HeaderMobileMenu pathname={pathname} user={user} />
+        <HeaderBrand />
+        <HeaderNav pathname={pathname} />
 
-      {/* Right */}
-      {user ? <UserMenu /> : <AuthButtons />}
+        <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
+          {/* Switch theme btn */}
+          <ThemeToggle />
+
+          {/* Other */}
+          {user ? <UserMenu /> : <AuthButtons />}
+        </div>
+      </div>
     </header>
   );
 }

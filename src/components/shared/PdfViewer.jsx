@@ -26,7 +26,7 @@ function PdfViewer({ fileUrl, containerWidth }) {
   return (
     <div className="flex h-full flex-col">
       {/* Scrollable PDF area */}
-      <div className="flex flex-1 justify-center overflow-auto bg-zinc-100 p-4 dark:bg-zinc-900">
+      <div className="bg-muted flex flex-1 justify-center overflow-auto p-4">
         {loadError ? (
           <div className="flex flex-col items-center justify-center gap-3 text-center">
             <AlertCircle className="text-destructive size-10" />
@@ -46,7 +46,7 @@ function PdfViewer({ fileUrl, containerWidth }) {
             onLoadSuccess={handleLoadSuccess}
             onLoadError={() => setLoadError(true)}
             loading={
-              <div className="flex items-center gap-2 py-16 text-sm text-zinc-500">
+              <div className="text-muted-foreground flex items-center gap-2 py-16 text-sm">
                 <Loader2 className="size-5 animate-spin" />
                 Đang tải PDF…
               </div>

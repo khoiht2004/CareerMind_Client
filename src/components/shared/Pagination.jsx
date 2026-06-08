@@ -23,20 +23,17 @@ function Pagination({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 pt-4 pb-2">
-      {/* Nút Trước */}
+    <div className="text-primary mt-6 flex items-center justify-center gap-3 text-sm font-semibold">
       <Button
         variant="outline"
-        size="sm"
+        size="icon"
         disabled={page <= 1 || isLoading}
         onClick={() => onPageChange(page - 1)}
-        className="cursor-pointer gap-1"
+        className="size-8 cursor-pointer rounded-full"
       >
         <ChevronLeft className="size-4" />
-        Trước
       </Button>
 
-      {/* Số trang (optional) */}
       {showPageNumbers ? (
         <div className="flex items-center gap-1">
           {buildPageList(page, totalPages).map((item, idx) =>
@@ -51,10 +48,10 @@ function Pagination({
               <Button
                 key={item}
                 variant={item === page ? "default" : "outline"}
-                size="sm"
+                size="icon"
                 disabled={isLoading}
                 onClick={() => onPageChange(item)}
-                className="h-9 w-9 cursor-pointer"
+                className="size-8 cursor-pointer rounded-full"
               >
                 {item}
               </Button>
@@ -62,21 +59,16 @@ function Pagination({
           )}
         </div>
       ) : (
-        /* Hiển thị "X / Y" đơn giản */
-        <span className="flex items-center px-3 text-sm">
-          {page} / {totalPages}
-        </span>
+        <span>{page} / {totalPages} trang</span>
       )}
 
-      {/* Nút Sau */}
       <Button
         variant="outline"
-        size="sm"
+        size="icon"
         disabled={page >= totalPages || isLoading}
         onClick={() => onPageChange(page + 1)}
-        className="cursor-pointer gap-1"
+        className="size-8 cursor-pointer rounded-full"
       >
-        Sau
         <ChevronRight className="size-4" />
       </Button>
     </div>

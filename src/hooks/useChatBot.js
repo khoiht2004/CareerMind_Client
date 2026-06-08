@@ -1,13 +1,17 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
 import {
   useGetSessionsQuery,
   useCreateSessionMutation,
-  useGetMessagesQuery,
-  useSendMessageMutation,
+  useGetChatBotMessagesQuery,
+  useSendChatBotMessageMutation,
   useDeleteSessionMutation,
   useUpdateSessionTitleMutation,
 } from "@/services/chat.service";
+import { useGetJobByIdQuery } from "@/services/job.service";
+import { useGetProfileQuery } from "@/services/profile.service";
+import { buildJobConsultMessage } from "@/utils/helper";
 
 export function useChatBot() {
   const [activeSessionId, setActiveSessionId] = useState(null);
@@ -18,15 +22,24 @@ export function useChatBot() {
     () => typeof window !== "undefined" && window.innerWidth >= 768,
   );
 
+  // Feature 1: capture jobId from navigation state (lost on page reload — prevents re-trigger)
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [initJobId] = useState(() => location.state?.jobId ?? null);
+
   const { data: sessionsData, isLoading: sessionsLoading } =
     useGetSessionsQuery();
   const { data: messageData, isLoading: messagesLoading } =
-    useGetMessagesQuery(activeSessionId, { skip: !activeSessionId });
+    useGetChatBotMessagesQuery(activeSessionId, { skip: !activeSessionId });
 
   const [createSession] = useCreateSessionMutation();
-  const [sendMessage] = useSendMessageMutation();
+  const [sendMessage] = useSendChatBotMessageMutation();
   const [deleteSession] = useDeleteSessionMutation();
   const [updateSessionTitle] = useUpdateSessionTitleMutation();
+
+  const { data: jobData } = useGetJobByIdQuery(initJobId, { skip: !initJobId });
+  const { isLoading: profileLoading } = useGetProfileQuery(undefined, { skip: !initJobId });
+  const autoInitRef = useRef(false);
 
   const sessions = useMemo(() => sessionsData?.data ?? [], [sessionsData]);
   const messages = useMemo(
@@ -35,10 +48,37 @@ export function useChatBot() {
   );
 
   useEffect(() => {
-    if (!activeSessionId && sessions.length > 0) {
+    if (!activeSessionId && sessions.length > 0 && !initJobId) {
       setActiveSessionId(sessions[0].id);
     }
-  }, [sessions, activeSessionId]);
+  }, [sessions, activeSessionId, initJobId]);
+
+  // Auto-create session + send first message when arriving via job consult link
+  useEffect(() => {
+    if (!initJobId || autoInitRef.current) return;
+    const job = jobData?.data;
+    if (!job) return;
+    if (profileLoading) return;
+
+    autoInitRef.current = true;
+
+    // Clear navigation state so reload doesn't re-trigger
+    navigate(location.pathname, { replace: true, state: null });
+
+    (async () => {
+      try {
+        const sessionRes = await createSession({ title: `Tư vấn ${job.title}` }).unwrap();
+        const sessionId = sessionRes.data.id;
+        setActiveSessionId(sessionId);
+
+        const message = buildJobConsultMessage(job);
+        await sendMessage({ sessionId, content: message, attachments: [] }).unwrap();
+      } catch (error) {
+        toast.error("Không thể tạo cuộc trò chuyện mới");
+        console.error(error);
+      }
+    })();
+  }, [initJobId, jobData, profileLoading, createSession, sendMessage, navigate, location.pathname]);
 
   const handleCreateSession = useCallback(async () => {
     try {
@@ -61,8 +101,7 @@ export function useChatBot() {
       setIsSending(true);
       setPendingMessage({ content, attachments });
       try {
-        const images = attachments.map(({ data, mediaType }) => ({ data, mediaType }));
-        await sendMessage({ sessionId: activeSessionId, content, images }).unwrap();
+        await sendMessage({ sessionId: activeSessionId, content, attachments }).unwrap();
       } catch {
         toast.error("Gửi tin nhắn thất bại");
       } finally {

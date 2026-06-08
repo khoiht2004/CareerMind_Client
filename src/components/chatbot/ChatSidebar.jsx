@@ -42,14 +42,7 @@ const SessionItem = memo(function SessionItem({
         onClick={handleSelect}
         className="min-w-0 flex-1 cursor-pointer px-3 py-3 text-left"
       >
-        <p
-          className={cn(
-            "truncate text-sm",
-            isActive ? "font-semibold" : "font-medium",
-          )}
-        >
-          {session.title}
-        </p>
+        <p className="text-sm font-medium">{session.title}</p>
         <p className="text-muted-foreground mt-0.5 text-[11px]">
           {formatRelativeTime(session.updatedAt ?? session.createdAt) ||
             `${session._count?.messages ?? 0} tin nhắn`}
@@ -76,17 +69,20 @@ function ChatSidebar({
   onRename,
   onDelete,
   isLoading,
+  showUpgradePro = true,
 }) {
   return (
     <div
       className={cn(
-        "bg-primary/5 flex h-full min-h-0 shrink-0 flex-col overflow-hidden rounded-4xl",
+        "bg-primary/5 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-2xl md:h-full md:rounded-4xl",
         "transition-all duration-200",
-        isOpen ? "w-75" : "w-0 border-0",
+        isOpen
+          ? "h-48 w-full md:h-full md:w-75"
+          : "h-0 w-full border-0 md:h-full md:w-0",
       )}
     >
       <div className="flex h-14 shrink-0 items-center justify-between px-4">
-        <h2 className="font-bold">Lịch sử trò chuyện</h2>
+        <h3 className="font-bold">Lịch sử trò chuyện</h3>
         <button
           type="button"
           onClick={onCreate}
@@ -122,19 +118,21 @@ function ChatSidebar({
         )}
       </ScrollArea>
 
-      <div className="p-3">
-        <div className="bg-foreground text-background rounded-xl p-3">
-          <p className="text-background/50 mb-1 text-[10px] font-bold tracking-widest uppercase">
-            Nâng cấp Pro
-          </p>
-          <p className="text-xs leading-snug">
-            Mở khóa phân tích chuyên sâu từ AI Scout.
-          </p>
-          <Button className="mt-3" variant="secondary" asChild>
-            <Link to={path.aiPricing}>Nâng cấp Pro</Link>
-          </Button>
+      {showUpgradePro && (
+        <div className="hidden p-3 md:block">
+          <div className="bg-foreground text-background rounded-xl p-3">
+            <p className="text-background/50 mb-1 text-[10px] font-bold tracking-widest uppercase">
+              Nâng cấp Pro
+            </p>
+            <p className="text-xs leading-snug">
+              Mở khóa phân tích chuyên sâu từ MindScout.
+            </p>
+            <Button className="mt-3" variant="secondary" asChild>
+              <Link to={path.membership}>Nâng cấp Pro</Link>
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

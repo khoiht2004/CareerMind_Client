@@ -1,26 +1,39 @@
 import {
   Clock,
   XCircle,
-  Compass,
-  BotMessageSquare,
-  User,
-  BookmarkCheck,
   Eye,
   MessagesSquare,
   CircleCheck,
   Bell,
   Lock,
   Shield,
-  LogOut,
-  Headset,
+  FileEdit,
 } from "lucide-react";
-import { path } from "../path";
 
-export const CANDIDATE_NAV_ITEMS = [
-  { to: path.home, icon: Compass, label: "Khám phá", end: true },
-  { to: path.savedJobs, icon: BookmarkCheck, label: "Việc làm đã lưu" },
-  { to: path.chatbot, icon: BotMessageSquare, label: "AI Scout" },
-  { to: path.profile, icon: User, label: "Hồ sơ" },
+export const INDUSTRY_OPTIONS = [
+  { label: "Tất cả ngành nghề", value: "ALL" },
+  { label: "Công nghệ thông tin", value: "IT" },
+  { label: "Marketing/PR", value: "Marketing" },
+  { label: "Kinh doanh/Bán hàng", value: "Sales" },
+  { label: "Tài chính/Ngân hàng", value: "Finance" },
+  { label: "Nhân sự", value: "HR" },
+  { label: "Vận hành", value: "Operations" },
+];
+
+export const SALARY_OPTIONS = [
+  { label: "Tất cả mức lương", value: "ALL" },
+  { label: "Dưới 10 triệu", value: "10" },
+  { label: "10 - 20 triệu", value: "20" },
+  { label: "20 - 30 triệu", value: "30" },
+  { label: "Thỏa thuận", value: "Thoa thuan" },
+];
+
+export const COMPANY_SIZE_OPTIONS = [
+  { label: "Tất cả quy mô", value: "ALL" },
+  { label: "1-50 nhân viên", value: "1-50" },
+  { label: "51-200 nhân viên", value: "51-200" },
+  { label: "201-1000 nhân viên", value: "201-1000" },
+  { label: "1000+ nhân viên", value: "1000+" },
 ];
 
 export const PROFILE_TABS = [
@@ -29,10 +42,12 @@ export const PROFILE_TABS = [
   { key: "cv", label: "CV của tôi" },
   { key: "cover-letter", label: "Thư xin việc" },
   { key: "chatbot", label: "Chatbot của tôi" },
+  { key: "insights", label: "Phân tích hồ sơ" },
   { key: "settings", label: "Cài đặt" },
 ];
 
 export const APPLICATION_STATUS_LABELS = {
+  DRAFT: "Bản nháp",
   PENDING: "Chờ xét duyệt",
   REVIEWING: "Đang xem xét",
   INTERVIEW: "Phỏng vấn",
@@ -41,6 +56,11 @@ export const APPLICATION_STATUS_LABELS = {
 };
 
 export const STATUS_CONFIG = {
+  DRAFT: {
+    icon: FileEdit,
+    className:
+      "bg-[var(--job-draft-bg)] text-[var(--job-draft-text)] border-[var(--job-draft-border)]",
+  },
   PENDING: {
     icon: Clock,
     className:
@@ -87,16 +107,10 @@ export const JOB_TYPE_OPTIONS = [
 
 export const LOCATION_OPTIONS = [
   { label: "Tất cả địa điểm", value: "ALL" },
-  { label: "TP. Hồ Chí Minh", value: "Hồ Chí Minh" },
+  { label: "TP. Hồ Chí Minh", value: "TP. Hồ Chí Minh" },
   { label: "Hà Nội", value: "Hà Nội" },
   { label: "Đà Nẵng", value: "Đà Nẵng" },
   { label: "Remote", value: "Remote" },
-];
-
-export const EXP_LEVEL_OPTIONS = [
-  { label: "Mới đi làm", value: "ENTRY" },
-  { label: "Trung cấp / Cao cấp", value: "MID_SENIOR" },
-  { label: "Giám đốc", value: "DIRECTOR" },
 ];
 
 export const JOB_SORT_OPTIONS = [
@@ -121,10 +135,10 @@ export const APPLICATION_DATE_RANGE_OPTIONS = [
 ];
 
 export const SETTINGS_SIDEBAR_ITEMS = [
-  { id: "personal", label: "Thông tin cá nhân", icon: User },
-  { id: "notifications", label: "Thông báo", icon: Bell },
+  // { id: "personal", label: "Thông tin cá nhân", icon: User },
   { id: "security", label: "Đổi mật khẩu", icon: Lock },
   { id: "privacy", label: "Quyền riêng tư", icon: Shield },
+  { id: "notifications", label: "Thông báo", icon: Bell },
 ];
 
 export const AI_INTEREST_OPTIONS = [
@@ -134,11 +148,4 @@ export const AI_INTEREST_OPTIONS = [
   "Quản trị Dự án",
   "Data Science",
   "Sales & Business",
-];
-
-export const AI_LOCATION_OPTIONS = [
-  "TP. Hồ Chí Minh",
-  "Hà Nội",
-  "Đà Nẵng",
-  "Từ xa",
 ];

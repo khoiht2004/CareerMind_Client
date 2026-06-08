@@ -46,6 +46,8 @@ function MyCoverLetter() {
     handleOpenDelete,
     handleSubmit,
     handleDelete,
+    handleGenerateCoverLetter,
+    isGeneratingCL,
   } = useMyCoverLetter();
 
   return (
@@ -90,10 +92,10 @@ function MyCoverLetter() {
             <div className="bg-primary-foreground/10 mb-3 inline-flex size-9 items-center justify-center rounded-lg">
               <Sparkles className="size-5" />
             </div>
-            <h3 className="font-bold">Tư vấn bởi AI</h3>
+            <h3 className="font-bold">Tư vấn bởi MindScout</h3>
             <p className="mt-1 text-sm opacity-75">
               Tự động điều chỉnh thư xin việc dựa trên mô tả công việc (JD) để
-              tăng 80% tỷ lệ phản hồi.
+              tăng tỷ lệ phản hồi.
             </p>
             <Button
               size="sm"
@@ -161,6 +163,8 @@ function MyCoverLetter() {
         onSubmit={handleSubmit}
         isLoading={isCreating || isUpdating}
         isEditing={!!editingItem}
+        onGenerate={handleGenerateCoverLetter}
+        isGeneratingCL={isGeneratingCL}
       />
 
       <CoverLetterDeleteDialog

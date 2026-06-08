@@ -18,6 +18,29 @@ function LoginForm({ onSwitch }) {
     isLoading,
   } = useLogin();
 
+  const handleGoogleLogin = () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const redirectUri = `${window.location.origin}/oauth/callback/google`;
+    const scope = "email profile openid";
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${encodeURIComponent(scope)}`;
+    window.location.href = authUrl;
+  };
+
+  const handleGithubLogin = () => {
+    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+    const redirectUri = `${window.location.origin}/oauth/callback/github`;
+    const scope = "user:email";
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+    window.location.href = authUrl;
+  };
+
+  const googleLogo =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/3840px-Google_%22G%22_logo.svg.png";
+  const githubLogo =
+    "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg";
+  const linkedinLogo =
+    "https://cdn.worldvectorlogo.com/logos/linkedin-icon.svg";
+
   return (
     <div className="space-y-7">
       <div className="space-y-1.5">
@@ -111,13 +134,44 @@ function LoginForm({ onSwitch }) {
           </span>
           <Separator className="flex-1" />
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Button variant="outline" type="button" className="h-11 gap-2">
-            <Globe className="size-4" />
+        <div className="grid grid-cols-3 gap-3">
+          <Button
+            variant="outline"
+            type="button"
+            className="h-12 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
+            onClick={handleGoogleLogin}
+          >
+            <img
+              src={googleLogo}
+              alt="google"
+              className="size-5 object-cover"
+            />
             Google
           </Button>
-          <Button variant="outline" type="button" className="h-11 gap-2">
-            LinkedIn
+          <Button
+            variant="outline"
+            type="button"
+            className="h-12 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
+            onClick={handleGithubLogin}
+          >
+            <img
+              src={githubLogo}
+              alt="github"
+              className="size-5 object-cover"
+            />
+            GitHub
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
+            className="h-12 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
+          >
+            <img
+              src={linkedinLogo}
+              alt="linkedin"
+              className="size-5 object-cover"
+            />
+            Linkedin
           </Button>
         </div>
       </div>

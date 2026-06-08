@@ -24,6 +24,14 @@ export const companyService = apiSlice.injectEndpoints({
       query: (body) => ({ url: "/company/my/profile", method: "PUT", body }),
       invalidatesTags: ["Company"],
     }),
+    reviewCompany: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/company/${id}/reviews`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Company"],
+    }),
     getMyCompanyStats: builder.query({
       query: () => "/company/my/stats",
       providesTags: ["Company"],
@@ -40,6 +48,7 @@ export const {
   useGetCompanyByIdQuery,
   useGetMyCompanyProfileQuery,
   useUpdateMyCompanyProfileMutation,
+  useReviewCompanyMutation,
   useGetMyCompanyStatsQuery,
   useGetMyCompanyPersonnelQuery,
 } = companyService;

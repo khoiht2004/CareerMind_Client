@@ -28,12 +28,19 @@ import {
   STATUS_CONFIG,
 } from "@/config/constants/candidate.constant";
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
+import PageContainer from "@/components/shared/PageContainer";
 import { NotFound } from "@/components/shared/NotFound";
 import { useApplicationDetail } from "@/hooks/useApplicationDetail";
+import { usePermission } from "@/hooks/usePermission";
 import { formatDate, formatFileSize } from "@/utils/helper";
 import { AssessmentBar, UserInfo } from "@/features/ApplicationDetail";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import {
+  DEFAULT_TYPE_CONFIG,
+  FILE_TYPE_CONFIG,
+} from "@/config/constants/attachment.constants";
 
 function ApplicationDetail() {
   const {
@@ -48,6 +55,9 @@ function ApplicationDetail() {
     isUpdating,
   } = useApplicationDetail();
   const navigate = useNavigate();
+  const canUpdateStatus = usePermission("application:update:status");
+  const authUser = useSelector((state) => state.auth.user);
+  const isRecruiter = authUser?.role === "RECRUITER";
 
   if (isLoading) {
     return (
@@ -68,20 +78,25 @@ function ApplicationDetail() {
     coverLetter,
     note,
     user,
-    interviewDate,
-    interviewTime,
+    interview,
+    jobOffer,
   } = application;
 
+  const interviewDate = interview?.interviewDate;
+  const interviewTime = interview?.interviewTime;
+
+  const typeConfig =
+    FILE_TYPE_CONFIG[application?.cv?.fileType?.toLowerCase()] ??
+    DEFAULT_TYPE_CONFIG;
   const config = STATUS_CONFIG[status];
   const StatusIcon = config?.icon;
   const statusLabel = APPLICATION_STATUS_LABELS[status] ?? status;
   const typeLabel = JOB_TYPE_LABELS[job?.type] ?? job?.type;
   const fullName = user?.profile?.fullName ?? user?.email ?? "Ứng viên";
-  const isRecruiter = user?.role === "RECRUITER";
   const initials = fullName.charAt(0).toUpperCase();
 
   return (
-    <div className="mx-auto max-w-full space-y-6 p-6 lg:max-w-6xl">
+    <PageContainer className="max-w-full lg:max-w-6xl">
       {/* Page header */}
       <div className="flex items-center gap-3">
         <div className="space-y-1">
@@ -92,7 +107,7 @@ function ApplicationDetail() {
             Hãy theo dõi trạng thái và tiến trình của đơn ứng tuyển này.
           </p>
         </div>
-        {isRecruiter && (
+        {canUpdateStatus && (
           <div className="ml-auto flex items-center gap-2">
             <Button variant="outline" size="sm" className="gap-1.5">
               <Share2 className="size-4" />
@@ -186,12 +201,19 @@ function ApplicationDetail() {
               </CardHeader>
               <CardContent>
                 <div className="bg-muted/50 flex items-center gap-3 rounded-xl border p-4">
-                  <div className="bg-primary/10 flex size-10 items-center justify-center rounded-lg">
-                    <FileText className="text-primary size-5" />
+                  <div
+                    className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${typeConfig.bgClass}`}
+                  >
+                    <FileText className={`size-5 ${typeConfig.iconClass}`} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold">
+                    <p className="flex items-center gap-2 truncate text-sm font-semibold">
                       {cvFile.name}
+                      <span
+                        className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${typeConfig.badgeClass}`}
+                      >
+                        {typeConfig.label}
+                      </span>
                     </p>
                     {(cvFile.fileType || cvFile.fileSize) && (
                       <p className="text-muted-foreground mt-0.5 text-xs">
@@ -280,12 +302,14 @@ function ApplicationDetail() {
               </div>
 
               {interviewDate && (
-                <div className="text-muted flex items-center gap-2 text-xs font-medium">
-                  <CalendarDays className="size-3.5 shrink-0" />
-                  <span>Lịch hẹn </span>
-                  <div className="ml-auto">
-                    {formatDate(interviewDate)}
-                    {interviewTime ? ` · ${interviewTime}` : ""}
+                <div className="text-muted flex flex-col gap-2 text-xs font-medium">
+                  <div className="flex items-center gap-2">
+                    <CalendarDays className="size-3.5 shrink-0" />
+                    <span>Lịch hẹn </span>
+                    <div className="ml-auto">
+                      {formatDate(interviewDate)}
+                      {interviewTime ? ` · ${interviewTime}` : ""}
+                    </div>
                   </div>
                 </div>
               )}
@@ -294,6 +318,37 @@ function ApplicationDetail() {
                 <p>Ngày nộp</p>
                 <p className="ml-auto">{formatDate(createdAt)}</p>
               </div>
+              {!isRecruiter && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-primary-foreground border-primary-foreground w-full gap-1.5 border"
+                  onClick={() => {
+                    const startDate = new Date(interviewDate);
+                    if (interviewTime) {
+                      const [hours, minutes] = interviewTime.split(":");
+                      startDate.setHours(hours, minutes, 0, 0);
+                    }
+                    const endDate = new Date(
+                      startDate.getTime() + 60 * 60 * 1000,
+                    );
+                    const formatGCalDate = (d) =>
+                      d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+                    const dates = `${formatGCalDate(startDate)}/${formatGCalDate(endDate)}`;
+                    const text = encodeURIComponent(
+                      `Phỏng vấn vị trí ${job?.title}`,
+                    );
+                    const details = encodeURIComponent(
+                      `Công ty: ${job?.company?.name}`,
+                    );
+                    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&details=${details}`;
+                    window.open(url, "_blank");
+                  }}
+                >
+                  <CalendarClock className="size-4" />
+                  Thêm vào Google Calendar
+                </Button>
+              )}
 
               {isRecruiter && (
                 <Button
@@ -356,7 +411,7 @@ function ApplicationDetail() {
           cv={cvFile}
         />
       )}
-    </div>
+    </PageContainer>
   );
 }
 

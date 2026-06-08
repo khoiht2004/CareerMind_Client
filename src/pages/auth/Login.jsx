@@ -19,7 +19,10 @@ import { Separator } from "@/components/ui/separator";
 import { useDispatch } from "react-redux";
 import { path } from "@/config/path";
 import { useLoginMutation, authService } from "@/services/auth.service";
-import { REFRESH_TOKEN_KEY, TOKEN_KEY } from "@/config/constants/constants";
+import {
+  REFRESH_TOKEN_KEY,
+  ACCESS_TOKEN_KEY,
+} from "@/config/constants/constants";
 
 const schema = z.object({
   email: z.string().email("Email không hợp lệ"),
@@ -43,7 +46,7 @@ function Login() {
       const res = await login(data).unwrap();
       const accessToken = res?.data?.accessToken ?? res?.accessToken;
       const refreshToken = res?.data?.refreshToken ?? res?.refreshToken;
-      if (accessToken) localStorage.setItem(TOKEN_KEY, accessToken);
+      if (accessToken) localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
       if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
       await dispatch(

@@ -28,7 +28,7 @@ function InlineJobCard({ id }) {
 
   if (isLoading) {
     return (
-      <div className="flex w-72 shrink-0 items-center justify-center p-4">
+      <div className="flex min-w-0 items-center justify-center p-4">
         <Loader2 className="text-muted-foreground size-5 animate-spin" />
       </div>
     );
@@ -45,7 +45,7 @@ function InlineJobCard({ id }) {
   };
 
   return (
-    <div className="shrink-0">
+    <div className="min-w-0">
       <div
         onClick={() => navigate(`/jobs/${id}`)}
         className="bg-card border-border group relative flex h-full cursor-pointer flex-col justify-between gap-2 overflow-hidden rounded-xl border px-5 py-3.5 transition-shadow hover:shadow-md"

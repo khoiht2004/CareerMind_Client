@@ -32,6 +32,7 @@ export function useJobForm() {
       level: job.level ?? "",
       slots: job.slots,
       tags: job.tags,
+      industry: job.industry,
       benefits:
         Array.isArray(job.benefits) && job.benefits.length > 0
           ? job.benefits
@@ -64,6 +65,7 @@ export function useJobForm() {
       ...form,
       slots: +form.slots,
       tags: convertArray(form.tags),
+      industry: convertArray(form.industry),
       benefits: form.benefits.filter((benefit) => benefit.label || benefit.content || benefit.icon),
       requirements: form.requirements.filter((requirement) => requirement.label || requirement.content),
       deadline: form.deadline || undefined,

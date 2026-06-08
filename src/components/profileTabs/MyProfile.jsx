@@ -32,6 +32,9 @@ function MyProfile() {
     handleAvatarChange,
     handleAddSkill,
     handleRemoveSkill,
+    previewOpen,
+    handleOpen,
+    handleClose,
   } = useMyProfile();
 
   if (isLoading) {
@@ -58,6 +61,9 @@ function MyProfile() {
         editing={editing}
         onSave={editing ? handleSave : () => setEditing(true)}
         onCancel={handleCancel}
+        previewOpen={previewOpen}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
       />
 
       {/* Two-column layout */}
