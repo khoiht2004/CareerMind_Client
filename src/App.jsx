@@ -13,6 +13,7 @@ import PrivateLayout from "@/layouts/PrivateLayout";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import VerifyEmail from "@/pages/auth/VerifyEmail";
+import OAuthCallback from "@/pages/auth/OAuthCallback";
 
 // Public pages
 import Home from "@/pages/Home";
@@ -66,6 +67,7 @@ function App() {
             <Route path={path.register} element={<Register />} />
             <Route path={path.auth} element={<Auth />} />
             <Route path={path.verifyEmail} element={<VerifyEmail />} />
+            <Route path="/oauth/callback/:provider" element={<OAuthCallback />} />
           </Route>
 
           {/* Public routes */}

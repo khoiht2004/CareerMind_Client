@@ -29,14 +29,14 @@ export default function Auth() {
         <div className="relative w-full overflow-hidden rounded-2xl border shadow-2xl lg:grid lg:grid-cols-2">
           {/* Login form*/}
           <div
-            className={`bg-card p-8 lg:block lg:p-12 ${!isLogin && "hidden"}`}
+            className={`bg-card p-8 lg:block lg:px-11 lg:py-12 ${!isLogin && "hidden"}`}
           >
             <LoginForm onSwitch={() => handleSetIsLogin(false)} />
           </div>
 
           {/* Register form */}
           <div
-            className={`bg-card p-8 lg:block lg:p-12 ${isLogin && "hidden"}`}
+            className={`bg-card p-8 lg:block lg:px-11 lg:py-12 ${isLogin && "hidden"}`}
           >
             <RegisterForm onSwitch={() => handleSetIsLogin(true)} />
           </div>

@@ -16,6 +16,20 @@ export const authService = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+    googleLogin: builder.mutation({
+      query: (body) => ({
+        url: "/auth/google",
+        method: "POST",
+        body,
+      }),
+    }),
+    githubLogin: builder.mutation({
+      query: (body) => ({
+        url: "/auth/github",
+        method: "POST",
+        body,
+      }),
+    }),
     verifyEmail: builder.mutation({
       query: (credentials) => ({
         url: "/auth/verify-email",
@@ -50,6 +64,8 @@ export const authService = apiSlice.injectEndpoints({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useGoogleLoginMutation,
+  useGithubLoginMutation,
   useVerifyEmailMutation,
   useResendVerificationMutation,
   useChangePasswordMutation,
