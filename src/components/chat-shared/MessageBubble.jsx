@@ -6,6 +6,7 @@ import { parseContent } from "@/utils/chatbot.helper";
 import renderText from "./renderText";
 import AttachmentThumbnail from "@/components/shared/AttachmentThumbnail";
 import { toast } from "sonner";
+import { AVATAR_PLACEHOLDER } from "@/config/constants/constants";
 
 function AttachmentsViewer({ attachments }) {
   if (!attachments?.length) return null;
@@ -53,30 +54,24 @@ function MessageBubble({
 
   const renderAvatar = () => {
     if (isUser) {
-      if (userAvatar) {
-        return (
-          <img
-            src={userAvatar}
-            alt="User avatar"
-            className="h-full w-full rounded-full object-cover object-top"
-          />
-        );
-      }
-      return <User className="size-4" />;
+      return (
+        <img
+          src={userAvatar || AVATAR_PLACEHOLDER}
+          alt="User avatar"
+          className="h-full w-full rounded-full object-cover object-top"
+        />
+      );
     } else {
       if (isAiChat) {
         return <Bot className="size-4" />;
       }
-      if (partnerAvatar) {
-        return (
-          <img
-            src={partnerAvatar}
-            alt="Partner avatar"
-            className="h-full w-full rounded-full object-cover object-top"
-          />
-        );
-      }
-      return <User className="size-4" />;
+      return (
+        <img
+          src={partnerAvatar || AVATAR_PLACEHOLDER}
+          alt="Partner avatar"
+          className="h-full w-full rounded-full object-cover object-top"
+        />
+      );
     }
   };
 
@@ -135,7 +130,10 @@ function MessageBubble({
 
           {segments.map((seg, i) =>
             seg.type === "jobs" ? (
-              <div key={i} className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+              <div
+                key={i}
+                className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3"
+              >
                 {seg.ids.map((id) => (
                   <InlineJobCard key={id} id={id} />
                 ))}
@@ -166,7 +164,7 @@ function MessageBubble({
               title="Sao chép nội dung"
             >
               {copied ? (
-                <Check className="size-3 text-[var(--trend-up)]" />
+                <Check className="text-trend-up size-3" />
               ) : (
                 <Copy className="size-3" />
               )}

@@ -26,6 +26,10 @@ export const profileService = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Profile", "User"],
     }),
+    getProfileView: builder.query({
+      query: (id) => `/profile/${id}/view`,
+      providesTags: (result, error, id) => [{ type: "Profile", id }],
+    }),
   }),
 });
 
@@ -34,4 +38,6 @@ export const {
   useUpdateProfileMutation,
   useUploadAvatarMutation,
   useDeleteAvatarMutation,
+  useGetProfileViewQuery,
 } = profileService;
+

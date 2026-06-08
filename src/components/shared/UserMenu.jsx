@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import {
-  ChevronDown,
-  LogOut,
-  MessageCircleMore,
-  UserRound,
-} from "lucide-react";
+import { ChevronDown, LogOut, MessageCircleMore } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,21 +19,18 @@ import NotificationDropdown from "./NotificationDropdown";
 import { path } from "@/config/path";
 import { useGetUnreadCountQuery } from "@/services/conversation.service";
 import { useSocket } from "@/contexts/SocketContext";
+import { AVATAR_PLACEHOLDER } from "@/config/constants/constants";
 
 const INDEPENDENT_COUNT = 2;
 
 function getAvatar(user) {
-  if (user.avatarUrl) {
-    return (
-      <img
-        src={user.avatarUrl}
-        alt={user.name ?? "Người dùng"}
-        className="h-full w-full object-cover object-top"
-      />
-    );
-  }
-
-  return <UserRound className="text-muted-foreground size-8" />;
+  return (
+    <img
+      src={user.avatarUrl || AVATAR_PLACEHOLDER}
+      alt={user.name ?? "Người dùng"}
+      className="h-full w-full object-cover object-top"
+    />
+  );
 }
 
 function UserMenu() {

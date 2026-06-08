@@ -2,6 +2,7 @@ import { memo, useCallback } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { formatRelativeTime } from "@/utils/helper";
+import { AVATAR_PLACEHOLDER } from "@/config/constants/constants";
 
 const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
   const handleSelect = useCallback(
@@ -25,15 +26,11 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
       {/* Avatar */}
       <div className="relative shrink-0">
         <div className="bg-primary/10 text-primary border-border flex size-10 items-center justify-center overflow-hidden rounded-full border text-sm font-bold">
-          {partner?.avatar ? (
-            <img
-              src={partner.avatar}
-              alt={partner.name}
-              className="h-full w-full object-cover object-top"
-            />
-          ) : (
-            partner?.name?.charAt(0) || "U"
-          )}
+          <img
+            src={partner.avatar || AVATAR_PLACEHOLDER}
+            alt={partner.name}
+            className="h-full w-full object-cover object-top"
+          />
         </div>
         {partner?.isActive && (
           <span className="ring-background absolute right-0 bottom-0 size-2.5 rounded-full bg-[var(--trend-up)] ring-2" />
@@ -53,7 +50,7 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
 
       {/* Red Dot Badge for Unread */}
       {unreadCount > 0 && (
-        <span className="absolute top-1/2 right-3 flex size-2 -translate-y-1/2 rounded-full bg-destructive shadow-sm" />
+        <span className="bg-destructive absolute top-1/2 right-3 flex size-2 -translate-y-1/2 rounded-full shadow-sm" />
       )}
     </button>
   );

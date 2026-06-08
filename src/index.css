@@ -55,7 +55,12 @@
   --color-hot: var(--hot);
   --color-hot-foreground: var(--hot-foreground);
 
+  --color-recruiter: var(--recruiter);
+  --color-recruiter-foreground: var(--recruiter-foreground);
+  --color-recruiter-container: var(--recruiter-container);
+
   --color-status-pending-bg: var(--status-pending-bg);
+
   --color-status-pending-text: var(--status-pending-text);
   --color-status-pending-border: var(--status-pending-border);
   --color-status-reviewing-bg: var(--status-reviewing-bg);
@@ -166,6 +171,11 @@
   --hot-foreground: #8a5b00;
   --hot-border: #f3d485;
 
+  --recruiter: #1a56db;
+  --recruiter-foreground: #ffffff;
+  --recruiter-container: #ebf5ff;
+
+
   --status-published: #00b14f;
   --status-draft: #6b7280;
   --status-closed: #ba1a1a;
@@ -274,6 +284,11 @@
   --hot: #432b00;
   --hot-foreground: #ffcf63;
   --hot-border: #6f4a00;
+
+  --recruiter: #3b82f6;
+  --recruiter-foreground: #ffffff;
+  --recruiter-container: #1e3a8a;
+
 
   --status-pending-bg: #433300;
   --status-pending-text: #ffe082;
