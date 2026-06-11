@@ -43,7 +43,7 @@ function RecruiterStats() {
       </div>
 
       {/* Stat cards — 4 columns */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {STAT_CARD_CONFIG.map((cfg) => (
           <StatCard
             key={cfg.id}
@@ -96,7 +96,7 @@ function RecruiterStats() {
 
       {/* Job table */}
       <Card>
-        <CardContent className="p-5">
+        <CardContent className="md:p-5">
           <JobStatusTable
             jobs={jobs}
             isLoading={jobsLoading}

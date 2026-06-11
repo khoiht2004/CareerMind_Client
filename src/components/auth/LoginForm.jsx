@@ -61,7 +61,7 @@ function LoginForm({ onSwitch }) {
               type="email"
               placeholder="name@company.com"
               autoComplete="email"
-              className="pl-10"
+              className="bg-muted border-0 pl-10"
               {...register("email")}
             />
           </div>
@@ -89,7 +89,7 @@ function LoginForm({ onSwitch }) {
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="current-password"
-              className="pr-10 pl-10"
+              className="bg-muted border-0 pr-10 pl-10"
               {...register("password")}
             />
             <button
@@ -138,7 +138,7 @@ function LoginForm({ onSwitch }) {
           <Button
             variant="outline"
             type="button"
-            className="h-12 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
+            className="h-9 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 sm:h-12 dark:border-slate-800 dark:hover:bg-slate-900"
             onClick={handleGoogleLogin}
           >
             <img
@@ -146,12 +146,12 @@ function LoginForm({ onSwitch }) {
               alt="google"
               className="size-5 object-cover"
             />
-            Google
+            <span className="hidden sm:inline-block">Google</span>
           </Button>
           <Button
             variant="outline"
             type="button"
-            className="h-12 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
+            className="h-9 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 sm:h-12 dark:border-slate-800 dark:hover:bg-slate-900"
             onClick={handleGithubLogin}
           >
             <img
@@ -159,19 +159,19 @@ function LoginForm({ onSwitch }) {
               alt="github"
               className="size-5 object-cover"
             />
-            GitHub
+            <span className="hidden sm:inline-block">GitHub</span>
           </Button>
           <Button
             variant="outline"
             type="button"
-            className="h-12 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-900"
+            className="h-9 w-full cursor-pointer gap-2 border-slate-200 text-sm font-semibold transition-colors hover:bg-slate-50 sm:h-12 dark:border-slate-800 dark:hover:bg-slate-900"
           >
             <img
               src={linkedinLogo}
               alt="linkedin"
               className="size-5 object-cover"
             />
-            Linkedin
+            <span className="hidden sm:inline-block">LinkedIn</span>
           </Button>
         </div>
       </div>

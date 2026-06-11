@@ -14,8 +14,8 @@ function InterviewFields({ fields, onFieldChange }) {
   const today = new Date();
 
   return (
-    <div className="space-y-3 rounded-lg border border-[var(--status-reviewing-border)] bg-[var(--status-reviewing-bg)]/50 p-4">
-      <p className="flex items-center gap-1.5 text-xs font-semibold text-[var(--status-reviewing-text)]">
+    <div className="border-status-reviewing-border space-y-3 rounded-lg border bg-(--status-reviewing-bg)/50 p-4">
+      <p className="text-status-reviewing-text flex items-center gap-1.5 text-xs font-semibold">
         <Calendar className="size-3.5" />
         Thông tin phỏng vấn
       </p>
@@ -58,8 +58,8 @@ function InterviewFields({ fields, onFieldChange }) {
                 onClick={() => onFieldChange("interviewFormat", value)}
                 className={`bg-primary/10 flex cursor-pointer items-center justify-center gap-2 rounded-lg border px-2 py-1.5 text-sm font-medium transition-all ${
                   selected
-                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                    : "border-input bg-background text-foreground hover:bg-muted"
+                    ? "border-primary bg-primary shadow-sm"
+                    : "border-input bg-background hover:bg-muted"
                 }`}
               >
                 {createElement(icon, { className: "size-4" })}
@@ -74,9 +74,9 @@ function InterviewFields({ fields, onFieldChange }) {
       <div className="space-y-1.5">
         <Label className="flex items-center gap-1.5 text-sm font-medium">
           {isOnline ? (
-            <Video className="size-3.5 text-[var(--status-reviewing-text)]" />
+            <Video className="text-status-reviewing-text size-3.5" />
           ) : (
-            <MapPin className="size-3.5 text-[var(--status-reviewing-text)]" />
+            <MapPin className="text-status-reviewing-text size-3.5" />
           )}
           {isOnline ? "Link phỏng vấn" : "Địa điểm phỏng vấn"}
         </Label>

@@ -89,9 +89,9 @@ function JobDetailHeader({
             className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 cursor-pointer rounded-lg font-bold"
           >
             {hasApplied ? (
-              <span>Bạn đã ứng tuyển</span>
+              <span className="py-2">Bạn đã ứng tuyển</span>
             ) : (
-              <Link to={`/jobs/${id}/apply`}>
+              <Link to={`/jobs/${id}/apply`} className="py-2">
                 <SendHorizontal className="mr-2 size-5" /> Ứng tuyển ngay
               </Link>
             )}

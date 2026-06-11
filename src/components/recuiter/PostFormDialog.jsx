@@ -48,7 +48,7 @@ function PostFormDialog({
               placeholder="Nhập tiêu đề bài viết"
             />
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
             <div className="flex-1 space-y-2">
               <Label>Tác giả hiển thị</Label>
               <Input
@@ -121,7 +121,7 @@ function PostFormDialog({
           </div>
         </div>
 
-        <DialogFooter className="border-border m-0 shrink-0 gap-2 border-t px-6 py-3">
+        <DialogFooter className="border-border m-0 flex flex-row justify-end gap-2 border-t px-6 py-3">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}

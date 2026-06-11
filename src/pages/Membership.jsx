@@ -374,7 +374,7 @@ function MembershipPage() {
       {/* ── Bottom CTA ── */}
       <section className="mx-auto max-w-3xl px-4 text-center sm:px-6">
         <Separator className="mb-16" />
-        <div className="bg-primary/5 space-y-5 rounded-3xl border p-5 sm:p-10">
+        <div className="bg-primary/5 space-y-5 rounded-2xl border p-5 sm:p-10">
           <h3 className="text-xl font-black sm:text-2xl">
             Vẫn còn phân vân? Hãy để chúng tôi tư vấn.
           </h3>

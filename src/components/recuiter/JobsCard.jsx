@@ -26,13 +26,13 @@ function JobsCard({ icon: Icon, label, value, trend }) {
         {/* Trend */}
         <section>
           {trend === "up" ? (
-            <div className="text-trend-up flex items-center gap-0.5 rounded-lg px-2 py-1 text-sm font-semibold">
-              <TrendingUp className="size-3" />{" "}
+            <div className="text-trend-up flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-semibold">
+              <TrendingUp className="size-5" />{" "}
               <span> +12.5% so với tháng trước</span>
             </div>
           ) : (
-            <div className="text-trend-down flex items-center gap-0.5 rounded-lg px-2 py-1 text-sm font-semibold">
-              <TrendingDown className="size-3" />{" "}
+            <div className="text-trend-down flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-semibold">
+              <TrendingDown className="size-5" />{" "}
               <span> -8.3% so với tháng trước</span>
             </div>
           )}

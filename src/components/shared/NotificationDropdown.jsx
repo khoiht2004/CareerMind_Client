@@ -79,9 +79,7 @@ function NotificationDropdown() {
       >
         {/* Header */}
         <div className="bg-muted/50 flex items-center justify-between border-b px-4 py-3">
-          <h3 className="text-foreground text-sm font-bold">
-            Thông báo
-          </h3>
+          <h3 className="text-foreground text-sm font-bold">Thông báo</h3>
           {unreadCount > 0 && (
             <button
               onClick={handleMarkAllRead}
