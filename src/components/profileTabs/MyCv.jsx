@@ -69,7 +69,7 @@ function MyCv() {
       </div>
 
       {/* Two-column layout */}
-      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+      <div className="grid gap-6 md:grid-cols-[1fr_2fr]">
         {/* Left: Upload zone + Tips */}
         <div className="space-y-4">
           <CvDropZone

@@ -4,8 +4,12 @@ import { toast } from "sonner";
 import { useGetJobByIdQuery } from "@/services/job.service";
 import { useApplyJobMutation } from "@/services/application.service";
 import { useGetMyCoverLettersQuery } from "@/services/coverLetter.service";
-import { useGetMyCvsQuery } from "@/services/cv.service";
+import { useGetMyCvsQuery, useUploadCvMutation } from "@/services/cv.service";
 import { useGenerateCoverLetterMutation } from "@/services/chat.service";
+import { ALLOWED_TYPES } from "@/config/constants/constants";
+
+export const MAX_CV_SIZE_MB = 5;
+const MAX_CV_SIZE_BYTES = MAX_CV_SIZE_MB * 1024 * 1024;
 
 export function useApply() {
   const { id } = useParams();
@@ -21,6 +25,11 @@ export function useApply() {
     useGenerateCoverLetterMutation();
   const { data: coverLettersData } = useGetMyCoverLettersQuery();
   const { data: myCvsData } = useGetMyCvsQuery();
+
+  const [uploadCv, { isLoading: isUploading }] = useUploadCvMutation();
+
+  const [currentStep, setCurrentStep] = useState(1);
+  const [dragging, setDragging] = useState(false);
 
   const [formData, setFormData] = useState({
     name: draft?.user?.profile?.fullName ?? "",
@@ -45,6 +54,65 @@ export function useApply() {
   const defaultCv = myCvs.find((cv) => cv.isDefault) ?? myCvs[0] ?? null;
   const effectiveSelectedCvId = selectedCvId ?? defaultCv?.id ?? null;
   const selectedCv = myCvs.find((cv) => cv.id === effectiveSelectedCvId) ?? null;
+
+  const validateFile = useCallback((file) => {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error("Chỉ chấp nhận file PDF, DOC, DOCX");
+      return false;
+    }
+    if (file.size > MAX_CV_SIZE_BYTES) {
+      toast.error(`File phải nhỏ hơn ${MAX_CV_SIZE_MB}MB`);
+      return false;
+    }
+    return true;
+  }, []);
+
+  const handleUpload = useCallback(async (file) => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("cv", file);
+    formData.append("name", file.name.replace(/\.[^.]+$/, ""));
+    try {
+      const res = await uploadCv(formData).unwrap();
+      toast.success("Tải lên CV thành công!");
+      const newCvId = res?.data?.id ?? res?.id;
+      if (newCvId) {
+        setSelectedCvId(newCvId);
+      }
+    } catch (err) {
+      toast.error(err?.data?.message || "Tải lên thất bại, vui lòng thử lại");
+    }
+  }, [uploadCv]);
+
+  const handleFileSelect = useCallback(
+    async (e) => {
+      const file = e.target.files?.[0];
+      if (file && validateFile(file)) {
+        await handleUpload(file);
+      }
+      e.target.value = "";
+    },
+    [validateFile, handleUpload],
+  );
+
+  const handleDrop = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setDragging(false);
+      const file = e.dataTransfer.files?.[0];
+      if (file && validateFile(file)) {
+        await handleUpload(file);
+      }
+    },
+    [validateFile, handleUpload],
+  );
+
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+    setDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => setDragging(false), []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -129,5 +197,14 @@ export function useApply() {
     handleSubmit,
     handleSaveDraft,
     handleGenerateCoverLetter,
+    currentStep,
+    setCurrentStep,
+    dragging,
+    isUploading,
+    handleFileSelect,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    setSelectedCvId,
   };
 }
