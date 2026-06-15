@@ -17,6 +17,10 @@ function RegisterForm({ onSwitch }) {
     isLoading,
   } = useRegister();
 
+  const preventClipboard = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-1.5">
@@ -75,6 +79,8 @@ function RegisterForm({ onSwitch }) {
               placeholder="Ít nhất 8 ký tự"
               autoComplete="new-password"
               className="bg-muted border-0 pr-10 pl-10"
+              onCopy={preventClipboard}
+              onCut={preventClipboard}
               {...register("password")}
             />
             <button
@@ -108,6 +114,8 @@ function RegisterForm({ onSwitch }) {
               placeholder="Nhập lại mật khẩu"
               autoComplete="new-password"
               className="bg-muted border-0 pr-10 pl-10"
+              onCopy={preventClipboard}
+              onCut={preventClipboard}
               {...register("confirmPassword")}
             />
             <button

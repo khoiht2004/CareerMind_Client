@@ -112,7 +112,7 @@ function ChatInput({
             {/* Send button */}
             <Button
               size="icon"
-              className="flex size-9 shrink-0 rounded-full cursor-pointer"
+              className="flex size-9 shrink-0 cursor-pointer rounded-full"
               onClick={onSend}
               disabled={!canSend}
             >
@@ -127,12 +127,13 @@ function ChatInput({
       </div>
 
       {footer && (
-        <p className="text-muted-foreground mt-2 text-center text-xs">
+        <p className="text-muted-foreground mt-2 text-center text-[10px] md:text-sm">
           {footerText ? (
             footerText
           ) : (
             <>
-              <b className="font-bold">MindScout</b> có thể mắc lỗi. Hãy kiểm tra các thông tin quan trọng.
+              <b className="font-bold">MindScout</b> có thể mắc lỗi. Hãy kiểm
+              tra các thông tin quan trọng.
             </>
           )}
         </p>

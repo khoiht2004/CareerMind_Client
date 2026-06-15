@@ -153,6 +153,7 @@ export function useChatBot() {
     isSending,
     pendingMessage,
     sidebarOpen,
+    setSidebarOpen,
     sessions,
     messages,
     sessionsLoading,

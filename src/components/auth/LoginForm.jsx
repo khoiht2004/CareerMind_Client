@@ -41,6 +41,10 @@ function LoginForm({ onSwitch }) {
   const linkedinLogo =
     "https://cdn.worldvectorlogo.com/logos/linkedin-icon.svg";
 
+  const preventClipboard = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="space-y-7">
       <div className="space-y-1.5">
@@ -90,6 +94,8 @@ function LoginForm({ onSwitch }) {
               placeholder="••••••••"
               autoComplete="current-password"
               className="bg-muted border-0 pr-10 pl-10"
+              onCopy={preventClipboard}
+              onCut={preventClipboard}
               {...register("password")}
             />
             <button
