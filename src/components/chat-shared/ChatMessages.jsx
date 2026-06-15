@@ -70,7 +70,7 @@ export default function ChatMessages({
             <Loader2 className="text-muted-foreground size-5 animate-spin" />
           </div>
         ) : isEmpty ? (
-          <div className="flex flex-col items-center justify-center gap-6 py-12 text-center">
+          <div className="flex flex-col items-center justify-center gap-6 py-5 text-center md:py-12">
             <div className="bg-foreground text-background flex size-20 items-center justify-center rounded-3xl shadow-lg sm:size-24">
               <WelcomeIcon className="size-10 sm:size-12" />
             </div>

@@ -7,7 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import {
   APPLICATION_STATUS_LABELS,
   STATUS_CONFIG,
@@ -92,13 +97,14 @@ function ApplicationUpdateDialog({
         >
           <DialogTitle className="sr-only">Cập nhật đơn ứng tuyển</DialogTitle>
           <DialogDescription className="sr-only">
-            Xem thông tin chi tiết hồ sơ ứng viên và cập nhật trạng thái tuyển dụng.
+            Xem thông tin chi tiết hồ sơ ứng viên và cập nhật trạng thái tuyển
+            dụng.
           </DialogDescription>
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
             {/* ── Left sidebar ── */}
-            <aside className="bg-muted border-border flex max-h-72 w-full shrink-0 flex-col gap-4 overflow-y-auto border-b px-5 py-5 [scrollbar-width:thin] md:max-h-none md:w-64 md:border-r md:border-b-0">
+            <aside className="bg-muted border-border flex max-h-72 w-full shrink-0 flex-col gap-0 overflow-y-auto border-b p-4 [scrollbar-width:thin] md:max-h-none md:w-64 md:gap-4 md:border-r md:border-b-0 md:p-5">
               {/* Avatar + name */}
-              <div className="flex flex-col items-center gap-2 text-center">
+              <div className="flex items-center gap-10 text-center md:flex-col md:gap-1">
                 <div className="relative">
                   <div className="bg-muted border-border text-muted-foreground flex size-20 -rotate-3 items-center justify-center overflow-hidden rounded-md border-2 text-base font-bold">
                     {profile?.avatarUrl ? (
@@ -125,7 +131,8 @@ function ApplicationUpdateDialog({
                     <StatusBadge status={app.status} />
                   </div>
                 </div>
-                <div className="mt-3">
+                {/* Name and job */}
+                <div className="mt-3 hidden md:block">
                   <h3 className="text-lg leading-tight font-bold">{name}</h3>
                   {app.job?.title && (
                     <p className="text-secondary mt-0.5 text-xs font-semibold">
@@ -133,10 +140,20 @@ function ApplicationUpdateDialog({
                     </p>
                   )}
                 </div>
+
+                {/* Contact info - mobile */}
+                <div className="mt-3 block md:hidden">
+                  <SectionLabel>Thông tin liên hệ</SectionLabel>
+                  <div className="space-y-1.5">
+                    <InfoRow icon={Mail} value={app.user?.email} />
+                    <InfoRow icon={Phone} value={phone} />
+                    <InfoRow icon={MapPin} value={profile?.address} />
+                  </div>
+                </div>
               </div>
 
-              {/* Contact info */}
-              <div className="mt-3">
+              {/* Contact info - desktop */}
+              <div className="mt-3 hidden md:block">
                 <SectionLabel>Thông tin liên hệ</SectionLabel>
                 <div className="space-y-1.5">
                   <InfoRow icon={Mail} value={app.user?.email} />
@@ -164,11 +181,11 @@ function ApplicationUpdateDialog({
                 </div>
               )}
 
-              <Separator />
+              <Separator className={"hidden md:block"} />
 
               {/* CV */}
               {(app.cv?.fileUrl ?? app.cvUrl) && (
-                <div>
+                <div className="hidden md:block">
                   <SectionLabel>CV đính kèm</SectionLabel>
                   <button
                     type="button"
@@ -259,7 +276,7 @@ function ApplicationUpdateDialog({
                 <div className="space-y-1.5">
                   <Label className="text-sm font-medium">
                     Phản hồi nội bộ
-                    <span className="text-muted-foreground ml-1 font-normal">
+                    <span className="text-muted-foreground font-normal">
                       (tùy chọn)
                     </span>
                   </Label>
@@ -293,7 +310,7 @@ function ApplicationUpdateDialog({
                 </div>
               </div>
 
-              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <div className="flex justify-end gap-2.5">
                 <Button
                   variant="outline"
                   onClick={() => onOpenChange(false)}

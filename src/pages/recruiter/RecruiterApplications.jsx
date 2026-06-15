@@ -86,7 +86,7 @@ function RecruiterApplications() {
             Quản lý và sàng lọc hồ sơ ứng viên một cách chuyên nghiệp.
           </p>
         </div>
-        <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2">
+        <div className="grid w-full grid-cols-2 gap-3 sm:w-auto">
           {/* Tổng ứng viên */}
           <div className="bg-card border-secondary flex items-center gap-3 rounded-xl border-l-4 px-4 py-3">
             <div className="bg-secondary/10 flex size-9 items-center justify-center rounded-lg">
@@ -159,17 +159,20 @@ function RecruiterApplications() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Button onClick={handleApply} className="cursor-pointer px-6 py-4">
-            <ListFilter className="size-4" />
-            Áp dụng
-          </Button>
+        <div className="flex gap-2">
           <Button
             variant="outline"
             onClick={handleClear}
-            className="text-muted-foreground cursor-pointer px-6 py-4"
+            className="text-muted-foreground w-1/2 cursor-pointer px-6 py-4"
           >
             Xóa bộ lọc
+          </Button>
+          <Button
+            onClick={handleApply}
+            className="w-1/2 cursor-pointer px-6 py-4"
+          >
+            <ListFilter className="size-4" />
+            Áp dụng
           </Button>
         </div>
       </div>
@@ -285,7 +288,7 @@ function RecruiterApplications() {
       {/* Promo cards */}
       <div className="grid gap-4 md:grid-cols-2">
         <div className="bg-primary text-primary-foreground rounded-xl p-6">
-          <div className="bg-primary-foreground/10 mb-3 inline-flex size-10 items-center justify-center rounded-lg">
+          <div className="bg-primary-foreground/10 mb-3 hidden size-10 items-center justify-center rounded-lg md:inline-flex">
             <BarChart2 className="size-5" />
           </div>
           <h3 className="text-lg font-bold">Phân tích tuyển dụng</h3>
@@ -298,7 +301,7 @@ function RecruiterApplications() {
           </Button>
         </div>
         <div className="bg-primary-container text-primary-foreground rounded-xl p-6">
-          <div className="bg-primary-foreground/10 mb-3 inline-flex size-10 items-center justify-center rounded-lg">
+          <div className="bg-primary-foreground/10 mb-3 hidden size-10 items-center justify-center rounded-lg md:inline-flex">
             <Sparkles className="size-5" />
           </div>
           <h3 className="text-lg font-bold">Đề xuất AI</h3>

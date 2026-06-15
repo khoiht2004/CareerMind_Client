@@ -62,6 +62,7 @@ const SessionItem = memo(function SessionItem({
 
 function ChatSidebar({
   isOpen,
+  onClose,
   sessions,
   activeSessionId,
   onSelect,
@@ -72,68 +73,80 @@ function ChatSidebar({
   showUpgradePro = true,
 }) {
   return (
-    <div
-      className={cn(
-        "bg-primary/5 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-2xl md:h-full md:rounded-4xl",
-        "transition-all duration-200",
-        isOpen
-          ? "h-48 w-full md:h-full md:w-75"
-          : "h-0 w-full border-0 md:h-full md:w-0",
+    <>
+      {/* Backdrop mờ nền trên mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs transition-opacity md:hidden"
+          onClick={onClose}
+        />
       )}
-    >
-      <div className="flex h-14 shrink-0 items-center justify-between px-4">
-        <h3 className="font-bold">Lịch sử trò chuyện</h3>
-        <button
-          type="button"
-          onClick={onCreate}
-          title="Cuộc trò chuyện mới"
-          className="bg-card hover:bg-card/60 cursor-pointer rounded-lg p-1.5 transition-colors"
-        >
-          <PenLine className="size-4" />
-        </button>
-      </div>
 
-      <ScrollArea className="min-h-0 flex-1 p-2">
-        {isLoading ? (
-          <div className="flex justify-center py-4">
-            <Loader2 className="text-muted-foreground size-4 animate-spin" />
-          </div>
-        ) : sessions.length === 0 ? (
-          <p className="text-muted-foreground py-8 text-center text-xs">
-            Chưa có cuộc trò chuyện nào
-          </p>
-        ) : (
-          <div className="space-y-1">
-            {sessions.map((session) => (
-              <SessionItem
-                key={session.id}
-                session={session}
-                isActive={activeSessionId === session.id}
-                onSelect={onSelect}
-                onRename={onRename}
-                onDelete={onDelete}
-              />
-            ))}
+      <div
+        className={cn(
+          "flex min-h-0 shrink-0 flex-col overflow-hidden transition-all duration-300 ease-in-out",
+          // Layout trên Mobile: Làm drawer cố định trượt từ bên trái
+          "bg-background fixed inset-y-0 left-0 z-50 h-full w-72 border-r shadow-2xl",
+          isOpen ? "translate-x-0" : "-translate-x-full",
+          // Layout trên Desktop (md): Static sidebar co giãn theo width
+          "md:bg-primary/5 md:static md:z-0 md:h-full md:translate-x-0 md:rounded-4xl md:border-0 md:shadow-none",
+          isOpen ? "md:w-75" : "md:w-0",
+        )}
+      >
+        <div className="flex h-14 shrink-0 items-center justify-between px-4">
+          <h3 className="font-bold">Lịch sử trò chuyện</h3>
+          <button
+            type="button"
+            onClick={onCreate}
+            title="Cuộc trò chuyện mới"
+            className="bg-card hover:bg-card/60 cursor-pointer rounded-lg p-1.5 transition-colors"
+          >
+            <PenLine className="size-4" />
+          </button>
+        </div>
+
+        <ScrollArea className="min-h-0 flex-1 p-2">
+          {isLoading ? (
+            <div className="flex justify-center py-4">
+              <Loader2 className="text-muted-foreground size-4 animate-spin" />
+            </div>
+          ) : sessions.length === 0 ? (
+            <p className="text-muted-foreground py-8 text-center text-xs">
+              Chưa có cuộc trò chuyện nào
+            </p>
+          ) : (
+            <div className="space-y-1">
+              {sessions.map((session) => (
+                <SessionItem
+                  key={session.id}
+                  session={session}
+                  isActive={activeSessionId === session.id}
+                  onSelect={onSelect}
+                  onRename={onRename}
+                  onDelete={onDelete}
+                />
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+
+        {showUpgradePro && (
+          <div className="hidden p-3 md:block">
+            <div className="bg-foreground text-background rounded-xl p-3">
+              <p className="text-background/50 mb-1 text-[10px] font-bold tracking-widest uppercase">
+                Nâng cấp Pro
+              </p>
+              <p className="text-xs leading-snug">
+                Mở khóa phân tích chuyên sâu từ MindScout.
+              </p>
+              <Button className="mt-3" variant="secondary" asChild>
+                <Link to={path.membership}>Nâng cấp Pro</Link>
+              </Button>
+            </div>
           </div>
         )}
-      </ScrollArea>
-
-      {showUpgradePro && (
-        <div className="hidden p-3 md:block">
-          <div className="bg-foreground text-background rounded-xl p-3">
-            <p className="text-background/50 mb-1 text-[10px] font-bold tracking-widest uppercase">
-              Nâng cấp Pro
-            </p>
-            <p className="text-xs leading-snug">
-              Mở khóa phân tích chuyên sâu từ MindScout.
-            </p>
-            <Button className="mt-3" variant="secondary" asChild>
-              <Link to={path.membership}>Nâng cấp Pro</Link>
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }
 

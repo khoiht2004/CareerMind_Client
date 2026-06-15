@@ -4,8 +4,8 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 
 function StatCard({ icon: Icon, label, value, trend, bgColor, borderColor }) {
   return (
-    <Card className={`${borderColor} border-b-4`}>
-      <CardContent className="p-5">
+    <Card className={`${borderColor} border-b-4 p-1`}>
+      <CardContent className="p-2 sm:p-5">
         <div className="flex items-start justify-between">
           <div
             className={`${bgColor} border-input flex size-11 items-center justify-center rounded-lg border`}

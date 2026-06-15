@@ -18,6 +18,9 @@ export function useConversations() {
 
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [input, setInput] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(
+    () => typeof window !== "undefined" && window.innerWidth >= 768,
+  );
 
   // API Queries & Mutations
   const {
@@ -155,6 +158,7 @@ export function useConversations() {
 
   const handleSelectSession = useCallback((id) => {
     setActiveSessionId(id);
+    if (window.innerWidth < 768) setSidebarOpen(false);
   }, []);
 
   return {
@@ -165,6 +169,8 @@ export function useConversations() {
     messages,
     input,
     setInput,
+    sidebarOpen,
+    setSidebarOpen,
     isConvsLoading,
     isMessagesLoading,
     isSending,

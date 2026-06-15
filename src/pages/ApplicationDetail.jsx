@@ -79,7 +79,7 @@ function ApplicationDetail() {
     note,
     user,
     interview,
-    jobOffer,
+    // jobOffer,
   } = application;
 
   const interviewDate = interview?.interviewDate;
@@ -134,7 +134,7 @@ function ApplicationDetail() {
         {/* ── Left col ── */}
         <div className="space-y-5 lg:col-span-2">
           {/* Applicant hero card */}
-          <Card className="border-primary border-l-4">
+          <Card className="border-primary hidden border-l-4 md:block">
             <CardContent className="p-4">
               <div className="flex items-center gap-5">
                 <div className="bg-primary/10 flex size-25 shrink-0 items-center justify-center overflow-hidden rounded-xl text-2xl font-bold">

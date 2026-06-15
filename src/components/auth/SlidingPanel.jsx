@@ -5,12 +5,12 @@ const STATS = [
 
 function SlidingPanel() {
   return (
-    <div className="bg-foreground text-background relative flex h-full flex-col justify-between overflow-hidden p-6 lg:p-10">
+    <div className="bg-primary-container text-background relative flex h-full flex-col justify-between overflow-hidden border p-6 lg:p-10">
       {/* Decorative shapes */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="bg-background/5 absolute -top-16 -right-16 h-72 w-72 rotate-12 rounded-3xl" />
-        <div className="bg-background/5 absolute -bottom-10 -left-10 h-48 w-48 -rotate-12 rounded-3xl" />
-        <div className="bg-background/3 absolute top-1/2 left-1/3 h-32 w-32 rotate-45 rounded-2xl" />
+        <div className="bg-primary/20 absolute -top-16 -right-16 size-72 rotate-12 rounded-3xl" />
+        <div className="bg-primary/20 absolute -bottom-10 -left-10 size-48 -rotate-12 rounded-3xl" />
+        <div className="bg-primary/20 absolute top-1/2 left-1/3 size-32 rotate-45 rounded-2xl" />
       </div>
 
       {/* Branding */}

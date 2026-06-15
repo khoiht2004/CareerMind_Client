@@ -21,6 +21,7 @@ import {
   JOB_STATUS_OPTIONS,
 } from "@/config/constants/recruiter.constant";
 import { JOB_TYPE_LABELS } from "@/config/constants/candidate.constant";
+import { formatVN } from "@/utils/helper";
 
 const JOB_STATUS_MAP = Object.fromEntries(
   JOB_STATUS_DISPLAY_CONFIG.map((c) => [c.key, c]),
@@ -63,7 +64,7 @@ function JobStatusTable({
             Chi tiết tình hình tuyển dụng theo vị trí
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center">
           <Select value={statusFilter} onValueChange={onStatusFilterChange}>
             <SelectTrigger className="border-border h-8 w-36 gap-1.5 border text-xs">
               <Filter className="size-3.5" />
@@ -144,11 +145,7 @@ function JobStatusTable({
                       {JOB_TYPE_LABELS[job.type] ?? job.type}
                     </TableCell>
                     <TableCell className="text-sm">
-                      {new Date(job.createdAt).toLocaleDateString("vi-VN", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      })}
+                      {formatVN(job.createdAt)}
                     </TableCell>
                     <TableCell className="text-center">
                       <span className="text-sm font-semibold">

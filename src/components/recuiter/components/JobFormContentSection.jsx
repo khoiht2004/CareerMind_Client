@@ -131,7 +131,7 @@ function JobFormContentSection({ form, onChange }) {
             />
             Đánh dấu Hot
           </Label>
-          <p className="text-muted-foreground text-xs">
+          <p className="text-muted-foreground hidden text-xs md:block">
             Việc làm sẽ được gắn badge nổi bật trên trang tìm kiếm
           </p>
         </div>

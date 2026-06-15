@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { UserSearch, Circle } from "lucide-react";
+import { UserSearch, Circle, ChevronLeft } from "lucide-react";
 import ConversationSidebar from "@/components/conversations/ConversationSidebar";
 import ConversationArea from "@/components/conversations/ConversationArea";
 import UserProfileDialog from "@/components/shared/UserProfileDialog";
@@ -10,12 +10,20 @@ import { AVATAR_PLACEHOLDER } from "@/config/constants/constants";
 const ConversationsHeader = memo(function ConversationsHeader({
   partner,
   onPartnerClick,
+  onMenuClick,
 }) {
   if (!partner) return null;
 
   return (
     <div className="border-border bg-card flex items-center justify-between border-b px-3 py-3 sm:px-6">
       <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onMenuClick}
+          className="border-border bg-background hover:bg-muted flex size-8 shrink-0 items-center justify-center rounded-lg border transition-colors md:hidden"
+        >
+          <ChevronLeft className="size-4" />
+        </button>
         <button
           onClick={onPartnerClick}
           className="bg-primary/10 text-primary border-border flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full border text-sm font-bold transition-opacity hover:opacity-80 focus:outline-none"
@@ -66,6 +74,8 @@ export default function Conversations() {
     messages,
     input,
     setInput,
+    sidebarOpen,
+    setSidebarOpen,
     isConvsLoading,
     isMessagesLoading,
     isSending,
@@ -86,7 +96,8 @@ export default function Conversations() {
   return (
     <div className="-mb-25 flex h-[calc(100svh-3.5rem)] w-full min-w-0 flex-col gap-3 overflow-hidden p-2 sm:p-3 md:flex-row md:p-6">
       <ConversationSidebar
-        isOpen={true}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
         sessions={conversations}
         activeSessionId={activeSessionId}
         onSelect={handleSelectSession}
@@ -105,6 +116,7 @@ export default function Conversations() {
           <ConversationsHeader
             partner={activeConv?.partner}
             onPartnerClick={handlePartnerClick}
+            onMenuClick={() => setSidebarOpen(true)}
           />
         }
         welcomeTitle="Trò chuyện với Nhà tuyển dụng"
@@ -113,7 +125,7 @@ export default function Conversations() {
         showBotAvatar={true}
         partnerAvatar={activeConv?.partner?.avatar}
         userAvatar={user?.avatarUrl}
-        footerText="Mọi thông tin hội thoại đều được bảo mật an toàn giữa bạn và nhà tuyển dụng."
+        footerText="Mọi thông tin đều được bảo mật an toàn giữa bạn và nhà tuyển dụng."
         placeholder="Nhập tin nhắn..."
       />
 

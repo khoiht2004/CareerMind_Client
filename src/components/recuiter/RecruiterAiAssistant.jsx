@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Bot, ChevronDown, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -14,11 +14,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAnalyzeRecruiterCandidatesMutation } from "@/services/chat.service";
 import renderText from "../chat-shared/renderText";
 
-function RecruiterAiAssistant({
-  jobs = [],
-  defaultJobId = "ALL",
-  compact = false,
-}) {
+const TEXTAREA_BASE_HEIGHT = 65.6;
+const TEXTAREA_MAX_HEIGHT = 160;
+
+function RecruiterAiAssistant({ jobs = [], defaultJobId = "ALL" }) {
   const firstJobId = useMemo(() => {
     if (defaultJobId !== "ALL") return defaultJobId;
     return jobs[0]?.id || "";
@@ -28,6 +27,23 @@ function RecruiterAiAssistant({
   const [result, setResult] = useState("");
   const [responseOpen, setResponseOpen] = useState(true);
   const [analyze, { isLoading }] = useAnalyzeRecruiterCandidatesMutation();
+
+  const textareaRef = useRef(null);
+
+  const prevCriteriaRef = useRef(criteria);
+  if (prevCriteriaRef.current !== "" && criteria === "") {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
+    }
+  }
+  prevCriteriaRef.current = criteria;
+
+  const handleResize = useCallback(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = `${TEXTAREA_BASE_HEIGHT}px`;
+    el.style.height = `${Math.min(el.scrollHeight, TEXTAREA_MAX_HEIGHT)}px`;
+  }, []);
 
   useEffect(() => {
     if (defaultJobId !== "ALL") {
@@ -60,8 +76,8 @@ function RecruiterAiAssistant({
 
   return (
     <Card className="border-primary/30 bg-primary/5">
-      <CardHeader className={compact ? "pb-3" : undefined}>
-        <CardTitle className="text-primary flex items-center gap-2 text-lg font-bold">
+      <CardHeader>
+        <CardTitle className="text-primary text-md flex items-center gap-2 font-bold md:text-lg">
           <Bot className="size-5" />
           MindScout hỗ trợ sàng lọc ứng viên
         </CardTitle>
@@ -85,15 +101,17 @@ function RecruiterAiAssistant({
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-muted-foreground mb-1.5 text-xs font-medium tracking-wider uppercase">
               Tiêu chí bổ sung
             </p>
             <Textarea
+              ref={textareaRef}
               value={criteria}
               onChange={(event) => setCriteria(event.target.value)}
-              placeholder="Ví dụ: ưu tiên React, 2+ năm kinh nghiệm, đi làm onsite tại Hà Nội..."
-              className="bg-background min-h-10 resize-none"
+              onInput={handleResize}
+              placeholder="Ví dụ: ưu tiên React, 2+ năm kinh nghiệm..."
+              className="bg-background min-h-10 resize-none [scrollbar-width:none] focus-visible:ring-0 [&::-webkit-scrollbar]:hidden"
             />
           </div>
           <Button

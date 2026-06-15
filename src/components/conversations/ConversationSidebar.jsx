@@ -33,7 +33,7 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
           />
         </div>
         {partner?.isActive && (
-          <span className="ring-background absolute right-0 bottom-0 size-2.5 rounded-full bg-[var(--trend-up)] ring-2" />
+          <span className="ring-background absolute right-0 bottom-0 size-2.5 rounded-full bg-trend-up ring-2" />
         )}
       </div>
 
@@ -58,21 +58,33 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
 
 function ConversationSidebar({
   isOpen,
+  onClose,
   sessions,
   activeSessionId,
   onSelect,
   isLoading,
 }) {
   return (
-    <div
-      className={cn(
-        "bg-primary/5 flex min-h-0 shrink-0 flex-col overflow-hidden rounded-2xl md:h-full md:rounded-4xl",
-        "border-border border-r transition-all duration-200",
-        isOpen
-          ? "h-48 w-full md:h-full md:w-75"
-          : "h-0 w-full border-0 md:h-full md:w-0",
+    <>
+      {/* Backdrop mờ nền trên mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs transition-opacity md:hidden"
+          onClick={onClose}
+        />
       )}
-    >
+
+      <div
+        className={cn(
+          "flex min-h-0 shrink-0 flex-col overflow-hidden transition-all duration-300 ease-in-out border-border border-r",
+          // Layout trên Mobile: Làm drawer cố định trượt từ bên trái
+          "fixed inset-y-0 left-0 z-50 w-72 h-full bg-background shadow-2xl",
+          isOpen ? "translate-x-0" : "-translate-x-full",
+          // Layout trên Desktop (md): Static sidebar co giãn theo width
+          "md:static md:z-0 md:h-full md:bg-primary/5 md:border-r md:shadow-none md:rounded-4xl md:translate-x-0",
+          isOpen ? "md:w-75" : "md:w-0",
+        )}
+      >
       <div className="border-primary/10 flex h-14 shrink-0 items-center border-b px-4">
         <h3 className="text-foreground text-base font-bold">
           Lịch sử trò chuyện
@@ -103,7 +115,8 @@ function ConversationSidebar({
           </div>
         )}
       </ScrollArea>
-    </div>
+      </div>
+    </>
   );
 }
 

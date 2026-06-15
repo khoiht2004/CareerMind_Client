@@ -63,17 +63,17 @@ function HeroBanner({
             <BriefcaseBusiness className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               placeholder="Vị trí tuyển dụng, tên công ty"
-              className="h-12 border-0 pl-9 text-base shadow-none focus-visible:ring-0"
+              className="h-12 rounded-xl border pl-9 text-base shadow-none focus-visible:ring-0 md:rounded-none md:border-0"
               value={inputValue}
               onChange={(e) => onInputChange(e.target.value)}
               onKeyDown={handleKeyDown}
             />
           </div>
 
-          <div className="border-border flex min-w-0 items-center gap-1 border-t px-2 md:w-64 md:border-t-0 md:border-l">
+          <div className="border-border flex min-w-0 items-center gap-1 rounded-xl border px-2 md:w-64 md:rounded-none md:border-y-0 md:border-r-0 md:border-l">
             <MapPin className="text-muted-foreground size-4 shrink-0" />
             <Select value={locationValue} onValueChange={onLocationChange}>
-              <SelectTrigger className="bg-card h-12 cursor-pointer border-0 focus:ring-0">
+              <SelectTrigger className="bg-card h-12 flex-1 cursor-pointer border-0 focus:ring-0">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

@@ -76,16 +76,18 @@ function RecruiterJobs() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-primary text-3xl font-black sm:text-4xl">Quản lý việc làm</h1>
+          <h1 className="text-primary text-3xl font-black sm:text-4xl">
+            Quản lý việc làm
+          </h1>
           <p className="text-muted-foreground mt-1 text-sm">
-            Theo dõi và tối ưu hóa các chiến dịch tuyển dụng của bạn.
+            Quản lý các chiến dịch tuyển dụng của bạn.
           </p>
         </div>
-        <div className="mt-1 flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+        <div className="mt-1 flex w-full flex-row justify-end gap-2 sm:w-auto sm:items-center">
           <Button
             variant="outline"
             className="cursor-pointer gap-2"
-            onClick={() => setFilterOpen((v) => !v)}
+            onClick={() => setFilterOpen((open) => !open)}
           >
             <Filter className="size-4" />
             Lọc nâng cao
@@ -100,7 +102,7 @@ function RecruiterJobs() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+      <div className="hidden grid-cols-2 gap-4 md:grid md:grid-cols-4">
         {JOB_CARD_CONFIG.map((cfg) => (
           <JobsCard
             key={cfg.id}
@@ -137,6 +139,8 @@ function RecruiterJobs() {
           </Select>
         </div>
       )}
+
+      <RecruiterAiAssistant jobs={jobs} />
 
       {/* Table */}
       {isLoading ? (
@@ -245,8 +249,6 @@ function RecruiterJobs() {
               showPageNumbers
             />
           </div>
-
-          <RecruiterAiAssistant jobs={jobs} compact />
         </>
       )}
 

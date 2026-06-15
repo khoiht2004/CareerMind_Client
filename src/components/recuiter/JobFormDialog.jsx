@@ -55,7 +55,7 @@ function JobFormDialog({
         </div>
 
         {/* ── Fixed Footer ── */}
-        <DialogFooter className="border-border m-0 shrink-0 gap-2 border-t px-6 py-3">
+        <DialogFooter className="border-border m-0 flex flex-row justify-end gap-2 border-t px-6 py-3">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
