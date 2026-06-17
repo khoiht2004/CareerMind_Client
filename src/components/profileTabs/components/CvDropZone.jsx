@@ -44,6 +44,7 @@ function CvDropZone({
             </div>
             <div className="flex gap-2">
               <Button
+                type="button"
                 className="flex-1 cursor-pointer"
                 onClick={onUpload}
                 disabled={isUploading}
@@ -61,6 +62,7 @@ function CvDropZone({
                 )}
               </Button>
               <Button
+                type="button"
                 variant="outline"
                 className="cursor-pointer"
                 onClick={onCancel}
@@ -83,6 +85,7 @@ function CvDropZone({
               </p>
             </div>
             <Button
+              type="button"
               className="w-full cursor-pointer"
               onClick={() => inputRef.current?.click()}
             >

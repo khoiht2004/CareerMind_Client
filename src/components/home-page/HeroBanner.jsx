@@ -59,7 +59,7 @@ function HeroBanner({
             <ChevronDown className="size-4" />
           </Button>
 
-          <div className="relative min-w-0 flex-1">
+          <div className="relative min-w-0 flex-1 rounded-2xl border md:border-0">
             <BriefcaseBusiness className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               placeholder="Vị trí tuyển dụng, tên công ty"
@@ -70,7 +70,7 @@ function HeroBanner({
             />
           </div>
 
-          <div className="border-border flex min-w-0 items-center gap-1 rounded-xl border px-2 md:w-64 md:rounded-none md:border-y-0 md:border-r-0 md:border-l">
+          <div className="border-border flex min-w-0 items-center gap-1 rounded-2xl border px-2 md:w-64 md:rounded-none md:border-y-0 md:border-r-0 md:border-l">
             <MapPin className="text-muted-foreground size-4 shrink-0" />
             <Select value={locationValue} onValueChange={onLocationChange}>
               <SelectTrigger className="bg-card h-12 flex-1 cursor-pointer border-0 focus:ring-0">

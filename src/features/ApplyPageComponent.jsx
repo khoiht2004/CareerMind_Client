@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { User, FileText, MessageSquare, CheckCircle2 } from "lucide-react";
 
 export function FieldLabel({ children }) {
   return (
@@ -20,60 +20,56 @@ export function StepHeader({ icon, title }) {
   );
 }
 
-export function ApplyStepper({ currentStep }) {
-  const steps = [
-    { id: 1, label: "Thông tin cá nhân" },
-    { id: 2, label: "Hồ sơ ứng tuyển" },
-    { id: 3, label: "Thư giới thiệu" },
-  ];
+const STEPS = [
+  { step: 1, label: "Thông tin cá nhân", icon: User },
+  { step: 2, label: "Hồ sơ & Tài liệu", icon: FileText },
+  { step: 3, label: "Thư giới thiệu", icon: MessageSquare },
+  { step: 4, label: "Xác nhận & Gửi", icon: CheckCircle2 },
+];
 
+// 1. Stepper Indicator
+export function ApplyStepperIndicator({ currentStep, handleBackToStep }) {
   return (
-    <div className="mx-auto mb-8 w-full max-w-2xl px-4">
-      <div className="relative flex items-center justify-between">
-        {/* Background line */}
-        <div className="bg-muted-foreground/20 dark:bg-muted/30 absolute top-4 left-0 h-0.5 w-full -translate-y-1/2" />
-        {/* Active line */}
-        <div
-          className="bg-primary absolute top-4 left-0 h-0.5 -translate-y-1/2 transition-all duration-500 ease-in-out"
-          style={{
-            width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
-          }}
-        />
+    <div className="relative my-8 px-4">
+      {/* Progress Line */}
+      <div className="bg-muted/60 absolute top-1/2 left-0 h-0.5 w-full -translate-y-1/2 sm:top-1/3" />
+      <div
+        className="bg-primary absolute top-1/2 left-0 h-0.5 -translate-y-1/2 transition-all duration-300 sm:top-1/3"
+        style={{ width: `${((currentStep - 1) / 3) * 100}%` }}
+      />
 
-        {steps.map((step) => {
-          const isCompleted = currentStep > step.id;
-          const isActive = currentStep === step.id;
-
+      {/* Step circles */}
+      <div className="relative flex justify-between">
+        {STEPS.map((s) => {
+          const Icon = s.icon;
+          const isCompleted = currentStep > s.step;
+          const isActive = currentStep === s.step;
           return (
-            <div
-              key={step.id}
-              className="relative z-10 flex flex-col items-center"
-            >
-              <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full border-2 text-xs font-bold transition-all duration-500 ${
+            <div key={s.step} className="flex flex-col items-center">
+              <button
+                type="button"
+                disabled={currentStep < s.step}
+                onClick={() => handleBackToStep(s.step)}
+                className={`flex size-10 items-center justify-center rounded-full border-2 transition-all ${
                   isCompleted
-                    ? "border-primary bg-primary text-primary-foreground shadow-[0_0_10px_rgba(59,130,246,0.2)]"
+                    ? "bg-primary border-primary text-background cursor-pointer"
                     : isActive
-                      ? "border-primary bg-background text-primary ring-primary/10 scale-110 shadow-sm ring-4"
-                      : "border-muted-foreground/30 bg-muted text-muted-foreground/50"
+                      ? "bg-background border-primary text-primary scale-110 font-bold shadow-[0_0_0_4px_rgba(var(--primary-rgb),0.1)]"
+                      : "bg-muted border-muted text-muted-foreground cursor-not-allowed"
                 }`}
               >
                 {isCompleted ? (
-                  <Check className="animate-in zoom-in size-4 stroke-3 duration-300" />
+                  <CheckCircle2 className="size-5" />
                 ) : (
-                  step.id
+                  <Icon className="size-5" />
                 )}
-              </div>
+              </button>
               <span
-                className={`mt-2 text-xs font-semibold whitespace-nowrap transition-colors duration-300 ${
-                  isActive
-                    ? "text-primary"
-                    : isCompleted
-                      ? "text-muted-foreground"
-                      : "text-muted-foreground/40"
+                className={`mt-2 hidden text-xs font-semibold sm:block ${
+                  isActive ? "text-primary font-bold" : "text-muted-foreground"
                 }`}
               >
-                {step.label}
+                {s.label}
               </span>
             </div>
           );

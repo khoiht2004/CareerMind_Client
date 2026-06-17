@@ -8,6 +8,10 @@ import {
   Loader2,
   Code,
   AlertCircle,
+  MapPin,
+  Building2,
+  User,
+  ShieldUser,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -31,31 +35,34 @@ function UserProfileDialog({ userId, open, onOpenChange }) {
 
   const renderBadge = (role) => {
     const styles =
-      "text-center rounded-full border px-2 py-1 text-xs font-semibold truncate max-w-28";
+      "text-center rounded-full border md:flex items-center gap-2 px-2 py-1 text-xs font-semibold truncate max-w-28 md:max-w-32";
     switch (role) {
       case "CANDIDATE":
         return (
-          <span
+          <p
             className={`border-primary/20 bg-primary/10 text-primary ${styles}`}
           >
+            <User size="12" className="hidden shrink-0 md:block" />
             Ứng viên
-          </span>
+          </p>
         );
       case "RECRUITER":
         return (
-          <span
+          <p
             className={`border-recruiter/20 bg-recruiter-container text-recruiter ${styles}`}
           >
+            <Building2 size="12" className="hidden shrink-0 md:block" />
             Nhà tuyển dụng
-          </span>
+          </p>
         );
       case "ADMIN":
         return (
-          <span
+          <p
             className={`border-destructive/20 bg-destructive/10 text-destructive ${styles}`}
           >
+            <ShieldUser size="12" className="hidden shrink-0 md:block" />
             Quản trị viên
-          </span>
+          </p>
         );
       default:
         return null;
@@ -177,12 +184,12 @@ function UserProfileDialog({ userId, open, onOpenChange }) {
             {/* Profile Content Container */}
             <div className="px-6 pt-0 pb-6">
               {/* Profile Main Header Block */}
-              <div className="-mt-12 flex gap-6">
+              <div className="-mt-12 flex gap-6 md:flex-col md:items-center md:justify-center">
                 <section className="relative">
                   <img
                     src={user.profile?.avatarUrl || AVATAR_PLACEHOLDER}
                     alt={user.profile?.fullName || "User Avatar"}
-                    className={`border-card bg-muted size-24 rounded-xl border-4 object-cover object-top shadow-md transition-all duration-300 ${
+                    className={`border-card bg-muted size-24 rounded-xl border-4 object-cover object-top shadow-md transition-all duration-300 md:rounded-3xl ${
                       user.role === "RECRUITER"
                         ? "ring-recruiter/20 ring-2"
                         : "ring-primary/20 ring-2"
@@ -192,8 +199,12 @@ function UserProfileDialog({ userId, open, onOpenChange }) {
                     {renderBadge(user.role)}
                   </div>
                 </section>
-                {/* User Info Container */}
-                <section className="flex flex-col">
+
+                <h3 className="text-foreground hidden text-lg font-bold tracking-tight md:block">
+                  {user.profile?.fullName || "Chưa cập nhật tên"}{" "}
+                </h3>
+                {/* User Info - Mobile */}
+                <section className="flex flex-col md:hidden">
                   {renderInfo(user, user.role)}
                 </section>
               </div>
@@ -206,6 +217,53 @@ function UserProfileDialog({ userId, open, onOpenChange }) {
                   </p>
                 </div>
               )}
+
+              {/* User Info - Desktop */}
+              <section className="border-border mt-5 hidden flex-col space-y-4 border-t pt-4 md:flex">
+                <div className="flex flex-col">
+                  {/* Email */}
+                  <div className="group flex items-center gap-3 py-2 text-sm">
+                    <Mail className="size-5 shrink-0 transition-colors" />
+                    <a
+                      href={`mailto:${user.email}`}
+                      className="text-foreground truncate group-hover:underline"
+                    >
+                      {user.email}
+                    </a>
+                  </div>
+                  {/* Phone */}
+                  {user.profile?.phone && (
+                    <div className="group flex items-center gap-3 py-2 text-sm">
+                      <Phone className="size-5 shrink-0" />
+                      <a
+                        href={`tel:${user.profile.phone}`}
+                        className="text-foreground truncate group-hover:underline"
+                      >
+                        {user.profile.phone}
+                      </a>
+                    </div>
+                  )}
+                  {/* Address */}
+                  {user.profile?.address && (
+                    <div className="flex items-center gap-3 py-2 text-sm">
+                      <MapPin className="size-5 shrink-0" />
+                      <span className="text-muted-foreground">
+                        {user.profile.address}
+                      </span>
+                    </div>
+                  )}
+                  {/* Joined at */}
+                  <div className="flex items-center gap-3 py-2 text-sm">
+                    <Calendar className="size-5 shrink-0" />
+                    <span className="text-muted-foreground">
+                      Tham gia từ:{" "}
+                      <span className="text-foreground font-medium">
+                        {formatVN(user.createdAt)}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </section>
 
               {/* Candidate Info (Skills, CV) */}
               {user.role === "CANDIDATE" && (

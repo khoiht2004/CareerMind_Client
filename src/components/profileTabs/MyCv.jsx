@@ -6,7 +6,8 @@ import CvFeaturedCard from "./components/CvFeaturedCard";
 import CvListItem from "./components/CvListItem";
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import ConfirmDialog from "../shared/ConfirmDialog";
-import { useMyCv, MAX_CV_SIZE_MB, MAX_CV_COUNT } from "@/hooks/useMyCv";
+import { useMyCv, MAX_CV_COUNT } from "@/hooks/useMyCv";
+import { MAX_CV_SIZE_MB } from "@/hooks/useCvUpload";
 
 const CV_TIPS = [
   "Sử dụng định dạng PDF để giữ nguyên bố cục chuyên nghiệp.",

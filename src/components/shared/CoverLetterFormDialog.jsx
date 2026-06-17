@@ -52,7 +52,7 @@ function CoverLetterFormDialog({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center justify-between gap-2">
               <label className="text-sm font-semibold">Nội dung thư</label>
               <Button
                 type="button"

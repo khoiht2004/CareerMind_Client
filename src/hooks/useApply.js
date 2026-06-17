@@ -6,10 +6,8 @@ import { useApplyJobMutation } from "@/services/application.service";
 import { useGetMyCoverLettersQuery } from "@/services/coverLetter.service";
 import { useGetMyCvsQuery, useUploadCvMutation } from "@/services/cv.service";
 import { useGenerateCoverLetterMutation } from "@/services/chat.service";
-import { ALLOWED_TYPES } from "@/config/constants/constants";
-
-export const MAX_CV_SIZE_MB = 5;
-const MAX_CV_SIZE_BYTES = MAX_CV_SIZE_MB * 1024 * 1024;
+import { applyPersonalInfoSchema } from "@/validations/apply.shema";
+import { useCvUpload } from "@/hooks/useCvUpload";
 
 export function useApply() {
   const { id } = useParams();
@@ -25,11 +23,7 @@ export function useApply() {
     useGenerateCoverLetterMutation();
   const { data: coverLettersData } = useGetMyCoverLettersQuery();
   const { data: myCvsData } = useGetMyCvsQuery();
-
-  const [uploadCv, { isLoading: isUploading }] = useUploadCvMutation();
-
-  const [currentStep, setCurrentStep] = useState(1);
-  const [dragging, setDragging] = useState(false);
+  const [uploadCv, { isLoading: isUploadingCv }] = useUploadCvMutation();
 
   const [formData, setFormData] = useState({
     name: draft?.user?.profile?.fullName ?? "",
@@ -38,6 +32,7 @@ export function useApply() {
     linkedin: "",
     coverLetter: draft?.coverLetter ?? "",
   });
+  const [currentStep, setCurrentStep] = useState(1);
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
   const [cvPickerOpen, setCvPickerOpen] = useState(false);
   // Pre-select the CV that was saved in the draft
@@ -47,72 +42,17 @@ export function useApply() {
     !draft?.cvId && draft?.cvUrl ? draft.cvUrl : "",
   );
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [cvSource, setCvSource] = useState(
+    draft?.cvUrl && !draft?.cvId ? "link" : "library",
+  );
 
   const job = jobData?.data;
   const coverLetters = coverLettersData?.data ?? [];
   const myCvs = myCvsData?.data ?? [];
   const defaultCv = myCvs.find((cv) => cv.isDefault) ?? myCvs[0] ?? null;
   const effectiveSelectedCvId = selectedCvId ?? defaultCv?.id ?? null;
-  const selectedCv = myCvs.find((cv) => cv.id === effectiveSelectedCvId) ?? null;
-
-  const validateFile = useCallback((file) => {
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error("Chỉ chấp nhận file PDF, DOC, DOCX");
-      return false;
-    }
-    if (file.size > MAX_CV_SIZE_BYTES) {
-      toast.error(`File phải nhỏ hơn ${MAX_CV_SIZE_MB}MB`);
-      return false;
-    }
-    return true;
-  }, []);
-
-  const handleUpload = useCallback(async (file) => {
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("cv", file);
-    formData.append("name", file.name.replace(/\.[^.]+$/, ""));
-    try {
-      const res = await uploadCv(formData).unwrap();
-      toast.success("Tải lên CV thành công!");
-      const newCvId = res?.data?.id ?? res?.id;
-      if (newCvId) {
-        setSelectedCvId(newCvId);
-      }
-    } catch (err) {
-      toast.error(err?.data?.message || "Tải lên thất bại, vui lòng thử lại");
-    }
-  }, [uploadCv]);
-
-  const handleFileSelect = useCallback(
-    async (e) => {
-      const file = e.target.files?.[0];
-      if (file && validateFile(file)) {
-        await handleUpload(file);
-      }
-      e.target.value = "";
-    },
-    [validateFile, handleUpload],
-  );
-
-  const handleDrop = useCallback(
-    async (e) => {
-      e.preventDefault();
-      setDragging(false);
-      const file = e.dataTransfer.files?.[0];
-      if (file && validateFile(file)) {
-        await handleUpload(file);
-      }
-    },
-    [validateFile, handleUpload],
-  );
-
-  const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    setDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback(() => setDragging(false), []);
+  const selectedCv =
+    myCvs.find((cv) => cv.id === effectiveSelectedCvId) ?? null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -129,17 +69,65 @@ export function useApply() {
     setCvPickerOpen(false);
   };
 
+  const {
+    dragging,
+    pendingFile,
+    handleFileSelect,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    handleCancelPending,
+    handleUpload,
+  } = useCvUpload(uploadCv, (res) => {
+    if (res?.data?.id) {
+      setSelectedCvId(res.data.id);
+      setCvSource("library");
+    }
+  });
+
+  const handleNext = useCallback(() => {
+    if (currentStep === 1) {
+      const result = applyPersonalInfoSchema.safeParse(formData);
+      if (!result.success) {
+        const firstError =
+          result.error.issues[0]?.message || "Thông tin không hợp lệ";
+        toast.error(firstError);
+        return;
+      }
+    }
+    setCurrentStep((prev) => Math.min(prev + 1, 4));
+  }, [currentStep, formData]);
+
+  const handleBack = useCallback(() => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  }, []);
+
   const doSubmit = useCallback(
     async (isDraft) => {
+      if (!isDraft) {
+        const result = applyPersonalInfoSchema.safeParse(formData);
+        if (!result.success) {
+          const firstError =
+            result.error.issues[0]?.message || "Thông tin không hợp lệ";
+          toast.error(firstError);
+          return;
+        }
+      }
       let cvUrl, cvId;
-      if (selectedCv) {
+      if (cvSource === "library" && selectedCv) {
         cvId = selectedCv.id;
         cvUrl = selectedCv.fileUrl;
-      } else if (manualCvUrl.trim()) {
+      } else if (cvSource === "link" && manualCvUrl.trim()) {
         cvUrl = manualCvUrl.trim();
       }
       try {
-        await applyJob({ jobId: id, ...formData, cvUrl, cvId, isDraft }).unwrap();
+        await applyJob({
+          jobId: id,
+          ...formData,
+          cvUrl,
+          cvId,
+          isDraft,
+        }).unwrap();
         if (isDraft) {
           toast.success("Đã lưu bản nháp thành công");
         } else {
@@ -151,7 +139,7 @@ export function useApply() {
         navigate(-1);
       }
     },
-    [selectedCv, manualCvUrl, applyJob, id, formData, navigate],
+    [selectedCv, manualCvUrl, cvSource, applyJob, id, formData, navigate],
   );
 
   const handleSubmit = async (e) => {
@@ -187,6 +175,22 @@ export function useApply() {
     coverLetterOpen,
     cvPickerOpen,
     agreedToTerms,
+    currentStep,
+    isUploadingCv,
+    cvSource,
+    setCvSource,
+    // Drag & drop upload state & handlers
+    dragging,
+    pendingFile,
+    handleFileSelect,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    handleCancelPending,
+    handleUpload,
+    setCurrentStep,
+    handleNext,
+    handleBack,
     setAgreedToTerms,
     setManualCvUrl,
     setCoverLetterOpen,
@@ -197,14 +201,5 @@ export function useApply() {
     handleSubmit,
     handleSaveDraft,
     handleGenerateCoverLetter,
-    currentStep,
-    setCurrentStep,
-    dragging,
-    isUploading,
-    handleFileSelect,
-    handleDrop,
-    handleDragOver,
-    handleDragLeave,
-    setSelectedCvId,
   };
 }

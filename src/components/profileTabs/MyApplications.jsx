@@ -72,9 +72,9 @@ function MyApplications() {
         {/* Status filter */}
         <div className="bg-primary/5 flex min-w-0 items-center gap-2 rounded-lg px-3 py-1.5">
           <Filter className="text-muted-foreground size-4 shrink-0" />
-          <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+          {/* <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             Trạng thái:
-          </span>
+          </span> */}
           <Select value={filters.status} onValueChange={setStatusFilter}>
             <SelectTrigger className="h-auto w-full min-w-[150px] border-0 p-0 text-sm font-medium shadow-none focus:ring-0 sm:w-[150px]">
               <SelectValue />

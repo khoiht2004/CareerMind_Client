@@ -26,12 +26,12 @@ function AvatarCard({
   return (
     <>
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="px-6 md:p-6">
           <div className="flex flex-wrap items-center gap-6">
             {/* Avatar */}
             <div className="relative shrink-0">
               <Avatar
-                className="border-border size-28 cursor-pointer overflow-hidden rounded-2xl border-3 text-2xl"
+                className="border-border size-20 cursor-pointer overflow-hidden rounded-2xl border-3 text-2xl md:size-28"
                 onClick={handleOpen}
               >
                 <AvatarImage
@@ -89,7 +89,7 @@ function AvatarCard({
 
             {/* Info */}
             <div className="flex-1 space-y-1">
-              <h1 className="text-foreground text-3xl font-black">
+              <h1 className="text-foreground text-xl font-black md:text-3xl">
                 {profile?.fullName ?? "Chưa cập nhật"}
               </h1>
               <p className="text-secondary text-sm font-medium">

@@ -20,7 +20,7 @@ function CvListItem({ cv, onPreview, onSetDefault, onDelete }) {
     <div className="bg-card border-border flex min-h-[120px] flex-col gap-2 rounded-xl border p-4">
       <div className="flex items-start gap-3">
         <div
-          className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${typeConfig.bgClass}`}
+          className={`hidden size-10 shrink-0 items-center justify-center rounded-lg md:flex ${typeConfig.bgClass}`}
         >
           <FileText className={`size-5 ${typeConfig.iconClass}`} />
         </div>
@@ -30,7 +30,7 @@ function CvListItem({ cv, onPreview, onSetDefault, onDelete }) {
               {cv.name}
             </p>
             <span
-              className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${typeConfig.badgeClass}`}
+              className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase md:text-xs ${typeConfig.badgeClass}`}
             >
               {typeConfig.label}
             </span>
@@ -44,11 +44,11 @@ function CvListItem({ cv, onPreview, onSetDefault, onDelete }) {
       <div className="mt-auto flex items-center justify-between">
         <button
           onClick={handleSetDefault}
-          className="text-secondary hover:text-secondary/80 cursor-pointer text-xs font-semibold tracking-wide uppercase transition-colors"
+          className="text-secondary hover:text-secondary/80 cursor-pointer text-[11px] font-semibold tracking-wide uppercase transition-colors md:text-xs"
         >
           Đặt mặc định
         </button>
-        <div className="flex gap-2">
+        <div className="flex gap-1 md:gap-2">
           <button
             onClick={() => onPreview(cv)}
             className="text-muted-foreground hover:text-foreground cursor-pointer rounded p-1 transition-colors"
