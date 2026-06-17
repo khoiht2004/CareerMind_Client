@@ -4,8 +4,10 @@ import { toast } from "sonner";
 import { useGetJobByIdQuery } from "@/services/job.service";
 import { useApplyJobMutation } from "@/services/application.service";
 import { useGetMyCoverLettersQuery } from "@/services/coverLetter.service";
-import { useGetMyCvsQuery } from "@/services/cv.service";
+import { useGetMyCvsQuery, useUploadCvMutation } from "@/services/cv.service";
 import { useGenerateCoverLetterMutation } from "@/services/chat.service";
+import { applyPersonalInfoSchema } from "@/validations/apply.shema";
+import { useCvUpload } from "@/hooks/useCvUpload";
 
 export function useApply() {
   const { id } = useParams();
@@ -21,6 +23,7 @@ export function useApply() {
     useGenerateCoverLetterMutation();
   const { data: coverLettersData } = useGetMyCoverLettersQuery();
   const { data: myCvsData } = useGetMyCvsQuery();
+  const [uploadCv, { isLoading: isUploadingCv }] = useUploadCvMutation();
 
   const [formData, setFormData] = useState({
     name: draft?.user?.profile?.fullName ?? "",
@@ -29,6 +32,7 @@ export function useApply() {
     linkedin: "",
     coverLetter: draft?.coverLetter ?? "",
   });
+  const [currentStep, setCurrentStep] = useState(1);
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
   const [cvPickerOpen, setCvPickerOpen] = useState(false);
   // Pre-select the CV that was saved in the draft
@@ -38,13 +42,17 @@ export function useApply() {
     !draft?.cvId && draft?.cvUrl ? draft.cvUrl : "",
   );
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [cvSource, setCvSource] = useState(
+    draft?.cvUrl && !draft?.cvId ? "link" : "library",
+  );
 
   const job = jobData?.data;
   const coverLetters = coverLettersData?.data ?? [];
   const myCvs = myCvsData?.data ?? [];
   const defaultCv = myCvs.find((cv) => cv.isDefault) ?? myCvs[0] ?? null;
   const effectiveSelectedCvId = selectedCvId ?? defaultCv?.id ?? null;
-  const selectedCv = myCvs.find((cv) => cv.id === effectiveSelectedCvId) ?? null;
+  const selectedCv =
+    myCvs.find((cv) => cv.id === effectiveSelectedCvId) ?? null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,17 +69,65 @@ export function useApply() {
     setCvPickerOpen(false);
   };
 
+  const {
+    dragging,
+    pendingFile,
+    handleFileSelect,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    handleCancelPending,
+    handleUpload,
+  } = useCvUpload(uploadCv, (res) => {
+    if (res?.data?.id) {
+      setSelectedCvId(res.data.id);
+      setCvSource("library");
+    }
+  });
+
+  const handleNext = useCallback(() => {
+    if (currentStep === 1) {
+      const result = applyPersonalInfoSchema.safeParse(formData);
+      if (!result.success) {
+        const firstError =
+          result.error.issues[0]?.message || "Thông tin không hợp lệ";
+        toast.error(firstError);
+        return;
+      }
+    }
+    setCurrentStep((prev) => Math.min(prev + 1, 4));
+  }, [currentStep, formData]);
+
+  const handleBack = useCallback(() => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  }, []);
+
   const doSubmit = useCallback(
     async (isDraft) => {
+      if (!isDraft) {
+        const result = applyPersonalInfoSchema.safeParse(formData);
+        if (!result.success) {
+          const firstError =
+            result.error.issues[0]?.message || "Thông tin không hợp lệ";
+          toast.error(firstError);
+          return;
+        }
+      }
       let cvUrl, cvId;
-      if (selectedCv) {
+      if (cvSource === "library" && selectedCv) {
         cvId = selectedCv.id;
         cvUrl = selectedCv.fileUrl;
-      } else if (manualCvUrl.trim()) {
+      } else if (cvSource === "link" && manualCvUrl.trim()) {
         cvUrl = manualCvUrl.trim();
       }
       try {
-        await applyJob({ jobId: id, ...formData, cvUrl, cvId, isDraft }).unwrap();
+        await applyJob({
+          jobId: id,
+          ...formData,
+          cvUrl,
+          cvId,
+          isDraft,
+        }).unwrap();
         if (isDraft) {
           toast.success("Đã lưu bản nháp thành công");
         } else {
@@ -83,7 +139,7 @@ export function useApply() {
         navigate(-1);
       }
     },
-    [selectedCv, manualCvUrl, applyJob, id, formData, navigate],
+    [selectedCv, manualCvUrl, cvSource, applyJob, id, formData, navigate],
   );
 
   const handleSubmit = async (e) => {
@@ -119,6 +175,22 @@ export function useApply() {
     coverLetterOpen,
     cvPickerOpen,
     agreedToTerms,
+    currentStep,
+    isUploadingCv,
+    cvSource,
+    setCvSource,
+    // Drag & drop upload state & handlers
+    dragging,
+    pendingFile,
+    handleFileSelect,
+    handleDrop,
+    handleDragOver,
+    handleDragLeave,
+    handleCancelPending,
+    handleUpload,
+    setCurrentStep,
+    handleNext,
+    handleBack,
     setAgreedToTerms,
     setManualCvUrl,
     setCoverLetterOpen,
