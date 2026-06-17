@@ -40,6 +40,7 @@ export function useChatBot() {
   const { data: jobData } = useGetJobByIdQuery(initJobId, { skip: !initJobId });
   const { isLoading: profileLoading } = useGetProfileQuery(undefined, { skip: !initJobId });
   const autoInitRef = useRef(false);
+  const sendingRef = useRef(false);
 
   const sessions = useMemo(() => sessionsData?.data ?? [], [sessionsData]);
   const messages = useMemo(
@@ -95,8 +96,9 @@ export function useChatBot() {
     async (text, attachments = []) => {
       const content = (typeof text === "string" ? text : input).trim();
       if (!content && !attachments.length) return;
-      if (isSending || !activeSessionId) return;
+      if (isSending || sendingRef.current || !activeSessionId) return;
 
+      sendingRef.current = true;
       setInput("");
       setIsSending(true);
       setPendingMessage({ content, attachments });
@@ -105,6 +107,7 @@ export function useChatBot() {
       } catch {
         toast.error("Gửi tin nhắn thất bại");
       } finally {
+        sendingRef.current = false;
         setIsSending(false);
         setPendingMessage(null);
       }
