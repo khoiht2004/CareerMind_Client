@@ -31,32 +31,37 @@ const jobMenu = {
           icon: FileText,
         },
         { label: "Việc làm phù hợp", to: path.notFound, icon: Sparkles },
+      ],
+    },
+    {
+      title: "Công ty",
+      items: [
         { label: "Danh sách công ty", to: path.companies, icon: Building2 },
         { label: "Công ty Pro", to: path.notFound, icon: Building2, pro: true },
       ],
     },
-    {
-      title: "Việc làm theo vị trí",
-      items: [
-        { label: "Việc làm Nhân viên kinh doanh", to: path.jobs },
-        { label: "Việc làm Kế toán", to: path.jobs },
-        { label: "Việc làm Marketing", to: path.jobs },
-        { label: "Việc làm Hành chính nhân sự", to: path.jobs },
-        { label: "Việc làm Chăm sóc khách hàng", to: path.jobs },
-        { label: "Việc làm Ngân hàng", to: path.jobs },
-        { label: "Việc làm IT", to: path.jobs },
-      ],
-    },
-    {
-      title: "Việc làm theo lĩnh vực",
-      items: [
-        { label: "Việc làm Sản xuất", to: path.jobs },
-        { label: "Việc làm Bán lẻ - FMCG", to: path.jobs },
-        { label: "Việc làm IT - Phần mềm", to: path.jobs },
-        { label: "Việc làm Xây dựng", to: path.jobs },
-        { label: "Việc làm Giáo dục/Đào tạo", to: path.jobs },
-      ],
-    },
+    // {
+    //   title: "Việc làm theo vị trí",
+    //   items: [
+    //     { label: "Việc làm Nhân viên kinh doanh", to: path.jobs },
+    //     { label: "Việc làm Kế toán", to: path.jobs },
+    //     { label: "Việc làm Marketing", to: path.jobs },
+    //     { label: "Việc làm Hành chính nhân sự", to: path.jobs },
+    //     { label: "Việc làm Chăm sóc khách hàng", to: path.jobs },
+    //     { label: "Việc làm Ngân hàng", to: path.jobs },
+    //     { label: "Việc làm IT", to: path.jobs },
+    //   ],
+    // },
+    // {
+    //   title: "Việc làm theo lĩnh vực",
+    //   items: [
+    //     { label: "Việc làm Sản xuất", to: path.jobs },
+    //     { label: "Việc làm Bán lẻ - FMCG", to: path.jobs },
+    //     { label: "Việc làm IT - Phần mềm", to: path.jobs },
+    //     { label: "Việc làm Xây dựng", to: path.jobs },
+    //     { label: "Việc làm Giáo dục/Đào tạo", to: path.jobs },
+    //   ],
+    // },
   ],
 };
 
@@ -83,7 +88,7 @@ const cvMenu = {
       title: "Quản lý hồ sơ",
       items: [
         { label: "Quản lý CV", to: profileTabPath("cv"), icon: FileText },
-        { label: "Tải CV lên", to: profileTabPath("cv"), icon: Upload },
+        // { label: "Tải CV lên", to: profileTabPath("cv"), icon: Upload },
         { label: "Hướng dẫn viết CV", to: path.posts, icon: Lightbulb },
         {
           label: "Quản lý Cover Letter",
@@ -134,22 +139,22 @@ const careerMenu = {
         { label: "Hành trang nghề nghiệp", to: path.posts, icon: Briefcase },
       ],
     },
-    {
-      title: "Bài viết nổi bật",
-      items: [
-        {
-          label: "CareerMind Pro - Không gian tuyển dụng chuyên biệt",
-          description:
-            "Cập nhật các xu hướng tuyển dụng và xây dựng hồ sơ hiệu quả.",
-          to: path.posts,
-        },
-        {
-          label: "Bộ câu hỏi phỏng vấn Kế toán kèm gợi ý trả lời",
-          description: "Chuẩn bị tốt hơn trước buổi phỏng vấn quan trọng.",
-          to: path.posts,
-        },
-      ],
-    },
+    // {
+    //   title: "Bài viết nổi bật",
+    //   items: [
+    //     {
+    //       label: "CareerMind Pro - Không gian tuyển dụng chuyên biệt",
+    //       description:
+    //         "Cập nhật các xu hướng tuyển dụng và xây dựng hồ sơ hiệu quả.",
+    //       to: path.posts,
+    //     },
+    //     {
+    //       label: "Bộ câu hỏi phỏng vấn Kế toán kèm gợi ý trả lời",
+    //       description: "Chuẩn bị tốt hơn trước buổi phỏng vấn quan trọng.",
+    //       to: path.posts,
+    //     },
+    //   ],
+    // },
   ],
 };
 

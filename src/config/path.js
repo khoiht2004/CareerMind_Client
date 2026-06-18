@@ -5,6 +5,7 @@ export const path = {
   login: "/auth?tab=login",
   register: "/register",
   verifyEmail: "/verify-email",
+  forgotPassword: "/forgot-password",
 
   // Jobs
   jobs: "/jobs",

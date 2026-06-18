@@ -174,7 +174,7 @@ function RecruiterJobs() {
                     <TableRow key={job.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
-                          <JobInitials title={job.title} />
+                          {/* <JobInitials title={job.title} /> */}
                           <div>
                             <p className="text-sm font-medium">{job.title}</p>
                             <p className="text-muted-foreground text-xs">

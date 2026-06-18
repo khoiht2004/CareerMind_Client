@@ -52,13 +52,13 @@ function MegaMenuColumn({ column }) {
 
 function MegaMenu({ menu }) {
   return (
-    <div className="invisible fixed top-13 left-1/2 z-50 -translate-x-1/2 opacity-0 transition-all duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-      <div className="bg-popover text-popover-foreground w-[min(72rem,calc(100vw-2rem))] rounded-2xl border p-7 drop-shadow-lg">
+    <div className="invisible absolute top-10 left-0 z-50 pt-4 opacity-0 transition-all duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+      <div className="bg-popover text-popover-foreground w-max rounded-2xl border p-6 shadow-lg drop-shadow-xl">
         <div
           className={cn(
             "grid gap-8",
-            menu.columns.length === 1 && "w-80 grid-cols-1",
-            menu.columns.length === 2 && "w-152 grid-cols-2",
+            menu.columns.length === 1 && "grid-cols-1",
+            menu.columns.length === 2 && "grid-cols-2",
             menu.columns.length >= 3 && "grid-cols-3",
           )}
         >

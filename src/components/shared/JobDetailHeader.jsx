@@ -18,7 +18,7 @@ function JobDetailHeader({
   job,
   id,
   // user,
-  hasApplied,
+  hasApplied = false,
   isSaved,
   isSaving,
   isUnsaving,
@@ -26,6 +26,7 @@ function JobDetailHeader({
 }) {
   const { title, location, salary, deadline, type, status } = job;
   // const isCandidate = !user || user?.role === "CANDIDATE";
+  const isExpired = deadline && new Date(deadline) < new Date();
 
   return (
     <Card className="border-border overflow-hidden rounded-xl shadow-sm">
@@ -83,12 +84,14 @@ function JobDetailHeader({
           <div className="flex flex-col gap-3 pt-2 sm:flex-row">
             <Button
               size="lg"
-              asChild={!hasApplied}
-              disabled={hasApplied}
+              asChild={!hasApplied && !isExpired}
+              disabled={hasApplied || isExpired}
               className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 cursor-pointer rounded-lg font-bold"
             >
               {hasApplied ? (
                 <span className="py-2">Bạn đã ứng tuyển</span>
+              ) : isExpired ? (
+                <span className="py-2">Đã quá hạn nộp đơn</span>
               ) : (
                 <Link to={`/jobs/${id}/apply`} className="py-2">
                   <SendHorizontal className="mr-2 size-5" /> Ứng tuyển ngay
