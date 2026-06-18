@@ -62,6 +62,9 @@ export const jobService = apiSlice.injectEndpoints({
       query: () => "/job/my/stats",
       providesTags: ["Job"],
     }),
+    generateJDAI: builder.mutation({
+      query: (body) => ({ url: "/job/generate-jd-ai", method: "POST", body }),
+    }),
   }),
 });
 
@@ -77,4 +80,6 @@ export const {
   useCheckJobSavedQuery,
   useGetMyJobsQuery,
   useGetMyStatsQuery,
+  useGenerateJDAIMutation,
 } = jobService;
+

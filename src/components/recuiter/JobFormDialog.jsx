@@ -20,6 +20,8 @@ function JobFormDialog({
   onSelectChange,
   onSubmit,
   isSaving,
+  handleGenerateJDAI,
+  generatingJD,
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -51,7 +53,12 @@ function JobFormDialog({
             onSelectChange={onSelectChange}
           />
           <JobFormDetailSection form={form} onChange={onChange} />
-          <JobFormContentSection form={form} onChange={onChange} />
+          <JobFormContentSection
+            form={form}
+            onChange={onChange}
+            handleGenerateJDAI={handleGenerateJDAI}
+            generatingJD={generatingJD}
+          />
         </div>
 
         {/* ── Fixed Footer ── */}

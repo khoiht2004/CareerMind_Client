@@ -109,7 +109,9 @@ function JobDetailSidebar({ job, id, typeLabel }) {
                 <BriefcaseBusiness />
               </div>
               <div>
-                <p className="text-muted-foreground text-xs">Hình thức làm việc</p>
+                <p className="text-muted-foreground text-xs">
+                  Hình thức làm việc
+                </p>
                 <p className="text-foreground text-sm font-semibold">
                   {typeLabel || "Thoả thuận"}
                 </p>
@@ -141,35 +143,37 @@ function JobDetailSidebar({ job, id, typeLabel }) {
       </Card>
 
       {/* MindScout */}
-      <Card className="from-chart-1 to-chart-2 text-primary-foreground overflow-hidden rounded-xl bg-linear-to-r shadow-sm">
-        <CardContent className="space-y-3 p-5">
-          <div className="flex items-center gap-3">
-            <div className="bg-primary-foreground/10 flex size-10 shrink-0 items-center justify-center rounded-xl">
-              <Bot className="text-primary-foreground size-5" />
+      {job.status === "PUBLISHED" && (
+        <Card className="from-chart-1 to-chart-2 text-primary-foreground overflow-hidden rounded-xl bg-linear-to-r shadow-sm">
+          <CardContent className="space-y-3 p-5">
+            <div className="flex items-center gap-3">
+              <div className="bg-primary-foreground/10 flex size-10 shrink-0 items-center justify-center rounded-xl">
+                <Bot className="text-primary-foreground size-5" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">MindScout</p>
+                <p className="text-primary-foreground/70 text-xs">
+                  Trợ lý tuyển dụng thông minh
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-semibold">MindScout</p>
-              <p className="text-primary-foreground/70 text-xs">
-                Trợ lý tuyển dụng thông minh
-              </p>
-            </div>
-          </div>
-          <p className="text-primary-foreground/80 text-xs leading-relaxed">
-            Để AI hỗ trợ bạn chuẩn bị CV & tư vấn về vị trí này một cách tốt
-            nhất.
-          </p>
-          <Button
-            size="sm"
-            variant="secondary"
-            className="w-full cursor-pointer font-bold"
-            asChild
-          >
-            <Link to="/chatbot" state={{ jobId: id }}>
-              Tư vấn CV ngay!
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+            <p className="text-primary-foreground/80 text-xs leading-relaxed">
+              Để AI hỗ trợ bạn chuẩn bị CV & tư vấn về vị trí này một cách tốt
+              nhất.
+            </p>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="w-full cursor-pointer font-bold"
+              asChild
+            >
+              <Link to="/chatbot" state={{ jobId: id }}>
+                Tư vấn CV ngay!
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

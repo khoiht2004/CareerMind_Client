@@ -22,6 +22,8 @@ function AvatarCard({
   previewOpen,
   handleOpen,
   handleClose,
+  fullName,
+  onFullNameChange,
 }) {
   return (
     <>
@@ -89,9 +91,24 @@ function AvatarCard({
 
             {/* Info */}
             <div className="flex-1 space-y-1">
-              <h1 className="text-foreground text-xl font-black md:text-3xl">
-                {profile?.fullName ?? "Chưa cập nhật"}
-              </h1>
+              {editing ? (
+                <div className="max-w-xs md:max-w-md">
+                  <p className="text-muted-foreground mb-1 text-[10px] font-bold tracking-wider uppercase">
+                    Họ và tên
+                  </p>
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => onFullNameChange(e.target.value)}
+                    placeholder="Nhập họ và tên..."
+                    className="border-input bg-background text-foreground w-full rounded-lg border px-3 py-1.5 text-base font-bold focus:outline-none focus:ring-1 focus:ring-primary md:text-lg"
+                  />
+                </div>
+              ) : (
+                <h1 className="text-foreground text-xl font-black md:text-3xl">
+                  {profile?.fullName ?? "Chưa cập nhật"}
+                </h1>
+              )}
               <p className="text-secondary text-sm font-medium">
                 {profile?.user?.role === "CANDIDATE"
                   ? "Ứng viên"

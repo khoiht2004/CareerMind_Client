@@ -6,6 +6,7 @@ import CvFeaturedCard from "./components/CvFeaturedCard";
 import CvListItem from "./components/CvListItem";
 import CvPreviewDialog from "@/components/shared/CvPreviewDialog";
 import ConfirmDialog from "../shared/ConfirmDialog";
+import CvAutoFillDialog from "./components/CvAutoFillDialog";
 import { useMyCv, MAX_CV_COUNT } from "@/hooks/useMyCv";
 import { MAX_CV_SIZE_MB } from "@/hooks/useCvUpload";
 
@@ -27,6 +28,10 @@ function MyCv() {
     pendingFile,
     previewCv,
     cvToDelete,
+    parsedProfile,
+    setParsedProfile,
+    isUpdatingProfile,
+    handleConfirmUpdateProfile,
     handleFileSelect,
     handleDrop,
     handleDragOver,
@@ -196,6 +201,16 @@ function MyCv() {
         confirmText="Xóa"
         onConfirm={handleDelete}
         isLoading={isDeleting}
+      />
+
+      {/* Dialog gợi ý điền thông tin tự động bóc tách từ CV */}
+      <CvAutoFillDialog
+        open={!!parsedProfile}
+        onOpenChange={(open) => !open && setParsedProfile(null)}
+        parsedProfile={parsedProfile}
+        onConfirm={handleConfirmUpdateProfile}
+        isConfirming={isUpdatingProfile}
+        onCancel={() => setParsedProfile(null)}
       />
     </>
   );
