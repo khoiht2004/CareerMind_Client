@@ -35,6 +35,7 @@ import {
 } from "@/components/recuiter/components/JobsComponent";
 import { path } from "@/config/path";
 import { usePermission, useAnyPermission } from "@/hooks/usePermission";
+import PageContainer from "@/components/shared/PageContainer";
 
 function RecruiterJobs() {
   const navigate = useNavigate();
@@ -74,230 +75,232 @@ function RecruiterJobs() {
   } = useRecruiterJobs();
 
   return (
-    <div className="max-w-full space-y-6 px-4 pt-6 sm:px-6 lg:px-10">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-primary text-3xl font-black sm:text-4xl">
-            Quản lý việc làm
-          </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Quản lý các chiến dịch tuyển dụng của bạn.
-          </p>
-        </div>
-        <div className="mt-1 flex w-full flex-row justify-end gap-2 sm:w-auto sm:items-center">
-          <Button
-            variant="outline"
-            className="cursor-pointer gap-2"
-            onClick={() => setFilterOpen((open) => !open)}
-          >
-            <Filter className="size-4" />
-            Lọc nâng cao
-          </Button>
-          {canCreate && (
-            <Button onClick={openCreate} className="cursor-pointer gap-2">
-              <Plus className="size-4" />
-              Đăng tin mới
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Stat cards */}
-      <div className="hidden grid-cols-2 gap-4 md:grid md:grid-cols-4">
-        {JOB_CARD_CONFIG.map((cfg) => (
-          <JobsCard
-            key={cfg.id}
-            icon={cfg.icon}
-            label={cfg.label}
-            bgColor={cfg.bgColor}
-            borderColor={cfg.borderColor}
-            value={cfg.getValue(stats)}
-            trend={cfg.trend}
-          />
-        ))}
-      </div>
-
-      {/* Collapsible filters */}
-      {filterOpen && (
-        <div className="border-border flex flex-wrap gap-3 rounded-lg border p-4">
-          <Input
-            placeholder="Tìm kiếm theo tiêu đề..."
-            className="border-border w-full border sm:w-72"
-            value={filters.search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Select value={filters.status} onValueChange={setStatusFilter}>
-            <SelectTrigger className="border-border w-full border sm:w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {JOB_STATUS_OPTIONS.map((o) => (
-                <SelectItem key={o.value} value={o.value}>
-                  {o.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-
-      <RecruiterAiAssistant jobs={jobs} />
-
-      {/* Table */}
-      {isLoading ? (
-        <div className="flex h-40 items-center justify-center">
-          <Loader2 className="text-muted-foreground size-6 animate-spin" />
-        </div>
-      ) : jobs.length === 0 ? (
-        <p className="text-muted-foreground py-16 text-center text-sm">
-          Chưa có việc làm nào
-        </p>
-      ) : (
-        <>
-          <div className="overflow-x-auto rounded-lg border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Tiêu đề công việc</TableHead>
-                  <TableHead>Trạng thái</TableHead>
-                  <TableHead>Loại</TableHead>
-                  <TableHead className="text-center">Đơn ứng tuyển</TableHead>
-                  <TableHead>Hạn nộp</TableHead>
-                  <TableHead className="text-right">Thao tác</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {jobs.map((job) => (
-                  <TableRow key={job.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <JobInitials title={job.title} />
-                        <div>
-                          <p className="text-sm font-medium">{job.title}</p>
-                          <p className="text-muted-foreground text-xs">
-                            {job.company?.name}
-                            {job.location && ` • ${job.location}`}
-                          </p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span
-                        className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${JOB_STATUS_BADGE[job.status]}`}
-                      >
-                        {JOB_STATUS_LABELS[job.status]}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {JOB_TYPE_LABELS[job.type]}
-                    </TableCell>
-                    <TableCell className="text-center font-semibold">
-                      {job._count?.applications ?? 0}
-                    </TableCell>
-                    <TableCell>
-                      <DeadlineCell deadline={job.deadline} />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-end gap-1">
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="size-8 cursor-pointer"
-                          title="Xem"
-                          onClick={() => navigate(`/jobs/${job.id}`)}
-                        >
-                          <Eye className="size-4" />
-                        </Button>
-                        {canEdit && (
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="size-8 cursor-pointer"
-                            title="Sửa"
-                            onClick={() => openEdit(job)}
-                          >
-                            <Pencil className="size-4" />
-                          </Button>
-                        )}
-                        {canDelete && (
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="size-8 cursor-pointer"
-                            style={{ color: "var(--destructive)" }}
-                            title="Xóa"
-                            onClick={() => setDeleteId(job.id)}
-                          >
-                            <Trash2 className="size-4" />
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-muted-foreground text-sm">
-              Hiển thị {from} - {to} trong số {total} tin
+    <PageContainer>
+      <div className="max-w-full space-y-6 py-4">
+        {/* Header */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 className="text-primary text-3xl font-black sm:text-4xl">
+              Quản lý việc làm
+            </h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Quản lý các chiến dịch tuyển dụng của bạn.
             </p>
-            <Pagination
-              page={filters.page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-              showPageNumbers
-            />
           </div>
-        </>
-      )}
-
-      {/* Promo cards */}
-      <article className="from-primary to-primary-container text-primary-foreground rounded-xl bg-linear-to-r p-6">
-        <div className="max-w-full sm:max-w-[60%]">
-          <span className="bg-primary-foreground/10 text-md rounded-full px-3 py-1 font-bold">
-            Mẹo tuyển dụng
-          </span>
-          <h3 className="mt-3 text-2xl font-bold">
-            Tăng 30% lượng ứng viên tiềm năng?
-          </h3>
-          <p className="text-md mt-3 opacity-75">
-            Sử dụng tính năng "Boost" để đẩy tin tuyển dụng của bạn lên vị trí
-            ưu tiên và tiếp cận đúng đối tượng mục tiêu dựa trên AI Matching.
-          </p>
-          <Button
-            variant="secondary"
-            size="lg"
-            className="text-md bg-secondary-container text-primary mt-5 cursor-pointer rounded-2xl p-6 font-semibold"
-            asChild
-          >
-            <Link to={path.membership}>Khám phá gói Premium</Link>
-          </Button>
+          <div className="mt-1 flex w-full flex-row justify-end gap-2 sm:w-auto sm:items-center">
+            <Button
+              variant="outline"
+              className="cursor-pointer gap-2"
+              onClick={() => setFilterOpen((open) => !open)}
+            >
+              <Filter className="size-4" />
+              Lọc nâng cao
+            </Button>
+            {canCreate && (
+              <Button onClick={openCreate} className="cursor-pointer gap-2">
+                <Plus className="size-4" />
+                Đăng tin mới
+              </Button>
+            )}
+          </div>
         </div>
-      </article>
 
-      {/* Dialogs */}
-      <JobFormDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        editJob={editJob}
-        form={form}
-        onChange={handleChange}
-        onSelectChange={handleSelectChange}
-        onSubmit={handleSubmit}
-        isSaving={isSaving}
-        handleGenerateJDAI={handleGenerateJDAI}
-        generatingJD={generatingJD}
-      />
-      <JobDeleteDialog
-        open={!!deleteId}
-        onOpenChange={() => setDeleteId(null)}
-        onConfirm={handleDelete}
-        isLoading={deleting}
-      />
-    </div>
+        {/* Stat cards */}
+        <div className="hidden grid-cols-2 gap-4 md:grid md:grid-cols-4">
+          {JOB_CARD_CONFIG.map((cfg) => (
+            <JobsCard
+              key={cfg.id}
+              icon={cfg.icon}
+              label={cfg.label}
+              bgColor={cfg.bgColor}
+              borderColor={cfg.borderColor}
+              value={cfg.getValue(stats)}
+              trend={cfg.trend}
+            />
+          ))}
+        </div>
+
+        {/* Collapsible filters */}
+        {filterOpen && (
+          <div className="border-border flex flex-wrap gap-3 rounded-lg border p-4">
+            <Input
+              placeholder="Tìm kiếm theo tiêu đề..."
+              className="border-border w-full border sm:w-72"
+              value={filters.search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Select value={filters.status} onValueChange={setStatusFilter}>
+              <SelectTrigger className="border-border w-full border sm:w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {JOB_STATUS_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>
+                    {o.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        <RecruiterAiAssistant jobs={jobs} />
+
+        {/* Table */}
+        {isLoading ? (
+          <div className="flex h-40 items-center justify-center">
+            <Loader2 className="text-muted-foreground size-6 animate-spin" />
+          </div>
+        ) : jobs.length === 0 ? (
+          <p className="text-muted-foreground py-16 text-center text-sm">
+            Chưa có việc làm nào
+          </p>
+        ) : (
+          <>
+            <div className="overflow-x-auto rounded-lg border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tiêu đề công việc</TableHead>
+                    <TableHead>Trạng thái</TableHead>
+                    <TableHead>Loại</TableHead>
+                    <TableHead className="text-center">Đơn ứng tuyển</TableHead>
+                    <TableHead>Hạn nộp</TableHead>
+                    <TableHead className="text-right">Thao tác</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {jobs.map((job) => (
+                    <TableRow key={job.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <JobInitials title={job.title} />
+                          <div>
+                            <p className="text-sm font-medium">{job.title}</p>
+                            <p className="text-muted-foreground text-xs">
+                              {job.company?.name}
+                              {job.location && ` • ${job.location}`}
+                            </p>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${JOB_STATUS_BADGE[job.status]}`}
+                        >
+                          {JOB_STATUS_LABELS[job.status]}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {JOB_TYPE_LABELS[job.type]}
+                      </TableCell>
+                      <TableCell className="text-center font-semibold">
+                        {job._count?.applications ?? 0}
+                      </TableCell>
+                      <TableCell>
+                        <DeadlineCell deadline={job.deadline} />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="size-8 cursor-pointer"
+                            title="Xem"
+                            onClick={() => navigate(`/jobs/${job.id}`)}
+                          >
+                            <Eye className="size-4" />
+                          </Button>
+                          {canEdit && (
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="size-8 cursor-pointer"
+                              title="Sửa"
+                              onClick={() => openEdit(job)}
+                            >
+                              <Pencil className="size-4" />
+                            </Button>
+                          )}
+                          {canDelete && (
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="size-8 cursor-pointer"
+                              style={{ color: "var(--destructive)" }}
+                              title="Xóa"
+                              onClick={() => setDeleteId(job.id)}
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-muted-foreground text-sm">
+                Hiển thị {from} - {to} trong số {total} tin
+              </p>
+              <Pagination
+                page={filters.page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                showPageNumbers
+              />
+            </div>
+          </>
+        )}
+
+        {/* Promo cards */}
+        <article className="from-primary to-primary-container text-primary-foreground rounded-xl bg-linear-to-r p-6">
+          <div className="max-w-full sm:max-w-[60%]">
+            <span className="bg-primary-foreground/10 text-md rounded-full px-3 py-1 font-bold">
+              Mẹo tuyển dụng
+            </span>
+            <h3 className="mt-3 text-2xl font-bold">
+              Tăng 30% lượng ứng viên tiềm năng?
+            </h3>
+            <p className="text-md mt-3 opacity-75">
+              Sử dụng tính năng "Boost" để đẩy tin tuyển dụng của bạn lên vị trí
+              ưu tiên và tiếp cận đúng đối tượng mục tiêu dựa trên AI Matching.
+            </p>
+            <Button
+              variant="secondary"
+              size="lg"
+              className="text-md bg-secondary-container text-primary mt-5 cursor-pointer rounded-2xl p-6 font-semibold"
+              asChild
+            >
+              <Link to={path.membership}>Khám phá gói Premium</Link>
+            </Button>
+          </div>
+        </article>
+
+        {/* Dialogs */}
+        <JobFormDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          editJob={editJob}
+          form={form}
+          onChange={handleChange}
+          onSelectChange={handleSelectChange}
+          onSubmit={handleSubmit}
+          isSaving={isSaving}
+          handleGenerateJDAI={handleGenerateJDAI}
+          generatingJD={generatingJD}
+        />
+        <JobDeleteDialog
+          open={!!deleteId}
+          onOpenChange={() => setDeleteId(null)}
+          onConfirm={handleDelete}
+          isLoading={deleting}
+        />
+      </div>
+    </PageContainer>
   );
 }
 

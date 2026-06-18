@@ -10,8 +10,6 @@ import AuthLayout from "@/layouts/AuthLayout";
 import PrivateLayout from "@/layouts/PrivateLayout";
 
 //Auth pages
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
 import VerifyEmail from "@/pages/auth/VerifyEmail";
 import OAuthCallback from "@/pages/auth/OAuthCallback";
 
@@ -63,11 +61,12 @@ function App() {
         <Routes>
           {/* Auth routes */}
           <Route element={<AuthLayout />}>
-            <Route path={path.login} element={<Login />} />
-            <Route path={path.register} element={<Register />} />
             <Route path={path.auth} element={<Auth />} />
             <Route path={path.verifyEmail} element={<VerifyEmail />} />
-            <Route path="/oauth/callback/:provider" element={<OAuthCallback />} />
+            <Route
+              path="/oauth/callback/:provider"
+              element={<OAuthCallback />}
+            />
           </Route>
 
           {/* Public routes */}
