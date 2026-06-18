@@ -40,7 +40,7 @@ function JobFormBasicSection({ form, onChange, onSelectChange }) {
       {/* Địa điểm */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <JobFormField label="Địa điểm" required>
-          <Select
+          {/* <Select
             value={form.location}
             onValueChange={(value) => onSelectChange("location", value)}
           >
@@ -60,7 +60,14 @@ function JobFormBasicSection({ form, onChange, onSelectChange }) {
                 ),
               )}
             </SelectContent>
-          </Select>
+          </Select> */}
+          <Input
+            name="location"
+            value={form.location}
+            onChange={onChange}
+            placeholder="VD: Hà Nội, Đà Nẵng, TP. HCM"
+            className="bg-primary/10"
+          />
         </JobFormField>
 
         {/* Hình thức */}

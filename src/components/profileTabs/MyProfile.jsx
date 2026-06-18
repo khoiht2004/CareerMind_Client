@@ -15,6 +15,8 @@ function MyProfile() {
     setEditing,
     showDeleteDialog,
     setShowDeleteDialog,
+    fullName,
+    setFullName,
     bio,
     setBio,
     phone,
@@ -64,6 +66,8 @@ function MyProfile() {
         previewOpen={previewOpen}
         handleOpen={handleOpen}
         handleClose={handleClose}
+        fullName={fullName}
+        onFullNameChange={setFullName}
       />
 
       {/* Two-column layout */}

@@ -24,7 +24,7 @@ function JobDetailHeader({
   isUnsaving,
   handleBookmark,
 }) {
-  const { title, location, salary, deadline, type } = job;
+  const { title, location, salary, deadline, type, status } = job;
   // const isCandidate = !user || user?.role === "CANDIDATE";
 
   return (
@@ -33,7 +33,6 @@ function JobDetailHeader({
         <h1 className="text-foreground text-2xl leading-tight font-bold">
           {title}
         </h1>
-
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="flex items-center gap-3">
             <div className="bg-primary text-primary-foreground flex size-10 shrink-0 items-center justify-center rounded-full">
@@ -71,7 +70,6 @@ function JobDetailHeader({
             </div>
           </div>
         </div>
-
         {deadline && (
           <span className="text-muted-foreground flex items-center gap-1">
             Hạn nộp hồ sơ:{" "}
@@ -80,47 +78,49 @@ function JobDetailHeader({
             </span>
           </span>
         )}
-
-        <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-          <Button
-            size="lg"
-            asChild={!hasApplied}
-            disabled={hasApplied}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 cursor-pointer rounded-lg font-bold"
-          >
-            {hasApplied ? (
-              <span className="py-2">Bạn đã ứng tuyển</span>
-            ) : (
-              <Link to={`/jobs/${id}/apply`} className="py-2">
-                <SendHorizontal className="mr-2 size-5" /> Ứng tuyển ngay
-              </Link>
-            )}
-          </Button>
-          {job.postedBy?.id && (
+        {/* User Actions */}
+        {status === "PUBLISHED" && (
+          <div className="flex flex-col gap-3 pt-2 sm:flex-row">
             <Button
               size="lg"
-              asChild
-              className="border-primary bg-primary/20 hover:text-accent text-primary cursor-pointer gap-2 rounded-lg border px-6 font-bold"
+              asChild={!hasApplied}
+              disabled={hasApplied}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 cursor-pointer rounded-lg font-bold"
             >
-              <Link to="/conversations" state={{ posterId: job.postedBy.id }}>
-                Trò chuyện với Nhà tuyển dụng
-              </Link>
+              {hasApplied ? (
+                <span className="py-2">Bạn đã ứng tuyển</span>
+              ) : (
+                <Link to={`/jobs/${id}/apply`} className="py-2">
+                  <SendHorizontal className="mr-2 size-5" /> Ứng tuyển ngay
+                </Link>
+              )}
             </Button>
-          )}
-          <Button
-            variant="outline"
-            size="lg"
-            className={`cursor-pointer gap-2 rounded-lg border px-6 font-bold ${isSaved ? "text-primary border-primary bg-primary/5" : "border-border text-muted-foreground"}`}
-            onClick={handleBookmark}
-            disabled={isSaving || isUnsaving}
-          >
-            <Bookmark
-              className="size-5"
-              fill={isSaved ? "currentColor" : "none"}
-            />
-            {isSaved ? "Đã lưu" : "Lưu tin"}
-          </Button>
-        </div>
+            {job.postedBy?.id && (
+              <Button
+                size="lg"
+                asChild
+                className="border-primary bg-primary/20 hover:text-accent text-primary cursor-pointer gap-2 rounded-lg border px-6 font-bold"
+              >
+                <Link to="/conversations" state={{ posterId: job.postedBy.id }}>
+                  Trò chuyện với Nhà tuyển dụng
+                </Link>
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              size="lg"
+              className={`cursor-pointer gap-2 rounded-lg border px-6 font-bold ${isSaved ? "text-primary border-primary bg-primary/5" : "border-border text-muted-foreground"}`}
+              onClick={handleBookmark}
+              disabled={isSaving || isUnsaving}
+            >
+              <Bookmark
+                className="size-5"
+                fill={isSaved ? "currentColor" : "none"}
+              />
+              {isSaved ? "Đã lưu" : "Lưu tin"}
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

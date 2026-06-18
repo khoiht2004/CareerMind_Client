@@ -20,6 +20,7 @@ export function useMyProfile() {
 
   const [editing, setEditing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [fullName, setFullName] = useState("");
   const [bio, setBio] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -29,6 +30,7 @@ export function useMyProfile() {
 
   useEffect(() => {
     if (profile) {
+      setFullName(profile.fullName ?? "");
       setBio(profile.bio ?? "");
       setPhone(profile.phone ?? "");
       setAddress(profile.address ?? "");
@@ -38,6 +40,7 @@ export function useMyProfile() {
 
   const handleCancel = useCallback(() => {
     if (profile) {
+      setFullName(profile.fullName ?? "");
       setBio(profile.bio ?? "");
       setPhone(profile.phone ?? "");
       setAddress(profile.address ?? "");
@@ -48,13 +51,13 @@ export function useMyProfile() {
 
   const handleSave = useCallback(async () => {
     try {
-      await updateProfile({ bio, phone, address, skills }).unwrap();
+      await updateProfile({ fullName, bio, phone, address, skills }).unwrap();
       setEditing(false);
       toast.success("Đã cập nhật thông tin");
     } catch {
       toast.error("Cập nhật thất bại");
     }
-  }, [updateProfile, bio, phone, address, skills]);
+  }, [updateProfile, fullName, bio, phone, address, skills]);
 
   const handleDeleteAvatar = useCallback(async () => {
     try {
@@ -106,6 +109,8 @@ export function useMyProfile() {
     setEditing,
     showDeleteDialog,
     setShowDeleteDialog,
+    fullName,
+    setFullName,
     bio,
     setBio,
     phone,

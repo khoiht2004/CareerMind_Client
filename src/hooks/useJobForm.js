@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import {
   useCreateJobMutation,
   useUpdateJobMutation,
+  useGenerateJDAIMutation,
 } from "@/services/job.service";
 import { EMPTY_JOB_FORM } from "@/config/constants/recruiter.constant";
 import { convertArray } from "@/utils/helper";
@@ -14,6 +15,7 @@ export function useJobForm() {
 
   const [createJob, { isLoading: creating }] = useCreateJobMutation();
   const [updateJob, { isLoading: updating }] = useUpdateJobMutation();
+  const [generateJDAI, { isLoading: generatingJD }] = useGenerateJDAIMutation();
 
   const openCreate = () => {
     setEditJob(null);
@@ -84,6 +86,26 @@ export function useJobForm() {
     }
   };
 
+  const handleGenerateJDAI = async (params) => {
+    try {
+      const result = await generateJDAI(params).unwrap();
+      if (result.data) {
+        const jd = result.data;
+        setForm((prev) => ({
+          ...prev,
+          description: jd.description || prev.description,
+          tags: Array.isArray(jd.tags) ? jd.tags.join(", ") : prev.tags,
+          industry: Array.isArray(jd.industry) ? jd.industry.join(", ") : prev.industry,
+          benefits: Array.isArray(jd.benefits) && jd.benefits.length > 0 ? jd.benefits : prev.benefits,
+          requirements: Array.isArray(jd.requirements) && jd.requirements.length > 0 ? jd.requirements : prev.requirements,
+        }));
+        toast.success("Đã sinh JD thông minh bằng AI!");
+      }
+    } catch (err) {
+      toast.error(err?.data?.message ?? "Không thể sinh JD bằng AI");
+    }
+  };
+
   return {
     form,
     editJob,
@@ -94,6 +116,8 @@ export function useJobForm() {
     handleChange,
     handleSelectChange,
     handleSubmit,
+    handleGenerateJDAI,
+    generatingJD,
     isSaving: creating || updating,
   };
 }

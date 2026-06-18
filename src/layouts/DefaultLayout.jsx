@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 import AppHeader from "@/components/shared/AppHeader";
 import AppFooter from "@/components/shared/AppFooter";
-import ChatBotPopup from "@/components/chatbot/ChatBotPopup";
 
 function LayoutContent() {
   const location = useLocation();
@@ -18,7 +17,6 @@ function LayoutContent() {
         <Outlet />
       </main>
       <AppFooter />
-      {/* <ChatBotPopup /> */}
     </div>
   );
 }

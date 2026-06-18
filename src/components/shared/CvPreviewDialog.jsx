@@ -17,7 +17,9 @@ function CvPreviewDialog({ open, onClose, cv }) {
   // Convert base64 data URL to blob URL for viewer (avoids data URL size limits)
   const resolvedFileUrl = useMemo(() => {
     if (!cv?.fileUrl) return null;
-    if (!cv.fileUrl.startsWith("data:")) return cv.fileUrl;
+    if (!cv.fileUrl.startsWith("data:")) {
+      return cv.fileUrl.replace(/^http:\/\//i, "https://");
+    }
     try {
       const [header, base64] = cv.fileUrl.split(",");
       const mime = header.match(/:(.*?);/)?.[1] ?? "application/octet-stream";

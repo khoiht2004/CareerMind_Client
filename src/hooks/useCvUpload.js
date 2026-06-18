@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import { ALLOWED_TYPES } from "@/config/constants/constants";
 
@@ -8,6 +8,7 @@ const MAX_CV_SIZE_BYTES = MAX_CV_SIZE_MB * 1024 * 1024;
 export function useCvUpload(uploadCvMutation, onUploadSuccess) {
   const [dragging, setDragging] = useState(false);
   const [pendingFile, setPendingFile] = useState(null);
+  const uploadingRef = useRef(false);
 
   const validateFile = useCallback((file) => {
     if (!ALLOWED_TYPES.includes(file.type)) {
@@ -50,7 +51,8 @@ export function useCvUpload(uploadCvMutation, onUploadSuccess) {
   const handleCancelPending = useCallback(() => setPendingFile(null), []);
 
   const handleUpload = useCallback(async () => {
-    if (!pendingFile) return;
+    if (!pendingFile || uploadingRef.current) return;
+    uploadingRef.current = true;
     const formData = new FormData();
     formData.append("cv", pendingFile);
     formData.append("name", pendingFile.name.replace(/\.[^.]+$/, ""));
@@ -63,6 +65,8 @@ export function useCvUpload(uploadCvMutation, onUploadSuccess) {
       }
     } catch (err) {
       toast.error(err?.data?.message || "Tải lên thất bại, vui lòng thử lại");
+    } finally {
+      uploadingRef.current = false;
     }
   }, [pendingFile, uploadCvMutation, onUploadSuccess]);
 

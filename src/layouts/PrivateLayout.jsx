@@ -6,7 +6,6 @@ import AppHeader from "@/components/shared/AppHeader";
 import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
 import AppFooter from "@/components/shared/AppFooter";
-import ChatBotPopup from "@/components/chatbot/ChatBotPopup";
 import { SocketProvider } from "@/contexts/SocketContext";
 
 function LayoutContent() {
@@ -34,7 +33,6 @@ function LayoutContent() {
         <Outlet />
       </main>
       {!hideFooter && <AppFooter />}
-      {/* {!isChatbotPage && <ChatBotPopup />} */}
     </div>
   );
 }

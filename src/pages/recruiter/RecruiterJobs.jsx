@@ -68,6 +68,8 @@ function RecruiterJobs() {
     handleChange,
     handleSelectChange,
     handleSubmit,
+    handleGenerateJDAI,
+    generatingJD,
     isSaving,
   } = useRecruiterJobs();
 
@@ -286,6 +288,8 @@ function RecruiterJobs() {
         onSelectChange={handleSelectChange}
         onSubmit={handleSubmit}
         isSaving={isSaving}
+        handleGenerateJDAI={handleGenerateJDAI}
+        generatingJD={generatingJD}
       />
       <JobDeleteDialog
         open={!!deleteId}

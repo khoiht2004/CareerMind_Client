@@ -8,10 +8,10 @@ function JobFormDetailSection({ form, onChange }) {
       <JobFormSectionHeader title="Chi tiết vị trí" />
 
       <div className="grid grid-cols-2 gap-4">
-        <JobFormField label="Mức lương (VND)">
+        <JobFormField label="Mức lương">
           <Input
             name="salary"
-            placeholder="VD: 25,000,000 - 40,000,000"
+            placeholder="VD: 25tr - 40tr"
             value={form.salary}
             onChange={onChange}
             className="bg-primary/10"

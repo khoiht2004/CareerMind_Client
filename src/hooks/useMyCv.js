@@ -6,6 +6,7 @@ import {
   useDeleteCvMutation,
   useSetDefaultCvMutation,
 } from "@/services/cv.service";
+import { useUpdateProfileMutation } from "@/services/profile.service";
 import { useCvUpload } from "@/hooks/useCvUpload";
 
 export const MAX_CV_COUNT = 5;
@@ -13,15 +14,23 @@ export const MAX_CV_COUNT = 5;
 export function useMyCv() {
   const [previewCv, setPreviewCv] = useState(null);
   const [cvToDelete, setCvToDelete] = useState(null);
+  const [parsedProfile, setParsedProfile] = useState(null);
 
   const { data, isLoading } = useGetMyCvsQuery();
   const [uploadCv, { isLoading: isUploading }] = useUploadCvMutation();
   const [deleteCv, { isLoading: isDeleting }] = useDeleteCvMutation();
   const [setDefaultCv] = useSetDefaultCvMutation();
+  const [updateProfile, { isLoading: isUpdatingProfile }] = useUpdateProfileMutation();
 
   const cvs = useMemo(() => data?.data ?? [], [data]);
   const defaultCv = useMemo(() => cvs.find((cv) => cv.isDefault) ?? null, [cvs]);
   const otherCvs = useMemo(() => cvs.filter((cv) => !cv.isDefault), [cvs]);
+
+  const handleUploadSuccess = useCallback((res) => {
+    if (res?.data?.parsedProfile) {
+      setParsedProfile(res.data.parsedProfile);
+    }
+  }, []);
 
   const {
     dragging,
@@ -32,7 +41,7 @@ export function useMyCv() {
     handleDragLeave,
     handleCancelPending,
     handleUpload,
-  } = useCvUpload(uploadCv);
+  } = useCvUpload(uploadCv, handleUploadSuccess);
 
   const handleDelete = useCallback(async () => {
     if (!cvToDelete) return;
@@ -60,6 +69,17 @@ export function useMyCv() {
   const handlePreview = useCallback((cv) => setPreviewCv(cv), []);
   const handleClosePreview = useCallback(() => setPreviewCv(null), []);
   const handleDeleteClick = useCallback((cv) => setCvToDelete(cv), []);
+  const handleConfirmUpdateProfile = useCallback(async () => {
+    if (!parsedProfile) return;
+    try {
+      await updateProfile(parsedProfile).unwrap();
+      toast.success("Đã tự động cập nhật Hồ sơ cá nhân của bạn!");
+      setParsedProfile(null);
+    } catch {
+      toast.error("Cập nhật Hồ sơ cá nhân thất bại");
+    }
+  }, [parsedProfile, updateProfile]);
+
   const handleDeleteDialogChange = useCallback((open) => {
     if (!open) setCvToDelete(null);
   }, []);
@@ -75,6 +95,10 @@ export function useMyCv() {
     pendingFile,
     previewCv,
     cvToDelete,
+    parsedProfile,
+    setParsedProfile,
+    isUpdatingProfile,
+    handleConfirmUpdateProfile,
     handleFileSelect,
     handleDrop,
     handleDragOver,

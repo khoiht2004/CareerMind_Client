@@ -46,7 +46,7 @@ function JobDetail() {
   const hasDescription = Boolean(job.description);
 
   return (
-    <div className="min-h-screen bg-background pb-10">
+    <div className="bg-background min-h-screen pb-10">
       <PageContainer className="max-w-6xl py-6">
         {/* Breadcrumbs */}
         <nav className="text-muted-foreground mb-4 flex items-center gap-1 text-xs">
@@ -183,55 +183,58 @@ function JobDetail() {
             </Card>
 
             {/* Rating */}
-            <Card className="border-border rounded-xl shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="text-foreground mb-6 text-center font-bold">
-                  Bạn thấy độ tin cậy & Rõ ràng của tin tuyển dụng này thế nào?
-                </h3>
-                <div className="mx-auto grid max-w-lg grid-cols-2 gap-4 sm:flex sm:justify-between">
-                  <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="bg-muted rounded-xl p-3">
-                      <Frown className="text-muted-foreground size-8" />
+            {job.status === "PUBLISHED" && (
+              <Card className="border-border rounded-xl shadow-sm">
+                <CardContent className="p-6">
+                  <h3 className="text-foreground mb-6 text-center font-bold">
+                    Bạn thấy độ tin cậy & Rõ ràng của tin tuyển dụng này thế
+                    nào?
+                  </h3>
+                  <div className="mx-auto grid max-w-lg grid-cols-2 gap-4 sm:flex sm:justify-between">
+                    <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
+                      <div className="bg-muted rounded-xl p-3">
+                        <Frown className="text-muted-foreground size-8" />
+                      </div>
+                      <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
+                        Không đáng tin cậy & rõ ràng
+                      </span>
                     </div>
-                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
-                      Không đáng tin cậy & rõ ràng
-                    </span>
-                  </div>
-                  <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="bg-muted rounded-xl p-3">
-                      <Meh className="text-muted-foreground size-8" />
+                    <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
+                      <div className="bg-muted rounded-xl p-3">
+                        <Meh className="text-muted-foreground size-8" />
+                      </div>
+                      <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
+                        Ít đáng tin cậy & rõ ràng
+                      </span>
                     </div>
-                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
-                      Ít đáng tin cậy & rõ ràng
-                    </span>
-                  </div>
-                  <div className="flex cursor-pointer flex-col items-center gap-2 opacity-100">
-                    <div className="border-primary/20 bg-muted rounded-xl border p-3">
-                      <Smile className="text-primary size-8" />
+                    <div className="flex cursor-pointer flex-col items-center gap-2 opacity-100">
+                      <div className="border-primary/20 bg-muted rounded-xl border p-3">
+                        <Smile className="text-primary size-8" />
+                      </div>
+                      <span className="text-primary max-w-[60px] text-center text-[10px] font-medium">
+                        Bình thường
+                      </span>
                     </div>
-                    <span className="text-primary max-w-[60px] text-center text-[10px] font-medium">
-                      Bình thường
-                    </span>
-                  </div>
-                  <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="bg-muted rounded-xl p-3">
-                      <Laugh className="text-muted-foreground size-8" />
+                    <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
+                      <div className="bg-muted rounded-xl p-3">
+                        <Laugh className="text-muted-foreground size-8" />
+                      </div>
+                      <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
+                        Đáng tin cậy & rõ ràng
+                      </span>
                     </div>
-                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
-                      Đáng tin cậy & rõ ràng
-                    </span>
-                  </div>
-                  <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
-                    <div className="bg-muted rounded-xl p-3">
-                      <Heart className="text-muted-foreground size-8" />
+                    <div className="flex cursor-pointer flex-col items-center gap-2 opacity-50 transition-opacity hover:opacity-100">
+                      <div className="bg-muted rounded-xl p-3">
+                        <Heart className="text-muted-foreground size-8" />
+                      </div>
+                      <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
+                        Rất đáng tin cậy & rõ ràng
+                      </span>
                     </div>
-                    <span className="text-muted-foreground max-w-[60px] text-center text-[10px]">
-                      Rất đáng tin cậy & rõ ràng
-                    </span>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Việc làm liên quan */}
             {relatedJobs.length > 0 && (
