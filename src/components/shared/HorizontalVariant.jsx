@@ -27,7 +27,6 @@ function HorizontalVariant({
   isSaved = false,
   compact = false,
   highlighted = false,
-  actions = "heart",
 }) {
   const companyName = job.company?.name ?? job.company ?? "Công ty đang tuyển";
 
@@ -73,40 +72,18 @@ function HorizontalVariant({
           </span>
         </div>
         <div className="flex shrink-0 items-end self-stretch">
-          {actions === "both" ? (
-            <div className="flex items-center gap-1">
-              {job.isHot ? (
-                <Flame className="text-hot-foreground fill-hot-foreground size-4" />
-              ) : null}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground hover:text-destructive size-8 rounded-md"
-              >
-                <Trash2 className="size-4" />
-              </Button>
-              <Button
-                variant="secondary"
-                size="icon"
-                className="text-primary size-8 rounded-md"
-              >
-                <Heart className="size-4" />
-              </Button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              {job.isHot ? (
-                <Flame className="bg-hot text-hot-foreground fill-hot-foreground size-5 rounded-full p-1" />
-              ) : null}
-              <Button
-                variant="outline"
-                size="icon"
-                className="hover:text-primary size-8 rounded-full"
-              >
-                <Heart className={cn("size-4", isSaved && "fill-primary")} />
-              </Button>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {job.isHot ? (
+              <Flame className="bg-hot text-hot-foreground fill-hot-foreground size-5 rounded-full p-1" />
+            ) : null}
+            <Button
+              variant="outline"
+              size="icon"
+              className="hover:text-primary size-8 rounded-full bg-none"
+            >
+              <Heart className={cn("size-4", isSaved && "fill-primary")} />
+            </Button>
+          </div>
         </div>
       </section>
     </div>

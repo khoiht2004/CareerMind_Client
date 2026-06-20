@@ -66,9 +66,6 @@ export const POST_RESOURCE_LINKS = [
   { label: "Câu hỏi phỏng vấn", icon: ShieldCheck },
 ];
 
-export const POST_BANNER_PLACEHOLDER =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='480' viewBox='0 0 720 480'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%2300b14f'/%3E%3Cstop offset='1' stop-color='%2300472b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='720' height='480' rx='28' fill='url(%23g)'/%3E%3Ccircle cx='590' cy='88' r='92' fill='%23ffffff' opacity='.12'/%3E%3Ccircle cx='88' cy='396' r='136' fill='%23ffffff' opacity='.1'/%3E%3Cpath d='M112 126h312v42H112zM112 198h496v28H112zM112 252h410v28H112z' fill='%23fff' opacity='.9'/%3E%3Crect x='112' y='330' width='190' height='58' rx='29' fill='%23fff'/%3E%3Cpath d='M515 313l68 40-68 40z' fill='%23fff' opacity='.95'/%3E%3Ctext x='112' y='100' font-family='Arial' font-size='38' font-weight='700' fill='%23fff'%3ESRA Career%3C/text%3E%3C/svg%3E";
-
 export const POST_HERO_FLOATING_CARDS = [
   { label: "Kiến thức chuyên ngành", icon: BookOpen },
   { label: "Bí kíp tìm việc", icon: Lightbulb },

@@ -108,7 +108,7 @@ function SavedJobs() {
         <div className="hidden lg:col-span-1 lg:block">
           <div className="sticky top-6">
             {/* Fake Banner */}
-            <div className="from-primary/80 to-primary group relative flex h-[500px] w-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl bg-linear-to-b shadow-sm">
+            <div className="from-primary/40 to-primary group relative flex h-[500px] w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl bg-linear-to-b shadow-sm">
               <div className="text-primary-foreground relative z-10 p-6">
                 <h3 className="mb-2 text-2xl font-bold">
                   CV "Hịn" Trên Tay
@@ -118,11 +118,8 @@ function SavedJobs() {
                 <p className="text-primary-foreground/80 mb-6 text-sm">
                   Chuyên gia của CareerMind sẵn sàng hỗ trợ bạn.
                 </p>
-                <Button className="text-primary bg-card hover:bg-muted w-max rounded-full border-none font-bold">
-                  Tạo CV Ngay
-                </Button>
               </div>
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2940&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay transition-opacity group-hover:opacity-30"></div>
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2940&auto=format&fit=crop')] bg-cover bg-center opacity-35 mix-blend-overlay transition-opacity group-hover:opacity-30"></div>
             </div>
           </div>
         </div>

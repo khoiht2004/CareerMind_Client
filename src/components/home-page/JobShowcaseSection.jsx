@@ -69,7 +69,7 @@ function AttractiveJobsSection({
             isLoading={isLoading}
           />
         </div>
-        <div className="from-primary-container to-primary text-on-primary-container hidden w-96 shrink-0 rounded-lg bg-linear-to-b p-6 shadow-sm lg:block">
+        <div className="from-primary-container/60 to-primary text-on-primary-container hidden w-96 shrink-0 rounded-lg bg-linear-to-b p-6 shadow-sm lg:block">
           <p className="text-sm font-semibold">Slide quảng cáo</p>
           <h3 className="mt-4 text-3xl font-black">500+ việc làm phổ thông</h3>
           <p className="mt-2 text-sm">
@@ -84,7 +84,7 @@ function AttractiveJobsSection({
             ].map((item) => (
               <div
                 key={item}
-                className="bg-primary-fixed-dim/25 rounded-full px-4 py-2 font-semibold"
+                className="bg-primary/75 rounded-lg px-4 py-2 font-semibold"
               >
                 {item}
               </div>

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 function LightningSection({ jobs }) {
   return (
-    <section className="from-primary-container via-secondary to-primary text-on-primary-container bg-gradient-to-r py-12">
+    <section className="from-primary-container/80 to-primary text-on-primary-container bg-linear-to-r py-12">
       <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 lg:grid-cols-[1fr_280px_1fr]">
         <div>
           <h2 className="text-on-primary-container text-3xl font-black sm:text-4xl">
@@ -38,7 +38,10 @@ function LightningSection({ jobs }) {
               key={job.id}
               className="bg-card text-foreground flex items-center gap-2 rounded-lg p-2"
             >
-              <Zap className="fill-primary text-primary size-5 shrink-0" />
+              <Zap
+                className="text-primary size-5 shrink-0"
+                fill="currentColor"
+              />
               <div className="min-w-0">
                 <p className="line-clamp-1 text-xs font-bold">{job.title}</p>
                 <p className="text-muted-foreground line-clamp-1 text-[11px]">
@@ -50,8 +53,11 @@ function LightningSection({ jobs }) {
         </div>
 
         <div className="text-center">
-          <div className="bg-primary-fixed-dim/20 mx-auto grid size-44 place-items-center rounded-[2rem] sm:size-56">
-            <Zap className="fill-primary-fixed-dim text-primary-fixed-dim size-20 sm:size-28" />
+          <div className="mx-auto grid size-44 place-items-center rounded-4xl sm:size-56">
+            <Zap
+              className="text-secondary size-20 sm:size-32"
+              fill="currentColor"
+            />
           </div>
           <h3 className="text-on-primary-container mt-6 text-xl font-bold">
             Danh sách tin đăng đạt Huy hiệu Tia sét

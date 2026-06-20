@@ -13,7 +13,7 @@ function AppHeader() {
 
   return (
     <header className="shadow-nav bg-background/95 sticky top-0 z-40 border-b backdrop-blur">
-      <div className="flex h-14 min-w-0 items-center gap-2 px-2 min-[576px]:h-15 min-[576px]:px-3 sm:gap-4 sm:px-18 lg:gap-6">
+      <div className="flex h-14 min-w-0 items-center gap-2 px-2 min-[576px]:h-15 min-[576px]:px-3 sm:gap-4 lg:gap-6 lg:px-18">
         <HeaderMobileMenu pathname={pathname} user={user} />
         <HeaderBrand />
         <HeaderNav pathname={pathname} />

@@ -107,9 +107,21 @@ export const JOB_TYPE_OPTIONS = [
 
 export const LOCATION_OPTIONS = [
   { label: "Tất cả địa điểm", value: "ALL" },
-  { label: "TP. Hồ Chí Minh", value: "TP. Hồ Chí Minh" },
   { label: "Hà Nội", value: "Hà Nội" },
   { label: "Đà Nẵng", value: "Đà Nẵng" },
+  { label: "Cần Thơ", value: "Cần Thơ" },
+  { label: "Hải Phòng", value: "Hải Phòng" },
+  { label: "Hồ Chí Minh", value: "Hồ Chí Minh" },
+  { label: "Thái Nguyên", value: "Thái Nguyên" },
+  { label: "Nha Trang", value: "Nha Trang" },
+  { label: "Vũng Tàu", value: "Vũng Tàu" },
+  { label: "Thanh Hóa", value: "Thanh Hóa" },
+  { label: "Hải Dương", value: "Hải Dương" },
+  { label: "Bắc Ninh", value: "Bắc Ninh" },
+  { label: "Bình Dương", value: "Bình Dương" },
+  { label: "Đồng Nai", value: "Đồng Nai" },
+  { label: "Long An", value: "Long An" },
+  { label: "Bà Rịa - Vũng Tàu", value: "Bà Rịa - Vũng Tàu" },
   { label: "Remote", value: "Remote" },
 ];
 
