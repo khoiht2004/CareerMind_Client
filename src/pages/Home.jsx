@@ -80,7 +80,7 @@ function Home() {
     lightningJobs.length > 0;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       <HeroBanner
         inputValue={inputValue}
         onInputChange={setInputValue}

@@ -133,8 +133,8 @@ function CompanyDetail() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div
-                    className={`relative text-muted-foreground text-sm leading-relaxed whitespace-pre-line ${
-                      !showFullDesc ? "max-h-[300px] overflow-hidden" : ""
+                    className={`text-muted-foreground relative text-sm leading-relaxed whitespace-pre-line ${
+                      !showFullDesc ? "max-h-[200px] overflow-hidden" : ""
                     }`}
                   >
                     {company.description}

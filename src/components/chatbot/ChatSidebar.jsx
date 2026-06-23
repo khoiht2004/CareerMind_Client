@@ -84,12 +84,12 @@ function ChatSidebar({
 
       <div
         className={cn(
-          "flex min-h-0 shrink-0 flex-col overflow-hidden transition-all duration-300 ease-in-out",
+          "border-border flex min-h-0 shrink-0 flex-col overflow-hidden border-r transition-all duration-300 ease-in-out",
           // Layout trên Mobile: Làm drawer cố định trượt từ bên trái
-          "bg-background fixed inset-y-0 left-0 z-50 h-full w-72 border-r shadow-2xl",
+          "bg-background fixed inset-y-0 left-0 z-50 h-full w-72 shadow-2xl",
           isOpen ? "translate-x-0" : "-translate-x-full",
           // Layout trên Desktop (md): Static sidebar co giãn theo width
-          "md:bg-primary/5 md:static md:z-0 md:h-full md:translate-x-0 md:rounded-4xl md:border-0 md:shadow-none",
+          "md:bg-primary/5 md:static md:z-0 md:h-full md:translate-x-0 md:rounded-4xl md:border-r md:shadow-none",
           isOpen ? "md:w-75" : "md:w-0",
         )}
       >

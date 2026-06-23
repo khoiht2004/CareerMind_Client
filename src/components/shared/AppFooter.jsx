@@ -4,6 +4,7 @@ import {
   FOOTER_ECOSYSTEM,
 } from "@/config/constants/footer.constant";
 import { HOME_TAG_CLOUD } from "@/config/constants/home.constant";
+import qrCodeImg from "../../assets/qr_code.png";
 
 function FooterLink({ children }) {
   return (
@@ -180,13 +181,15 @@ function FooterLinks() {
 
 function QrPlaceholder() {
   return (
-    <div className="text-center">
-      <img
-        src="../../assets/qr_code.webp"
-        alt="QR"
-        className="bg-card mx-auto rounded-md p-2 shadow-sm"
-      />
-      <p className="text-primary mt-2 text-xs font-bold">careermind.com.vn</p>
+    <div className="flex flex-col items-center">
+      <div className="size-20 overflow-hidden text-center">
+        <img
+          src={qrCodeImg}
+          alt="QR"
+          className="bg-card mx-auto size-full object-cover object-center shadow-sm"
+        />
+      </div>
+      <p className="text-primary mt-2 text-xs font-bold">careermind.io.vn</p>
     </div>
   );
 }

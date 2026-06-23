@@ -22,7 +22,7 @@ function PostDetail() {
 
   return (
     <div className="bg-muted/40">
-      <PageContainer className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_348px]">
+      <PageContainer className="flex flex-col-reverse gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_348px]">
         <article className="bg-background rounded-lg p-5 md:p-8">
           <div className="space-y-3">
             <p className="text-primary text-sm font-semibold uppercase">

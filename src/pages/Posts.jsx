@@ -29,20 +29,28 @@ function Posts() {
     <div className="bg-background">
       <section className="from-primary/15 to-background bg-linear-to-b pt-8">
         <PageContainer className="space-y-8">
-          <div className="bg-primary/10 relative min-h-64 overflow-hidden rounded-lg px-4 py-8 text-center sm:px-6 sm:py-10">
-            <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-4">
+          {/* Hero */}
+          <div className="bg-card/30 relative min-h-64 overflow-hidden rounded-lg px-4 py-8 text-center sm:px-6 sm:py-10">
+            {/* Mesh Gradient */}
+            <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+              <div className="bg-mesh-cyan absolute top-[-20%] left-[-10%] h-[70%] w-[50%] rounded-full opacity-30 blur-[80px]" />
+              <div className="bg-mesh-blue absolute top-[10%] right-[-10%] h-[80%] w-[60%] rounded-full opacity-20 blur-[100px]" />
+              <div className="bg-mesh-purple absolute bottom-[-20%] left-[20%] h-[60%] w-[50%] rounded-full opacity-20 blur-[90px]" />
+            </div>
+
+            <div className="relative z-10 mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-4">
               {POST_HERO_FLOATING_CARDS.map(({ label, icon: Icon }) => (
                 <div
                   key={label}
-                  className="bg-background/90 flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-3 text-sm shadow-sm sm:w-auto"
+                  className="bg-card/60 border-border/50 flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-3 text-sm shadow-sm backdrop-blur-md sm:w-auto"
                 >
                   <Icon className="text-primary size-4" />
                   {label}
                 </div>
               ))}
             </div>
-            <div className="mx-auto mt-10 max-w-3xl">
-              <h1 className="text-primary text-3xl font-black sm:text-4xl">
+            <div className="relative z-10 mx-auto mt-10 max-w-3xl">
+              <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
                 Cẩm nang nghề nghiệp
               </h1>
               <p className="text-muted-foreground mt-3 text-sm">
@@ -51,7 +59,7 @@ function Posts() {
               </p>
             </div>
           </div>
-
+          {/* Options */}
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap gap-2">
               {POST_CATEGORY_OPTIONS.map((option) => (
@@ -80,7 +88,7 @@ function Posts() {
         </PageContainer>
       </section>
 
-      <PageContainer className="space-y-12">
+      <PageContainer className="mb-8 space-y-12">
         {isLoading ? (
           <div className="flex h-64 items-center justify-center">
             <Loader2 className="text-muted-foreground size-8 animate-spin" />

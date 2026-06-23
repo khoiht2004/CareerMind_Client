@@ -1,7 +1,6 @@
 import DOMPurify from "dompurify";
-import { POST_BANNER_PLACEHOLDER } from "@/config/constants/post.constant";
 
-export const getPostImage = (coverUrl) => coverUrl || POST_BANNER_PLACEHOLDER;
+export const getPostImage = (coverUrl) => coverUrl;
 
 export const stripHtml = (html = "") => {
   const doc = new DOMParser().parseFromString(html, "text/html");

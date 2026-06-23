@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HOME_BANNER_SLIDES } from "@/config/constants/home.constant";
 import { cn } from "@/lib/utils";
+import { MOBILE_BREAKPOINT } from "@/config/constants/constants";
 
 // Component hiển thị từng slide đơn lẻ với thiết kế gradient premium, hover effect mượt mà
 function SlideBox({ slide }) {
@@ -30,15 +31,29 @@ function SlideBox({ slide }) {
 }
 
 function SlideBannerSection() {
-  const SLIDES_PER_PAGE = 3;
-  const TOTAL_SLIDES = HOME_BANNER_SLIDES.length; // 9 slides
-  const totalPages = Math.ceil(TOTAL_SLIDES / SLIDES_PER_PAGE); // 3 pages
+  // Khởi tạo state ngay từ đầu để tránh giật layout (flicker) trên mobile
+  const [slidesPerPage, setSlidesPerPage] = useState(() => {
+    if (typeof window !== "undefined" && window.innerWidth < MOBILE_BREAKPOINT) return 1;
+    return 3;
+  });
 
-  // Chia slides thành các trang (mỗi trang 3 slides)
+  const TOTAL_SLIDES = HOME_BANNER_SLIDES.length;
+  const totalPages = Math.ceil(TOTAL_SLIDES / slidesPerPage);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSlidesPerPage(window.innerWidth < MOBILE_BREAKPOINT ? 1 : 3);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Chia slides thành các trang
   const originalPages = [];
   for (let i = 0; i < totalPages; i++) {
     originalPages.push(
-      HOME_BANNER_SLIDES.slice(i * SLIDES_PER_PAGE, (i + 1) * SLIDES_PER_PAGE),
+      HOME_BANNER_SLIDES.slice(i * slidesPerPage, (i + 1) * slidesPerPage),
     );
   }
 
@@ -170,7 +185,7 @@ function SlideBannerSection() {
             {pages.map((page, pageIdx) => (
               <div
                 key={pageIdx}
-                className="grid w-full shrink-0 grid-cols-1 gap-4 px-1 sm:grid-cols-2 md:grid-cols-3"
+                className="grid w-full shrink-0 grid-cols-1 gap-4 px-1 md:grid-cols-3"
               >
                 {page.map((slide, slideIdx) => (
                   <SlideBox
