@@ -1,16 +1,79 @@
-# React + Vite
+# Smart Recruit Assistant (CareerMind) - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 Giới thiệu dự án
 
-Currently, two official plugins are available:
+Đây là ứng dụng web Frontend (dành cho ứng viên và nhà tuyển dụng) thuộc hệ thống **Smart Recruit Assistant (CareerMind)**. Ứng dụng cung cấp giao diện trực quan, mượt mà giúp người dùng dễ dàng tương tác với các tính năng tuyển dụng và ứng tuyển.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Công nghệ sử dụng
 
-## React Compiler
+Dự án được xây dựng trên các công nghệ hiện đại nhất:
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **Core Framework:** [React 19](https://react.dev/) kết hợp build tool [Vite](https://vitejs.dev/) cho tốc độ siêu nhanh.
+- **Routing:** [React Router v7](https://reactrouter.com/) quản lý điều hướng.
+- **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/) & React Redux.
+- **Styling & UI Components:**
+  - [Tailwind CSS v4](https://tailwindcss.com/)
+  - [Shadcn UI](https://ui.shadcn.com/)
+  - [Radix UI](https://www.radix-ui.com/)
+  - Hỗ trợ Light/Dark mode với `next-themes`.
+- **Form & Validation:** [React Hook Form](https://react-hook-form.com/) kết hợp với [Zod](https://zod.dev/) để validate dữ liệu.
+- **Rich Text Editor:** [Tiptap](https://tiptap.dev/) dùng để soạn thảo văn bản đa dạng.
+- **Tiện ích khác:**
+  - `recharts` (Vẽ biểu đồ)
+  - `socket.io-client` (Kết nối Real-time)
+  - `date-fns` (Xử lý thời gian)
+  - `react-pdf` (Hiển thị PDF)
+  - `sonner` (Hiển thị Toast Notifications)
+  - `axios` (Gọi API)
 
-## Expanding the ESLint configuration
+## 📦 Cài đặt và Khởi chạy
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Yêu cầu môi trường
+
+- Node.js (khuyến nghị phiên bản 18+ hoặc 20+)
+- npm hoặc yarn/pnpm
+
+### Các bước chạy dự án
+
+1. **Di chuyển vào thư mục frontend:**
+
+   ```bash
+   cd frontend
+   ```
+
+2. **Cài đặt các gói phụ thuộc (dependencies):**
+
+   ```bash
+   npm install
+   ```
+
+3. **Cấu hình biến môi trường**:Tạo file `.env` (dựa trên `.env.example`) và cấu hình các biến cần thiết (ví dụ: `VITE_API_URL`).
+
+4. **Chạy server ở chế độ Development:**
+
+   ```bash
+   npm run dev
+   ```
+
+   Ứng dụng sẽ chạy tại địa chỉ: `http://localhost:5173` (mặc định của Vite).
+
+### Build cho Production
+
+Để tối ưu hóa ứng dụng trước khi deploy:
+
+```bash
+npm run build
+```
+
+Để preview bản build ở local:
+
+```bash
+npm run preview
+```
+
+## 📐 Cấu trúc thư mục (Tham khảo)
+
+- `/src/components`: Chứa các component UI dùng chung (Shadcn UI, v.v.).
+- `/src/pages`: Các trang chính của ứng dụng.
+- `/src/store`: Quản lý state toàn cục.
+- `/src/assets`: Chứa hình ảnh, CSS, fonts...
