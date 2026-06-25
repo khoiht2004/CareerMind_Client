@@ -122,7 +122,7 @@
   --mesh-blue: #0066cc;
   --mesh-purple: #bf5af2;
 
-  --muted: #fafafc;
+  --muted: #f9f9f9bd;
   --muted-foreground: #7a7a7a;
 
   --card: #ffffff;
@@ -233,7 +233,7 @@
   --background: #000000;
   --foreground: #ffffff;
 
-  --muted: #252527;
+  --muted: #2e2e2e;
   --muted-foreground: #cccccc;
 
   --card: #272729;
