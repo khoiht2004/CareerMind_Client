@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { formatRelativeTime } from "@/utils/helper";
 import { AVATAR_PLACEHOLDER } from "@/config/constants/constants";
 
-const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
+const SessionItem = memo(function SessionItem({ session, isActive, isOnline, onSelect }) {
   const handleSelect = useCallback(
     () => onSelect(session.id),
     [onSelect, session.id],
@@ -32,7 +32,7 @@ const SessionItem = memo(function SessionItem({ session, isActive, onSelect }) {
             className="h-full w-full object-cover object-top"
           />
         </div>
-        {partner?.isActive && (
+        {isOnline && (
           <span className="ring-background absolute right-0 bottom-0 size-2.5 rounded-full bg-trend-up ring-2" />
         )}
       </div>
@@ -63,6 +63,7 @@ function ConversationSidebar({
   activeSessionId,
   onSelect,
   isLoading,
+  onlineStatuses,
 }) {
   return (
     <>
@@ -109,6 +110,7 @@ function ConversationSidebar({
                 key={session.id}
                 session={session}
                 isActive={activeSessionId === session.id}
+                isOnline={onlineStatuses?.[session.partner?.id] === "online"}
                 onSelect={onSelect}
               />
             ))}
