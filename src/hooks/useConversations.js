@@ -21,6 +21,7 @@ export function useConversations() {
   const [sidebarOpen, setSidebarOpen] = useState(
     () => typeof window !== "undefined" && window.innerWidth >= 768,
   );
+  const [onlineStatuses, setOnlineStatuses] = useState({});
 
   // API Queries & Mutations
   const {
@@ -88,7 +89,29 @@ export function useConversations() {
     }
   }, [conversations, activeSessionId]);
 
-  // 3. Socket.io Realtime room joining & Message listening
+  // 3. Lắng nghe trạng thái online của các đối tác
+  useEffect(() => {
+    if (!socket || conversations.length === 0) return;
+
+    const partnerIds = conversations.map((c) => c.partner?.id).filter(Boolean);
+    if (partnerIds.length > 0) {
+      socket.emit("check_users_status", partnerIds, (statuses) => {
+        setOnlineStatuses((prev) => ({ ...prev, ...statuses }));
+      });
+    }
+
+    const handleStatusChanged = ({ userId, status }) => {
+      setOnlineStatuses((prev) => ({ ...prev, [userId]: status }));
+    };
+
+    socket.on("user_status_changed", handleStatusChanged);
+
+    return () => {
+      socket.off("user_status_changed", handleStatusChanged);
+    };
+  }, [socket, conversations]);
+
+  // 4. Socket.io Realtime room joining & Message listening
   useEffect(() => {
     if (!socket || !activeSessionId) return;
 
@@ -171,6 +194,7 @@ export function useConversations() {
     setInput,
     sidebarOpen,
     setSidebarOpen,
+    onlineStatuses,
     isConvsLoading,
     isMessagesLoading,
     isSending,

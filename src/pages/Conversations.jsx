@@ -9,6 +9,7 @@ import { AVATAR_PLACEHOLDER } from "@/config/constants/constants";
 
 const ConversationsHeader = memo(function ConversationsHeader({
   partner,
+  isOnline,
   onPartnerClick,
   onMenuClick,
 }) {
@@ -49,10 +50,10 @@ const ConversationsHeader = memo(function ConversationsHeader({
 
           <div className="flex items-center gap-1.5">
             <Circle
-              className={`size-2.5 ${partner.isActive ? "fill-trend-up text-trend-up" : "fill-muted-foreground/30 text-muted-foreground/30"}`}
+              className={`size-2.5 ${isOnline ? "fill-trend-up text-trend-up" : "fill-muted-foreground/30 text-muted-foreground/30"}`}
             />
             <span className="text-muted-foreground text-xs font-medium">
-              {partner.isActive
+              {isOnline
                 ? "Đang hoạt động"
                 : partner.lastActive
                   ? `Hoạt động ${formatRelativeTime(partner.lastActive)}`
@@ -76,6 +77,7 @@ export default function Conversations() {
     setInput,
     sidebarOpen,
     setSidebarOpen,
+    onlineStatuses,
     isConvsLoading,
     isMessagesLoading,
     isSending,
@@ -102,6 +104,7 @@ export default function Conversations() {
         activeSessionId={activeSessionId}
         onSelect={handleSelectSession}
         isLoading={isConvsLoading}
+        onlineStatuses={onlineStatuses}
       />
       <ConversationArea
         messages={messages}
@@ -115,6 +118,7 @@ export default function Conversations() {
         header={
           <ConversationsHeader
             partner={activeConv?.partner}
+            isOnline={onlineStatuses[activeConv?.partner?.id] === "online"}
             onPartnerClick={handlePartnerClick}
             onMenuClick={() => setSidebarOpen(true)}
           />

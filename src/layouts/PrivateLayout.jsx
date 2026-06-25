@@ -6,7 +6,6 @@ import AppHeader from "@/components/shared/AppHeader";
 import { path } from "@/config/path";
 import { cn } from "@/lib/utils";
 import AppFooter from "@/components/shared/AppFooter";
-import { SocketProvider } from "@/contexts/SocketContext";
 
 function LayoutContent() {
   const location = useLocation();
@@ -52,11 +51,7 @@ function PrivateLayout() {
     return <Navigate to={path.auth + "?tab=login"} replace />;
   }
 
-  return (
-    <SocketProvider>
-      <LayoutContent />
-    </SocketProvider>
-  );
+  return <LayoutContent />;
 }
 
 export default PrivateLayout;
